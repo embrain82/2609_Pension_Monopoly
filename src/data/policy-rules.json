@@ -1,16 +1,16 @@
 {
-  "reviewed_at":"2026-08-10",
-  "source_urls":["https://www.fss.or.kr/fss/main/contents.do?menuNo=200992","https://www.fss.or.kr/fss/main/contents.do?menuNo=201011","https://www.fss.or.kr/fss/main/contents.do?menuNo=201012"],
-  "simplified":true,
-  "riskAssetLimit":0.7,
-  "tdfAdjustedRiskRatio":0.7,
-  "annualContributionLimit":18000000,
-  "annualTaxCreditLimit":9000000,
-  "taxCreditRate":0.132,
-  "earlyDepositPenaltyRate":0.012,
-  "allowedWithdrawalFeeRate":0.03,
-  "receivingMonths":240,
-  "pensionTaxRate":0.055,
-  "lumpSumTaxRate":0.165,
-  "payoutReviewedAt":"2026-09-06"
+  "reviewed_at": "2026-09-09",
+  "source_urls": [
+    "https://www.law.go.kr/LSW/lsLinkCommonInfo.do?chrClsCd=010202&lspttninfSeq=71031",
+    "https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7888&mi=2312"
+  ],
+  "simplified": true,
+  "riskAssetLimit": 0.7,
+  "annualContributionLimit": 18000000,
+  "annualTaxCreditLimit": 9000000,
+  "taxCreditRate": 0.132,
+  "receivingMonths": 240,
+  "pensionTaxRate": 0.055,
+  "lumpSumTaxRate": 0.165,
+  "payoutReviewedAt": "2026-09-09"
 }

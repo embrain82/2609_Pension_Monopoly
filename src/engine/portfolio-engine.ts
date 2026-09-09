@@ -1,270 +1,203 @@
-import { balanceConfig, policyRules, products } from '../data/content';
-import type { ActionResult, GameState, Holding, PendingOrder, ProductId } from '../types';
-import { canBuyForProfile, canBuyRiskAsset, effectiveRiskRatio, maxBuyWithinRiskLimit, riskAssetRatio } from './policy-engine';
+import { balanceConfig, products } from '../data/content';
+import type { ActionResult, DepositLot, GameState, Holding, PendingOrder, ProductId } from '../types';
+import { canBuyForProfile, canBuyRiskAsset, effectiveRiskRatio, maxBuyWithinRiskLimit } from './policy-engine';
 
 export function portfolioValue(state: Pick<GameState, 'holdings' | 'irpCash'> & Partial<Pick<GameState, 'pendingOrders'>>): number {
-  const pendingValue = state.pendingOrders?.reduce((sum, order) => sum + order.amount, 0) ?? 0;
-  return state.irpCash + pendingValue + state.holdings.reduce((sum, holding) => sum + holding.amount, 0);
+  return state.irpCash + (state.pendingOrders?.reduce((sum, order) => sum + order.amount, 0) ?? 0)
+    + state.holdings.reduce((sum, holding) => sum + holding.amount, 0);
+}
+
+export function depositLots(state: GameState, holding: Holding): DepositLot[] {
+  if (holding.lots?.length && Math.abs(holding.lots.reduce((s, l) => s + l.amount, 0) - holding.amount) < 0.01) return holding.lots.map(l => ({ ...l }));
+  return holding.amount <= 0 ? [] : [{ principal: Math.min(holding.principal, holding.amount), amount: holding.amount,
+    openedTurn: state.turn - holding.depositTurnsHeld,
+    maturityTurn: state.turn - holding.depositTurnsHeld + balanceConfig.depositMaturityTurns,
+    ratePerTurn: balanceConfig.market.depositBase + balanceConfig.market.depositPerRatePct * state.lastMarket.ratePct }];
 }
 
 function holdingFor(state: GameState, productId: ProductId): Holding {
-  return state.holdings.find((holding) => holding.productId === productId) ?? {
-    productId,
-    amount: 0,
-    principal: 0,
-    depositTurnsHeld: 0
-  };
+  return state.holdings.find(h => h.productId === productId) ?? { productId, amount: 0, principal: 0, depositTurnsHeld: 0 };
+}
+function put(state: GameState, holding: Holding): Holding[] {
+  return state.holdings.some(h => h.productId === holding.productId)
+    ? state.holdings.map(h => h.productId === holding.productId ? holding : h) : [...state.holdings, holding];
+}
+function invalid(state: GameState, amount: number, internal: boolean): string | null {
+  if (!Number.isFinite(amount) || amount <= 0) return '거래 금액은 유한한 양수여야 합니다.';
+  if (!internal && state.rebalancePlan) return '리밸런싱 주문 처리 중입니다. 정산 후 다시 거래하세요.';
+  return null;
+}
+function orderFor(state: GameState, side: 'buy' | 'sell', productId: ProductId, amount: number): PendingOrder {
+  return { id: `order-${state.orderSequence}`, side, productId, amount, submittedTurn: state.turn,
+    priceTurn: state.turn + 1, settlesTurn: state.turn + 2, stage: 'received',
+    ...(side === 'sell' ? { units: amount / state.prices[productId] } : {}) };
+}
+function addHolding(state: GameState, productId: ProductId, amount: number): GameState {
+  const current = holdingFor(state, productId);
+  const next: Holding = { ...current, amount: current.amount + amount, principal: current.principal + amount,
+    units: (current.amount + amount) / state.prices[productId] };
+  if (productId === 'deposit') {
+    next.lots = [...depositLots(state, current), { amount, principal: amount, openedTurn: state.turn,
+      maturityTurn: state.turn + balanceConfig.depositMaturityTurns,
+      ratePerTurn: balanceConfig.market.depositBase + balanceConfig.market.depositPerRatePct * state.lastMarket.ratePct }];
+  }
+  return { ...state, holdings: put(state, next) };
 }
 
-function upsertHolding(state: GameState, holding: Holding): Holding[] {
-  const existing = state.holdings.some((item) => item.productId === holding.productId);
-  return existing
-    ? state.holdings.map((item) => (item.productId === holding.productId ? holding : item))
-    : [...state.holdings, holding];
-}
-
-export function buyProduct(state: GameState, productId: ProductId, requestedAmount = balanceConfig.tradeAmount): ActionResult {
-  const product = products.find((item) => item.id === productId);
+export function buyProduct(state: GameState, productId: ProductId, requestedAmount = balanceConfig.tradeAmount, internal = false): ActionResult {
+  const error = invalid(state, requestedAmount, internal);
+  if (error) return { ok: false, message: error, state };
+  const product = products.find(p => p.id === productId);
   if (!product) return { ok: false, message: '상품을 찾을 수 없습니다.', state };
   const amount = Math.min(requestedAmount, state.irpCash);
-  if (amount < 100000) return { ok: false, message: 'IRP 대기자금이 부족합니다.', state };
+  if (amount < (internal ? 0.01 : 100000)) return { ok: false, message: 'IRP 대기자금이 부족합니다.', state };
   const suitability = canBuyForProfile(state.profileId, productId);
-  if (!suitability.ok) {
-    const unlocked = state.unlockedCards.includes('profile') ? state.unlockedCards : [...state.unlockedCards, 'profile'];
-    return { ok: false, message: suitability.reason, state: { ...state, unlockedCards: unlocked } };
-  }
+  if (!suitability.ok) return { ok: false, message: suitability.reason, state };
   const check = canBuyRiskAsset(state, productId, amount);
   if (!check.ok) return { ok: false, message: check.reason, state, expectedRiskRatio: check.ratio };
-
-  // 상품 거리 칸에 도착한 턴에는 그 펀드만 오늘 기준가로 즉시 잔고에 들어간다(평소엔 다음 턴 체결).
-  const spotlight = state.spotlightProductId === productId;
-  if (product.kind === 'fund' && !spotlight) {
-    const order: PendingOrder = {
-      id: `${state.turn}-buy-${productId}-${state.pendingOrders.length}`,
-      side: 'buy', productId, amount, submittedTurn: state.turn, settlesTurn: state.turn + 1, stage: 'received'
-    };
-    return {
-      ok: true,
-      message: `${product.shortName} 매수 주문 접수 → 다음 턴 기준가 확정·잔고 반영`,
-      expectedRiskRatio: check.ratio,
-      state: { ...state, irpCash: state.irpCash - amount, pendingOrders: [...state.pendingOrders, order], riskBuyCount: state.riskBuyCount + (product.risk_asset_ratio > 0 ? 1 : 0) }
-    };
-  }
-
-  const current = holdingFor(state, productId);
-  const nextHolding = { ...current, amount: current.amount + amount, principal: current.principal + amount, depositTurnsHeld: product.kind === 'deposit' ? 0 : current.depositTurnsHeld };
-  return {
-    ok: true,
-    message: product.kind === 'etf' ? `${product.shortName}가 표시가격으로 즉시 체결되었습니다.`
-      : product.kind === 'fund' ? `${product.shortName} 거리 스포트라이트 · 오늘 기준가로 즉시 잔고에 반영되었습니다.`
-        : `${product.shortName}에 가입했습니다. 만기 전 해지 시 불이익이 있습니다.`,
-    expectedRiskRatio: check.ratio,
-    state: { ...state, irpCash: state.irpCash - amount, holdings: upsertHolding(state, nextHolding), riskBuyCount: state.riskBuyCount + (product.risk_asset_ratio > 0 ? 1 : 0) }
-  };
+  let next = { ...state, irpCash: state.irpCash - amount, riskBuyCount: state.riskBuyCount + (product.regulatoryRisk ? 1 : 0) };
+  if (product.kind === 'fund') {
+    next = { ...next, pendingOrders: [...state.pendingOrders, orderFor(state, 'buy', productId, amount)], orderSequence: state.orderSequence + 1 };
+  } else next = addHolding(next, productId, amount);
+  return { ok: true, state: next, expectedRiskRatio: check.ratio,
+    message: product.kind === 'fund' ? `${product.shortName} 매수 접수 → 다음 턴 기준가 확정 → 그다음 턴 결제(게임 시간)`
+      : `${product.shortName} ${product.kind === 'deposit' ? '신규 약정 가입' : '표시가격 체결(게임 가정)'} · IRP 안에서 운용됩니다.` };
 }
 
-export const LIFE_EVENT_LIQUIDATION_ORDER: ProductId[] = [
-  'deposit', 'equityEtf', 'shortBond', 'longBond', 'balanced', 'tdf'
-];
-
-export interface LiquidationSale {
-  productId: ProductId;
-  amount: number;
-  penalty: number;
+/** FIFO 가입 건별 해지. 중도해지는 발생 이자의 50%만 지급하는 가상 약정이며 원금은 차감하지 않는다. */
+export function depositSale(state: GameState, requested: number) {
+  const holding = holdingFor(state, 'deposit');
+  let remaining = Math.min(requested, holding.amount), penalty = 0, principalSold = 0;
+  const lots = depositLots(state, holding).map(lot => {
+    const take = Math.min(remaining, lot.amount);
+    const fraction = lot.amount > 0 ? take / lot.amount : 0;
+    remaining -= take;
+    principalSold += lot.principal * fraction;
+    if (state.turn < lot.maturityTurn) penalty += Math.max(0, lot.amount - lot.principal) * fraction * 0.5;
+    return { ...lot, amount: lot.amount - take, principal: lot.principal * (1 - fraction) };
+  }).filter(lot => lot.amount > 0.001);
+  return { amount: Math.min(requested, holding.amount), penalty, principalSold, lots };
 }
 
-export function liquidateForLivingCost(state: GameState, need: number): {
-  state: GameState;
-  remaining: number;
-  usedIrpCash: number;
-  sales: LiquidationSale[];
-} {
-  let next: GameState = { ...state, holdings: state.holdings.map((holding) => ({ ...holding })) };
-  let remaining = Math.max(0, Math.round(need));
-  const usedIrpCash = Math.min(next.irpCash, remaining);
-  next = { ...next, irpCash: next.irpCash - usedIrpCash };
-  remaining -= usedIrpCash;
-
-  const sales: LiquidationSale[] = [];
-  for (const productId of LIFE_EVENT_LIQUIDATION_ORDER) {
-    if (remaining <= 0) break;
-    const product = products.find((item) => item.id === productId);
-    const index = next.holdings.findIndex((holding) => holding.productId === productId);
-    if (!product || index < 0) continue;
-    const holding = next.holdings[index];
-    if (holding.amount <= 0) continue;
-    const early = product.kind === 'deposit' && holding.depositTurnsHeld < balanceConfig.depositMaturityTurns;
-    const netRate = early ? 1 - policyRules.earlyDepositPenaltyRate : 1;
-    const gross = Math.min(holding.amount, Math.ceil(remaining / netRate));
-    if (gross <= 0) continue;
-    const penalty = early ? gross * policyRules.earlyDepositPenaltyRate : 0;
-    const net = gross - penalty;
-    const applied = Math.min(net, remaining);
-    remaining = Math.round((remaining - applied) * 100) / 100;
-    if (remaining < 1) remaining = 0;
-    const surplus = net - applied;
-    const holdings = next.holdings.map((item, itemIndex) => (
-      itemIndex === index ? { ...item, amount: item.amount - gross } : item
-    ));
-    next = { ...next, cash: next.cash + surplus, holdings };
-    sales.push({ productId, amount: gross, penalty });
-  }
-
-  return { state: next, remaining, usedIrpCash, sales };
-}
-
-export function sellProduct(state: GameState, productId: ProductId, requestedAmount = balanceConfig.tradeAmount): ActionResult {
-  const product = products.find((item) => item.id === productId);
+export function sellProduct(state: GameState, productId: ProductId, requestedAmount = balanceConfig.tradeAmount, internal = false): ActionResult {
+  const error = invalid(state, requestedAmount, internal);
+  if (error) return { ok: false, message: error, state };
+  const product = products.find(p => p.id === productId);
   const current = holdingFor(state, productId);
   const amount = Math.min(requestedAmount, current.amount);
-  if (!product || amount < 100000) return { ok: false, message: '매도할 잔고가 부족합니다.', state };
-
-  if (product.kind === 'fund') {
-    const order: PendingOrder = {
-      id: `${state.turn}-sell-${productId}-${state.pendingOrders.length}`,
-      side: 'sell', productId, amount, submittedTurn: state.turn, settlesTurn: state.turn + 1, stage: 'received'
-    };
-    return { ok: true, message: `${product.shortName} 환매 주문 접수 → 다음 턴 대금 반영`, state: { ...state, holdings: upsertHolding(state, { ...current, amount: current.amount - amount }), pendingOrders: [...state.pendingOrders, order] } };
+  if (!product || amount < (internal ? 0.01 : 100000)) return { ok: false, message: '매도할 잔고가 부족합니다.', state };
+  const fraction = amount / current.amount;
+  const updated: Holding = { ...current, amount: current.amount - amount, principal: current.principal * (1 - fraction),
+    units: (current.amount - amount) / state.prices[productId] };
+  let penalty = 0;
+  if (productId === 'deposit') {
+    const sale = depositSale(state, amount);
+    penalty = sale.penalty;
+    updated.lots = sale.lots;
+    updated.principal = Math.max(0, current.principal - sale.principalSold);
   }
-
-  const early = product.kind === 'deposit' && current.depositTurnsHeld < balanceConfig.depositMaturityTurns;
-  const waived = early && state.spotlightProductId === 'deposit';
-  const penalty = early && !waived ? amount * policyRules.earlyDepositPenaltyRate : 0;
-  return {
-    ok: true,
-    message: penalty > 0 ? `예금을 만기 전에 해지해 ${Math.round(penalty).toLocaleString('ko-KR')}원의 이자 불이익이 반영되었습니다.`
-      : waived ? '예금 거리 스포트라이트 · 만기 전 해지 불이익 없이 예금을 해지했습니다.'
-        : `${product.shortName} 매도가 즉시 체결되었습니다.`,
-    state: { ...state, irpCash: state.irpCash + amount - penalty, holdings: upsertHolding(state, { ...current, amount: current.amount - amount }), understandingPoints: state.understandingPoints + 1 }
-  };
-}
-
-function buyAfterSwitch(afterSell: GameState, fromName: string, toId: ProductId, requested: number): ActionResult {
-  const to = products.find((item) => item.id === toId);
-  const toName = to?.shortName ?? '새 상품';
-  const affordable = Math.min(requested, afterSell.irpCash);
-  const buyAmount = maxBuyWithinRiskLimit(afterSell, toId, affordable);
-  if (buyAmount < 100000) {
-    return {
-      ok: true,
-      state: afterSell,
-      message: `${fromName} 매도는 완료했지만 ${toName} 매수는 위험한도 때문에 지금 할 수 없습니다. 매도 대금은 대기자금으로 남았습니다.`
-    };
-  }
-  const bought = buyProduct(afterSell, toId, buyAmount);
-  if (!bought.ok) {
-    return {
-      ok: true,
-      state: afterSell,
-      message: `매도는 완료했지만 새 매수는 제한되었습니다. 매도 대금은 대기자금으로 남았습니다. ${bought.message}`
-    };
-  }
-  if (buyAmount < affordable) {
-    return {
-      ...bought,
-      message: `${fromName} → ${toName} 교체: 위험한도까지 ${Math.round(buyAmount).toLocaleString('ko-KR')}원만 사고, 나머지는 대기자금으로 남겼습니다.`
-    };
-  }
-  return { ...bought, message: `${fromName} 매도 후 ${toName} 매수를 반영했습니다. ${bought.message}` };
+  const next = { ...state, holdings: put(state, updated) };
+  if (product.kind === 'fund') return { ok: true,
+    message: `${product.shortName} 환매 수량 예약 → 다음 턴 가격 확정 → 그다음 턴 IRP 대기자금 결제`,
+    state: { ...next, pendingOrders: [...state.pendingOrders, orderFor(state, 'sell', productId, amount)], orderSequence: state.orderSequence + 1 } };
+  return { ok: true, message: `${product.shortName} 매도 대금이 IRP 대기자금에 반영되었습니다.${penalty > 0 ? ` 중도해지 이자 조정 ${Math.round(penalty).toLocaleString('ko-KR')}원.` : ''}`,
+    state: { ...next, irpCash: next.irpCash + amount - penalty, understandingPoints: next.understandingPoints + (internal ? 0 : 1) } };
 }
 
 export function switchProduct(state: GameState, fromId: ProductId, toId: ProductId, amount = balanceConfig.tradeAmount): ActionResult {
   if (fromId === toId) return { ok: false, message: '서로 다른 상품을 선택하세요.', state };
   const suitability = canBuyForProfile(state.profileId, toId);
-  if (!suitability.ok) {
-    const unlocked = state.unlockedCards.includes('profile') ? state.unlockedCards : [...state.unlockedCards, 'profile'];
-    return { ok: false, message: suitability.reason, state: { ...state, unlockedCards: unlocked } };
-  }
-  const from = products.find((item) => item.id === fromId);
-  const current = holdingFor(state, fromId);
-  const sellAmount = Math.min(amount, current.amount);
-  if (!from || sellAmount < 100000) return { ok: false, message: '교체할 기존 상품 잔고가 부족합니다.', state };
-  if (from.kind === 'fund') {
-    const order: PendingOrder = { id: `${state.turn}-switch-${fromId}-${toId}`, side: 'sell', productId: fromId, targetProductId: toId, amount: sellAmount, submittedTurn: state.turn, settlesTurn: state.turn + 1, stage: 'received' };
-    return { ok: true, message: '환매대금이 들어온 다음 새 상품 매수가 이어집니다. 대기자금 구간을 체험합니다.', state: { ...state, holdings: upsertHolding(state, { ...current, amount: current.amount - sellAmount }), pendingOrders: [...state.pendingOrders, order] } };
-  }
-  const sold = sellProduct(state, fromId, sellAmount);
+  if (!suitability.ok) return { ok: false, message: suitability.reason, state };
+  const sold = sellProduct(state, fromId, amount);
   if (!sold.ok) return sold;
-  return buyAfterSwitch(sold.state, from.shortName, toId, sellAmount);
+  if (sold.state.pendingOrders.length > state.pendingOrders.length) {
+    const orders = sold.state.pendingOrders.map((o, i) => i === sold.state.pendingOrders.length - 1 ? { ...o, targetProductId: toId, groupId: `switch-${o.id}` } : o);
+    return { ...sold, message: '환매 가격·대금이 확정된 뒤 같은 교체 주문의 매수가 이어집니다.', state: { ...sold.state, pendingOrders: orders } };
+  }
+  const proceeds = sold.state.irpCash - state.irpCash;
+  const cap = maxBuyWithinRiskLimit(sold.state, toId, proceeds);
+  const bought = cap >= 100000 ? buyProduct(sold.state, toId, cap) : null;
+  return { ok: true, state: bought?.ok ? bought.state : sold.state,
+    message: `교체매매: ${sold.message} ${bought?.ok ? bought.message : '새 매수는 제한되어 대금이 대기자금으로 남았습니다.'}` };
 }
 
+function fundRebalance(state: GameState): GameState {
+  if (!state.rebalancePlan || state.pendingOrders.some(o => o.side === 'sell')) return state;
+  let next = state;
+  const shares = state.rebalancePlan;
+  const total = portfolioValue(state);
+  // 안전자산을 먼저 매수하고 실제 규제상 여유 안에서 위험자산을 주문한다.
+  for (const product of [...products].sort((a, b) => Number(a.regulatoryRisk) - Number(b.regulatoryRisk))) {
+    const reserved = next.pendingOrders.filter(o => o.side === 'buy' && o.productId === product.id).reduce((s, o) => s + o.amount, 0);
+    const need = total * shares[product.id] - holdingFor(next, product.id).amount - reserved;
+    const amount = maxBuyWithinRiskLimit(next, product.id, Math.min(Math.max(0, need), next.irpCash));
+    if (amount >= 100000) next = buyProduct(next, product.id, amount, true).state;
+  }
+  return { ...next, rebalancePlan: null };
+}
+
+/** 시장 반영 후 호출. 미확정 매수는 가격 확정 전 수익을 얻지 않고, 환매는 확정 전까지 가격 위험을 가진다. */
 export function settleOrders(state: GameState): GameState {
-  let next = { ...state, holdings: state.holdings.map((holding) => ({ ...holding })), pendingOrders: [] as PendingOrder[] };
-  for (const order of state.pendingOrders) {
-    if (order.settlesTurn > state.turn) {
-      next.pendingOrders.push({ ...order, stage: 'priced' });
-      continue;
+  let next: GameState = { ...state, pendingOrders: [] };
+  const switches: PendingOrder[] = [];
+  for (const original of state.pendingOrders) {
+    let order = { ...original };
+    if (order.stage === 'received' && (order.priceTurn ?? order.settlesTurn) <= state.turn) {
+      order = { ...order, stage: 'priced', units: order.side === 'buy' ? order.amount / state.prices[order.productId] : order.units };
     }
-    if (order.side === 'buy') {
-      const current = holdingFor(next, order.productId);
-      next.holdings = upsertHolding(next, { ...current, amount: current.amount + order.amount, principal: current.principal + order.amount });
-    } else {
+    if (order.settlesTurn > state.turn) { next.pendingOrders.push(order); continue; }
+    if (order.side === 'buy') next = addHolding(next, order.productId, order.amount);
+    else {
       next.irpCash += order.amount;
-      if (order.targetProductId) {
-        const targetName = products.find((item) => item.id === order.targetProductId)?.shortName ?? '새 상품';
-        const suitability = canBuyForProfile(next.profileId, order.targetProductId);
-        if (!suitability.ok) {
-          next = {
-            ...next,
-            logs: [...next.logs, { turn: state.turn, type: 'settle', message: `${targetName} 매수는 성향 적합성 때문에 보류했습니다. 환매 대금은 대기자금으로 남았습니다.` }]
-          };
-          continue;
-        }
-        const affordable = Math.min(order.amount, next.irpCash);
-        const buyAmount = maxBuyWithinRiskLimit(next, order.targetProductId, affordable);
-        if (buyAmount >= 100000) {
-          next = buyProduct(next, order.targetProductId, buyAmount).state;
-        }
-        if (buyAmount < affordable) {
-          next = {
-            ...next,
-            logs: [...next.logs, {
-              turn: state.turn,
-              type: 'settle',
-              message: `${targetName} 매수는 위험한도까지 ${Math.round(buyAmount).toLocaleString('ko-KR')}원만 반영하고, 나머지는 대기자금으로 남겼습니다.`
-            }]
-          };
-        }
-      }
+      if (order.targetProductId) switches.push(order);
     }
   }
-  return next;
+  // 미처리 주문 예약을 모두 복원한 뒤 연결 주문의 매수 여력을 검증한다.
+  for (const order of switches) {
+    const target = order.targetProductId!;
+    const amount = maxBuyWithinRiskLimit(next, target, Math.min(order.amount, next.irpCash));
+    const result = amount >= 100000 ? buyProduct(next, target, amount, true) : null;
+    if (result?.ok) {
+      next = { ...result.state, pendingOrders: result.state.pendingOrders.map(o => o.id === `order-${next.orderSequence}` ? { ...o, groupId: order.groupId ?? order.id } : o) };
+      if (amount < order.amount - 1) next = { ...next, logs: [...next.logs, { turn: state.turn, type: 'settle', message: '위험한도까지 교체 매수 · 남은 환매 대금은 대기자금으로 보관됩니다.' }] };
+    }
+    else next = { ...next, logs: [...next.logs, { turn: state.turn, type: 'settle', message: '교체 매수 제한 · 환매 대금은 IRP 대기자금에 보관됩니다.' }] };
+  }
+  return fundRebalance(next);
+}
+
+/** 마지막 시장 가격을 고정한 정산 전용 시간. 시장·급여·공제·게임 턴은 추가하지 않는다. */
+export function settleAllOrders(state: GameState): GameState {
+  const gameTurn = state.turn;
+  let next = state;
+  for (let tick = 0; tick < 8 && (next.pendingOrders.length || next.rebalancePlan); tick++) {
+    const due = next.pendingOrders.length ? Math.min(...next.pendingOrders.map(o => o.settlesTurn)) : next.turn;
+    next = settleOrders({ ...next, turn: Math.max(next.turn, due) });
+  }
+  if (next.pendingOrders.length || next.rebalancePlan) throw new Error('정산 전용 단계에 미결 주문이 남았습니다.');
+  return { ...next, turn: gameTurn };
 }
 
 export function rebalanceShares(profileId: GameState['profileId']): Record<ProductId, number> {
-  const raw = Object.fromEntries(products.map((product) => [
-    product.id,
-    canBuyForProfile(profileId, product.id).ok ? balanceConfig.rebalanceAllocation[product.id] : 0
-  ])) as Record<ProductId, number>;
-  const weightSum = products.reduce((sum, product) => sum + raw[product.id], 0);
-  if (weightSum <= 0) return raw;
-  return Object.fromEntries(products.map((product) => [product.id, raw[product.id] / weightSum])) as Record<ProductId, number>;
+  const raw = Object.fromEntries(products.map(p => [p.id, canBuyForProfile(profileId, p.id).ok ? balanceConfig.rebalanceAllocation[p.id] : 0])) as Record<ProductId, number>;
+  const sum = Object.values(raw).reduce((s, n) => s + n, 0);
+  return Object.fromEntries(products.map(p => [p.id, sum > 0 ? raw[p.id] / sum : 0])) as Record<ProductId, number>;
 }
-
 export function rebalanceTargetRisk(profileId: GameState['profileId']): number {
   const shares = rebalanceShares(profileId);
-  return products.reduce((sum, product) => sum + shares[product.id] * effectiveRiskRatio(product.id), 0);
+  return products.reduce((s, p) => s + shares[p.id] * effectiveRiskRatio(p.id), 0);
 }
-
 export function rebalancePortfolio(state: GameState): ActionResult {
+  if (state.pendingOrders.length || state.rebalancePlan) return { ok: false, message: '접수한 주문 정산 후 리밸런싱할 수 있습니다. 기존 주문은 보존됩니다.', state };
   const total = portfolioValue(state);
   if (total <= 0) return { ok: false, message: '리밸런싱할 자산이 없습니다.', state };
   const shares = rebalanceShares(state.profileId);
-  const weightSum = products.reduce((sum, product) => sum + shares[product.id], 0);
-  if (weightSum <= 0) return { ok: false, message: '성향에 맞는 리밸런싱 대상 상품이 없습니다.', state };
-  const skipped = products.filter((product) => balanceConfig.rebalanceAllocation[product.id] > 0 && shares[product.id] <= 0);
-  const holdings = products.map((product) => {
-    const share = shares[product.id];
-    return {
-      productId: product.id,
-      amount: total * share,
-      principal: total * share,
-      depositTurnsHeld: product.id === 'deposit' ? 0 : holdingFor(state, product.id).depositTurnsHeld
-    };
-  });
-  const rebalanced = { ...state, irpCash: 0, holdings, pendingOrders: [], rebalanceCount: state.rebalanceCount + 1, understandingPoints: state.understandingPoints + 3 };
-  const skipNote = skipped.length
-    ? ` ${skipped.map((item) => item.shortName).join('·')}은 성향보다 등급이 높아 제외했습니다.`
-    : '';
-  return { ok: true, message: `목표비중으로 리밸런싱했습니다. 위험자산 비중 ${(riskAssetRatio(rebalanced) * 100).toFixed(1)}%.${skipNote}`, state: rebalanced };
+  let next: GameState = { ...state, rebalancePlan: shares };
+  for (const product of products) {
+    const surplus = holdingFor(next, product.id).amount - total * shares[product.id];
+    if (surplus >= 100000) next = sellProduct(next, product.id, surplus, true).state;
+  }
+  next = fundRebalance(next);
+  return { ok: true, message: '리밸런싱 차액 주문 접수 · 매도 대금 결제 후 목표비중 매수. 예금 약정과 기존 잔고는 필요한 만큼만 변경됩니다.',
+    state: { ...next, rebalanceCount: next.rebalanceCount + 1, understandingPoints: next.understandingPoints + 3 } };
 }

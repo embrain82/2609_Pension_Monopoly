@@ -1,14 +1,110 @@
 [
-  {"id":"medical","kind":"cost","title":"예상치 못한 의료비","body":"치료비가 필요합니다. 이 사건은 교육용 중도인출 가능 사유로 처리됩니다.","cost":3500000,"eligibleWithdrawal":true,"learningCardId":"irp-withdrawal"},
-  {"id":"moving","kind":"cost","title":"갑작스러운 이사","body":"이사비가 생겼지만 이 게임에서는 중도인출 가능 사유가 아닙니다.","cost":2500000,"eligibleWithdrawal":false,"learningCardId":"emergency-cash"},
-  {"id":"career","kind":"cost","title":"이직 준비 기간","body":"소득 공백을 생활자금으로 버텨야 합니다.","cost":4200000,"eligibleWithdrawal":false,"learningCardId":"emergency-cash"},
-  {"id":"housing","kind":"cost","title":"주거 보증금 부담","body":"법정 요건 충족을 가정해 제한적 중도인출을 신청할 수 있습니다.","cost":5000000,"eligibleWithdrawal":true,"learningCardId":"irp-withdrawal"},
-  {"id":"family","kind":"cost","title":"가족 돌봄 비용","body":"별도 생활자금이 있으면 장기계좌를 지킬 수 있습니다.","cost":3000000,"eligibleWithdrawal":false,"learningCardId":"emergency-cash"},
-  {"id":"education","kind":"cost","title":"직무 교육 기회","body":"생활자금에서 교육비를 사용하고 다음 급여 여력을 높입니다.","cost":1800000,"eligibleWithdrawal":false,"learningCardId":"liquidity"},
-  {"id":"repair","kind":"cost","title":"집수리 비용","body":"계획 밖 지출입니다. IRP는 생활비 통장이 아닙니다.","cost":2200000,"eligibleWithdrawal":false,"learningCardId":"irp-withdrawal"},
-  {"id":"bonus","kind":"bonus","title":"성과 보너스","body":"생활자금에 여유가 생겼습니다. 납입과 현금 보유를 함께 검토하세요.","cost":-2500000,"eligibleWithdrawal":false,"learningCardId":"contribution-limit"},
-  {"id":"severance","kind":"transfer","title":"이직 · 퇴직금 정산","body":"직장을 옮기며 퇴직급여가 나옵니다. IRP로 옮기면 세금을 미루고, 지금 받으면 세금을 뗀 뒤 생활자금이 됩니다.","cost":-6000000,"eligibleWithdrawal":false,"learningCardId":"pension-tax"},
-  {"id":"yearend-bonus","kind":"bonus","title":"연말 성과급","body":"목돈이 들어왔습니다. 공제 한도가 남았다면 납입이 세액공제로 돌아옵니다.","cost":-3000000,"eligibleWithdrawal":false,"learningCardId":"tax-credit"},
-  {"id":"tuition","kind":"cost","title":"자녀 학자금","body":"학기마다 오는 큰 지출입니다. 중도인출 사유가 아니므로 생활자금이나 예금으로 해결합니다.","cost":3800000,"eligibleWithdrawal":false,"learningCardId":"emergency-cash"},
-  {"id":"parents","kind":"cost","title":"부모 부양비","body":"가족을 돌보는 데 드는 비용입니다. 장기계좌를 깨기보다 비상자금을 먼저 씁니다.","cost":2800000,"eligibleWithdrawal":false,"learningCardId":"liquidity"}
+  {
+    "id": "medical",
+    "kind": "cost",
+    "title": "예상치 못한 의료비",
+    "body": "일반 개인형 IRP 가입자 본인의 6개월 이상 요양이 필요한 의료비로 법정 중도인출 요건 충족을 가정합니다. 세법상 부득이한 인출 감면은 별도 요건이므로 이 사례에서 자동 적용하지 않습니다.",
+    "cost": 3500000,
+    "eligibleWithdrawal": true,
+    "learningCardId": "irp-withdrawal"
+  },
+  {
+    "id": "moving",
+    "kind": "cost",
+    "title": "갑작스러운 이사",
+    "body": "이사비가 생겼지만 이 게임에서는 중도인출 가능 사유가 아닙니다.",
+    "cost": 2500000,
+    "eligibleWithdrawal": false,
+    "learningCardId": "emergency-cash"
+  },
+  {
+    "id": "career",
+    "kind": "cost",
+    "title": "이직 준비 기간",
+    "body": "소득 공백을 생활자금으로 버텨야 합니다.",
+    "cost": 4200000,
+    "eligibleWithdrawal": false,
+    "learningCardId": "emergency-cash"
+  },
+  {
+    "id": "housing",
+    "kind": "cost",
+    "title": "주거 보증금 부담",
+    "body": "무주택 가입자가 주거 목적의 임차보증금을 부담하고 증빙을 갖춘 경우를 가정합니다. 단순 이사비와는 구분합니다.",
+    "cost": 5000000,
+    "eligibleWithdrawal": true,
+    "learningCardId": "irp-withdrawal"
+  },
+  {
+    "id": "family",
+    "kind": "cost",
+    "title": "가족 돌봄 비용",
+    "body": "별도 생활자금이 있으면 장기계좌를 지킬 수 있습니다.",
+    "cost": 3000000,
+    "eligibleWithdrawal": false,
+    "learningCardId": "emergency-cash"
+  },
+  {
+    "id": "education",
+    "kind": "cost",
+    "title": "직무 교육 기회",
+    "body": "생활자금에서 교육비를 사용하고 다음 급여 여력을 높입니다.",
+    "cost": 1800000,
+    "eligibleWithdrawal": false,
+    "learningCardId": "liquidity"
+  },
+  {
+    "id": "repair",
+    "kind": "cost",
+    "title": "집수리 비용",
+    "body": "계획 밖 지출입니다. IRP는 생활비 통장이 아닙니다.",
+    "cost": 2200000,
+    "eligibleWithdrawal": false,
+    "learningCardId": "irp-withdrawal"
+  },
+  {
+    "id": "bonus",
+    "kind": "bonus",
+    "title": "성과 보너스",
+    "body": "생활자금에 여유가 생겼습니다. 납입과 현금 보유를 함께 검토하세요.",
+    "cost": -2500000,
+    "eligibleWithdrawal": false,
+    "learningCardId": "contribution-limit"
+  },
+  {
+    "id": "severance",
+    "kind": "transfer",
+    "title": "이직 · 퇴직금 정산",
+    "body": "퇴직급여 600만원과 퇴직소득세 6만원이 적힌 가상 원천징수영수증입니다. IRP 이전은 과세 이연, 일시 수령은 영수증 세액을 차감합니다. 1%는 일반 퇴직소득세율이 아닙니다.",
+    "cost": -6000000,
+    "eligibleWithdrawal": false,
+    "learningCardId": "pension-tax"
+  },
+  {
+    "id": "yearend-bonus",
+    "kind": "bonus",
+    "title": "연말 성과급",
+    "body": "목돈이 들어왔습니다. 공제 한도가 남았다면 납입이 세액공제로 돌아옵니다.",
+    "cost": -3000000,
+    "eligibleWithdrawal": false,
+    "learningCardId": "tax-credit"
+  },
+  {
+    "id": "tuition",
+    "kind": "cost",
+    "title": "자녀 학자금",
+    "body": "학기마다 오는 큰 지출입니다. 중도인출 사유가 아니므로 IRP 밖 생활자금으로 지급하고 부족액은 미지급 생활비로 기록합니다.",
+    "cost": 3800000,
+    "eligibleWithdrawal": false,
+    "learningCardId": "emergency-cash"
+  },
+  {
+    "id": "parents",
+    "kind": "cost",
+    "title": "부모 부양비",
+    "body": "가족을 돌보는 데 드는 비용입니다. 장기계좌를 깨기보다 비상자금을 먼저 씁니다.",
+    "cost": 2800000,
+    "eligibleWithdrawal": false,
+    "learningCardId": "liquidity"
+  }
 ]

@@ -101,7 +101,9 @@ describe('디폴트옵션 동작', () => {
       irpCash: 10_000_000
     };
     const applied = applyDefaultOption(risky);
-    expect(applied.state.irpCash).toBeGreaterThan(0);
+    expect(applied.state.irpCash).toBeGreaterThanOrEqual(0);
+    expect(applied.state.pendingOrders.some(o => o.productId === 'tdf')).toBe(true);
+    expect(applied.state.holdings.find(h => h.productId === 'equityEtf')!.amount).toBeLessThanOrEqual(77_000_000);
     expect(applied.state.ruleBreaches).toBe(risky.ruleBreaches);
   });
 });

@@ -134,8 +134,8 @@ describe('수령 방식 모달(payout-view)', () => {
     expect(count(html, 'data-action="choose-payout"')).toBe(2);
     expect(html).toContain('연금(20년)');
     expect(html).toContain('일시금');
-    expect(html).toContain('5.5%');
-    expect(html).toContain('16.5%');
+    expect(html).toContain('미공제 원금');
+    expect(html).toContain('이연세액');
     expect(html).toContain('목표 판정 기준');
     expect(html).not.toContain('payout-card annuity current');
     const chosen = renderPayoutModal({ ...state, payoutChoice: 'lumpSum' }, { characters: false, current: 'lumpSum' });

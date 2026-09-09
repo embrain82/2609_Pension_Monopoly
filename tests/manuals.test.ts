@@ -23,7 +23,7 @@ describe('배포용 매뉴얼', () => {
     expect(user).toContain('정산 요약');
     expect(user).toContain('C22');
     expect(user).toContain('3별의 성향 정렬');
-    expect(user).toContain('즉시 매도해 지급');
+    expect(user).toContain('미지급 생활비');
     expect(user).toContain('C19');
     expect(user).toContain('C20');
     expect(user).toContain('도착 칸이');
@@ -184,7 +184,7 @@ describe('배포용 매뉴얼', () => {
     expect(user).toContain('원리금보장형');
     expect(user).toContain('사전지정운용');
     expect(user).toContain('선택지 3개');
-    expect(user).toContain('예금 중도해지로 해결');
+    expect(user).toContain('IRP 예금 현금화 후 중도인출');
     expect(user).toContain('IRP로 이전');
     expect(user).toContain('지금 받기(일시 수령)');
     expect(user).toContain('다른 선택이었다면');
@@ -199,7 +199,7 @@ describe('배포용 매뉴얼', () => {
     expect(user).toContain('일시금');
     expect(user).toContain('5.5%');
     expect(user).toContain('16.5%');
-    expect(user).toContain('0.8836');
+    expect(user).toContain('계좌 재원별로 달라집니다');
     expect(user).toContain('수령 방식 바꾸기');
     expect(user).toContain('마무리로 · 퀴즈와 수령 방식');
     expect(user).toContain('잠긴 별 이유');

@@ -29,7 +29,7 @@ export function renderDefaultOptionCards(view: DefaultOptionViewOptions): string
   const picked = view.current ?? suggested;
   return `<div class="default-option-grid" role="radiogroup" aria-label="디폴트옵션">${defaultOptions.map((option) => {
     const ok = allowed.has(option.id);
-    const grade = Math.max(...option.products.map((productId) => products.find((product) => product.id === productId)?.riskGrade ?? 1));
+    const grade = Math.min(...option.products.map((productId) => products.find((product) => product.id === productId)?.riskGrade ?? 1));
     const tags = [option.id === suggested ? '<span class="tag suggest">성향 추천</span>' : '', ok ? '' : `<span class="tag locked">성향 밖 · ${grade}등급</span>`].join('');
     return `<button type="button" role="radio" aria-checked="${picked === option.id}" class="default-option-card ${picked === option.id ? 'picked' : ''} ${ok ? '' : 'locked'}" data-action="pick-default-option" data-option="${option.id}" ${ok ? '' : 'disabled'}>
         <span class="default-option-name">${option.name}${tags}</span>
@@ -51,7 +51,7 @@ export function renderDefaultOptionModal(view: DefaultOptionViewOptions): string
   return `<div class="modal-icon default">⚙</div>
     <p class="eyebrow">${view.mode === 'start' ? '판 시작 · 사전지정운용' : '설정 · 사전지정운용'}</p>
     <h2>디폴트옵션을 정해 두세요</h2>
-    <p class="modal-lead">운용지시 없이 「이번엔 그대로」를 고르면, IRP 대기자금이 여기서 정한 상품으로 <b>자동 균등 매수</b>됩니다. 위험한도를 넘는 만큼은 사지 않고 남깁니다.</p>
+    <p class="modal-lead">현재 게임은 지정옵션을 직접 실행하는 <b>옵트인 체험</b>입니다. 운용 메뉴에서 실행을 선택하면 IRP 대기자금이 정한 상품으로 <b>자동 균등 매수</b>됩니다. 실제 디폴트옵션 자동 적용의 사전지정·통지·대기 시간은 이 체험과 다릅니다. 위험한도를 넘는 만큼은 사지 않고 남깁니다.</p>
     ${renderDefaultOptionCards(view)}
     ${renderSpeech('coach', '<p>실제 제도에서도 가입자가 사전지정운용방법을 정해 두고, 일정 기간 운용지시가 없으면 그 방법으로 운용됩니다. 납입만 하고 매수를 잊는 실수를 제도가 막아 주지만, 어떤 옵션이냐는 여전히 내 판단입니다.</p>', { characters: view.characters, title: '왜 있나요' })}
     <div class="button-stack">

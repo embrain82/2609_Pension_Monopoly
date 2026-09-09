@@ -1,7 +1,7 @@
 import { balanceConfig, marketShocks, policyRules, products } from '../data/content';
 import type { GameState, MarketConfig, MarketShock, MarketStep, ProductId, Regime } from '../types';
 import { hashSeed } from './random-engine';
-import { portfolioValue } from './portfolio-engine';
+import { depositLots, portfolioValue } from './portfolio-engine';
 import { riskAssetRatio } from './policy-engine';
 import {
   applyMacroMove, createRng, initialMacro, levelFromIndex, levelFromPct, nextRegime, pickWeighted, regimeMove, triangular,
@@ -196,18 +196,30 @@ export function marketPathOf(state: Pick<GameState, 'seed' | 'marketPath'>): Mar
 }
 
 export function applyMarketStep(state: GameState, market: MarketStep): GameState {
+  const prices = { ...state.prices };
+  for (const product of products) prices[product.id] *= (1 + market.returns[product.id]) * (1 - product.feeRate);
   const holdings = state.holdings.map((holding) => {
     const product = products.find((item) => item.id === holding.productId);
     if (!product) return holding;
+    if (holding.productId === 'deposit') {
+      const lots = depositLots(state, holding).map(lot => ({ ...lot,
+        amount: lot.amount + (state.turn <= lot.maturityTurn ? lot.principal * lot.ratePerTurn : 0) }));
+      return { ...holding, lots, amount: lots.reduce((sum, lot) => sum + lot.amount, 0), depositTurnsHeld: holding.depositTurnsHeld + 1 };
+    }
     const gross = holding.amount * (1 + market.returns[holding.productId]);
     const fee = Math.max(0, gross * product.feeRate);
     return {
       ...holding,
       amount: Math.max(0, gross - fee),
-      depositTurnsHeld: holding.productId === 'deposit' ? holding.depositTurnsHeld + 1 : holding.depositTurnsHeld
+      units: Math.max(0, gross - fee) / prices[holding.productId],
+      depositTurnsHeld: holding.depositTurnsHeld
     };
   });
-  let next = { ...state, holdings, lastMarket: market };
+  const pendingOrders = state.pendingOrders.map(order => {
+    const exposed = (order.side === 'sell' && order.stage === 'received') || (order.side === 'buy' && order.stage === 'priced');
+    return exposed ? { ...order, amount: order.amount * (1 + market.returns[order.productId]) * (1 - products.find(p => p.id === order.productId)!.feeRate) } : { ...order };
+  });
+  let next = { ...state, prices, pendingOrders, holdings, lastMarket: market };
   const value = portfolioValue(next);
   const maxIrpValue = Math.max(state.maxIrpValue, value);
   const drawdown = maxIrpValue <= 0 ? 0 : Math.max(0, (maxIrpValue - value) / maxIrpValue);

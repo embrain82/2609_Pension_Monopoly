@@ -76,7 +76,7 @@ export function renderMarketCard(state: GameState, pending: boolean): string {
             ${renderMarketAlert(state.lastMarket)}
             ${marketBars(state.lastMarket)}
             ${renderProductReturns(state)}
-            <p class="market-note applied-note">이 수익률은 턴 시작에 이미 보유분에 반영됐습니다 · 지금 행동은 다음 턴에 걸립니다</p>
+            <p class="market-note applied-note">투자상품 수익률은 턴 시작에 보유분에 반영됩니다. 보유 예금은 시장 예시 수익률 대신 가입 건별 고정 약정을 따릅니다.</p>
           </article>`;
 }
 

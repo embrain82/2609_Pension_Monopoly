@@ -1,14 +1,14 @@
-import { balanceConfig, lifeEvents, policyRules, products } from '../data/content';
+import { addAccountFlow, grossForNet, withdrawalTax, TRANSFER_TAX_NOTICE } from './account-engine';
+import { lifeEvents, policyRules } from '../data/content';
 import type { ActionResult, GameState, LifeChoice, LifeChoiceOption, LifeEvent, LifeResolution } from '../types';
-import { liquidateForLivingCost, portfolioValue } from './portfolio-engine';
+import { sellProduct, portfolioValue } from './portfolio-engine';
 import { contributionCredit } from './policy-engine';
 
 const won = (value: number) => `${Math.round(value).toLocaleString('ko-KR')}원`;
-const pct = (rate: number) => `${Math.round(rate * 1000) / 10}%`;
 
 export const LIFE_CHOICE_LABELS: Record<LifeChoice, string> = {
   cash: '생활자금으로 해결',
-  deposit: '예금 중도해지로 해결',
+  deposit: 'IRP 예금 현금화 후 중도인출',
   withdraw: 'IRP 중도인출',
   'contribute-all': '전액 IRP 납입',
   'contribute-half': '절반 납입 · 절반 생활자금',
@@ -22,23 +22,36 @@ export const CASH_CHOICE_LABELS: Record<LifeEvent['kind'], string> = {
   transfer: '지금 받기(일시 수령)'
 };
 
-function depositHolding(state: GameState) {
-  return state.holdings.find((holding) => holding.productId === 'deposit');
-}
-
-function depositEarly(state: GameState): boolean {
-  const holding = depositHolding(state);
-  return Boolean(holding) && holding!.depositTurnsHeld < balanceConfig.depositMaturityTurns;
-}
-
-/** 예금으로 비용을 낼 때 깨야 하는 총액과 불이익. 잔고가 모자라면 잔고 전부 */
-function depositBreakPlan(state: GameState, need: number): { gross: number; penalty: number; covered: number } {
-  const holding = depositHolding(state);
-  if (!holding || holding.amount < 100_000) return { gross: 0, penalty: 0, covered: 0 };
-  const netRate = depositEarly(state) ? 1 - policyRules.earlyDepositPenaltyRate : 1;
-  const gross = Math.min(holding.amount, Math.ceil(need / netRate));
-  const penalty = depositEarly(state) ? gross * policyRules.earlyDepositPenaltyRate : 0;
-  return { gross, penalty, covered: Math.min(need, gross - penalty) };
+/** 원천별 세금과 공통 매도 규칙으로 인출을 미리 계산한다. 미결 펀드는 생활비로 쓸 수 없다. */
+function withdrawalPlan(state: GameState, event: LifeEvent, depositOnly = false): ActionResult {
+  if (!event.eligibleWithdrawal) return { ok: false, message: '법정 중도인출 사유가 아닙니다.', state };
+  if (state.rebalancePlan || state.pendingOrders.length) return { ok: false, message: '접수한 주문 정산 전에는 인출할 수 없습니다. 생활비 분할 지급을 선택할 수 있습니다.', state };
+  if (depositOnly && !state.holdings.some(h => h.productId === 'deposit' && h.amount > 0)) return { ok: false, message: '현금화할 예금이 없습니다.', state };
+  let next = state;
+  const amount = Math.abs(event.cost);
+  const covers = (candidate: GameState) => withdrawalTax(portfolioValue(candidate), candidate.accountBasis, candidate.irpCash).net >= amount;
+  for (const id of (depositOnly ? ['deposit'] : ['deposit', 'equityEtf']) as Array<'deposit' | 'equityEtf'>) {
+    if (covers(next)) break;
+    const holding = next.holdings.find(h => h.productId === id);
+    if (!holding || holding.amount <= 0) continue;
+    const full = sellProduct(next, id, holding.amount, true);
+    if (!full.ok) continue;
+    if (!covers(full.state)) { next = full.state; continue; }
+    let low = 0, high = holding.amount;
+    for (let i = 0; i < 48; i++) {
+      const mid = (low + high) / 2;
+      const candidate = sellProduct(next, id, mid, true);
+      if (candidate.ok && covers(candidate.state)) high = mid;
+      else low = mid;
+    }
+    next = sellProduct(next, id, high, true).state;
+  }
+  const gross = grossForNet(portfolioValue(next), next.accountBasis, amount);
+  if (!Number.isFinite(gross) || next.irpCash + 0.001 < gross) return { ok: false, message: '결제된 IRP 자금이 부족합니다. 펀드·대기주문을 즉시 인출할 수 없습니다.', state };
+  const tax = withdrawalTax(portfolioValue(next), next.accountBasis, gross);
+  next = { ...next, irpCash: Math.max(0, next.irpCash - gross), accountBasis: tax.nextBasis,
+    cashFlows: [...next.cashFlows, { turn: state.turn, kind: 'withdrawal', amount: -gross }] };
+  return { ok: true, message: `허용 사유를 확인한 인출 · 생활비 ${won(amount)} + 재원별 세금 ${won(tax.tax)}. 계좌 내 매도와 계좌 밖 인출을 별도 처리했습니다.`, state: next };
 }
 
 function contributionRoom(state: GameState): number {
@@ -50,32 +63,19 @@ export function lifeChoicesFor(state: GameState, event: LifeEvent): LifeChoiceOp
   const amount = Math.abs(event.cost);
   const monthly = (value: number) => won(value / policyRules.receivingMonths);
   if (event.kind === 'cost') {
-    const cashAfter = state.cash - amount;
-    const cashLine = state.cash >= amount
-      ? `생활자금 −${won(amount)} → 남는 생활자금 ${won(cashAfter)}`
-      : `생활자금 ${won(state.cash)} 전부 + 부족 ${won(amount - state.cash)}는 대기자금·보유 상품에서 자동 충당`;
-    const cashLong = cashAfter < balanceConfig.safeCashThreshold
-      ? `생활자금이 안정 기준선 ${won(balanceConfig.safeCashThreshold)} 아래로 내려갑니다. IRP는 그대로.`
-      : 'IRP는 그대로. 월 연금 변화 없음.';
-    const plan = depositBreakPlan(state, amount);
-    const depositOk = plan.gross >= 100_000;
-    const depositLine = depositOk
-      ? `예금 ${won(plan.gross)} 해지${plan.penalty > 0 ? ` · 불이익 ${won(plan.penalty)}(${pct(policyRules.earlyDepositPenaltyRate)})` : ' · 만기 뒤라 불이익 없음'}${plan.covered < amount ? ` · 나머지 ${won(amount - plan.covered)}는 생활자금` : ''}`
-      : '해지할 예금이 없습니다.';
-    const withdrawal = amount * (1 + policyRules.allowedWithdrawalFeeRate);
+    const shortage = Math.max(0, amount - state.cash);
+    const cashLine = shortage > 0
+      ? `생활자금 ${won(state.cash)} 사용 · 부족 ${won(shortage)}는 미지급 생활비로 기록, 다음 급여에서 우선 지급`
+      : `생활자금 −${won(amount)}`;
+    const withdraw = withdrawalPlan(state, event);
+    const deposit = withdrawalPlan(state, event, true);
     return [
-      { id: 'cash', label: LIFE_CHOICE_LABELS.cash, enabled: true, immediate: cashLine, longTerm: cashLong },
-      {
-        id: 'deposit', label: LIFE_CHOICE_LABELS.deposit, enabled: depositOk, reason: depositOk ? undefined : '예금 보유가 10만원 미만입니다.',
-        immediate: depositLine,
-        longTerm: `IRP −${won(Math.max(plan.gross, 0))} → 월 연금 −${monthly(plan.gross)}. 예금 만기가 다시 시작됩니다.`
-      },
-      {
-        id: 'withdraw', label: LIFE_CHOICE_LABELS.withdraw, enabled: event.eligibleWithdrawal,
-        reason: event.eligibleWithdrawal ? undefined : '이 사건은 법정 중도인출 사유(교육용 2종)가 아닙니다.',
-        immediate: `IRP −${won(withdrawal)} (비용 + 단순화 수수료 ${pct(policyRules.allowedWithdrawalFeeRate)})`,
-        longTerm: `월 연금 −${monthly(withdrawal)}. 생활자금은 그대로.`
-      }
+      { id: 'cash', label: shortage ? '생활비 분할 지급' : LIFE_CHOICE_LABELS.cash, enabled: true,
+        immediate: cashLine, longTerm: 'IRP는 그대로. 미지급 생활비가 있으면 안정성 평가에 반영됩니다.' },
+      { id: 'deposit', label: 'IRP 예금 현금화 후 중도인출', enabled: deposit.ok, reason: deposit.ok ? undefined : deposit.message,
+        immediate: deposit.message, longTerm: '허용 사유·결제 자금·재원별 세금 확인 후 인출. 중도해지는 발생 이자의 일부만 조정합니다.' },
+      { id: 'withdraw', label: LIFE_CHOICE_LABELS.withdraw, enabled: withdraw.ok, reason: withdraw.ok ? undefined : withdraw.message,
+        immediate: withdraw.message, longTerm: '미공제 원금 → 퇴직급여 → 공제 원금·수익 순서. 의료비 세법상 특별 감면은 별도 요건이므로 이 사례에는 가정하지 않습니다.' }
     ];
   }
   if (event.kind === 'bonus') {
@@ -98,7 +98,7 @@ export function lifeChoicesFor(state: GameState, event: LifeEvent): LifeChoiceOp
       { id: 'cash', label: CASH_CHOICE_LABELS.bonus, enabled: true, immediate: `생활자금 +${won(amount)}`, longTerm: 'IRP·월 연금 변화 없음. 다음 턴에 납입할 수 있습니다.' }
     ];
   }
-  const tax = amount * policyRules.lumpSumTaxRate;
+  const tax = amount / TRANSFER_TAX_NOTICE.gross * TRANSFER_TAX_NOTICE.tax;
   return [
     {
       id: 'transfer-irp', label: LIFE_CHOICE_LABELS['transfer-irp'], enabled: true,
@@ -107,7 +107,7 @@ export function lifeChoicesFor(state: GameState, event: LifeEvent): LifeChoiceOp
     },
     {
       id: 'cash', label: CASH_CHOICE_LABELS.transfer, enabled: true,
-      immediate: `교육용 기타소득세 ${pct(policyRules.lumpSumTaxRate)} ${won(tax)} 차감 → 생활자금 +${won(amount - tax)}`,
+      immediate: `가상 원천징수영수증의 퇴직소득세 ${won(tax)} 차감 → 생활자금 +${won(amount - tax)}`,
       longTerm: '연금 재원이 늘지 않습니다. 생활자금이 넉넉해지지만 세금은 돌아오지 않습니다.'
     }
   ];
@@ -133,17 +133,6 @@ function resolutionBase(event: LifeEvent, choice: LifeChoice, options: LifeChoic
 
 function unlockCard(state: GameState, cardId: string): GameState {
   return state.unlockedCards.includes(cardId) ? state : { ...state, unlockedCards: [...state.unlockedCards, cardId] };
-}
-
-function reduceIrpProportionally(state: GameState, amount: number): GameState {
-  const total = portfolioValue(state);
-  if (total <= 0) return state;
-  const requested = Math.min(total, amount);
-  const fromCash = Math.min(state.irpCash, requested);
-  const remaining = requested - fromCash;
-  const holdingsTotal = state.holdings.reduce((sum, holding) => sum + holding.amount, 0);
-  const factor = holdingsTotal <= 0 ? 1 : Math.max(0, (holdingsTotal - remaining) / holdingsTotal);
-  return { ...state, irpCash: state.irpCash - fromCash, holdings: state.holdings.map((holding) => ({ ...holding, amount: holding.amount * factor })) };
 }
 
 function finish(state: GameState, event: LifeEvent, resolution: LifeResolution, extraCard?: string): ActionResult {
@@ -173,59 +162,20 @@ export function resolveLifeChoice(state: GameState, choice: LifeChoice): ActionR
   const base = resolutionBase(event, choice, options);
 
   if (event.kind === 'cost') {
-    if (choice === 'withdraw') {
-      const withdrawal = amount * (1 + policyRules.allowedWithdrawalFeeRate);
-      const next = reduceIrpProportionally(state, withdrawal);
-      const message = `허용 사유를 가정해 IRP에서 비용과 단순화 수수료 ${won(amount * policyRules.allowedWithdrawalFeeRate)}를 인출했습니다.`;
-      return finish(next, event, { ...base, cashDelta: 0, irpDelta: portfolioValue(next) - irpBefore, penalty: 0, fee: amount * policyRules.allowedWithdrawalFeeRate, sales: [], shortage: false, message });
+    if (choice === 'withdraw' || choice === 'deposit') {
+      const out = withdrawalPlan(state, event, choice === 'deposit');
+      if (!out.ok) return out;
+      const flow = out.state.cashFlows.at(-1)!;
+      const penalty = Math.max(0, irpBefore - portfolioValue(out.state) + flow.amount);
+      return finish(out.state, event, { ...base, cashDelta: 0, irpDelta: portfolioValue(out.state) - irpBefore,
+        penalty, fee: -flow.amount - amount, sales: [], shortage: false, message: out.message });
     }
-    if (choice === 'deposit') {
-      const plan = depositBreakPlan(state, amount);
-      const holdings = state.holdings.map((holding) => holding.productId === 'deposit' ? { ...holding, amount: holding.amount - plan.gross } : holding);
-      const net = plan.gross - plan.penalty;
-      const leftover = Math.max(0, amount - net);
-      // ceil로 잡은 해지액이 비용을 1원 미만 넘칠 수 있어 원 단위 아래는 버린다
-      const surplus = Math.max(0, Math.floor(net - amount));
-      const fromCash = Math.min(state.cash, leftover);
-      let next: GameState = { ...state, holdings, cash: state.cash + surplus - fromCash };
-      let remaining = leftover - fromCash;
-      let sales: LifeResolution['sales'] = [{ productId: 'deposit', amount: plan.gross, penalty: plan.penalty }];
-      if (remaining > 0) {
-        const covered = liquidateForLivingCost(next, remaining);
-        next = covered.state;
-        remaining = covered.remaining;
-        sales = [...sales, ...covered.sales];
-      }
-      const shortage = remaining > 0;
-      next = { ...next, cashShortages: next.cashShortages + (shortage ? 1 : 0) };
-      const message = `${plan.penalty > 0 ? `예금 ${won(plan.gross)}을 만기 전에 해지해 불이익 ${won(plan.penalty)}를 물고` : `만기 지난 예금 ${won(plan.gross)}을 해지해`} 비용을 냈습니다.${fromCash > 0 ? ` 나머지 ${won(fromCash)}는 생활자금.` : ''}${shortage ? ' 그래도 모자라 부족 횟수가 올랐습니다.' : ''}`;
-      return finish(next, event, { ...base, cashDelta: next.cash - state.cash, irpDelta: portfolioValue(next) - irpBefore, penalty: plan.penalty, fee: 0, sales, shortage, message }, 'deposit-rate');
-    }
-    // cash: 예전 규칙 그대로 — 생활자금 → 대기자금 → 보유 상품 자동 충당
-    const fromCash = Math.min(state.cash, amount);
-    let remaining = amount - fromCash;
-    let next: GameState = { ...state, cash: state.cash - fromCash };
-    let sales: LifeResolution['sales'] = [];
-    let message = '';
-    const usedIrpOrHoldings = remaining > 0;
-    if (remaining > 0) {
-      const covered = liquidateForLivingCost(next, remaining);
-      next = covered.state;
-      remaining = covered.remaining;
-      sales = covered.sales;
-      if (covered.sales.length) {
-        const sold = covered.sales.map((sale) => `${products.find((item) => item.id === sale.productId)?.shortName ?? sale.productId} ${won(sale.amount)}`).join(', ');
-        message = remaining > 0
-          ? '보유 상품을 매도해도 생활자금이 부족해 비용과 안정성 점수에 영향이 생겼습니다.'
-          : `생활자금이 부족해 ${sold}을 매도해 비용을 지급했습니다.`;
-      } else if (covered.usedIrpCash > 0 && remaining <= 0) {
-        message = '생활자금이 부족해 IRP 대기자금으로 비용을 지급했습니다.';
-      }
-    }
-    if (!message) message = remaining > 0 ? '생활자금이 부족해 비용과 안정성 점수에 영향이 생겼습니다.' : '생활자금으로 해결해 IRP를 지켰습니다.';
-    const shortage = remaining > 0;
-    next = { ...next, cashShortages: next.cashShortages + (shortage ? 1 : 0), safeActionCount: next.safeActionCount + (!shortage && !usedIrpOrHoldings ? 1 : 0) };
-    return finish(next, event, { ...base, cashDelta: next.cash - state.cash, irpDelta: portfolioValue(next) - irpBefore, penalty: sales.reduce((sum, sale) => sum + sale.penalty, 0), fee: 0, sales, shortage, message });
+    const paid = Math.min(state.cash, amount);
+    const unpaid = amount - paid;
+    const next = { ...state, cash: state.cash - paid, livingDebt: state.livingDebt + unpaid,
+      cashShortages: state.cashShortages + (unpaid > 0 ? 1 : 0), safeActionCount: state.safeActionCount + (unpaid > 0 ? 0 : 1) };
+    return finish(next, event, { ...base, cashDelta: -paid, irpDelta: 0, penalty: 0, fee: 0, sales: [], shortage: unpaid > 0,
+      message: unpaid > 0 ? `생활비 ${won(paid)} 지급 · 미지급 ${won(unpaid)}는 다음 급여에서 우선 지급합니다. IRP는 인출하지 않았습니다.` : '생활자금으로 해결해 IRP를 지켰습니다.' });
   }
 
   if (event.kind === 'bonus') {
@@ -248,15 +198,15 @@ export function resolveLifeChoice(state: GameState, choice: LifeChoice): ActionR
       understandingPoints: state.understandingPoints + 1
     };
     const message = `보너스 ${won(accepted)}을 IRP에 납입했습니다${amount - accepted > 0 ? ` (나머지 ${won(amount - accepted)}는 생활자금)` : ''}. 세액공제 ${won(credit.benefit)}은 연말정산 칸을 지날 때 돌아옵니다.`;
-    return finish(next, event, { ...base, cashDelta: amount - accepted, irpDelta: accepted, penalty: 0, fee: 0, sales: [], shortage: false, message }, 'tax-credit');
+    return finish(addAccountFlow(next, accepted, 'contribution', credit.eligible), event, { ...base, cashDelta: amount - accepted, irpDelta: accepted, penalty: 0, fee: 0, sales: [], shortage: false, message }, 'tax-credit');
   }
 
   // transfer
   if (choice === 'transfer-irp') {
     const next: GameState = { ...state, irpCash: state.irpCash + amount, understandingPoints: state.understandingPoints + 1 };
-    return finish(next, event, { ...base, cashDelta: 0, irpDelta: amount, penalty: 0, fee: 0, sales: [], shortage: false, message: `퇴직급여 ${won(amount)}을 IRP 대기자금으로 옮겼습니다. 세금은 수령 때까지 미뤄집니다.` }, 'default-option');
+    return finish(addAccountFlow(next, amount, 'transfer'), event, { ...base, cashDelta: 0, irpDelta: amount, penalty: 0, fee: 0, sales: [], shortage: false, message: `퇴직급여 ${won(amount)}을 IRP 대기자금으로 옮겼습니다. 세금은 수령 때까지 미뤄집니다.` }, 'default-option');
   }
-  const tax = amount * policyRules.lumpSumTaxRate;
+  const tax = amount / TRANSFER_TAX_NOTICE.gross * TRANSFER_TAX_NOTICE.tax;
   const next: GameState = { ...state, cash: state.cash + amount - tax };
   return finish(next, event, { ...base, cashDelta: amount - tax, irpDelta: 0, penalty: 0, fee: tax, sales: [], shortage: false, message: `퇴직급여를 지금 받아 교육용 세금 ${won(tax)}를 뗀 ${won(amount - tax)}이 생활자금이 됐습니다.` });
 }

@@ -140,14 +140,14 @@ describe('운용지시 칸 — 행동 2회', () => {
 });
 
 describe('상품 거리 — 스포트라이트', () => {
-  it('혼합형 거리에서 혼합형을 사면 주문 대기 없이 즉시 잔고에 들어가고 이해 +1', () => {
+  it('혼합형 거리도 일반 펀드 결제를 지키고 정보 보상만 추가한다', () => {
     const state = { ...landOn(seedWithoutEventAt(1, 'spot'), 8), irpCash: 1_000_000 };
     expect(state.spotlightProductId).toBe('balanced');
     const before = holding(state, 'balanced');
     const bought = performAction(state, { kind: 'buy', productId: 'balanced', amount: 1_000_000 });
     expect(bought.ok).toBe(true);
-    expect(bought.state.pendingOrders).toHaveLength(0);
-    expect(holding(bought.state, 'balanced')).toBeCloseTo(before + 1_000_000, 6);
+    expect(bought.state.pendingOrders).toHaveLength(1);
+    expect(holding(bought.state, 'balanced')).toBeCloseTo(before, 6);
     expect(bought.state.understandingPoints).toBe(state.understandingPoints + 1);
     expect(bought.message).toContain('이해 +1');
     expect(bought.state.spotlightProductId).toBeNull();
@@ -159,16 +159,14 @@ describe('상품 거리 — 스포트라이트', () => {
     expect(bought.state.pendingOrders).toHaveLength(1);
   });
 
-  it('예금 거리에서는 만기 전 예금 해지도 불이익이 없다', () => {
+  it('예금 거리에서도 동일한 중도해지 이자 조정이 적용된다', () => {
     const state = landOn(seedWithoutEventAt(1, 'depo'), 1);
-    expect(state.spotlightProductId).toBe('deposit');
-    const sold = performAction(state, { kind: 'sell', productId: 'deposit', amount: 1_000_000 });
-    expect(sold.ok).toBe(true);
-    expect(sold.state.irpCash).toBeCloseTo(1_000_000, 6);
-    expect(sold.message).toContain('불이익 없이');
-    const elsewhere = landOn(seedWithoutEventAt(1, 'depo2'), 2);
-    const penalized = performAction(elsewhere, { kind: 'sell', productId: 'deposit', amount: 1_000_000 });
-    expect(penalized.state.irpCash).toBeCloseTo(1_000_000 * (1 - policyRules.earlyDepositPenaltyRate), 6);
+    const normal = { ...state, spotlightProductId: null };
+    const spotlight = performAction(state, { kind: 'sell', productId: 'deposit', amount: 1_000_000 });
+    const elsewhere = performAction(normal, { kind: 'sell', productId: 'deposit', amount: 1_000_000 });
+    expect(spotlight.ok).toBe(true);
+    expect(spotlight.state.irpCash).toBeCloseTo(elsewhere.state.irpCash, 6);
+    expect(spotlight.state.irpCash).toBeLessThan(1_000_000);
   });
 });
 

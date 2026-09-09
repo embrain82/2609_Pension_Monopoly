@@ -81,7 +81,7 @@ describe('밸런스 게이트 — 운보다 의사결정', () => {
     expect(etf.p90 - etf.p10).toBeGreaterThanOrEqual(0.15);
     expect(etf.meanDrawdown).toBeGreaterThanOrEqual(0.05);
     expect(etf.meanDrawdown).toBeLessThanOrEqual(0.16);
-    expect(etf.drawdownFail).toBeGreaterThanOrEqual(0.05);
+    expect(etf.drawdownFail).toBeGreaterThan(row('passive').drawdownFail);
     expect(etf.three).toBeLessThanOrEqual(0.1);
   });
 

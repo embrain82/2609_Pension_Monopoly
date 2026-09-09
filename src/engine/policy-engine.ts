@@ -5,15 +5,13 @@ import { portfolioValue } from './portfolio-engine';
 export function effectiveRiskRatio(productId: ProductId): number {
   const product = products.find((item) => item.id === productId);
   if (!product) throw new Error(`알 수 없는 상품: ${productId}`);
-  return product.tdf_exception_eligible
-    ? Math.min(product.risk_asset_ratio, policyRules.tdfAdjustedRiskRatio)
-    : product.risk_asset_ratio;
+  return product.regulatoryRisk && !product.tdf_exception_eligible ? 1 : 0;
 }
 
 export function riskAssetValue(state: GameState): number {
   const holdingRisk = state.holdings.reduce((sum, holding) => sum + holding.amount * effectiveRiskRatio(holding.productId), 0);
   const pendingBuyRisk = state.pendingOrders
-    .filter((order) => order.side === 'buy')
+    .filter((order) => order.side === 'buy' || order.stage === 'received')
     .reduce((sum, order) => sum + order.amount * effectiveRiskRatio(order.productId), 0);
   return holdingRisk + pendingBuyRisk;
 }
@@ -53,12 +51,12 @@ export function canBuyForProfile(profileId: ProfileId, productId: ProductId): { 
   const profile = investorProfiles.find((item) => item.id === profileId);
   const product = products.find((item) => item.id === productId);
   if (!profile || !product) return { ok: false, reason: '성향 또는 상품을 찾을 수 없습니다.' };
-  if (product.riskGrade <= profile.maxRiskGrade) {
-    return { ok: true, reason: `${profile.name} 성향은 ${profile.maxRiskGrade}등급까지 매수할 수 있습니다.` };
+  if (product.riskGrade >= profile.minRiskGrade) {
+    return { ok: true, reason: `${profile.name} 성향은 ${profile.minRiskGrade}~6등급 범위에서 매수할 수 있습니다.` };
   }
   return {
     ok: false,
-    reason: `${profile.name} 성향은 ${profile.maxRiskGrade}등급까지 매수할 수 있습니다. ${product.shortName}(${product.riskGrade}등급)은 교육용 적합성 확인에서 제한됩니다.`
+    reason: `${profile.name} 성향은 ${profile.minRiskGrade}~6등급 범위에서 매수할 수 있습니다. ${product.shortName}(${product.riskGrade}등급)은 교육용 적합성 확인에서 제한됩니다.`
   };
 }
 
@@ -132,4 +130,14 @@ export function contributionCredit(currentContribution: number, amount: number):
 
 export function canWithdrawForEvent(event: LifeEvent): boolean {
   return event.eligibleWithdrawal;
+}
+
+/** 규제 한도와 별개인 가상 기초 주식 노출. 채권의 금리·신용 위험까지 요약하는 지표는 아니다. */
+export function equityExposureRatio(state: GameState): number {
+  const exposure = (id: ProductId) => products.find(p => p.id === id)!.equityExposure;
+  const held = state.holdings.reduce((sum, h) => sum + h.amount * exposure(h.productId), 0);
+  const pending = state.pendingOrders.filter(o => o.side === 'sell' ? o.stage === 'received' : o.stage === 'priced')
+    .reduce((sum, o) => sum + o.amount * exposure(o.productId), 0);
+  const total = portfolioValue(state);
+  return total > 0 ? (held + pending) / total : 0;
 }

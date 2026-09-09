@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { balanceConfig, boardTiles, lifeEvents, marketScenario, marketShocks, policyRules } from '../src/data/content';
 import { applyGoalToGame, autoplay, clampGoalMonthly, createGame, performAction, resolveActionAmount, resolveLifeEvent, startTurn } from '../src/engine/game-engine';
 import { applyMarketStep, generateMarketPath, rateShockReturn } from '../src/engine/market-engine';
-import { buyProduct, portfolioValue, rebalancePortfolio, rebalanceShares, sellProduct, settleOrders, switchProduct } from '../src/engine/portfolio-engine';
+import { buyProduct, portfolioValue, rebalancePortfolio, rebalanceShares, sellProduct, settleOrders, settleAllOrders, switchProduct } from '../src/engine/portfolio-engine';
 import { canBuyForProfile, canBuyRiskAsset, contributionCredit, decideBuyAgainstRiskLimit, effectiveRiskRatio, maxBuyWithinRiskLimit, riskAssetRatio } from '../src/engine/policy-engine';
 import { calculateScore, monthlyPension } from '../src/engine/scoring-engine';
 import { applyProfileToGame, profileFromScore } from '../src/engine/profile-engine';
@@ -197,7 +197,7 @@ describe('정책과 주문', () => {
   });
 
   it('TDF 예외 속성을 유효 위험비율에 반영한다', () => {
-    expect(effectiveRiskRatio('tdf')).toBe(policyRules.tdfAdjustedRiskRatio);
+    expect(effectiveRiskRatio('tdf')).toBe(0);
     expect(effectiveRiskRatio('tdf')).toBeLessThan(0.8);
   });
 
@@ -328,7 +328,7 @@ describe('정책과 주문', () => {
     expect(reserved.ok).toBe(true);
     expect(reserved.state.pendingOrders).toHaveLength(1);
 
-    const settled = settleOrders({ ...reserved.state, turn: reserved.state.turn + 1 });
+    const settled = settleOrders({ ...reserved.state, turn: reserved.state.turn + 2 });
     const etf = settled.holdings.find((holding) => holding.productId === 'equityEtf')?.amount ?? 0;
     expect(etf).toBeGreaterThan(30_000_000);
     expect(etf).toBeLessThan(80_000_000);
@@ -374,7 +374,8 @@ describe('정책과 주문', () => {
     expect(shares.deposit / shares.shortBond).toBeCloseTo(0.3 / 0.15, 10);
 
     const before = createGame('rebalance-stable', 'stable');
-    const result = rebalancePortfolio(before);
+    const submitted = rebalancePortfolio(before);
+    const result = { ...submitted, state: settleAllOrders(submitted.state) };
     expect(result.ok).toBe(true);
     expect(portfolioValue(result.state)).toBeCloseTo(portfolioValue(before), 2);
     expect(result.state.holdings.find((holding) => holding.productId === 'equityEtf')?.amount ?? 0).toBe(0);
@@ -383,12 +384,12 @@ describe('정책과 주문', () => {
     expect(result.state.holdings.find((holding) => holding.productId === 'deposit')?.amount ?? 0).toBeCloseTo(portfolioValue(before) * shares.deposit, 2);
   });
 
-  it('예금 중도해지 불이익을 반영한다', () => {
+  it('이자 발생 전 예금 해지는 원금을 보전한다', () => {
     const state = createGame('deposit');
     const sold = sellProduct(state, 'deposit', 8_000_000);
     expect(sold.ok).toBe(true);
-    expect(sold.state.irpCash).toBeLessThan(8_000_000);
-    expect(sold.message).toContain('불이익');
+    expect(sold.state.irpCash).toBe(8_000_000);
+    expect(portfolioValue(sold.state)).toBe(portfolioValue(state));
   });
 });
 
@@ -398,9 +399,11 @@ describe('시장, 리밸런싱, 생활사건', () => {
   });
 
   it('리밸런싱 후 목표 위험비중에 접근한다', () => {
-    const result = rebalancePortfolio(createGame('rebalance', 'aggressive'));
-    const targetRisk = 0.25 * 0.5 + 0.1 + 0.1 * policyRules.tdfAdjustedRiskRatio;
-    expect(riskAssetRatio(result.state)).toBeCloseTo(targetRisk, 5);
+    const submitted = rebalancePortfolio(createGame('rebalance', 'aggressive'));
+    const settled = settleAllOrders(submitted.state);
+    const targetRisk = 0.25 + 0.1;
+    expect(riskAssetRatio(settled)).toBeCloseTo(targetRisk, 5);
+    expect(settled.pendingOrders).toHaveLength(0);
   });
 
   it('중도인출 가능·불가능 사건을 구분한다', () => {
@@ -654,80 +657,19 @@ describe('시드 기반 시장 경로', () => {
   });
 });
 
-describe('생활자금 부족 시 보유 매도', () => {
-  const moving = lifeEvents.find((event) => event.id === 'moving')!;
-
-  function eventState(overrides: Partial<ReturnType<typeof createGame>> = {}) {
-    const base = createGame('life-cover');
-    return {
-      ...base,
-      turn: 1,
-      currentEventId: moving.id,
-      cash: 0,
-      irpCash: 0,
-      pendingOrders: [],
-      holdings: [
-        { productId: 'deposit' as const, amount: 10_000_000, principal: 10_000_000, depositTurnsHeld: 0 }
-      ],
-      ...overrides
-    };
-  }
-
-  it('생활자금이 0이면 예금을 즉시 매도해 사건 비용을 지급한다', () => {
-    const before = eventState();
-    const depositBefore = before.holdings.find((item) => item.productId === 'deposit')!.amount;
-    const result = resolveLifeEvent(before, 'cash');
-    const depositAfter = result.state.holdings.find((item) => item.productId === 'deposit')?.amount ?? 0;
-    expect(result.ok).toBe(true);
-    expect(result.state.currentEventId).toBeNull();
-    expect(result.state.cashShortages).toBe(0);
-    expect(result.state.cash).toBeGreaterThanOrEqual(0);
-    expect(depositAfter).toBeLessThan(depositBefore);
-    expect(depositBefore - depositAfter).toBeGreaterThan(moving.cost);
-    expect(result.message).toContain('매도');
-    expect(result.message).not.toContain('안정성 점수에 영향');
-  });
-
-  it('생활자금 일부와 예금 매도를 나눠 지급한다', () => {
-    const result = resolveLifeEvent(eventState({ cash: 1_000_000 }), 'cash');
-    const deposit = result.state.holdings.find((item) => item.productId === 'deposit')!.amount;
-    expect(result.ok).toBe(true);
-    expect(result.state.cashShortages).toBe(0);
-    expect(result.state.cash).toBeLessThan(1_000_000);
-    expect(deposit).toBeLessThan(10_000_000);
-    expect(result.message).toContain('매도');
-  });
-
-  it('대기자금만 있어도 상품을 팔지 않고 비용을 지급한다', () => {
-    const result = resolveLifeEvent(eventState({
-      irpCash: 4_000_000,
-      holdings: [{ productId: 'deposit' as const, amount: 10_000_000, principal: 10_000_000, depositTurnsHeld: 4 }]
-    }), 'cash');
-    expect(result.state.cashShortages).toBe(0);
-    expect(result.state.irpCash).toBe(4_000_000 - moving.cost);
-    expect(result.state.holdings[0].amount).toBe(10_000_000);
-    expect(result.message).toContain('대기자금');
-  });
-
-  it('펀드도 사건 지급을 위해 다음 턴을 기다리지 않고 즉시 환매한다', () => {
-    const result = resolveLifeEvent(eventState({
-      holdings: [{ productId: 'balanced' as const, amount: 8_000_000, principal: 8_000_000, depositTurnsHeld: 0 }]
-    }), 'cash');
-    expect(result.ok).toBe(true);
-    expect(result.state.cashShortages).toBe(0);
-    expect(result.state.pendingOrders).toHaveLength(0);
-    expect(result.state.holdings.find((item) => item.productId === 'balanced')!.amount).toBe(8_000_000 - moving.cost);
-    expect(result.message).toContain('혼합형');
-  });
-
-  it('팔 상품이 모자라면 그때만 부족 횟수를 올린다', () => {
-    const result = resolveLifeEvent(eventState({
-      holdings: [{ productId: 'deposit' as const, amount: 400_000, principal: 400_000, depositTurnsHeld: 4 }]
-    }), 'cash');
-    expect(result.ok).toBe(true);
-    expect(result.state.cashShortages).toBe(1);
-    expect(result.state.holdings.find((item) => item.productId === 'deposit')!.amount).toBe(0);
-    expect(result.message).toContain('매도해도');
-    expect(result.message).toContain('안정성 점수에 영향');
+describe('생활자금 부족 시 IRP 보호', () => {
+  it('보유 형태와 무관하게 비허용 사건은 생활자금·미지급 비용으로 처리한다', () => {
+    for (const productId of ['deposit', 'balanced', 'equityEtf'] as const) {
+      const state = { ...createGame('life-cover'), cash: 1_000_000, irpCash: 4_000_000, currentEventId: 'moving',
+        holdings: [{ productId, amount: 8_000_000, principal: 8_000_000, depositTurnsHeld: 0 }] };
+      const out = resolveLifeEvent(state, 'cash');
+      expect(out.ok).toBe(true);
+      expect(out.state.cash).toBe(0);
+      expect(out.state.livingDebt).toBe(1_500_000);
+      expect(out.state.cashShortages).toBe(1);
+      expect(out.state.holdings).toEqual(state.holdings);
+      expect(out.state.irpCash).toBe(state.irpCash);
+      expect(out.state.pendingOrders).toEqual(state.pendingOrders);
+    }
   });
 });

@@ -3,7 +3,7 @@ import { balanceConfig, policyRules } from '../src/data/content';
 import { autoplay, createGame, performAction, startTurn } from '../src/engine/game-engine';
 import { goalRateOf, isUrgent, milestonesReached, stampMilestones } from '../src/engine/milestones';
 import { portfolioValue } from '../src/engine/portfolio-engine';
-import { calculateScore, monthlyPension, payoutFactor, shortfallPlan, starLockReason } from '../src/engine/scoring-engine';
+import { calculateScore, monthlyPension, shortfallPlan, starLockReason } from '../src/engine/scoring-engine';
 import type { GameState } from '../src/types';
 
 const finished = (seed: string, overrides: Partial<GameState> = {}): GameState => ({ ...autoplay(seed, 'balanced'), ...overrides });
@@ -94,7 +94,7 @@ describe('부족 계획(shortfallPlan)', () => {
     const lump: GameState = { ...state, payoutChoice: 'lumpSum' };
     const lumpPlan = shortfallPlan(lump, calculateScore(lump))!;
     expect(lumpPlan.neededIrp).toBeGreaterThan(plan.neededIrp);
-    expect(lumpPlan.neededIrp).toBeCloseTo((lumpPlan.gapMonthly * 240) / payoutFactor('lumpSum'), 0);
+    expect(lumpPlan.neededIrp).toBeCloseTo(lumpPlan.gapMonthly * calculateScore(lump).irpValue / calculateScore(lump).payout.monthlyBasis, 0);
     expect(lumpPlan.line).toContain('일시금');
   });
 });

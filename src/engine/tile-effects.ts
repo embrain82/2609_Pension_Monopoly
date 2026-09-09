@@ -65,8 +65,8 @@ export function refundTaxCredit(state: GameState, tileIndex = 0): Applied {
 
 function settlementNote(productId: ProductId): string {
   const product = products.find((item) => item.id === productId)!;
-  if (product.kind === 'fund') return '오늘은 기준가 즉시 확정(평소엔 다음 턴)';
-  if (product.kind === 'deposit') return '오늘 해지해도 만기 전 불이익 없음';
+  if (product.kind === 'fund') return '기준가 확정·결제 대기는 일반 주문과 동일';
+  if (product.kind === 'deposit') return '가입 건별 약정 유지 · 중도해지 시 발생 이자 조정';
   return '표시가격 즉시 체결';
 }
 

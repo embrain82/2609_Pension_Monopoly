@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createGame } from '../src/engine/game-engine';
-import { rebalancePortfolio, rebalanceTargetRisk } from '../src/engine/portfolio-engine';
+import { rebalancePortfolio, settleAllOrders, rebalanceTargetRisk } from '../src/engine/portfolio-engine';
 import { calculateScore, diversificationNeeded, starChecklist, starTitle } from '../src/engine/scoring-engine';
 
 function withHoldings(
@@ -12,8 +12,8 @@ function withHoldings(
 }
 
 describe('별 사다리 헬퍼', () => {
-  it('위험중립형 리밸런싱 목표 위험은 약 21.7%이다', () => {
-    expect(rebalanceTargetRisk('balanced')).toBeCloseTo(0.2167, 3);
+  it('위험중립형 리밸런싱 목표 위험은 약 27.8%이다', () => {
+    expect(rebalanceTargetRisk('balanced')).toBeCloseTo(0.2778, 3);
   });
 
   it('안정형은 허용 상품이 2개라 분산 하한이 2이다', () => {
@@ -56,7 +56,7 @@ describe('별 사다리 공식', () => {
 
   it('납입 후 공식 리밸런싱에 가깝고 분산되면 3별이다', () => {
     const rich = { ...createGame('score-3', 'balanced', 400_000), cash: 10_000_000, maxDrawdown: 0.05 };
-    const rebalanced = rebalancePortfolio(rich).state;
+    const rebalanced = settleAllOrders(rebalancePortfolio(rich).state);
     const score = calculateScore({ ...rebalanced, cash: 10_000_000, maxDrawdown: 0.05 });
     expect(score.goalMet).toBe(true);
     expect(score.stars).toBe(3);

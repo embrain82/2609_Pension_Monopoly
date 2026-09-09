@@ -4,7 +4,7 @@ import { portfolioValue } from './portfolio-engine';
 import { riskAssetRatio } from './policy-engine';
 
 export const HINT_OVER_LIMIT = '위험자산 추가 매수는 막힙니다. 예금·채권으로 대기자금을 옮기거나 리밸런싱하세요.';
-export const HINT_PENDING_FUND = '펀드 주문은 다음 턴에 잔고에 들어갑니다.';
+export const HINT_PENDING_FUND = '펀드는 접수 → 다음 턴 가격 확정 → 그다음 턴 결제입니다(게임 시간).';
 export const HINT_NEAR_LIMIT = '위험한도에 가깝습니다. 가능액 매수 전에 미리보기를 보세요.';
 export const HINT_DEFAULT = '다음 턴 시장을 보고 납입·매매·그대로 중 하나를 고르세요.';
 
