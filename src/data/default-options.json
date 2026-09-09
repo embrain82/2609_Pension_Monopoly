@@ -1,56 +1,6 @@
 [
-  {
-    "id": "principal",
-    "name": "원리금보장형",
-    "products": [
-      "deposit"
-    ],
-    "blurb": "가상 승인형 · 예금 100%. 물가 위험은 남습니다.",
-    "weights": {
-      "deposit": 1
-    },
-    "approvalModel": true
-  },
-  {
-    "id": "lowRisk",
-    "name": "저위험",
-    "products": [
-      "shortBond",
-      "deposit"
-    ],
-    "blurb": "가상 승인형 · 단기채 60% / 예금 40%.",
-    "weights": {
-      "shortBond": 0.6,
-      "deposit": 0.4
-    },
-    "approvalModel": true
-  },
-  {
-    "id": "midRisk",
-    "name": "중위험",
-    "products": [
-      "balanced",
-      "tdf"
-    ],
-    "blurb": "가상 승인형 · 혼합형 40% / TDF 60%.",
-    "weights": {
-      "balanced": 0.4,
-      "tdf": 0.6
-    },
-    "approvalModel": true
-  },
-  {
-    "id": "highRisk",
-    "name": "고위험",
-    "products": [
-      "tdf",
-      "equityEtf"
-    ],
-    "blurb": "가상 승인형 · TDF 20% / 주식 ETF 80%. 큰 손실 가능성이 있습니다.",
-    "weights": {
-      "tdf": 0.2,
-      "equityEtf": 0.8
-    },
-    "approvalModel": true
-  }
+  {"id":"principal","name":"원리금보장형","products":["deposit"],"blurb":"대기자금을 예금으로. 원금은 지키지만 물가를 못 따라갈 수 있어요."},
+  {"id":"lowRisk","name":"저위험","products":["shortBond","deposit"],"blurb":"단기채와 예금 절반씩. 금리 변화에 조금만 흔들려요."},
+  {"id":"midRisk","name":"중위험","products":["balanced","tdf"],"blurb":"혼합형과 TDF 절반씩. 성장과 방어를 함께 노려요."},
+  {"id":"highRisk","name":"고위험","products":["tdf","equityEtf"],"blurb":"TDF와 주식 ETF 절반씩. 장기 성장을 노리지만 크게 흔들려요."}
 ]

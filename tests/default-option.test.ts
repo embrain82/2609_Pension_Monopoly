@@ -47,23 +47,23 @@ describe('디폴트옵션 동작', () => {
     expect(game.defaultOption).toBe('principal');
   });
 
-  it('applyDefaultOption: 고정 비중대로 매수하고 펀드는 가격 확정·결제를 기다린다', () => {
+  it('applyDefaultOption: 대기자금을 상품 수로 균등 매수(펀드는 다음 턴 체결)', () => {
     const base = open(createGame('do-3', 'balanced', 500_000, { defaultOption: 'midRisk', ghost: false }));
     const withCash: GameState = { ...base, irpCash: 3_000_000 };
     const applied = applyDefaultOption(withCash);
     expect(applied.bought.map((item) => item.productId).sort()).toEqual(['balanced', 'tdf']);
-    expect(applied.bought.map(item => item.amount)).toEqual([1200000, 1800000]);
+    for (const item of applied.bought) expect(item.amount).toBeCloseTo(1_500_000, 0);
     expect(applied.state.irpCash).toBeLessThan(100_000);
     expect(applied.state.pendingOrders.filter((order) => order.side === 'buy')).toHaveLength(2);
     expect(applied.message).toContain('디폴트옵션');
   });
 
-  it('소액도 구성 비율을 지킨다', () => {
+  it('몫이 10만원 미만이면 첫 상품에 전액', () => {
     const base = open(createGame('do-4', 'balanced', 500_000, { defaultOption: 'midRisk', ghost: false }));
     const applied = applyDefaultOption({ ...base, irpCash: 150_000 });
-    expect(applied.bought).toHaveLength(2);
+    expect(applied.bought).toHaveLength(1);
     expect(applied.bought[0].productId).toBe('balanced');
-    expect(applied.bought[0].amount).toBe(60_000);
+    expect(applied.bought[0].amount).toBe(150_000);
   });
 
   it('대기자금이 10만원 미만이거나 옵션이 없으면 아무 일도 없다', () => {
@@ -72,16 +72,16 @@ describe('디폴트옵션 동작', () => {
     expect(applyDefaultOption({ ...base, irpCash: 3_000_000, defaultOption: null }).bought).toHaveLength(0);
   });
 
-  it('옵트인을 명시하면 디폴트옵션이 대기자금을 운용하고 행동 줄에 남는다', () => {
+  it('「그대로」를 고르면 디폴트옵션이 대기자금을 운용하고 행동 줄에 남는다', () => {
     const base = open(createGame('do-6', 'balanced', 500_000, { defaultOption: 'principal', ghost: false }));
     const withCash: GameState = { ...base, irpCash: 2_000_000, currentEventId: null, awaitingAction: true };
-    const held = performAction(withCash, { kind: 'default-opt-in' });
+    const held = performAction(withCash, { kind: 'hold' });
     expect(held.ok).toBe(true);
     expect(held.message).toContain('디폴트옵션');
     expect(held.state.irpCash).toBeLessThan(100_000);
     expect(held.state.holdings.find((holding) => holding.productId === 'deposit')!.amount).toBeGreaterThan(base.holdings.find((holding) => holding.productId === 'deposit')!.amount);
     expect(held.summary?.actionLines.some((line) => line.includes('디폴트옵션'))).toBe(true);
-    expect(held.state.record.defaultOptionRuns).toBe(1);
+    expect(held.state.safeActionCount).toBe(base.safeActionCount + 1);
   });
 
   it('디폴트옵션이 없으면 「그대로」는 예전과 같다', () => {
@@ -92,7 +92,7 @@ describe('디폴트옵션 동작', () => {
     expect(held.message).not.toContain('디폴트옵션');
   });
 
-  it('가상 승인형 편입분만 한도 예외로 구분한다', () => {
+  it('위험한도를 넘기는 만큼은 사지 않고 대기자금으로 남긴다', () => {
     const base = open(createGame('do-8', 'aggressive', 500_000, { defaultOption: 'highRisk', ghost: false }));
     // 보유를 모두 ETF로 바꿔 한도 근처로 만든다
     const risky: GameState = {
@@ -103,7 +103,7 @@ describe('디폴트옵션 동작', () => {
     const applied = applyDefaultOption(risky);
     expect(applied.state.irpCash).toBeGreaterThanOrEqual(0);
     expect(applied.state.pendingOrders.some(o => o.productId === 'tdf')).toBe(true);
-    expect(applied.state.holdings.find(h => h.productId === 'equityEtf')!.amount).toBe(78_000_000);
+    expect(applied.state.holdings.find(h => h.productId === 'equityEtf')!.amount).toBeLessThanOrEqual(77_000_000);
     expect(applied.state.ruleBreaches).toBe(risky.ruleBreaches);
   });
 });

@@ -169,7 +169,7 @@ describe('디폴트옵션 모달(default-option-view)', () => {
     expect(start).toContain('지정 안 함');
     expect(start).toContain('data-action="confirm-default-option"');
     expect(start).toContain('data-action="skip-default-option"');
-    expect(start).toContain('2턴 대기 → 통지 → 1턴 대기 → 자동운용');
+    expect(start).toContain('자동 균등 매수');
     const settings = renderDefaultOptionModal({ profileId: 'balanced', current: 'midRisk', characters: false, mode: 'settings' });
     expect(settings).toContain('이 옵션으로 저장');
     expect(settings).toContain('지정 해제');
@@ -190,13 +190,13 @@ describe('setDefaultOption(진행 중 판)', () => {
     expect(cleared.logs.at(-1)?.message).toContain('해제');
   });
 
-  it('진행 중 지정 후 명시적 옵트인으로 운용한다', () => {
+  it('진행 중 지정하면 다음 「그대로」부터 대기자금을 운용한다', () => {
     let state = createGame('sdo-2', 'balanced');
     state = startTurn(state, 3).state;
     while (state.currentEventId) state = { ...state, currentEventId: null, awaitingAction: true };
     state = { ...state, irpCash: 2_000_000 };
     state = setDefaultOption(state, 'midRisk');
-    const held = performAction(state, { kind: 'default-opt-in' });
+    const held = performAction(state, { kind: 'hold' });
     expect(held.ok).toBe(true);
     expect(held.message).toContain('디폴트옵션(중위험)');
     expect(held.state.irpCash).toBeLessThan(100_000);

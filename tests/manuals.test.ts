@@ -180,7 +180,7 @@ describe('배포용 매뉴얼', () => {
     expect(user).toContain('디폴트옵션 지정');
     expect(user).toContain('이 옵션으로 시작');
     expect(user).toContain('지정 안 함');
-    expect(user).toContain('현금 유지 지시');
+    expect(user).toContain('자동 균등 매수');
     expect(user).toContain('원리금보장형');
     expect(user).toContain('사전지정운용');
     expect(user).toContain('선택지 3개');

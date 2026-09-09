@@ -1,4 +1,3 @@
-import { registerCash } from './cash-ledger';
 import type { AccountBasis, GameState, PayoutChoice, PayoutPlan } from '../types';
 import { policyRules } from '../data/content';
 
@@ -18,7 +17,7 @@ export function addAccountFlow(state: GameState, amount: number, kind: 'contribu
     basis.deducted += deductible;
     basis.nonDeducted += amount - deductible;
   }
-  return registerCash({ ...state, accountBasis: basis, cashFlows: [...state.cashFlows, { turn: state.turn, kind, amount }] }, amount, kind);
+  return { ...state, accountBasis: basis, cashFlows: [...state.cashFlows, { turn: state.turn, kind, amount }] };
 }
 
 /** 손실 시 원금을 비례 축소하는 교육 모형. 운용수익은 잔액과 원금의 차액. */

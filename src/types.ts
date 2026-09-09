@@ -271,8 +271,6 @@ export interface DefaultOption {
   name: string;
   products: ProductId[];
   blurb: string;
-  weights: Partial<Record<ProductId, number>>;
-  approvalModel: true;
 }
 
 export interface InvestorProfile {
@@ -355,7 +353,6 @@ export interface Holding {
   amount: number;
   principal: number;
   depositTurnsHeld: number;
-  defaultAmount?: number;
   units?: number;
   lots?: DepositLot[];
 }
@@ -368,15 +365,13 @@ export interface PendingOrder {
   submittedTurn: number;
   settlesTurn: number;
   stage: 'received' | 'priced';
-  defaultAmount?: number;
   units?: number;
   priceTurn?: number;
   groupId?: string;
   targetProductId?: ProductId;
-  defaultOptionId?: DefaultOptionId;
 }
 
-export type ActionKind = 'contribute' | 'buy' | 'sell' | 'switch' | 'rebalance' | 'hold' | 'default-opt-in' | 'default-opt-out' | 'cash-instruction';
+export type ActionKind = 'contribute' | 'buy' | 'sell' | 'switch' | 'rebalance' | 'hold';
 
 export interface GameLog {
   turn: number;
@@ -391,7 +386,6 @@ export interface DepositLot {
   openedTurn: number;
   maturityTurn: number;
   ratePerTurn: number;
-  defaultOptionId?: DefaultOptionId;
 }
 
 export interface AccountBasis {
@@ -407,26 +401,10 @@ export interface CashFlow {
   amount: number;
 }
 
-export interface DefaultCashLot {
-  id: number;
-  amount: number;
-  cashOrigin: 'maturity' | 'newAccount' | 'contribution' | 'transfer' | 'sale';
-  createdTurn: number;
-  eligibility: boolean;
-  explicitCashInstruction: boolean;
-  noticeAt: number | null;
-  activateAt: number | null;
-  optionId: DefaultOptionId | null;
-  status: 'unassigned' | 'waiting' | 'notified' | 'cash' | 'ordered';
-}
-
 export interface GameState {
   accountType: 'IRP';
   rulesetVersion: '2026-09-09-p0' | '2026-09-10-b';
   avatarId: AvatarId;
-  defaultCashLots: DefaultCashLot[];
-  cashSequence: number;
-  defaultOptedOut: boolean;
   accountBasis: AccountBasis;
   cashFlows: CashFlow[];
   livingDebt: number;
