@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsx scripts/build-learning-guide.ts && tsc -b && vite build",
     "test": "vitest run",
     "lint": "eslint .",
     "typecheck": "tsc -b --pretty false",
-    "simulate": "tsx scripts/simulate.ts"
+    "simulate": "tsx scripts/simulate.ts",
+    "verify:d": "tsx scripts/verify-stage-d.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",

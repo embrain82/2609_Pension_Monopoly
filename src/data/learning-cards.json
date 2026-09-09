@@ -4,8 +4,8 @@
     "category": "시장",
     "title": "신호는 예측이 아니에요",
     "key": "시장 전망이나 경고는 맞을 때도 빗나갈 때도 있어요. 예측하지 말고 대비하세요.",
-    "detail": "게임은 충격 직전 턴에 신호를 보여 주지만 일부는 약하거나 빗나갑니다. 분산과 생활자금은 신호가 틀려도 손해가 아닙니다.",
-    "source_url": "https://www.fss.or.kr",
+    "detail": "신호는 빗나갈 수 있습니다. 분산과 생활자금도 손실 가능성이나 기회비용이 있으므로 손해 없는 정답은 아닙니다.",
+    "source_url": "https://www.investor.gov/introduction-investing/getting-started/asset-allocation",
     "reviewed_at": "2026-09-09",
     "simplified": true,
     "quiz": {
@@ -16,8 +16,11 @@
         "전망은 빗나갈 수 있으니 분산과 비상자금을 점검한다"
       ],
       "answer": 2,
-      "why": "전망은 예측이 아니라 대비할 이유입니다. 맞아도 틀려도 손실을 줄이려는 준비(분산·비상자금)가 정답입니다."
-    }
+      "why": "확신에 따라 전부 매도하기보다 위험과 생활자금을 점검합니다. 대비에도 비용이 있고 손실을 완전히 막을 수는 없습니다."
+    },
+    "learningObjective": "시장 전망이나 경고는 맞을 때도 빗나갈 때도 있어요. 예측하지 말고 대비하세요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "rate-bond",
@@ -37,7 +40,10 @@
       ],
       "answer": 0,
       "why": "새 채권이 더 높은 이자를 주면 기존 채권의 매력이 떨어져 가격이 내려갈 수 있습니다."
-    }
+    },
+    "learningObjective": "금리가 오르면 기존 채권 가격은 내려갈 수 있어요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "duration",
@@ -49,15 +55,18 @@
     "reviewed_at": "2026-09-09",
     "simplified": true,
     "quiz": {
-      "q": "같은 금리 변화에 더 크게 움직이는 쪽은?",
+      "q": "신용·쿠폰 등 다른 조건이 같고 만기가 더 길 때, 금리 변화에 더 민감할 수 있는 쪽은?",
       "options": [
         "단기채",
         "장기채",
         "둘은 늘 같게 움직인다"
       ],
       "answer": 1,
-      "why": "게임은 단기채 민감도 1, 장기채 민감도 3으로 단순화합니다. 만기가 길수록 금리 변화에 더 민감합니다."
-    }
+      "why": "다른 조건이 같다면 장기채의 가격 민감도가 더 클 수 있습니다. 만기와 듀레이션은 같은 개념이 아니며 쿠폰·수익률 등도 영향을 줍니다."
+    },
+    "learningObjective": "같은 금리 변화에도 장기채가 더 크게 움직일 수 있어요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "deposit-rate",
@@ -69,7 +78,7 @@
     "reviewed_at": "2026-09-09",
     "simplified": true,
     "quiz": {
-      "q": "새 예금금리가 올랐습니다. 내가 이미 가입한 예금은?",
+      "q": "새 예금금리가 올랐습니다. 이미 가입한 고정금리 예금은?",
       "options": [
         "자동으로 새 금리가 적용된다",
         "은행이 알아서 갈아탄다",
@@ -77,7 +86,10 @@
       ],
       "answer": 2,
       "why": "기존 예금은 가입 때 조건이 유지됩니다. 중도해지하면 약정 이자를 잃거나 불이익이 생길 수 있습니다."
-    }
+    },
+    "learningObjective": "새 예금금리가 올라도 기존 예금 조건은 그대로일 수 있어요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "fund-order",
@@ -97,7 +109,13 @@
       ],
       "answer": 1,
       "why": "펀드는 상품과 접수 시각에 정해진 기준가로 수량을 확정하고, 대금 결제일은 별도로 봅니다. 게임은 다음 턴 가격 확정·그다음 턴 결제로 압축합니다. 실제 상품의 영업일 일정은 설명서를 확인합니다."
-    }
+    },
+    "learningObjective": "펀드는 상품과 접수 시각에 정해진 기준가로 수량을 확정하고, 대금 결제일은 별도로 봅니다.",
+    "relatedActions": [
+      "buy",
+      "switch"
+    ],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "etf-order",
@@ -117,7 +135,10 @@
       ],
       "answer": 0,
       "why": "공시·뉴스의 수익률은 이미 끝난 가격 움직임입니다. 지금 사는 가격에는 그 움직임이 들어가 있어, 오늘의 상승분은 기존 보유자에게 돌아갑니다. 실제 시장에는 호가·괴리율·거래비용이 있습니다."
-    }
+    },
+    "learningObjective": "뉴스에 나온 하루 수익률은 이미 지난 가격입니다. 지금 사는 사람은 그 상승분을 받지 못해요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "risk-limit",
@@ -137,7 +158,10 @@
       ],
       "answer": 2,
       "why": "70% 한도는 규제상 상품 분류로 계산합니다. 한도 이내 부분 주문을 제안하는 기능은 게임 편의 기능이며 법정 자동매수 규칙이 아닙니다."
-    }
+    },
+    "learningObjective": "IRP의 위험자산 매수에는 한도 규칙이 있어요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "tdf-exception",
@@ -157,14 +181,17 @@
       ],
       "answer": 1,
       "why": "감독기준을 충족하는 적격 TDF는 편입한도 예외가 가능하지만 투자손실 위험은 남습니다. 이 게임의 가상 적격 TDF는 규제 비율과 기초 주식 노출을 따로 표시합니다."
-    }
+    },
+    "learningObjective": "감독기준을 충족한 TDF에는 투자한도 예외가 적용될 수 있어요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "contribution-limit",
     "category": "제도",
     "title": "납입한도와 공제한도",
     "key": "납입 가능한 금액과 세액공제 대상 금액은 같은 개념이 아니에요.",
-    "detail": "게임은 두 한도를 별도로 누적하고 공제율을 교육용으로 단순 적용합니다.",
+    "detail": "개인 납입한도는 연금계좌 합산 연 1,800만원, 공제한도는 연금저축 600만원·퇴직연금 포함 900만원입니다. 퇴직급여 이전은 개인 추가납입과 구분합니다. 게임은 한 판 합산 한도로 압축하며 실제 공제는 소득 등 조건에 따라 다릅니다.",
     "source_url": "https://www.fss.or.kr/fss/main/contents.do?menuNo=201011",
     "reviewed_at": "2026-09-09",
     "simplified": true,
@@ -177,7 +204,12 @@
       ],
       "answer": 0,
       "why": "납입 가능한 금액과 세액공제 대상 금액은 다른 개념입니다. 게임은 두 한도를 별도로 누적합니다."
-    }
+    },
+    "learningObjective": "납입 가능한 금액과 세액공제 대상 금액은 같은 개념이 아니에요.",
+    "relatedActions": [
+      "contribute"
+    ],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "tax-credit",
@@ -197,7 +229,10 @@
       ],
       "answer": 2,
       "why": "세액공제는 노후자금으로 묶이는 유동성 제약과 함께 봐야 합니다. 비상생활자금을 먼저 확보하는 이유입니다."
-    }
+    },
+    "learningObjective": "세액공제는 노후자금으로 묶이는 유동성 제약과 함께 봐야 해요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "irp-withdrawal",
@@ -217,7 +252,10 @@
       ],
       "answer": 1,
       "why": "IRP 내부 상품 매도와 계좌 밖 중도인출은 다릅니다. 무주택자의 적격 임차보증금, 요양 요건 등을 확인해야 합니다. 단순 이사비는 별도 사유가 아닙니다."
-    }
+    },
+    "learningObjective": "IRP 자금은 생활비 통장처럼 자유롭게 꺼내기 어려워요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "emergency-cash",
@@ -237,7 +275,10 @@
       ],
       "answer": 0,
       "why": "IRP 밖 생활자금으로 지출을 대비합니다. 게임에서는 부족액을 미지급 생활비로 기록하고 다음 급여로 갚습니다. IRP 자동 매도·인출로 해결하지 않습니다."
-    }
+    },
+    "learningObjective": "장기계좌 밖 생활자금은 예상 밖 지출을 버티는 완충재예요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "diversification",
@@ -245,7 +286,7 @@
     "title": "분산의 역할",
     "key": "서로 다르게 움직이는 자산을 나누어 담으면 한 충격의 영향을 줄일 수 있어요.",
     "detail": "분산은 손실을 없애거나 수익을 보장하지 않습니다.",
-    "source_url": "https://www.fss.or.kr",
+    "source_url": "https://www.investor.gov/introduction-investing/getting-started/asset-allocation",
     "reviewed_at": "2026-09-09",
     "simplified": true,
     "quiz": {
@@ -256,16 +297,19 @@
         "서로 다르게 움직이는 자산을 나눠 담아 한 충격의 영향을 줄인다"
       ],
       "answer": 2,
-      "why": "분산은 한 충격이 전체를 흔들지 못하게 하지만, 손실을 없애거나 수익을 보장하지는 않습니다."
-    }
+      "why": "서로 다른 위험에 노출된 자산을 섞으면 집중 위험을 줄일 수 있지만, 함께 하락할 수 있고 손실을 없애지는 못합니다."
+    },
+    "learningObjective": "서로 다르게 움직이는 자산을 나누어 담으면 한 충격의 영향을 줄일 수 있어요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "rebalance",
     "category": "운용",
     "title": "리밸런싱",
     "key": "가격 변화로 흐트러진 비중을 목표에 가깝게 되돌리는 행동이에요.",
-    "detail": "오른 자산 일부를 줄이고 낮아진 자산을 채워 위험 수준을 관리합니다.",
-    "source_url": "https://www.fss.or.kr",
+    "detail": "오른 자산 일부를 줄이고 낮아진 자산을 채워 위험 수준을 관리합니다. 거래비용과 결제 대기를 함께 확인하며, 목표비중 변경과 원래 비중 복원은 구분합니다.",
+    "source_url": "https://www.investor.gov/introduction-investing/getting-started/asset-allocation",
     "reviewed_at": "2026-09-09",
     "simplified": true,
     "quiz": {
@@ -277,7 +321,12 @@
       ],
       "answer": 1,
       "why": "오른 자산 일부를 줄이고 낮아진 자산을 채워 위험 수준을 목표로 되돌립니다."
-    }
+    },
+    "learningObjective": "가격 변화로 흐트러진 비중을 목표에 가깝게 되돌리는 행동이에요.",
+    "relatedActions": [
+      "rebalance"
+    ],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "profile",
@@ -285,7 +334,7 @@
     "title": "성향은 서열이 아니에요",
     "key": "투자자성향은 감당 가능한 손실과 행동의 일관성을 점검하는 도구예요.",
     "detail": "공격형이 더 높은 등급이 아니며 안정형도 실패 전략이 아닙니다. 게임은 성향보다 높은 위험등급 상품의 신규 매수·바꾸기를 교육용으로 제한합니다.",
-    "source_url": "https://www.fss.or.kr",
+    "source_url": "https://www.investor.gov/introduction-investing/getting-started/asset-allocation",
     "reviewed_at": "2026-09-09",
     "simplified": true,
     "quiz": {
@@ -297,7 +346,10 @@
       ],
       "answer": 0,
       "why": "성향은 서열이 아닙니다. 게임은 성향보다 높은 위험등급 상품의 신규 매수를 교육용으로 제한할 뿐, 안정형도 실패가 아닙니다."
-    }
+    },
+    "learningObjective": "투자자성향은 감당 가능한 손실과 행동의 일관성을 점검하는 도구예요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "pension-assumption",
@@ -317,7 +369,10 @@
       ],
       "answer": 2,
       "why": "연금월액은 모아 둔 돈과 받을 기간에서 출발합니다. 실제 수령액은 운용 수익·수수료·세금·물가에 따라 달라집니다."
-    }
+    },
+    "learningObjective": "나눠 받는 월 연금액은 쌓아 둔 평가액을 수령 개월 수로 나눈 값에서 출발해요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "liquidity",
@@ -337,7 +392,10 @@
       ],
       "answer": 1,
       "why": "장기 목표와 단기 지출은 다른 통장으로. IRP는 중도인출이 제한되니 쓸 돈은 밖에 두어야 합니다."
-    }
+    },
+    "learningObjective": "필요할 때 쓸 수 있는 돈도 수익률만큼 중요한 안전장치예요.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "pension-tax",
@@ -357,7 +415,10 @@
       ],
       "answer": 0,
       "why": "퇴직급여·미공제 원금·공제 원금·운용수익은 과세 방식이 다릅니다. 미공제 원금은 과세 제외입니다. 퇴직급여는 원천징수영수증의 이연퇴직소득세로 계산하며 연금수령연차에 따라 70%·60%·50%를 적용합니다. 공제 원금과 수익은 연금수령 시 나이별 3.3~5.5%, 연금외수령 시 16.5%가 적용될 수 있습니다."
-    }
+    },
+    "learningObjective": "퇴직급여·미공제 원금·공제 원금·운용수익은 과세 방식이 다릅니다.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "payout-choice",
@@ -377,7 +438,10 @@
       ],
       "answer": 2,
       "why": "세법상 55세·가입 5년·연금수령한도를 확인합니다. 이연퇴직소득은 가입 5년 요건의 예외입니다. 퇴직급여법의 지급기간 5년 이상과 세법상 수령한도는 다른 조건이며 무조건 10년 분할은 아닙니다. 게임은 55세부터 20년 분할로 가정합니다."
-    }
+    },
+    "learningObjective": "연금수령은 나이·가입기간·수령한도를 함께 확인하며 이연퇴직소득에는 가입 5년 예외가 있습니다.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   },
   {
     "id": "default-option",
@@ -397,6 +461,133 @@
       ],
       "answer": 1,
       "why": "디폴트옵션은 사전지정된 승인 운용방법에 적용요건과 통지·대기 절차가 필요합니다. 만기 자금은 무지시 4주 후 통지·추가 2주 등 절차를 확인합니다. 직접 선택하는 옵트인은 별도입니다. 현재 게임의 지정옵션 실행은 옵트인 체험이며 실제 자동 적용 시간을 구현한 것은 아닙니다."
-    }
+    },
+    "learningObjective": "디폴트옵션은 사전지정된 승인 운용방법에 적용요건과 통지·대기 절차가 필요합니다.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
+  },
+  {
+    "id": "db-dc-irp",
+    "category": "제도",
+    "title": "DB·DC·IRP 구분",
+    "key": "DB는 사용자가, DC는 근로자가 적립금을 운용합니다. IRP는 개인형 계좌입니다.",
+    "detail": "본편은 가상 IRP 운용 체험이며 DB·DC의 실제 계약을 재현하지 않습니다.",
+    "source_url": "https://www.moel.go.kr/retirementpay.do",
+    "reviewed_at": "2026-09-10",
+    "simplified": true,
+    "quiz": {
+      "q": "퇴직연금 적립금 운용 주체의 설명으로 맞는 것은?",
+      "options": [
+        "DB는 사용자, DC는 근로자가 운용한다",
+        "DB·DC 모두 항상 근로자만 운용한다",
+        "IRP는 회사 운영자금 계좌다"
+      ],
+      "answer": 0,
+      "why": "DB는 사용자가, DC는 근로자가 적립금을 운용합니다. IRP는 개인형 계좌입니다. 본편은 가상 IRP 운용 체험이며 DB·DC의 실제 계약을 재현하지 않습니다."
+    },
+    "learningObjective": "DB는 사용자가, DC는 근로자가 적립금을 운용합니다. IRP는 개인형 계좌입니다.",
+    "relatedActions": [],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
+  },
+  {
+    "id": "sale-vs-withdrawal",
+    "category": "운용",
+    "title": "매도와 인출은 달라요",
+    "key": "IRP 안에서 상품을 팔면 계좌 안 대기자금이 됩니다.",
+    "detail": "계좌 밖 중도인출은 별도의 법정 요건과 세금을 확인해야 합니다.",
+    "source_url": "https://www.fss.or.kr/fss/main/contents.do?menuNo=201012",
+    "reviewed_at": "2026-09-10",
+    "simplified": true,
+    "quiz": {
+      "q": "IRP 펀드 매도 후 결제된 돈은 어디에 있나요?",
+      "options": [
+        "자동으로 생활비 계좌에 입금된다",
+        "IRP 안의 대기자금으로 남는다",
+        "매도 즉시 연금 수령이 끝난다"
+      ],
+      "answer": 1,
+      "why": "IRP 안에서 상품을 팔면 계좌 안 대기자금이 됩니다. 계좌 밖 중도인출은 별도의 법정 요건과 세금을 확인해야 합니다."
+    },
+    "learningObjective": "IRP 안에서 상품을 팔면 계좌 안 대기자금이 됩니다.",
+    "relatedActions": [
+      "sell"
+    ],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
+  },
+  {
+    "id": "pricing-vs-settlement",
+    "category": "운용",
+    "title": "가격 확정과 결제",
+    "key": "기준가 적용과 대금 결제는 서로 다른 단계입니다.",
+    "detail": "게임은 접수 다음 턴 가격 확정, 그다음 턴 결제로 압축합니다. 실제 일정은 상품·접수 시각에 따라 다릅니다.",
+    "source_url": "https://www.fss.or.kr",
+    "reviewed_at": "2026-09-10",
+    "simplified": true,
+    "quiz": {
+      "q": "가격 확정이 끝난 펀드 매도 주문이라면?",
+      "options": [
+        "모든 상품에서 바로 출금할 수 있다",
+        "기준가가 영원히 바뀌지 않는다",
+        "대금 결제가 끝났는지 따로 확인한다"
+      ],
+      "answer": 2,
+      "why": "기준가 적용과 대금 결제는 서로 다른 단계입니다. 게임은 접수 다음 턴 가격 확정, 그다음 턴 결제로 압축합니다. 실제 일정은 상품·접수 시각에 따라 다릅니다."
+    },
+    "learningObjective": "기준가 적용과 대금 결제는 서로 다른 단계입니다.",
+    "relatedActions": [
+      "sell",
+      "switch"
+    ],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
+  },
+  {
+    "id": "inflation-value",
+    "category": "시장",
+    "title": "숫자보다 구매력",
+    "key": "명목 금액이 늘어도 물가가 더 많이 오르면 구매력은 줄 수 있습니다.",
+    "detail": "게임의 오늘 가치는 명목액을 플레이 중 누적 물가지수로 나눕니다.",
+    "source_url": "https://www.investor.gov/introduction-investing/getting-started/asset-allocation",
+    "reviewed_at": "2026-09-10",
+    "simplified": true,
+    "quiz": {
+      "q": "적립금이 3% 늘고 같은 기간 물가가 5% 올랐다면?",
+      "options": [
+        "실질 구매력은 줄어든다",
+        "실질 구매력도 반드시 3% 오른다",
+        "물가는 구매력과 무관하다"
+      ],
+      "answer": 0,
+      "why": "명목 금액이 늘어도 물가가 더 많이 오르면 구매력은 줄 수 있습니다. 게임의 오늘 가치는 명목액을 플레이 중 누적 물가지수로 나눕니다."
+    },
+    "learningObjective": "명목 금액이 늘어도 물가가 더 많이 오르면 구매력은 줄 수 있습니다.",
+    "relatedActions": [
+      "hold"
+    ],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
+  },
+  {
+    "id": "tdf-glide",
+    "category": "상품",
+    "title": "TDF의 시간표",
+    "key": "TDF는 목표 시점에 맞춰 자산 구성을 조정하지만 원금이나 연금액을 보장하지 않습니다.",
+    "detail": "가상 TDF 2029은 12턴 동안 주식 비중을 45%에서 25%로 줄입니다. 실제 TDF의 경로와 비중은 상품마다 다릅니다.",
+    "source_url": "https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/target-date-funds-investor-bulletin",
+    "reviewed_at": "2026-09-10",
+    "simplified": true,
+    "quiz": {
+      "q": "목표연도가 같은 두 TDF라면?",
+      "options": [
+        "구성과 위험도 항상 같다",
+        "자산 구성·위험·비용이 다를 수 있다",
+        "목표연도에 원금이 보장된다"
+      ],
+      "answer": 1,
+      "why": "TDF는 목표 시점에 맞춰 자산 구성을 조정하지만 원금이나 연금액을 보장하지 않습니다. 가상 TDF 2029은 12턴 동안 주식 비중을 45%에서 25%로 줄입니다. 실제 TDF의 경로와 비중은 상품마다 다릅니다."
+    },
+    "learningObjective": "TDF는 목표 시점에 맞춰 자산 구성을 조정하지만 원금이나 연금액을 보장하지 않습니다.",
+    "relatedActions": [
+      "buy"
+    ],
+    "gameAssumption": "가상 IRP의 12턴 교육용 체험이며 실제 상품·개인의 조건과 다릅니다."
   }
 ]

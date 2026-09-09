@@ -92,3 +92,13 @@ export function answerQuiz(state: GameState, cardId: string, option: number): Qu
 export function quizCorrectCount(state: GameState): number {
   return state.quizLog.filter((record) => record.correct).length;
 }
+
+export const ACTION_LESSONS: Record<string,string> = {contribute:'contribution-limit',buy:'fund-order',sell:'sale-vs-withdrawal',switch:'fund-order',rebalance:'rebalance',hold:'inflation-value'};
+/** 성공한 행동만 연결하며 팝업은 정산에서 자율 선택한다. */
+export function actionLesson(state: GameState, kind: string): GameState {
+  if(!state.campaign) return state;
+  const card=ACTION_LESSONS[kind];
+  if(!card || !learningCards.some(c=>c.id===card)) return state;
+  const next={...state,unlockedCards:state.unlockedCards.includes(card)?state.unlockedCards:[...state.unlockedCards,card]};
+  return queueQuiz(next,card);
+}

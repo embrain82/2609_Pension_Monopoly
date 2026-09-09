@@ -1,0 +1,3310 @@
+{
+  "version": "1.4.0",
+  "seeds": 20,
+  "games": 4400,
+  "scenarios": 4,
+  "profiles": 5,
+  "strategies": 11,
+  "rows": [
+    {
+      "scenario": "classic",
+      "profile": "stable",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 17,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.021680583572358626,
+      "meanRealIndex": 0.9480787273694015,
+      "meanNetCash": 25072103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stable",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.021062349012806993,
+      "meanRealIndex": 0.9475085235343446,
+      "meanNetCash": 13160103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stable",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 8,
+        "purchasing": 0
+      },
+      "meanStars": 0.9,
+      "meanReturn": 0.022388920791164724,
+      "meanRealIndex": 0.9487317428873135,
+      "meanNetCash": 17524303.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stable",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 8,
+        "purchasing": 0
+      },
+      "meanStars": 2.9,
+      "meanReturn": 0.021775083656304574,
+      "meanRealIndex": 0.9481672489167243,
+      "meanNetCash": 16060103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stable",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 12,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.02131803439274572,
+      "meanRealIndex": 0.947744110852742,
+      "meanNetCash": 19430103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stable",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 12,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.02137947434942943,
+      "meanRealIndex": 0.9478010441709405,
+      "meanNetCash": 19516903.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stable",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 6,
+        "purchasing": 0
+      },
+      "meanStars": 2.7,
+      "meanReturn": 0.021219724673027397,
+      "meanRealIndex": 0.947654255782355,
+      "meanNetCash": 14260103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stable",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 15,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.02157957901816724,
+      "meanRealIndex": 0.9479854274365369,
+      "meanNetCash": 24204103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stable",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 1,
+        "cushion": 10,
+        "purchasing": 0
+      },
+      "meanStars": 0.15,
+      "meanReturn": 0.021340999471134426,
+      "meanRealIndex": 0.9477653307083793,
+      "meanNetCash": 19553703.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stable",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2.5,
+      "meanReturn": 0.021420002604287204,
+      "meanRealIndex": 0.947837408553525,
+      "meanNetCash": 13610103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stable",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 4,
+        "cushion": 11,
+        "purchasing": 0
+      },
+      "meanStars": 0.6,
+      "meanReturn": 0.02238230378067039,
+      "meanRealIndex": 0.9487249293837576,
+      "meanNetCash": 19256679.1
+    },
+    {
+      "scenario": "classic",
+      "profile": "stableGrowth",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 17,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": 0.01912261452492725,
+      "meanRealIndex": 0.9457996427125149,
+      "meanNetCash": 25072103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stableGrowth",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 1
+      },
+      "meanStars": 2.7,
+      "meanReturn": 0.018389117954457433,
+      "meanRealIndex": 0.9451225449135814,
+      "meanNetCash": 13160103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stableGrowth",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 4,
+        "cushion": 8,
+        "purchasing": 1
+      },
+      "meanStars": 0.6,
+      "meanReturn": 0.02096909527362173,
+      "meanRealIndex": 0.9475021240021615,
+      "meanNetCash": 17524303.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stableGrowth",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 19,
+        "cushion": 8,
+        "purchasing": 1
+      },
+      "meanStars": 2.75,
+      "meanReturn": 0.018674832783967775,
+      "meanRealIndex": 0.9453863639784043,
+      "meanNetCash": 15603503.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stableGrowth",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 1,
+        "cushion": 12,
+        "purchasing": 1
+      },
+      "meanStars": 0.15,
+      "meanReturn": 0.018699921639402393,
+      "meanRealIndex": 0.9454087810564864,
+      "meanNetCash": 19430103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stableGrowth",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 1,
+        "cushion": 12,
+        "purchasing": 1
+      },
+      "meanStars": 0.15,
+      "meanReturn": 0.01874946920070327,
+      "meanRealIndex": 0.9454550393750161,
+      "meanNetCash": 19516903.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stableGrowth",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 6,
+        "purchasing": 1
+      },
+      "meanStars": 2.8,
+      "meanReturn": 0.01851892791946591,
+      "meanRealIndex": 0.9452435856432277,
+      "meanNetCash": 14260103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stableGrowth",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 15,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": 0.019031126894861704,
+      "meanRealIndex": 0.9457147543549558,
+      "meanNetCash": 24204103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stableGrowth",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 10,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": 0.018684348307262167,
+      "meanRealIndex": 0.945394614324959,
+      "meanNetCash": 19553703.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stableGrowth",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 19,
+        "cushion": 4,
+        "purchasing": 1
+      },
+      "meanStars": 2.75,
+      "meanReturn": 0.01879754756408496,
+      "meanRealIndex": 0.9454966518042541,
+      "meanNetCash": 13610103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "stableGrowth",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 2,
+        "cushion": 11,
+        "purchasing": 1
+      },
+      "meanStars": 0.3,
+      "meanReturn": 0.020965383692453765,
+      "meanRealIndex": 0.9474966256781476,
+      "meanNetCash": 19256679.1
+    },
+    {
+      "scenario": "classic",
+      "profile": "balanced",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 17,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": 0.029999985529322797,
+      "meanRealIndex": 0.9559959290042951,
+      "meanNetCash": 25072103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "balanced",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 2.2,
+      "meanReturn": 0.028566401339440765,
+      "meanRealIndex": 0.9546602453032843,
+      "meanNetCash": 13160103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "balanced",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 10,
+        "cushion": 8,
+        "purchasing": 2
+      },
+      "meanStars": 1.5,
+      "meanReturn": 0.03556664874051158,
+      "meanRealIndex": 0.9609907835485725,
+      "meanNetCash": 17524303.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "balanced",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 8,
+        "purchasing": 2
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.027676919779182064,
+      "meanRealIndex": 0.9538280209844008,
+      "meanNetCash": 16163903.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "balanced",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 12,
+        "purchasing": 2
+      },
+      "meanStars": 0.9,
+      "meanReturn": 0.02919257462697965,
+      "meanRealIndex": 0.9552426704136316,
+      "meanNetCash": 19430103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "balanced",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 12,
+        "purchasing": 2
+      },
+      "meanStars": 0.9,
+      "meanReturn": 0.029267553293583597,
+      "meanRealIndex": 0.9553123947053794,
+      "meanNetCash": 19516903.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "balanced",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 6,
+        "purchasing": 2
+      },
+      "meanStars": 2.3,
+      "meanReturn": 0.02875973404793859,
+      "meanRealIndex": 0.9548413900173166,
+      "meanNetCash": 14260103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "balanced",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 15,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": 0.02981624636594369,
+      "meanRealIndex": 0.9558243838730605,
+      "meanNetCash": 24204103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "balanced",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 7,
+        "cushion": 10,
+        "purchasing": 2
+      },
+      "meanStars": 1.05,
+      "meanReturn": 0.02930257120358142,
+      "meanRealIndex": 0.9553488833052682,
+      "meanNetCash": 19553703.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "balanced",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.028700716770110025,
+      "meanRealIndex": 0.9547847725709712,
+      "meanNetCash": 13610103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "balanced",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 9,
+        "cushion": 10,
+        "purchasing": 2
+      },
+      "meanStars": 1.35,
+      "meanReturn": 0.03549595876596498,
+      "meanRealIndex": 0.9609248426568231,
+      "meanNetCash": 18594665.1
+    },
+    {
+      "scenario": "classic",
+      "profile": "growth",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 17,
+        "purchasing": 7
+      },
+      "meanStars": 0.9,
+      "meanReturn": 0.04964365158324566,
+      "meanRealIndex": 0.9743688970420484,
+      "meanNetCash": 25072103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "growth",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 4,
+        "purchasing": 6
+      },
+      "meanStars": 2.3,
+      "meanReturn": 0.046823512832578414,
+      "meanRealIndex": 0.9717373999610602,
+      "meanNetCash": 13160103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "growth",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 12,
+        "cushion": 8,
+        "purchasing": 6
+      },
+      "meanStars": 1.8,
+      "meanReturn": 0.05694889484142181,
+      "meanRealIndex": 0.9810386611085642,
+      "meanNetCash": 17524303.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "growth",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 15,
+        "cushion": 8,
+        "purchasing": 6
+      },
+      "meanStars": 2.25,
+      "meanReturn": 0.04677533837358637,
+      "meanRealIndex": 0.9716944989116015,
+      "meanNetCash": 16554503.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "growth",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 8,
+        "cushion": 12,
+        "purchasing": 7
+      },
+      "meanStars": 1.2,
+      "meanReturn": 0.050764257060508265,
+      "meanRealIndex": 0.9754126487166618,
+      "meanNetCash": 19430103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "growth",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 13,
+        "purchasing": 6
+      },
+      "meanStars": 0.9,
+      "meanReturn": 0.049905021951401056,
+      "meanRealIndex": 0.9746576478447976,
+      "meanNetCash": 20384903.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "growth",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 8,
+        "cushion": 6,
+        "purchasing": 5
+      },
+      "meanStars": 1.2,
+      "meanReturn": 0.02080455095932014,
+      "meanRealIndex": 0.9474026943495334,
+      "meanNetCash": 15060103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "growth",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 5,
+        "cushion": 14,
+        "purchasing": 6
+      },
+      "meanStars": 0.75,
+      "meanReturn": 0.04541209808978123,
+      "meanRealIndex": 0.9704402181503609,
+      "meanNetCash": 22902103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "growth",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 9,
+        "cushion": 12,
+        "purchasing": 8
+      },
+      "meanStars": 1.35,
+      "meanReturn": 0.06173524993885913,
+      "meanRealIndex": 0.9853981544794687,
+      "meanNetCash": 21426503.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "growth",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 4,
+        "purchasing": 6
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.04672870375251033,
+      "meanRealIndex": 0.9716544109999863,
+      "meanNetCash": 13610103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "growth",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 12,
+        "cushion": 9,
+        "purchasing": 6
+      },
+      "meanStars": 1.8,
+      "meanReturn": 0.05688606313668874,
+      "meanRealIndex": 0.9809810063507429,
+      "meanNetCash": 18054570.15
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 17,
+        "purchasing": 7
+      },
+      "meanStars": 0.9,
+      "meanReturn": 0.061614430158417534,
+      "meanRealIndex": 0.9855584161610198,
+      "meanNetCash": 25072103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 4,
+        "purchasing": 7
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.05797951466802688,
+      "meanRealIndex": 0.9821652736857572,
+      "meanNetCash": 13160103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 12,
+        "cushion": 8,
+        "purchasing": 7
+      },
+      "meanStars": 1.8,
+      "meanReturn": 0.06766258119822836,
+      "meanRealIndex": 0.991071737088253,
+      "meanNetCash": 17524303.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 14,
+        "cushion": 8,
+        "purchasing": 7
+      },
+      "meanStars": 2.1,
+      "meanReturn": 0.0581172536751305,
+      "meanRealIndex": 0.9822970620013745,
+      "meanNetCash": 16721503.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 10,
+        "cushion": 12,
+        "purchasing": 7
+      },
+      "meanStars": 1.5,
+      "meanReturn": 0.061048849866075304,
+      "meanRealIndex": 0.9850239847117443,
+      "meanNetCash": 19430103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 13,
+        "purchasing": 7
+      },
+      "meanStars": 0.9,
+      "meanReturn": 0.05574594147939478,
+      "meanRealIndex": 0.9801064047968486,
+      "meanNetCash": 20384903.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 8,
+        "cushion": 6,
+        "purchasing": 5
+      },
+      "meanStars": 1.2,
+      "meanReturn": 0.019075679582441378,
+      "meanRealIndex": 0.9457590828705971,
+      "meanNetCash": 15060103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 5,
+        "cushion": 15,
+        "purchasing": 4
+      },
+      "meanStars": 0.75,
+      "meanReturn": 0.04503550926250218,
+      "meanRealIndex": 0.9699849744274663,
+      "meanNetCash": 23987103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 10,
+        "cushion": 12,
+        "purchasing": 8
+      },
+      "meanStars": 1.5,
+      "meanReturn": 0.07058950320228605,
+      "meanRealIndex": 0.993566941035877,
+      "meanNetCash": 21426503.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 4,
+        "purchasing": 7
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.057882455271013454,
+      "meanRealIndex": 0.9820785761940183,
+      "meanNetCash": 13610103.05
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 12,
+        "cushion": 9,
+        "purchasing": 7
+      },
+      "meanStars": 1.8,
+      "meanReturn": 0.0675991959029433,
+      "meanRealIndex": 0.9910139479568038,
+      "meanNetCash": 18054570.15
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stable",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 15,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.026040980814498904,
+      "meanRealIndex": 0.8735623020213934,
+      "meanNetCash": 24688977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stable",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.0251753129252024,
+      "meanRealIndex": 0.8728269254978265,
+      "meanNetCash": 12776977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stable",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 6,
+        "purchasing": 0
+      },
+      "meanStars": 0.9,
+      "meanReturn": 0.02695375788033675,
+      "meanRealIndex": 0.8743377097799921,
+      "meanNetCash": 17141177.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stable",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 7,
+        "purchasing": 0
+      },
+      "meanStars": 2.9,
+      "meanReturn": 0.02626181583326489,
+      "meanRealIndex": 0.8737509033224837,
+      "meanNetCash": 15926977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stable",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 12,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.02553926712603778,
+      "meanRealIndex": 0.8731360475341352,
+      "meanNetCash": 19046977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stable",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 12,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.025607565641641728,
+      "meanRealIndex": 0.8731941509642598,
+      "meanNetCash": 19133777.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stable",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2.5,
+      "meanReturn": 0.025369612507320137,
+      "meanRealIndex": 0.8729922080792175,
+      "meanNetCash": 13876977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stable",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 15,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.025910787947363546,
+      "meanRealIndex": 0.8734515132056279,
+      "meanNetCash": 23820977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stable",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 1,
+        "cushion": 10,
+        "purchasing": 0
+      },
+      "meanStars": 0.15,
+      "meanReturn": 0.025543514302907654,
+      "meanRealIndex": 0.8731401641422286,
+      "meanNetCash": 18990377.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stable",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2.5,
+      "meanReturn": 0.02577287360350855,
+      "meanRealIndex": 0.8733336891672125,
+      "meanNetCash": 13426977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stable",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 4,
+        "cushion": 10,
+        "purchasing": 0
+      },
+      "meanStars": 0.6,
+      "meanReturn": 0.02696226546195708,
+      "meanRealIndex": 0.8743447498658294,
+      "meanNetCash": 18950927
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stableGrowth",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 15,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.02682029473017905,
+      "meanRealIndex": 0.8742613758902307,
+      "meanNetCash": 24688977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stableGrowth",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2.5,
+      "meanReturn": 0.025634264195434575,
+      "meanRealIndex": 0.8732541574427815,
+      "meanNetCash": 12776977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stableGrowth",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 8,
+        "cushion": 6,
+        "purchasing": 0
+      },
+      "meanStars": 1.2,
+      "meanReturn": 0.029335602372671344,
+      "meanRealIndex": 0.8763958596278961,
+      "meanNetCash": 17141177.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stableGrowth",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 7,
+        "purchasing": 0
+      },
+      "meanStars": 3,
+      "meanReturn": 0.02617848057888843,
+      "meanRealIndex": 0.8737165262479273,
+      "meanNetCash": 15757177.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stableGrowth",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 1,
+        "cushion": 12,
+        "purchasing": 0
+      },
+      "meanStars": 0.15,
+      "meanReturn": 0.02614442198652419,
+      "meanRealIndex": 0.873687251038547,
+      "meanNetCash": 19046977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stableGrowth",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 1,
+        "cushion": 12,
+        "purchasing": 0
+      },
+      "meanStars": 0.15,
+      "meanReturn": 0.026207519626472518,
+      "meanRealIndex": 0.8737410332187683,
+      "meanNetCash": 19133777.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stableGrowth",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2.7,
+      "meanReturn": 0.025831053296295425,
+      "meanRealIndex": 0.8734218715959546,
+      "meanNetCash": 13876977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stableGrowth",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 15,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.026671891198399356,
+      "meanRealIndex": 0.8741349210541683,
+      "meanNetCash": 23820977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stableGrowth",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 2,
+        "cushion": 10,
+        "purchasing": 0
+      },
+      "meanStars": 0.3,
+      "meanReturn": 0.02609965721673626,
+      "meanRealIndex": 0.8736501539791355,
+      "meanNetCash": 18990377.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stableGrowth",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2.9,
+      "meanReturn": 0.026304514872596274,
+      "meanRealIndex": 0.8738221282829866,
+      "meanNetCash": 13426977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stableGrowth",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 5,
+        "cushion": 10,
+        "purchasing": 0
+      },
+      "meanStars": 0.75,
+      "meanReturn": 0.02938097071024991,
+      "meanRealIndex": 0.8764331436299843,
+      "meanNetCash": 18950927
+    },
+    {
+      "scenario": "inflation",
+      "profile": "balanced",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 15,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.02767373590836041,
+      "meanRealIndex": 0.8750680893383003,
+      "meanNetCash": 24688977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "balanced",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2.1,
+      "meanReturn": 0.026211278432059122,
+      "meanRealIndex": 0.8738195622346282,
+      "meanNetCash": 12776977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "balanced",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 9,
+        "cushion": 6,
+        "purchasing": 0
+      },
+      "meanStars": 1.35,
+      "meanReturn": 0.036047476187466426,
+      "meanRealIndex": 0.882135811238436,
+      "meanNetCash": 17141177.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "balanced",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 15,
+        "cushion": 7,
+        "purchasing": 0
+      },
+      "meanStars": 2.25,
+      "meanReturn": 0.02505379541289634,
+      "meanRealIndex": 0.8728285437997225,
+      "meanNetCash": 15387377.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "balanced",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 7,
+        "cushion": 12,
+        "purchasing": 0
+      },
+      "meanStars": 1.05,
+      "meanReturn": 0.026850761124571076,
+      "meanRealIndex": 0.8743652890977727,
+      "meanNetCash": 19046977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "balanced",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 7,
+        "cushion": 12,
+        "purchasing": 0
+      },
+      "meanStars": 1.05,
+      "meanReturn": 0.02693100086520835,
+      "meanRealIndex": 0.874433749222909,
+      "meanNetCash": 19133777.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "balanced",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 14,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2,
+      "meanReturn": 0.02639340420958506,
+      "meanRealIndex": 0.8739755132863642,
+      "meanNetCash": 13876977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "balanced",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 15,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.02751407661688123,
+      "meanRealIndex": 0.8749314600982923,
+      "meanNetCash": 23820977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "balanced",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 7,
+        "cushion": 10,
+        "purchasing": 0
+      },
+      "meanStars": 1.05,
+      "meanReturn": 0.026964789114589032,
+      "meanRealIndex": 0.8744649147341212,
+      "meanNetCash": 18990377.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "balanced",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 15,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2.25,
+      "meanReturn": 0.026327427870984566,
+      "meanRealIndex": 0.8739175177908619,
+      "meanNetCash": 13426977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "balanced",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 8,
+        "cushion": 9,
+        "purchasing": 0
+      },
+      "meanStars": 1.2,
+      "meanReturn": 0.0360576600925891,
+      "meanRealIndex": 0.8821443328369174,
+      "meanNetCash": 18256668.65
+    },
+    {
+      "scenario": "inflation",
+      "profile": "growth",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 5,
+        "cushion": 15,
+        "purchasing": 2
+      },
+      "meanStars": 0.75,
+      "meanReturn": 0.03890468381293626,
+      "meanRealIndex": 0.8847314432669153,
+      "meanNetCash": 24688977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "growth",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 14,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 2,
+      "meanReturn": 0.036336811209055714,
+      "meanRealIndex": 0.8825357353542564,
+      "meanNetCash": 12776977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "growth",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 10,
+        "cushion": 6,
+        "purchasing": 3
+      },
+      "meanStars": 1.5,
+      "meanReturn": 0.04733487195899565,
+      "meanRealIndex": 0.8918776629261063,
+      "meanNetCash": 17141177.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "growth",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 13,
+        "cushion": 8,
+        "purchasing": 2
+      },
+      "meanStars": 1.95,
+      "meanReturn": 0.03641686272320746,
+      "meanRealIndex": 0.882605229605813,
+      "meanNetCash": 15604377.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "growth",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 8,
+        "cushion": 12,
+        "purchasing": 2
+      },
+      "meanStars": 1.2,
+      "meanReturn": 0.039796320578792434,
+      "meanRealIndex": 0.8854946800461487,
+      "meanNetCash": 19046977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "growth",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 13,
+        "purchasing": 3
+      },
+      "meanStars": 0.9,
+      "meanReturn": 0.03647115877166015,
+      "meanRealIndex": 0.8826954909884506,
+      "meanNetCash": 20001777.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "growth",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 8,
+        "cushion": 5,
+        "purchasing": 2
+      },
+      "meanStars": 1.2,
+      "meanReturn": 0.008535640397340376,
+      "meanRealIndex": 0.8587341720149716,
+      "meanNetCash": 14726977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "growth",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 5,
+        "cushion": 15,
+        "purchasing": 2
+      },
+      "meanStars": 0.75,
+      "meanReturn": 0.037250119753587364,
+      "meanRealIndex": 0.8833191694675913,
+      "meanNetCash": 22735977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "growth",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 10,
+        "cushion": 13,
+        "purchasing": 2
+      },
+      "meanStars": 1.5,
+      "meanReturn": 0.057048525751975165,
+      "meanRealIndex": 0.9001148556626519,
+      "meanNetCash": 20913177.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "growth",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 13,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 1.95,
+      "meanReturn": 0.03640281970751859,
+      "meanRealIndex": 0.8825909764775945,
+      "meanNetCash": 13426977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "growth",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 10,
+        "cushion": 7,
+        "purchasing": 3
+      },
+      "meanStars": 1.5,
+      "meanReturn": 0.04727136879781994,
+      "meanRealIndex": 0.8918240855468534,
+      "meanNetCash": 17678672.6
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 15,
+        "purchasing": 4
+      },
+      "meanStars": 0.9,
+      "meanReturn": 0.04546083775695696,
+      "meanRealIndex": 0.8903718784737633,
+      "meanNetCash": 24688977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 13,
+        "cushion": 4,
+        "purchasing": 3
+      },
+      "meanStars": 1.95,
+      "meanReturn": 0.04226674754912517,
+      "meanRealIndex": 0.8876392820644478,
+      "meanNetCash": 12776977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 10,
+        "cushion": 6,
+        "purchasing": 4
+      },
+      "meanStars": 1.5,
+      "meanReturn": 0.05210463979677098,
+      "meanRealIndex": 0.8960013669647872,
+      "meanNetCash": 17141177.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 11,
+        "cushion": 7,
+        "purchasing": 3
+      },
+      "meanStars": 1.65,
+      "meanReturn": 0.04248084615960249,
+      "meanRealIndex": 0.8878219763814978,
+      "meanNetCash": 15727977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 9,
+        "cushion": 12,
+        "purchasing": 4
+      },
+      "meanStars": 1.35,
+      "meanReturn": 0.04499863136634062,
+      "meanRealIndex": 0.8899738733194218,
+      "meanNetCash": 19046977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 13,
+        "purchasing": 4
+      },
+      "meanStars": 0.9,
+      "meanReturn": 0.03971823072777511,
+      "meanRealIndex": 0.8854781838921392,
+      "meanNetCash": 20001777.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 7,
+        "cushion": 5,
+        "purchasing": 2
+      },
+      "meanStars": 1.05,
+      "meanReturn": 0.004690068408379239,
+      "meanRealIndex": 0.8554316511676447,
+      "meanNetCash": 14726977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 4,
+        "cushion": 15,
+        "purchasing": 2
+      },
+      "meanStars": 0.6,
+      "meanReturn": 0.03243353992430162,
+      "meanRealIndex": 0.8791660791603586,
+      "meanNetCash": 23647377.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 11,
+        "cushion": 13,
+        "purchasing": 2
+      },
+      "meanStars": 1.65,
+      "meanReturn": 0.06564147862002519,
+      "meanRealIndex": 0.9074235919514504,
+      "meanNetCash": 20913177.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 12,
+        "cushion": 4,
+        "purchasing": 3
+      },
+      "meanStars": 1.8,
+      "meanReturn": 0.04217669827331241,
+      "meanRealIndex": 0.8875623533586138,
+      "meanNetCash": 13426977.95
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 10,
+        "cushion": 7,
+        "purchasing": 4
+      },
+      "meanStars": 1.5,
+      "meanReturn": 0.05204275599575999,
+      "meanRealIndex": 0.8959495581762071,
+      "meanNetCash": 17678672.6
+    },
+    {
+      "scenario": "recession",
+      "profile": "stable",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 18,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": 0.017341193524300014,
+      "meanRealIndex": 0.9707947925037977,
+      "meanNetCash": 25191116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stable",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 2.5,
+      "meanReturn": 0.016943465334682096,
+      "meanRealIndex": 0.9704181999192176,
+      "meanNetCash": 13279116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stable",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 3,
+        "cushion": 8,
+        "purchasing": 2
+      },
+      "meanStars": 0.45,
+      "meanReturn": 0.017878383018518886,
+      "meanRealIndex": 0.9713036770186164,
+      "meanNetCash": 17643316.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stable",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 19,
+        "cushion": 7,
+        "purchasing": 2
+      },
+      "meanStars": 2.75,
+      "meanReturn": 0.017350109052949036,
+      "meanRealIndex": 0.9708036238996145,
+      "meanNetCash": 15579116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stable",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 13,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": 0.017103926909636313,
+      "meanRealIndex": 0.970569907340774,
+      "meanNetCash": 19549116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stable",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 13,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": 0.017158577475438374,
+      "meanRealIndex": 0.9706220197888339,
+      "meanNetCash": 19635916.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stable",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 6,
+        "purchasing": 2
+      },
+      "meanStars": 2.7,
+      "meanReturn": 0.017064634466112248,
+      "meanRealIndex": 0.9705335723887775,
+      "meanNetCash": 14379116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stable",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 16,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": 0.017295239832472453,
+      "meanRealIndex": 0.9707513131422397,
+      "meanNetCash": 24366516.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stable",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 3,
+        "cushion": 7,
+        "purchasing": 2
+      },
+      "meanStars": 0.45,
+      "meanReturn": 0.017041749892471102,
+      "meanRealIndex": 0.9705108684972528,
+      "meanNetCash": 17249916.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stable",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 19,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 2.45,
+      "meanReturn": 0.017220151162107657,
+      "meanRealIndex": 0.9706798364679452,
+      "meanNetCash": 13729116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stable",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 2,
+        "cushion": 11,
+        "purchasing": 2
+      },
+      "meanStars": 0.3,
+      "meanReturn": 0.017864727879341114,
+      "meanRealIndex": 0.9712902663108869,
+      "meanNetCash": 19348522.45
+    },
+    {
+      "scenario": "recession",
+      "profile": "stableGrowth",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 18,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": 0.010368206776033678,
+      "meanRealIndex": 0.9642113830856541,
+      "meanNetCash": 25191116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stableGrowth",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 2.7,
+      "meanReturn": 0.010080208130866564,
+      "meanRealIndex": 0.9639399665580276,
+      "meanNetCash": 13279116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stableGrowth",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 2,
+        "cushion": 8,
+        "purchasing": 2
+      },
+      "meanStars": 0.3,
+      "meanReturn": 0.011629455228169628,
+      "meanRealIndex": 0.9654065558212672,
+      "meanNetCash": 17643316.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stableGrowth",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 18,
+        "cushion": 7,
+        "purchasing": 2
+      },
+      "meanStars": 2.7,
+      "meanReturn": 0.010286059058804364,
+      "meanRealIndex": 0.9641353442258467,
+      "meanNetCash": 15029116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stableGrowth",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 13,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": 0.010199424469765073,
+      "meanRealIndex": 0.9640517135962945,
+      "meanNetCash": 19549116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stableGrowth",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 13,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": 0.010235787400871655,
+      "meanRealIndex": 0.9640867533671218,
+      "meanNetCash": 19635916.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stableGrowth",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 14,
+        "cushion": 6,
+        "purchasing": 2
+      },
+      "meanStars": 1.9,
+      "meanReturn": 0.010137255285615394,
+      "meanRealIndex": 0.963994867968305,
+      "meanNetCash": 14379116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stableGrowth",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 16,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": 0.010336052045489147,
+      "meanRealIndex": 0.9641811977463485,
+      "meanNetCash": 24366516.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stableGrowth",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 2,
+        "cushion": 7,
+        "purchasing": 2
+      },
+      "meanStars": 0.3,
+      "meanReturn": 0.01012621566452665,
+      "meanRealIndex": 0.9639816561497637,
+      "meanNetCash": 17249916.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stableGrowth",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 18,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 2.7,
+      "meanReturn": 0.010393464572468314,
+      "meanRealIndex": 0.964235055891845,
+      "meanNetCash": 13729116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "stableGrowth",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 2,
+        "cushion": 11,
+        "purchasing": 2
+      },
+      "meanStars": 0.3,
+      "meanReturn": 0.01164435416356428,
+      "meanRealIndex": 0.9654205889558323,
+      "meanNetCash": 19348522.45
+    },
+    {
+      "scenario": "recession",
+      "profile": "balanced",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 18,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": -0.02912326597900446,
+      "meanRealIndex": 0.9265839269709796,
+      "meanNetCash": 25191116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "balanced",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 7,
+        "cushion": 4,
+        "purchasing": 1
+      },
+      "meanStars": 0.95,
+      "meanReturn": -0.027548986949998622,
+      "meanRealIndex": 0.9280821219573333,
+      "meanNetCash": 13279116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "balanced",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 8,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": -0.023029447171124866,
+      "meanRealIndex": 0.9322686479854658,
+      "meanNetCash": 17643316.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "balanced",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 4,
+        "purchasing": 1
+      },
+      "meanStars": 0.9,
+      "meanReturn": -0.027642436547575706,
+      "meanRealIndex": 0.9279950275164515,
+      "meanNetCash": 14179116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "balanced",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 13,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": -0.02822544579731977,
+      "meanRealIndex": 0.9274377050014534,
+      "meanNetCash": 19549116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "balanced",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 13,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": -0.0282416874989516,
+      "meanRealIndex": 0.9274227903406501,
+      "meanNetCash": 19635916.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "balanced",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 4,
+        "cushion": 6,
+        "purchasing": 1
+      },
+      "meanStars": 0.6,
+      "meanReturn": -0.027840902882055808,
+      "meanRealIndex": 0.9278051929575696,
+      "meanNetCash": 14379116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "balanced",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 16,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": -0.02893399145826141,
+      "meanRealIndex": 0.9267651037758171,
+      "meanNetCash": 24366516.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "balanced",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 7,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": -0.027998993590788286,
+      "meanRealIndex": 0.9276518992156261,
+      "meanNetCash": 17249916.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "balanced",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 4,
+        "purchasing": 1
+      },
+      "meanStars": 0.9,
+      "meanReturn": -0.028000082649255457,
+      "meanRealIndex": 0.9276582916798105,
+      "meanNetCash": 13729116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "balanced",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 9,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": -0.023191850448514312,
+      "meanRealIndex": 0.9321127264898369,
+      "meanNetCash": 18428284.7
+    },
+    {
+      "scenario": "recession",
+      "profile": "growth",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 18,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": -0.0754334948892587,
+      "meanRealIndex": 0.8824682938582766,
+      "meanNetCash": 25191116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "growth",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 3,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 0.45,
+      "meanReturn": -0.07186583277365707,
+      "meanRealIndex": 0.8858617354301067,
+      "meanNetCash": 13279116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "growth",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 2,
+        "cushion": 8,
+        "purchasing": 2
+      },
+      "meanStars": 0.3,
+      "meanReturn": -0.07564839161983827,
+      "meanRealIndex": 0.8821923080718623,
+      "meanNetCash": 17643316.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "growth",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 3,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 0.45,
+      "meanReturn": -0.07216770314775503,
+      "meanRealIndex": 0.885576956850014,
+      "meanNetCash": 14172516.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "growth",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 13,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": -0.07686290332666623,
+      "meanRealIndex": 0.8811039659736435,
+      "meanNetCash": 19549116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "growth",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 13,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": -0.09673161389619497,
+      "meanRealIndex": 0.8621732055912013,
+      "meanNetCash": 20503916.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "growth",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 1,
+        "cushion": 6,
+        "purchasing": 0
+      },
+      "meanStars": 0.15,
+      "meanReturn": -0.07290983822452923,
+      "meanRealIndex": 0.8849640777139676,
+      "meanNetCash": 15379116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "growth",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 17,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": -0.049707623012275964,
+      "meanRealIndex": 0.9069034553612149,
+      "meanNetCash": 24192916.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "growth",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 11,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": -0.04496740695525541,
+      "meanRealIndex": 0.9112613010364186,
+      "meanNetCash": 19666116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "growth",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 3,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 0.45,
+      "meanReturn": -0.07303760066850107,
+      "meanRealIndex": 0.884758980752404,
+      "meanNetCash": 13729116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "growth",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 2,
+        "cushion": 9,
+        "purchasing": 2
+      },
+      "meanStars": 0.3,
+      "meanReturn": -0.0758591682856391,
+      "meanRealIndex": 0.8819899614397698,
+      "meanNetCash": 18170978.7
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 18,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": -0.10250504199784456,
+      "meanRealIndex": 0.8566763705475546,
+      "meanNetCash": 25191116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 3,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 0.45,
+      "meanReturn": -0.09772958546073837,
+      "meanRealIndex": 0.8612181214695764,
+      "meanNetCash": 13279116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 2,
+        "cushion": 8,
+        "purchasing": 2
+      },
+      "meanStars": 0.3,
+      "meanReturn": -0.10308892739963813,
+      "meanRealIndex": 0.8560556444581859,
+      "meanNetCash": 17643316.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 3,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 0.45,
+      "meanReturn": -0.09817128134367466,
+      "meanRealIndex": 0.8608022993861548,
+      "meanNetCash": 14265916.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 13,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": -0.10239306121458144,
+      "meanRealIndex": 0.8567756537816894,
+      "meanNetCash": 19549116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 13,
+        "purchasing": 2
+      },
+      "meanStars": 0,
+      "meanReturn": -0.105797450142692,
+      "meanRealIndex": 0.8535339425688593,
+      "meanNetCash": 20503916.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 1,
+        "cushion": 6,
+        "purchasing": 0
+      },
+      "meanStars": 0.15,
+      "meanReturn": -0.07647060641052736,
+      "meanRealIndex": 0.8816009766282813,
+      "meanNetCash": 15379116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 17,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": -0.05638226547661701,
+      "meanRealIndex": 0.9003883218976159,
+      "meanNetCash": 24236316.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 11,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": -0.04199683622371263,
+      "meanRealIndex": 0.9140287862018,
+      "meanNetCash": 19666116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 3,
+        "cushion": 4,
+        "purchasing": 2
+      },
+      "meanStars": 0.45,
+      "meanReturn": -0.09896963426905347,
+      "meanRealIndex": 0.8600513599306131,
+      "meanNetCash": 13729116.95
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 2,
+        "cushion": 9,
+        "purchasing": 2
+      },
+      "meanStars": 0.3,
+      "meanReturn": -0.10335425360684951,
+      "meanRealIndex": 0.8558007825193705,
+      "meanNetCash": 18170978.7
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stable",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 17,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.021680583572358626,
+      "meanRealIndex": 0.9480787273694015,
+      "meanNetCash": 25072103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stable",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.021062349012806993,
+      "meanRealIndex": 0.9475085235343446,
+      "meanNetCash": 13160103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stable",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 6,
+        "cushion": 8,
+        "purchasing": 0
+      },
+      "meanStars": 0.9,
+      "meanReturn": 0.022388920791164724,
+      "meanRealIndex": 0.9487317428873135,
+      "meanNetCash": 17524303.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stable",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 8,
+        "purchasing": 0
+      },
+      "meanStars": 2.9,
+      "meanReturn": 0.021775083656304574,
+      "meanRealIndex": 0.9481672489167243,
+      "meanNetCash": 16060103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stable",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 12,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.02131803439274572,
+      "meanRealIndex": 0.947744110852742,
+      "meanNetCash": 19430103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stable",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 12,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.02137947434942943,
+      "meanRealIndex": 0.9478010441709405,
+      "meanNetCash": 19516903.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stable",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 6,
+        "purchasing": 0
+      },
+      "meanStars": 2.7,
+      "meanReturn": 0.021219724673027397,
+      "meanRealIndex": 0.947654255782355,
+      "meanNetCash": 14260103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stable",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 15,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.021563962869693067,
+      "meanRealIndex": 0.9479709461327733,
+      "meanNetCash": 24204103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stable",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 11,
+        "purchasing": 0
+      },
+      "meanStars": 0,
+      "meanReturn": 0.021413702444866713,
+      "meanRealIndex": 0.9478320869605081,
+      "meanNetCash": 20688703.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stable",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 0
+      },
+      "meanStars": 2.5,
+      "meanReturn": 0.021420002604287204,
+      "meanRealIndex": 0.947837408553525,
+      "meanNetCash": 13610103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stable",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 4,
+        "cushion": 11,
+        "purchasing": 0
+      },
+      "meanStars": 0.6,
+      "meanReturn": 0.02238230378067039,
+      "meanRealIndex": 0.9487249293837576,
+      "meanNetCash": 19256679.1
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stableGrowth",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 17,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": 0.01912261452492725,
+      "meanRealIndex": 0.9457996427125149,
+      "meanNetCash": 25072103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stableGrowth",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 4,
+        "purchasing": 1
+      },
+      "meanStars": 2.7,
+      "meanReturn": 0.018389117954457433,
+      "meanRealIndex": 0.9451225449135814,
+      "meanNetCash": 13160103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stableGrowth",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 4,
+        "cushion": 8,
+        "purchasing": 1
+      },
+      "meanStars": 0.6,
+      "meanReturn": 0.02096909527362173,
+      "meanRealIndex": 0.9475021240021615,
+      "meanNetCash": 17524303.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stableGrowth",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 19,
+        "cushion": 8,
+        "purchasing": 1
+      },
+      "meanStars": 2.75,
+      "meanReturn": 0.018674832783967775,
+      "meanRealIndex": 0.9453863639784043,
+      "meanNetCash": 15603503.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stableGrowth",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 1,
+        "cushion": 12,
+        "purchasing": 1
+      },
+      "meanStars": 0.15,
+      "meanReturn": 0.018699921639402393,
+      "meanRealIndex": 0.9454087810564864,
+      "meanNetCash": 19430103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stableGrowth",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 1,
+        "cushion": 12,
+        "purchasing": 1
+      },
+      "meanStars": 0.15,
+      "meanReturn": 0.01874946920070327,
+      "meanRealIndex": 0.9454550393750161,
+      "meanNetCash": 19516903.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stableGrowth",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 20,
+        "cushion": 6,
+        "purchasing": 1
+      },
+      "meanStars": 2.8,
+      "meanReturn": 0.01851892791946591,
+      "meanRealIndex": 0.9452435856432277,
+      "meanNetCash": 14260103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stableGrowth",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 15,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": 0.019018711221477393,
+      "meanRealIndex": 0.9457031627059838,
+      "meanNetCash": 24204103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stableGrowth",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 0,
+        "cushion": 11,
+        "purchasing": 1
+      },
+      "meanStars": 0,
+      "meanReturn": 0.01876573873344566,
+      "meanRealIndex": 0.9454692667051887,
+      "meanNetCash": 20688703.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stableGrowth",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 19,
+        "cushion": 4,
+        "purchasing": 1
+      },
+      "meanStars": 2.75,
+      "meanReturn": 0.01879754756408496,
+      "meanRealIndex": 0.9454966518042541,
+      "meanNetCash": 13610103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stableGrowth",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 2,
+        "cushion": 11,
+        "purchasing": 1
+      },
+      "meanStars": 0.3,
+      "meanReturn": 0.020965383692453765,
+      "meanRealIndex": 0.9474966256781476,
+      "meanNetCash": 19256679.1
+    },
+    {
+      "scenario": "recovery",
+      "profile": "balanced",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 4,
+        "cushion": 17,
+        "purchasing": 8
+      },
+      "meanStars": 0.6,
+      "meanReturn": 0.05968591136582112,
+      "meanRealIndex": 0.9835299153765298,
+      "meanNetCash": 25072103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "balanced",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 18,
+        "cushion": 4,
+        "purchasing": 7
+      },
+      "meanStars": 2.5,
+      "meanReturn": 0.05673813919463923,
+      "meanRealIndex": 0.9807898454409563,
+      "meanNetCash": 13160103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "balanced",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 14,
+        "cushion": 8,
+        "purchasing": 7
+      },
+      "meanStars": 2.1,
+      "meanReturn": 0.06249418870773439,
+      "meanRealIndex": 0.9859483342966996,
+      "meanNetCash": 17524303.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "balanced",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 18,
+        "cushion": 9,
+        "purchasing": 5
+      },
+      "meanStars": 2.7,
+      "meanReturn": 0.054742226277324835,
+      "meanRealIndex": 0.9789266218718294,
+      "meanNetCash": 17074303.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "balanced",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 12,
+        "cushion": 12,
+        "purchasing": 8
+      },
+      "meanStars": 1.8,
+      "meanReturn": 0.05801835089785523,
+      "meanRealIndex": 0.9819787129182564,
+      "meanNetCash": 19430103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "balanced",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 12,
+        "cushion": 12,
+        "purchasing": 8
+      },
+      "meanStars": 1.8,
+      "meanReturn": 0.05814289434682268,
+      "meanRealIndex": 0.9820939811314038,
+      "meanNetCash": 19516903.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "balanced",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 17,
+        "cushion": 6,
+        "purchasing": 7
+      },
+      "meanStars": 2.45,
+      "meanReturn": 0.05717756291775985,
+      "meanRealIndex": 0.9811990482591938,
+      "meanNetCash": 14260103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "balanced",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 5,
+        "cushion": 15,
+        "purchasing": 8
+      },
+      "meanStars": 0.75,
+      "meanReturn": 0.05926342651477397,
+      "meanRealIndex": 0.983136948883573,
+      "meanNetCash": 24204103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "balanced",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 10,
+        "cushion": 11,
+        "purchasing": 8
+      },
+      "meanStars": 1.5,
+      "meanReturn": 0.0586147176866945,
+      "meanRealIndex": 0.9825346720765882,
+      "meanNetCash": 20688703.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "balanced",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 18,
+        "cushion": 4,
+        "purchasing": 7
+      },
+      "meanStars": 2.7,
+      "meanReturn": 0.05706346700243531,
+      "meanRealIndex": 0.9810886878782485,
+      "meanNetCash": 13610103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "balanced",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 13,
+        "cushion": 10,
+        "purchasing": 7
+      },
+      "meanStars": 1.95,
+      "meanReturn": 0.062486244468006526,
+      "meanRealIndex": 0.9859408847997463,
+      "meanNetCash": 18330952.85
+    },
+    {
+      "scenario": "recovery",
+      "profile": "growth",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 9,
+        "cushion": 17,
+        "purchasing": 12
+      },
+      "meanStars": 1.35,
+      "meanReturn": 0.11965387985204157,
+      "meanRealIndex": 1.0393072149344822,
+      "meanNetCash": 25072103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "growth",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 17,
+        "cushion": 4,
+        "purchasing": 12
+      },
+      "meanStars": 2.45,
+      "meanReturn": 0.11329590656193118,
+      "meanRealIndex": 1.0333939501860705,
+      "meanNetCash": 13160103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "growth",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 8,
+        "purchasing": 14
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.12694302725283735,
+      "meanRealIndex": 1.0459419353655595,
+      "meanNetCash": 17524303.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "growth",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 10,
+        "purchasing": 12
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.1142207232815257,
+      "meanRealIndex": 1.0342441701267517,
+      "meanNetCash": 18382903.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "growth",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 12,
+        "purchasing": 13
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.12209126564112616,
+      "meanRealIndex": 1.0415739196374227,
+      "meanNetCash": 19430103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "growth",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 13,
+        "purchasing": 13
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.131742916254242,
+      "meanRealIndex": 1.050564929887124,
+      "meanNetCash": 20384903.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "growth",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 12,
+        "cushion": 6,
+        "purchasing": 8
+      },
+      "meanStars": 1.8,
+      "meanReturn": 0.06388584837477558,
+      "meanRealIndex": 0.9871391184354676,
+      "meanNetCash": 15110103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "growth",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 11,
+        "cushion": 14,
+        "purchasing": 12
+      },
+      "meanStars": 1.65,
+      "meanReturn": 0.1115210420452398,
+      "meanRealIndex": 1.0317071636265083,
+      "meanNetCash": 22294503.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "growth",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 10,
+        "cushion": 14,
+        "purchasing": 13
+      },
+      "meanStars": 1.5,
+      "meanReturn": 0.12515562447068404,
+      "meanRealIndex": 1.0443917984024524,
+      "meanNetCash": 22641703.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "growth",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 17,
+        "cushion": 4,
+        "purchasing": 12
+      },
+      "meanStars": 2.55,
+      "meanReturn": 0.11361054376922777,
+      "meanRealIndex": 1.033685603672004,
+      "meanNetCash": 13610103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "growth",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 9,
+        "purchasing": 14
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.12699044031120024,
+      "meanRealIndex": 1.0459886011691721,
+      "meanNetCash": 18318282.4
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "strategy": "passive",
+      "games": 20,
+      "wins": {
+        "pension": 9,
+        "cushion": 17,
+        "purchasing": 15
+      },
+      "meanStars": 1.35,
+      "meanReturn": 0.15603369956237026,
+      "meanRealIndex": 1.073138456202566,
+      "meanNetCash": 25072103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "strategy": "contributor",
+      "games": 20,
+      "wins": {
+        "pension": 17,
+        "cushion": 4,
+        "purchasing": 15
+      },
+      "meanStars": 2.55,
+      "meanReturn": 0.1476815486017326,
+      "meanRealIndex": 1.0653693154799222,
+      "meanNetCash": 13160103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "strategy": "balanced",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 8,
+        "purchasing": 15
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.1615075729028583,
+      "meanRealIndex": 1.0780977706638533,
+      "meanNetCash": 17524303.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "strategy": "steward",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 11,
+        "purchasing": 15
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.14984833449585439,
+      "meanRealIndex": 1.0673766302871806,
+      "meanNetCash": 19083903.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "strategy": "growth",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 12,
+        "purchasing": 15
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.15339840521016093,
+      "meanRealIndex": 1.070679089007069,
+      "meanNetCash": 19430103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "strategy": "etfOnly",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 13,
+        "purchasing": 15
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.1484219418532483,
+      "meanRealIndex": 1.0660663787782405,
+      "meanNetCash": 20384903.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "strategy": "stopLoss",
+      "games": 20,
+      "wins": {
+        "pension": 12,
+        "cushion": 6,
+        "purchasing": 7
+      },
+      "meanStars": 1.8,
+      "meanReturn": 0.062255893818470256,
+      "meanRealIndex": 0.9855208885759851,
+      "meanNetCash": 15110103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "strategy": "momentum",
+      "games": 20,
+      "wins": {
+        "pension": 10,
+        "cushion": 15,
+        "purchasing": 11
+      },
+      "meanStars": 1.5,
+      "meanReturn": 0.10778087949575041,
+      "meanRealIndex": 1.0281434640838394,
+      "meanNetCash": 24030503.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "strategy": "newsChaser",
+      "games": 20,
+      "wins": {
+        "pension": 11,
+        "cushion": 14,
+        "purchasing": 13
+      },
+      "meanStars": 1.65,
+      "meanReturn": 0.138261555133686,
+      "meanRealIndex": 1.056553056837783,
+      "meanNetCash": 22641703.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "strategy": "defaultOption",
+      "games": 20,
+      "wins": {
+        "pension": 17,
+        "cushion": 4,
+        "purchasing": 15
+      },
+      "meanStars": 2.55,
+      "meanReturn": 0.14792245295450196,
+      "meanRealIndex": 1.0655889723612706,
+      "meanNetCash": 13610103.05
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "strategy": "withdrawer",
+      "games": 20,
+      "wins": {
+        "pension": 16,
+        "cushion": 9,
+        "purchasing": 15
+      },
+      "meanStars": 2.4,
+      "meanReturn": 0.16162567646509196,
+      "meanRealIndex": 1.0782112456218447,
+      "meanNetCash": 18318282.4
+    }
+  ]
+}

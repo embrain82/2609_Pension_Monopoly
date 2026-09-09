@@ -1,3 +1,4 @@
+import { SCENARIOS, MISSIONS, type Campaign } from '../engine/scenario-engine';
 import { products } from '../data/content';
 import { emptyMarketStep } from '../engine/market-engine';
 import { createGame } from '../engine/game-engine';
@@ -22,6 +23,15 @@ function shape(template: unknown, value: unknown): boolean {
   if (typeof template === 'object') return value !== null && typeof value === 'object' && Object.entries(template as object).every(([k,v]) => shape(v, (value as Record<string, unknown>)[k]));
   return typeof value === typeof template && (typeof value !== 'number' || Number.isFinite(value));
 }
+function validCampaign(d: Campaign, depth = 0): boolean {
+  if (!d || !Object.hasOwn(SCENARIOS,d.scenario) || !Object.hasOwn(MISSIONS,d.mission) || typeof d.weekly !== 'boolean') return false;
+  if (![d.priceIndex,d.index,d.peak,d.drawdown,d.open,d.afterMarket,d.flowStart,d.benchmark,d.benchmarkOpen,d.startingGoal].every(Number.isFinite) || d.priceIndex <= 0 || d.index < 0 || d.peak <= 0) return false;
+  if (!['stable','stableGrowth','balanced','growth','aggressive'].includes(d.startingProfile)) return false;
+  if (!products.every(p=>Number.isFinite(d.baselineWeights[p.id]) && d.baselineWeights[p.id]>=0)) return false;
+  if (!Array.isArray(d.reviews) || d.reviews.length>12 || !d.reviews.every(r=>Number.isInteger(r.turn) && r.turn>=1 && r.turn<=12 && [r.irp,r.flow,r.market,r.costs,r.cash,r.index,r.realIndex,r.benchmark].every(Number.isFinite) && typeof r.headline==='string' && Array.isArray(r.actions) && r.actions.every(a=>typeof a==='string') && Array.isArray(r.holdings) && r.holdings.every(h=>products.some(p=>p.id===h.productId) && Number.isFinite(h.amount) && h.amount>=0))) return false;
+  if (!Array.isArray(d.branches) || d.branches.length>3 || (depth>0 && d.branches.length)) return false;
+  return d.branches.every(b=>[3,6,9].includes(b.turn) && b.state.turn===b.turn && b.state.status==='playing' && shape(createGame('validate','balanced',500000,{ghost:false}),b.state) && validCampaign({...b.progress,branches:[]},depth+1));
+}
 export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
   try {
     if (!raw || raw.length > 1000000) return null;
@@ -33,8 +43,9 @@ export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
     delete (data as PlayCheckpoint & { routePending?: boolean }).routePending;
     if (!shape(createGame('validate', 'balanced', 500000, { ghost: false }), data.game)) return null;
     const g = data.game;
+    if(g.campaign && !validCampaign(g.campaign)) return null;
     const finite = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
-    if (g.rulesetVersion !== '2026-09-10-c') return null;
+    if (g.rulesetVersion !== (g.campaign ? '2026-09-10-d' : '2026-09-10-c')) return null;
     if (!g.holdings.every(h => h && products.some(p => p.id === h.productId) && finite(h.amount) && h.amount >= 0 && finite(h.principal))) return null;
     if (!g.pendingOrders.every(o => o && products.some(p => p.id === o.productId) && ['buy','sell'].includes(o.side) && finite(o.amount) && finite(o.settlesTurn))) return null;
     if (!g.marketPath.every(m => shape(emptyMarketStep(),m)) || !shape(emptyMarketStep(),g.lastMarket)) return null;

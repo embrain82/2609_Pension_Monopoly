@@ -1,3 +1,4 @@
+import type { Campaign } from './engine/scenario-engine';
 import type { RouteProgress } from './engine/route-engine';
 export type ProductId = 'deposit' | 'shortBond' | 'longBond' | 'balanced' | 'equityEtf' | 'tdf';
 export type ProductKind = 'deposit' | 'fund' | 'etf';
@@ -181,6 +182,9 @@ export interface QuizQuestion {
 }
 
 export interface LearningCard {
+  learningObjective?: string;
+  relatedActions?: string[];
+  gameAssumption?: string;
   id: string;
   category: '시장' | '상품' | '제도' | '운용';
   title: string;
@@ -403,9 +407,10 @@ export interface CashFlow {
 }
 
 export interface GameState {
+  campaign?: Campaign;
   route: RouteProgress;
   accountType: 'IRP';
-  rulesetVersion: '2026-09-09-p0' | '2026-09-10-b' | '2026-09-10-c';
+  rulesetVersion: '2026-09-09-p0' | '2026-09-10-b' | '2026-09-10-c' | '2026-09-10-d';
   avatarId: AvatarId;
   accountBasis: AccountBasis;
   cashFlows: CashFlow[];

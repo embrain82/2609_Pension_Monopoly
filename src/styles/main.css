@@ -867,3 +867,14 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
 .visit-stamp { fill:#27695d; }
 .decision-market { margin-right:44px; }
 .region-progress>div button { min-height:44px; padding:5px 8px; font-size:14px; }
+
+.campaign-picker { max-width:640px; margin:20px auto; text-align:left; padding:18px; border:1px solid #b9d2c4; border-radius:16px; background:#f0f6ed; }
+.campaign-picker summary { cursor:pointer; font-weight:700; }
+.campaign-picker label { display:block; margin-top:16px; }
+.campaign-picker select { width:100%; min-width:0; margin:8px 0; min-height:44px; }
+.campaign-picker p, .campaign-report small { font-size:.85rem; line-height:1.6; }
+.campaign-status { padding:14px; border-radius:14px; background:#edf4e8; margin-bottom:12px; }
+.campaign-status p { margin:6px 0; font-size:.9rem; }
+.campaign-report { text-align:left; padding:20px; border:1px solid #b9d2c4; border-radius:18px; margin:24px 0; }
+.campaign-report table { min-width:640px; }
+.campaign-report th, .campaign-report td { padding:10px; }

@@ -12,8 +12,8 @@ const unlockedWith = (state: GameState, ...ids: string[]): GameState => ({ ...st
 const card = (id: string) => learningCards.find((item) => item.id === id)!;
 
 describe('퀴즈 데이터(3.4)', () => {
-  it('카드 20장마다 3지선다 1문항이 있고 정답 위치가 한쪽으로 몰리지 않는다', () => {
-    expect(learningCards).toHaveLength(20);
+  it('카드 25장마다 3지선다 1문항이 있고 정답 위치가 한쪽으로 몰리지 않는다', () => {
+    expect(learningCards).toHaveLength(25);
     expect(() => validateContent()).not.toThrow();
     const counts = [0, 0, 0];
     for (const item of learningCards) {

@@ -116,14 +116,14 @@ function regimeBriefing(rng: Rng, regime: Regime, rateDeltaPct: number, stockRet
   };
 }
 
-export function generateMarketPath(seed: string, config: MarketConfig = balanceConfig.market): MarketStep[] {
+export function generateMarketPath(seed: string, config: MarketConfig = balanceConfig.market, origin?: MarketStep): MarketStep[] {
   const rng = createRng(hashSeed(`${seed}:market`));
   const plan = planShocks(rng, config);
-  let macro: MacroState = initialMacro(config, rng);
+  let macro: MacroState = origin ? { ratePct: origin.ratePct, inflationPct: origin.inflationPct, stockIndex: origin.stockIndex, regime: origin.regime } : initialMacro(config, rng);
   let recoveryLeft = 0;
   const path: MarketStep[] = [];
 
-  for (let turn = 1; turn <= balanceConfig.maxTurns; turn += 1) {
+  for (let turn = (origin?.turn ?? 0) + 1; turn <= balanceConfig.maxTurns; turn += 1) {
     const regime = macro.regime;
     const shock = plan.get(turn);
     const move = regimeMove(rng, config.regimes[regime], config);

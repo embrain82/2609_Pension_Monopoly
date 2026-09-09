@@ -1,3 +1,5 @@
+import { beginPerformance, finishPerformance } from './performance-engine';
+import { scenarioConfig, withGlidePath, inflatedEvent, type ScenarioId, type MissionId } from './scenario-engine';
 import { newRouteProgress, stampVisit } from './route-engine';
 import { initialHoldings } from './profile-engine';
 import { addAccountFlow, accountPayout } from './account-engine';
@@ -14,7 +16,7 @@ import { REBALANCE_TILE_BONUS, applyTileArrival } from './tile-effects';
 import { diversificationCount } from './scoring-engine';
 import { applyDefaultOption, normalizeDefaultOption, suggestDefaultOption } from './default-option';
 import { resolveLifeChoice } from './life-engine';
-import { answerQuiz, finalQuizCards, marketTileQuizzes, pickQuizCard, queueQuiz } from './quiz-engine';
+import { actionLesson, answerQuiz, finalQuizCards, marketTileQuizzes, pickQuizCard, queueQuiz } from './quiz-engine';
 import { milestonesReached, stampMilestones } from './milestones';
 
 export { applyGoalToGame, clampGoalMonthly };
@@ -30,6 +32,9 @@ export interface GameAction {
 export type AmountPreset = 'default' | 'half' | 'max';
 
 export interface GameOptions {
+  scenario?: ScenarioId;
+  mission?: MissionId;
+  weekly?: boolean;
   avatarId?: ProfileId;
   /** 칸 효과 켬/끔. 게이트 측정용. 기본 켬 */
   tileEffects?: boolean;
@@ -74,20 +79,21 @@ export function emptyRecord(): PlayRecord {
 }
 
 /** 같은 시드·같은 주사위·행동은 늘 "그대로"인 경로. 결과 화면과 정산의 비교 기준. */
-export function ghostTrackFor(seed: string, profileId: ProfileId, goalMonthly: number, tileEffects: boolean): GhostTrack {
-  const ghost = autoplay(seed, 'passive', profileId, { ghost: false, tileEffects, goalMonthly });
+export function ghostTrackFor(seed: string, profileId: ProfileId, goalMonthly: number, tileEffects: boolean, options: GameOptions = {}): GhostTrack {
+  const ghost = autoplay(seed, 'passive', profileId, { ...options, ghost: false, tileEffects, goalMonthly });
   return { irpHistory: ghost.irpHistory, finalCash: ghost.cash };
 }
 
 export function createGame(seed: string, profileId: ProfileId = 'balanced', goalMonthly = balanceConfig.defaultGoal, options: GameOptions = {}): GameState {
+  if(options.weekly) { profileId='balanced'; goalMonthly=500000; options={...options,scenario:'classic',mission:'pension'}; }
   const scheduled = scheduleLifeEvents(hashSeed(seed));
-  const marketPath = generateMarketPath(seed);
+  const marketPath = options.scenario ? withGlidePath(generateMarketPath(seed, scenarioConfig(options.scenario))) : generateMarketPath(seed);
   const market = emptyMarketStep();
   const tileEffectsEnabled = options.tileEffects !== false;
   const goal = clampGoalMonthly(goalMonthly);
   const state: GameState = {
     route: newRouteProgress(),
-    accountType: 'IRP', rulesetVersion: '2026-09-10-c', avatarId: options.avatarId ?? 'balanced',
+    accountType: 'IRP', rulesetVersion: options.scenario ? '2026-09-10-d' : '2026-09-10-c', avatarId: options.avatarId ?? 'balanced',
     accountBasis: { retirement: 90_000_000, retirementTax: 1_800_000, deducted: 9_000_000, nonDeducted: 9_000_000 },
     cashFlows: [], livingDebt: 0, orderSequence: 0, rebalancePlan: null,
     prices: { deposit: 1000, shortBond: 1000, longBond: 1000, balanced: 1000, equityEtf: 1000, tdf: 1000 },
@@ -134,7 +140,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
     rebalanceBonusTurn: null,
     extraLifeEvents: 0,
     tileEffectsEnabled,
-    ghost: options.ghost === false ? null : ghostTrackFor(seed, profileId, goal, tileEffectsEnabled),
+    ghost: options.ghost === false ? null : ghostTrackFor(seed, profileId, goal, tileEffectsEnabled, options),
     payoutChoice: null,
     defaultOption: options.defaultOption ? normalizeDefaultOption(profileId, options.defaultOption) : null,
     lifeResolution: null,
@@ -145,6 +151,15 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
     turnMilestones: [],
     record: emptyRecord()
   };
+  if (options.scenario) {
+    const weights = Object.fromEntries(state.holdings.map(h => [h.productId, h.amount / balanceConfig.startingIrp]));
+    state.unlockedCards = [...new Set([...state.unlockedCards,'db-dc-irp','pricing-vs-settlement','tdf-glide'])];
+    state.campaign = { scenario: options.scenario, mission: options.mission ?? 'pension', weekly: options.weekly ?? false,
+      startingProfile: profileId, startingGoal: goal, priceIndex: 1, index: 1, peak: 1, drawdown: 0,
+      open: balanceConfig.startingIrp, afterMarket: balanceConfig.startingIrp, flowStart: 0,
+      benchmark: balanceConfig.startingIrp, benchmarkOpen: balanceConfig.startingIrp,
+      baselineWeights: { deposit:0, shortBond:0, longBond:0, balanced:0, equityEtf:0, tdf:0, ...weights }, reviews: [], branches: [] };
+  }
   // 시작 시점에 이미 넘어선 이정표(기본 목표면 90%까지)는 배너 없이 기록만 한다.
   return { ...state, milestonesHit: milestonesReached(state) };
 }
@@ -248,6 +263,7 @@ export function startTurn(state: GameState, steps = 0): ActionResult {
     turnMilestones: []
   }, market);
   next = settleOrders(next);
+  next = beginPerformance(state, next);
   next = {
     ...next,
     ledger: { open, afterMarket: portfolioValue(next), beforeAction: null },
@@ -356,7 +372,7 @@ export function performAction(state: GameState, action: GameAction): ActionResul
     }
   }
   if (!result.ok) return { ...result, state: { ...result.state, ledger: state.ledger } };
-  let acted: GameState = result.state;
+  let acted: GameState = actionLesson(result.state, action.kind);
   let message = result.message;
   if (action.kind === 'rebalance') {
     acted = { ...acted, record: { ...acted.record, rebalanceTurns: [...acted.record.rebalanceTurns, state.turn] } };
@@ -402,8 +418,9 @@ export function finalizeTurn(state: GameState): GameState {
       };
     }
   }
+  next = finishPerformance(next);
   const diversified = diversificationCount(next) >= balanceConfig.diversificationMin;
-  return stampMilestones({
+  const finalized = stampMilestones({
     ...next,
     status: state.turn >= balanceConfig.maxTurns ? 'finished' : 'playing',
     awaitingAction: false,
@@ -414,6 +431,12 @@ export function finalizeTurn(state: GameState): GameState {
     record: diversified ? { ...next.record, diversifiedTurns: next.record.diversifiedTurns + 1 } : next.record,
     logs: [...next.logs, { turn: state.turn, type: 'settle', message: `${state.turn}턴 마감` }]
   });
+  if(finalized.campaign && [3,6,9].includes(finalized.turn)) {
+    const {campaign,...rest}=finalized;
+    const {branches,...progress}=campaign;
+    finalized.campaign={...campaign,branches:[...branches,{turn:finalized.turn,state:structuredClone(rest),progress:structuredClone(progress)}]};
+  }
+  return finalized;
 }
 
 export type AutoStrategy = 'balanced' | 'passive' | 'contributor' | 'growth' | 'steward' | 'etfOnly' | 'stopLoss' | 'momentum' | 'newsChaser' | 'defaultOption' | 'withdrawer';
@@ -525,7 +548,7 @@ export function autoplay(seed: string, strategy: AutoStrategy = 'balanced', prof
     state = startTurn(state, diceStepsForTurn(state.seed, state.turn)).state;
     if (quizMode !== 'none' && state.pendingQuizCardId) state = autoAnswer(state, state.pendingQuizCardId, quizMode);
     if (state.currentEventId) {
-      const event = lifeEvents.find((item) => item.id === state.currentEventId)!;
+      const event = inflatedEvent(state, lifeEvents.find((item) => item.id === state.currentEventId)!);
       const choose = options.lifeChoice ?? (strategy === 'withdrawer' ? withdrawerLifeChoice : defaultLifeChoice);
       const resolved = resolveLifeEvent(state, choose(state, event));
       state = resolved.ok ? resolved.state : resolveLifeEvent(state, defaultLifeChoice(state, event)).state;

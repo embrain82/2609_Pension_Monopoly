@@ -12,6 +12,7 @@ export function profileFromScore(score: number): ProfileId {
 }
 
 export function applyProfileToGame(game: GameState, profileId: ProfileId): GameState {
+  if (game.campaign) return game;
   if (game.profileId === profileId) return game;
   const unlocked = game.unlockedCards.includes('profile') ? game.unlockedCards : [...game.unlockedCards, 'profile'];
   return { ...game, profileId, unlockedCards: unlocked,

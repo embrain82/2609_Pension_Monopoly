@@ -1,3 +1,5 @@
+import { depositLots } from './portfolio-engine';
+import { scenarioConfig, withGlidePath } from './scenario-engine';
 import { profileDistance } from './profile-engine';
 import { balanceConfig, boardTiles, investorProfiles, learningCards, lifeEvents, policyRules, products } from '../data/content';
 import type { BoardTile, GameState, ProductId, TileEffect } from '../types';
@@ -182,7 +184,7 @@ export function outlookRange(state: GameState, forks = OUTLOOK_FORKS): { low: nu
   const pendingSells = state.pendingOrders.filter((order) => order.side === 'sell').reduce((sum, order) => sum + order.amount, 0);
   const results: number[] = [];
   for (let fork = 0; fork < forks; fork += 1) {
-    const path = generateMarketPath(`${state.seed}:fork:${fork}`);
+    const path = state.campaign ? withGlidePath(generateMarketPath(`${state.seed}:fork:${fork}`, scenarioConfig(state.campaign.scenario), state.lastMarket)) : generateMarketPath(`${state.seed}:fork:${fork}`);
     let holdings = state.holdings.map((holding) => ({ productId: holding.productId, amount: holding.amount }));
     for (const order of pendingBuys) {
       const index = holdings.findIndex((holding) => holding.productId === order.productId);
@@ -190,9 +192,14 @@ export function outlookRange(state: GameState, forks = OUTLOOK_FORKS): { low: nu
       else holdings.push({ productId: order.productId, amount: order.amount });
     }
     for (let turn = state.turn + 1; turn <= balanceConfig.maxTurns; turn += 1) {
-      const step = path[turn - 1];
+      const step = path.find(s => s.turn === turn)!;
       holdings = holdings.map((holding) => {
         const product = products.find((item) => item.id === holding.productId)!;
+        if(state.campaign && holding.productId==='deposit') {
+          const original=state.holdings.find(h=>h.productId==='deposit');
+          const interest=original ? depositLots(state,original).reduce((sum,lot)=>sum+(turn<=lot.maturityTurn ? lot.principal*lot.ratePerTurn : 0),0) : 0;
+          return {...holding,amount:holding.amount+interest};
+        }
         const gross = holding.amount * (1 + step.returns[holding.productId]);
         return { ...holding, amount: Math.max(0, gross - Math.max(0, gross * product.feeRate)) };
       });
@@ -209,7 +216,7 @@ function outlook(state: GameState, tile: BoardTile): Applied {
   const turnsLeft = balanceConfig.maxTurns - state.turn;
   const detail = turnsLeft <= 0
     ? `마지막 턴. 지금 월 연금 ${won(monthlyPension(portfolioValue(state)))} · 목표 ${won(state.goalMonthly)}.`
-    : `지금 구성 그대로 ${turnsLeft}턴을 더 가면 월 연금 ${won(range.low)}~${won(range.high)} (중간 ${won(range.mid)}) · 목표 ${won(state.goalMonthly)}. 범위가 넓을수록 결과가 운에 많이 달려 있습니다.`;
+    : `지금 구성 그대로 ${turnsLeft}턴을 더 가면 월 연금 ${won(range.low)}~${won(range.high)} (중간 ${won(range.mid)}) · 목표 ${won(state.goalMonthly)}. 가상 20개 경로의 표본 범위이며 실제 확률이나 수익을 보장하지 않습니다.`;
   return {
     state: unlock(state, 'pension-assumption'),
     effect: { kind: 'outlook', tileIndex: tile.index, title: '은퇴 전망대 · 이대로 가면', detail, range }
@@ -241,7 +248,7 @@ function diversifyCheck(state: GameState, tile: BoardTile): Applied {
       title: '분산 광장',
       detail: ok
         ? `5% 이상 보유 상품 ${count}종 · 분산을 지키고 있어요 (이해 +1)`
-        : `지금 ${count}종. ${need}종 이상으로 나누면 한 충격이 전체를 흔들지 못합니다.`,
+        : `지금 ${count}종. ${need}종 이상으로 나누면 충격의 영향을 줄이는 데 도움이 될 수 있습니다.`,
       understanding: ok ? 1 : 0
     }
   };
