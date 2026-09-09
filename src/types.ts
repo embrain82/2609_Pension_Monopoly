@@ -4,6 +4,9 @@ export type TileKind = 'start' | 'product' | 'market' | 'life' | 'trade' | 'reba
 export type Trend = 'up' | 'down' | 'flat';
 export type ProfileId = 'stable' | 'stableGrowth' | 'balanced' | 'growth' | 'aggressive';
 
+// 저장 키는 기존 동물 컬렉션과 호환하되 투자성향과 별도로 선택한다.
+export type AvatarId = ProfileId;
+
 export interface Product {
   id: ProductId;
   name: string;
@@ -268,6 +271,8 @@ export interface DefaultOption {
   name: string;
   products: ProductId[];
   blurb: string;
+  weights: Partial<Record<ProductId, number>>;
+  approvalModel: true;
 }
 
 export interface InvestorProfile {
@@ -276,6 +281,9 @@ export interface InvestorProfile {
   minScore: number;
   maxScore: number;
   expectedRiskRatio: number;
+  allocation: Record<ProductId, number>;
+  startingAllocation: Record<ProductId, number>;
+  safeCash: number;
   maxDrawdown: number;
   minRiskGrade: number;
   description: string;
@@ -347,6 +355,7 @@ export interface Holding {
   amount: number;
   principal: number;
   depositTurnsHeld: number;
+  defaultAmount?: number;
   units?: number;
   lots?: DepositLot[];
 }
@@ -359,13 +368,15 @@ export interface PendingOrder {
   submittedTurn: number;
   settlesTurn: number;
   stage: 'received' | 'priced';
+  defaultAmount?: number;
   units?: number;
   priceTurn?: number;
   groupId?: string;
   targetProductId?: ProductId;
+  defaultOptionId?: DefaultOptionId;
 }
 
-export type ActionKind = 'contribute' | 'buy' | 'sell' | 'switch' | 'rebalance' | 'hold';
+export type ActionKind = 'contribute' | 'buy' | 'sell' | 'switch' | 'rebalance' | 'hold' | 'default-opt-in' | 'default-opt-out' | 'cash-instruction';
 
 export interface GameLog {
   turn: number;
@@ -380,6 +391,7 @@ export interface DepositLot {
   openedTurn: number;
   maturityTurn: number;
   ratePerTurn: number;
+  defaultOptionId?: DefaultOptionId;
 }
 
 export interface AccountBasis {
@@ -395,9 +407,26 @@ export interface CashFlow {
   amount: number;
 }
 
+export interface DefaultCashLot {
+  id: number;
+  amount: number;
+  cashOrigin: 'maturity' | 'newAccount' | 'contribution' | 'transfer' | 'sale';
+  createdTurn: number;
+  eligibility: boolean;
+  explicitCashInstruction: boolean;
+  noticeAt: number | null;
+  activateAt: number | null;
+  optionId: DefaultOptionId | null;
+  status: 'unassigned' | 'waiting' | 'notified' | 'cash' | 'ordered';
+}
+
 export interface GameState {
   accountType: 'IRP';
-  rulesetVersion: '2026-09-09-p0';
+  rulesetVersion: '2026-09-09-p0' | '2026-09-10-b';
+  avatarId: AvatarId;
+  defaultCashLots: DefaultCashLot[];
+  cashSequence: number;
+  defaultOptedOut: boolean;
   accountBasis: AccountBasis;
   cashFlows: CashFlow[];
   livingDebt: number;
@@ -582,13 +611,14 @@ export interface AchievementDef {
   scope: 'game' | 'meta';
 }
 
-/** 성향(캐릭터)별 완주 기록. 도감 「캐릭터 컬렉션」의 재료 */
+/** 선택한 캐릭터별 완주 기록. 도감 「캐릭터 컬렉션」의 재료 */
 export type Collection = Record<ProfileId, { plays: number; bestStars: 0 | 1 | 2 | 3 }>;
 
 export type AnimationSpeed = 1 | 2;
 
 export interface SaveData {
-  version: 6;
+  version: 7;
+  avatarId: AvatarId;
   settings: {
     reducedMotion: boolean;
     sound: boolean;

@@ -1,3 +1,4 @@
+import { profileLimits } from '../engine/profile-engine';
 import { balanceConfig, policyRules } from '../data/content';
 import type { GameState, ScoreResult } from '../types';
 
@@ -12,7 +13,7 @@ export function turnsLeft(state: GameState): number {
 
 export function goalStatusLine(state: GameState, score: ScoreResult): string {
   const remaining = Math.max(0, state.goalMonthly - score.monthlyPension);
-  const cashGap = Math.max(0, balanceConfig.safeCashThreshold - state.cash);
+  const cashGap = Math.max(0, profileLimits(state).safeCash - state.cash + state.livingDebt);
   if (score.goalRate < balanceConfig.nearGoalRate) {
     return `목표까지 ${formatMan(remaining)} · 남은 턴 ${turnsLeft(state)}`;
   }

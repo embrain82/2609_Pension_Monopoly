@@ -106,10 +106,10 @@ export function tokenClasses(view: Pick<TokenView, 'characters'>): string {
 export function renderTokenLayer(state: GameState, view: TokenView): string {
   const index = tokenTileIndex(view.index);
   const face = view.characters
-    ? `<svg viewBox="0 0 100 100" aria-hidden="true">${avatarBody(state.profileId, view.mood)}</svg>`
+    ? `<svg viewBox="0 0 100 100" aria-hidden="true">${avatarBody(state.avatarId, view.mood)}</svg>`
     : '<b>나</b>';
   return `<div class="token-layer" aria-hidden="true">
-      <div class="token-pos" data-index="${index}" data-animal="${view.characters ? AVATAR_ANIMALS[state.profileId] : ''}" style="transform:${tokenTranslate(index)}">
+      <div class="token-pos" data-index="${index}" data-animal="${view.characters ? AVATAR_ANIMALS[state.avatarId] : ''}" style="transform:${tokenTranslate(index)}">
         <div class="${tokenClasses(view)}"><i class="token-shadow"></i><i class="token-rim"></i><div class="token-face">${face}</div></div>
       </div>
     </div>`;

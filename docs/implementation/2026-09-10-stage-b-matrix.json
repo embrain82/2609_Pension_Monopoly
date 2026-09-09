@@ -1,0 +1,68 @@
+{
+  "games": 200,
+  "errors": 0,
+  "goalMonthly": 450000,
+  "strategy": "steward",
+  "results": [
+    {
+      "profile": "안정형",
+      "newAccount": false,
+      "games": 20,
+      "threeStars": 20
+    },
+    {
+      "profile": "안정형",
+      "newAccount": true,
+      "games": 20,
+      "threeStars": 7
+    },
+    {
+      "profile": "안정추구형",
+      "newAccount": false,
+      "games": 20,
+      "threeStars": 14
+    },
+    {
+      "profile": "안정추구형",
+      "newAccount": true,
+      "games": 20,
+      "threeStars": 6
+    },
+    {
+      "profile": "위험중립형",
+      "newAccount": false,
+      "games": 20,
+      "threeStars": 19
+    },
+    {
+      "profile": "위험중립형",
+      "newAccount": true,
+      "games": 20,
+      "threeStars": 16
+    },
+    {
+      "profile": "적극투자형",
+      "newAccount": false,
+      "games": 20,
+      "threeStars": 19
+    },
+    {
+      "profile": "적극투자형",
+      "newAccount": true,
+      "games": 20,
+      "threeStars": 2
+    },
+    {
+      "profile": "공격투자형",
+      "newAccount": false,
+      "games": 20,
+      "threeStars": 19
+    },
+    {
+      "profile": "공격투자형",
+      "newAccount": true,
+      "games": 20,
+      "threeStars": 7
+    }
+  ]
+}

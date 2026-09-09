@@ -1,3 +1,4 @@
+import { spendCashLots } from './cash-ledger';
 import { addAccountFlow, grossForNet, withdrawalTax, TRANSFER_TAX_NOTICE } from './account-engine';
 import { lifeEvents, policyRules } from '../data/content';
 import type { ActionResult, GameState, LifeChoice, LifeChoiceOption, LifeEvent, LifeResolution } from '../types';
@@ -49,7 +50,7 @@ function withdrawalPlan(state: GameState, event: LifeEvent, depositOnly = false)
   const gross = grossForNet(portfolioValue(next), next.accountBasis, amount);
   if (!Number.isFinite(gross) || next.irpCash + 0.001 < gross) return { ok: false, message: '결제된 IRP 자금이 부족합니다. 펀드·대기주문을 즉시 인출할 수 없습니다.', state };
   const tax = withdrawalTax(portfolioValue(next), next.accountBasis, gross);
-  next = { ...next, irpCash: Math.max(0, next.irpCash - gross), accountBasis: tax.nextBasis,
+  next = { ...spendCashLots(next, gross), irpCash: Math.max(0, next.irpCash - gross), accountBasis: tax.nextBasis,
     cashFlows: [...next.cashFlows, { turn: state.turn, kind: 'withdrawal', amount: -gross }] };
   return { ok: true, message: `허용 사유를 확인한 인출 · 생활비 ${won(amount)} + 재원별 세금 ${won(tax.tax)}. 계좌 내 매도와 계좌 밖 인출을 별도 처리했습니다.`, state: next };
 }

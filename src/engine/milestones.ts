@@ -1,3 +1,4 @@
+import { profileLimits } from './profile-engine';
 import { balanceConfig } from '../data/content';
 import type { GameState, Milestone, MilestoneId } from '../types';
 import { portfolioValue } from './portfolio-engine';
@@ -21,7 +22,7 @@ export function goalRateOf(state: GameState): number {
 export function milestonesReached(state: GameState): MilestoneId[] {
   const rate = goalRateOf(state);
   const hit: MilestoneId[] = GOAL_STEPS.filter((step) => rate >= step.rate).map((step) => step.id);
-  if (state.maxDrawdown > balanceConfig.maxDrawdownThreshold) hit.push('drawdown-12');
+  if (state.maxDrawdown > profileLimits(state).maxDrawdown) hit.push('drawdown-12');
   return hit;
 }
 
@@ -38,7 +39,7 @@ function describe(id: MilestoneId, state: GameState): Omit<Milestone, 'turn'> {
     case 'goal-50':
       return { id, tone: 'cheer', title: '목표의 절반 통과', detail: `월 ${won(pension)}. 절반을 넘었습니다.` };
     case 'drawdown-12':
-      return { id, tone: 'warn', title: `낙폭 ${Math.round(balanceConfig.maxDrawdownThreshold * 100)}% 초과`, detail: `최대 낙폭 ${Math.round(state.maxDrawdown * 100)}%. 이번 판 3별 조건 하나가 잠겼습니다. 분산과 리밸런싱으로 더 깊어지는 것을 막으세요.` };
+      return { id, tone: 'warn', title: `낙폭 ${Math.round(profileLimits(state).maxDrawdown * 100)}% 초과`, detail: `최대 낙폭 ${Math.round(state.maxDrawdown * 100)}%. 이번 판 3별 조건 하나가 잠겼습니다. 분산과 리밸런싱으로 더 깊어지는 것을 막으세요.` };
   }
 }
 

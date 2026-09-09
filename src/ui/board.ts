@@ -55,7 +55,7 @@ function tileFx(kind: TileKind): string {
 
 function playerToken(state: GameState, view: BoardView): string {
   if (view.characters) {
-    return `<svg class="player-avatar" x="26" y="16" width="48" height="48" viewBox="0 0 100 100" aria-label="${AVATAR_ANIMALS[state.profileId]} 말">${avatarBody(state.profileId, view.mood ?? 'calm')}</svg>`;
+    return `<svg class="player-avatar" x="26" y="16" width="48" height="48" viewBox="0 0 100 100" aria-label="${AVATAR_ANIMALS[state.avatarId]} 말">${avatarBody(state.avatarId, view.mood ?? 'calm')}</svg>`;
   }
   return '<circle class="player" cx="50" cy="45" r="13"></circle><text class="player-mark" x="50" y="50" text-anchor="middle">나</text>';
 }

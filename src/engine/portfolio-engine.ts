@@ -1,5 +1,6 @@
-import { balanceConfig, products } from '../data/content';
-import type { ActionResult, DepositLot, GameState, Holding, PendingOrder, ProductId } from '../types';
+import { registerCash, spendCashLots } from './cash-ledger';
+import { balanceConfig, defaultOptions, investorProfiles, products } from '../data/content';
+import type { ActionResult, DefaultOptionId, DepositLot, GameState, Holding, PendingOrder, ProductId } from '../types';
 import { canBuyForProfile, canBuyRiskAsset, effectiveRiskRatio, maxBuyWithinRiskLimit } from './policy-engine';
 
 export function portfolioValue(state: Pick<GameState, 'holdings' | 'irpCash'> & Partial<Pick<GameState, 'pendingOrders'>>): number {
@@ -32,76 +33,82 @@ function orderFor(state: GameState, side: 'buy' | 'sell', productId: ProductId, 
     priceTurn: state.turn + 1, settlesTurn: state.turn + 2, stage: 'received',
     ...(side === 'sell' ? { units: amount / state.prices[productId] } : {}) };
 }
-function addHolding(state: GameState, productId: ProductId, amount: number): GameState {
+function addHolding(state: GameState, productId: ProductId, amount: number, defaultAmount = 0, defaultOptionId?: DefaultOptionId): GameState {
   const current = holdingFor(state, productId);
-  const next: Holding = { ...current, amount: current.amount + amount, principal: current.principal + amount,
+  const next: Holding = { ...current, defaultAmount: (current.defaultAmount ?? 0) + defaultAmount, amount: current.amount + amount, principal: current.principal + amount,
     units: (current.amount + amount) / state.prices[productId] };
   if (productId === 'deposit') {
-    next.lots = [...depositLots(state, current), { amount, principal: amount, openedTurn: state.turn,
+    next.lots = [...depositLots(state, current), { defaultOptionId, amount, principal: amount, openedTurn: state.turn,
       maturityTurn: state.turn + balanceConfig.depositMaturityTurns,
       ratePerTurn: balanceConfig.market.depositBase + balanceConfig.market.depositPerRatePct * state.lastMarket.ratePct }];
   }
   return { ...state, holdings: put(state, next) };
 }
 
-export function buyProduct(state: GameState, productId: ProductId, requestedAmount = balanceConfig.tradeAmount, internal = false): ActionResult {
+export function buyProduct(state: GameState, productId: ProductId, requestedAmount = balanceConfig.tradeAmount, internal = false, defaultOptionId?: DefaultOptionId): ActionResult {
   const error = invalid(state, requestedAmount, internal);
   if (error) return { ok: false, message: error, state };
   const product = products.find(p => p.id === productId);
   if (!product) return { ok: false, message: '상품을 찾을 수 없습니다.', state };
+  if (defaultOptionId && (!internal || defaultOptionId !== state.defaultOption || !defaultOptions.some(o => o.id === defaultOptionId && o.approvalModel && o.products.includes(productId)))) return { ok: false, state, message: '지정된 가상 승인형 포트폴리오 주문이 아닙니다.' };
   const amount = Math.min(requestedAmount, state.irpCash);
   if (amount < (internal ? 0.01 : 100000)) return { ok: false, message: 'IRP 대기자금이 부족합니다.', state };
   const suitability = canBuyForProfile(state.profileId, productId);
   if (!suitability.ok) return { ok: false, message: suitability.reason, state };
-  const check = canBuyRiskAsset(state, productId, amount);
+  const check = defaultOptionId ? { ok: true, reason: "가상 승인형 포트폴리오 편입", ratio: 0 } : canBuyRiskAsset(state, productId, amount);
   if (!check.ok) return { ok: false, message: check.reason, state, expectedRiskRatio: check.ratio };
   let next = { ...state, irpCash: state.irpCash - amount, riskBuyCount: state.riskBuyCount + (product.regulatoryRisk ? 1 : 0) };
   if (product.kind === 'fund') {
-    next = { ...next, pendingOrders: [...state.pendingOrders, orderFor(state, 'buy', productId, amount)], orderSequence: state.orderSequence + 1 };
-  } else next = addHolding(next, productId, amount);
+    next = { ...next, pendingOrders: [...state.pendingOrders, { ...orderFor(state, 'buy', productId, amount), defaultOptionId, defaultAmount: defaultOptionId ? amount : 0 }], orderSequence: state.orderSequence + 1 };
+  } else next = addHolding(next, productId, amount, defaultOptionId ? amount : 0, defaultOptionId);
+  if (!defaultOptionId) next = spendCashLots(next, amount);
   return { ok: true, state: next, expectedRiskRatio: check.ratio,
     message: product.kind === 'fund' ? `${product.shortName} 매수 접수 → 다음 턴 기준가 확정 → 그다음 턴 결제(게임 시간)`
       : `${product.shortName} ${product.kind === 'deposit' ? '신규 약정 가입' : '표시가격 체결(게임 가정)'} · IRP 안에서 운용됩니다.` };
 }
 
 /** FIFO 가입 건별 해지. 중도해지는 발생 이자의 50%만 지급하는 가상 약정이며 원금은 차감하지 않는다. */
-export function depositSale(state: GameState, requested: number) {
+export function depositSale(state: GameState, requested: number, defaultOnly = false) {
   const holding = holdingFor(state, 'deposit');
-  let remaining = Math.min(requested, holding.amount), penalty = 0, principalSold = 0;
+  let remaining = Math.min(requested, holding.amount), penalty = 0, principalSold = 0, defaultSold = 0;
   const lots = depositLots(state, holding).map(lot => {
-    const take = Math.min(remaining, lot.amount);
+    const take = defaultOnly && !lot.defaultOptionId ? 0 : Math.min(remaining, lot.amount);
+    if (lot.defaultOptionId) defaultSold += take;
     const fraction = lot.amount > 0 ? take / lot.amount : 0;
     remaining -= take;
     principalSold += lot.principal * fraction;
     if (state.turn < lot.maturityTurn) penalty += Math.max(0, lot.amount - lot.principal) * fraction * 0.5;
     return { ...lot, amount: lot.amount - take, principal: lot.principal * (1 - fraction) };
   }).filter(lot => lot.amount > 0.001);
-  return { amount: Math.min(requested, holding.amount), penalty, principalSold, lots };
+  return { amount: Math.min(requested, holding.amount) - remaining, penalty, principalSold, defaultSold, lots };
 }
 
-export function sellProduct(state: GameState, productId: ProductId, requestedAmount = balanceConfig.tradeAmount, internal = false): ActionResult {
+export function sellProduct(state: GameState, productId: ProductId, requestedAmount = balanceConfig.tradeAmount, internal = false, defaultOnly = false): ActionResult {
   const error = invalid(state, requestedAmount, internal);
   if (error) return { ok: false, message: error, state };
   const product = products.find(p => p.id === productId);
   const current = holdingFor(state, productId);
-  const amount = Math.min(requestedAmount, current.amount);
+  const amount = Math.min(requestedAmount, defaultOnly ? current.defaultAmount ?? 0 : current.amount);
   if (!product || amount < (internal ? 0.01 : 100000)) return { ok: false, message: '매도할 잔고가 부족합니다.', state };
   const fraction = amount / current.amount;
+  let defaultSold = defaultOnly ? amount : (current.defaultAmount ?? 0) * fraction;
   const updated: Holding = { ...current, amount: current.amount - amount, principal: current.principal * (1 - fraction),
     units: (current.amount - amount) / state.prices[productId] };
   let penalty = 0;
   if (productId === 'deposit') {
-    const sale = depositSale(state, amount);
+    const sale = depositSale(state, amount, defaultOnly);
+    defaultSold = sale.defaultSold;
     penalty = sale.penalty;
     updated.lots = sale.lots;
     updated.principal = Math.max(0, current.principal - sale.principalSold);
   }
+  updated.defaultAmount = Math.max(0, (current.defaultAmount ?? 0) - defaultSold);
   const next = { ...state, holdings: put(state, updated) };
   if (product.kind === 'fund') return { ok: true,
     message: `${product.shortName} 환매 수량 예약 → 다음 턴 가격 확정 → 그다음 턴 IRP 대기자금 결제`,
-    state: { ...next, pendingOrders: [...state.pendingOrders, orderFor(state, 'sell', productId, amount)], orderSequence: state.orderSequence + 1 } };
+    state: { ...next, pendingOrders: [...state.pendingOrders, { ...orderFor(state, 'sell', productId, amount), defaultAmount: defaultSold }], orderSequence: state.orderSequence + 1 } };
   return { ok: true, message: `${product.shortName} 매도 대금이 IRP 대기자금에 반영되었습니다.${penalty > 0 ? ` 중도해지 이자 조정 ${Math.round(penalty).toLocaleString('ko-KR')}원.` : ''}`,
-    state: { ...next, irpCash: next.irpCash + amount - penalty, understandingPoints: next.understandingPoints + (internal ? 0 : 1) } };
+    state: registerCash({ ...next, irpCash: next.irpCash + amount - penalty, understandingPoints: next.understandingPoints + (internal ? 0 : 1) }, amount - penalty, 'sale') };
 }
 
 export function switchProduct(state: GameState, fromId: ProductId, toId: ProductId, amount = balanceConfig.tradeAmount): ActionResult {
@@ -146,9 +153,10 @@ export function settleOrders(state: GameState): GameState {
       order = { ...order, stage: 'priced', units: order.side === 'buy' ? order.amount / state.prices[order.productId] : order.units };
     }
     if (order.settlesTurn > state.turn) { next.pendingOrders.push(order); continue; }
-    if (order.side === 'buy') next = addHolding(next, order.productId, order.amount);
+    if (order.side === 'buy') next = addHolding(next, order.productId, order.amount, order.defaultAmount ?? 0, order.defaultOptionId);
     else {
       next.irpCash += order.amount;
+      next = registerCash(next, order.amount, 'sale');
       if (order.targetProductId) switches.push(order);
     }
   }
@@ -179,9 +187,7 @@ export function settleAllOrders(state: GameState): GameState {
 }
 
 export function rebalanceShares(profileId: GameState['profileId']): Record<ProductId, number> {
-  const raw = Object.fromEntries(products.map(p => [p.id, canBuyForProfile(profileId, p.id).ok ? balanceConfig.rebalanceAllocation[p.id] : 0])) as Record<ProductId, number>;
-  const sum = Object.values(raw).reduce((s, n) => s + n, 0);
-  return Object.fromEntries(products.map(p => [p.id, sum > 0 ? raw[p.id] / sum : 0])) as Record<ProductId, number>;
+  return { ...investorProfiles.find(p => p.id === profileId)!.allocation };
 }
 export function rebalanceTargetRisk(profileId: GameState['profileId']): number {
   const shares = rebalanceShares(profileId);

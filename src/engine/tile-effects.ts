@@ -1,10 +1,11 @@
+import { profileDistance } from './profile-engine';
 import { balanceConfig, boardTiles, investorProfiles, learningCards, lifeEvents, policyRules, products } from '../data/content';
 import type { BoardTile, GameState, ProductId, TileEffect } from '../types';
 import { ALERT_CARD_ID, generateMarketPath, marketPathOf } from './market-engine';
-import { portfolioValue, rebalanceShares, rebalanceTargetRisk } from './portfolio-engine';
+import { portfolioValue, rebalanceShares } from './portfolio-engine';
 import { riskAssetRatio } from './policy-engine';
 import { hashSeed, nextRandom } from './random-engine';
-import { behaviorProfile, diversificationCount, monthlyPension } from './scoring-engine';
+import { behaviorProfile, diversificationNeeded, diversificationCount, monthlyPension } from './scoring-engine';
 
 /** 은퇴 전망대가 굴리는 분기 시장 수 */
 export const OUTLOOK_FORKS = 20;
@@ -219,9 +220,9 @@ function profileCheck(state: GameState, tile: BoardTile): Applied {
   const diagnosed = investorProfiles.find((item) => item.id === state.profileId)!;
   const actual = investorProfiles.find((item) => item.id === behaviorProfile(state))!;
   const ratio = riskAssetRatio(state);
-  const target = rebalanceTargetRisk(state.profileId);
-  const aligned = Math.abs(ratio - target) <= balanceConfig.profileAlignBand;
-  const detail = `진단 ${diagnosed.name} · 행동 ${actual.name}(위험비중 ${pct(ratio)}, 성향 목표 ${pct(target)}) → ${aligned ? `${Math.round(balanceConfig.profileAlignBand * 100)}%p 이내 · 이해 +1` : '차이가 큽니다. 리밸런싱으로 맞추거나 설정에서 성향을 다시 진단해 보세요.'}`;
+  const distance = profileDistance(state);
+  const aligned = distance <= balanceConfig.profileAlignBand;
+  const detail = `진단 ${diagnosed.name} · 현재 구성 유사 성향 ${actual.name}(규제 위험비중 ${pct(ratio)}, 목표 구성 차이 ${pct(distance)}) → ${aligned ? `${Math.round(balanceConfig.profileAlignBand * 100)}%p 이내 · 이해 +1` : '차이가 큽니다. 리밸런싱으로 맞추거나 설정에서 성향을 다시 진단해 보세요.'}`;
   return {
     state: understand(unlock(state, 'profile'), aligned ? 1 : 0),
     effect: { kind: 'profile-check', tileIndex: tile.index, title: '성향 점검', detail, understanding: aligned ? 1 : 0 }
@@ -230,7 +231,7 @@ function profileCheck(state: GameState, tile: BoardTile): Applied {
 
 function diversifyCheck(state: GameState, tile: BoardTile): Applied {
   const count = diversificationCount(state);
-  const need = balanceConfig.diversificationMin;
+  const need = diversificationNeeded(state.profileId);
   const ok = count >= need;
   return {
     state: ok ? understand(state, 1) : unlock(state, 'diversification'),

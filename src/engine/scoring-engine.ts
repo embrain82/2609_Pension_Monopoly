@@ -1,7 +1,8 @@
+import { profileDistance, profileLimits } from './profile-engine';
 import { accountPayout } from './account-engine';
 import { balanceConfig, investorProfiles, policyRules, products } from '../data/content';
 import type { GameState, PayoutChoice, PayoutPlan, ProfileId, ScoreResult } from '../types';
-import { portfolioValue, rebalanceTargetRisk } from './portfolio-engine';
+import { portfolioValue } from './portfolio-engine';
 import { canBuyForProfile, riskAssetRatio } from './policy-engine';
 
 /**
@@ -43,10 +44,9 @@ export function diversificationNeeded(profileId: ProfileId): number {
 }
 
 export function behaviorProfile(state: GameState): ProfileId {
-  const ratio = riskAssetRatio(state);
-  let closest = investorProfiles[0];
+  let closest = investorProfiles.find(p => p.id === state.profileId)!;
   for (const profile of investorProfiles) {
-    if (Math.abs(profile.expectedRiskRatio - ratio) < Math.abs(closest.expectedRiskRatio - ratio)) closest = profile;
+    if (profileDistance(state, profile.id) < profileDistance(state, closest.id) - 0.000001) closest = profile;
   }
   return closest.id;
 }
@@ -86,10 +86,10 @@ export function starChecklist(state: GameState, score: ScoreResult): { label: st
   const need = diversificationNeeded(state.profileId);
   return [
     { label: `월 연금이 목표의 ${Math.round(balanceConfig.nearGoalRate * 100)}%에 닿음`, passed: score.goalRate >= balanceConfig.nearGoalRate },
-    { label: `생활자금 ${(balanceConfig.safeCashThreshold / 10000).toFixed(0)}만 원`, passed: state.cash >= balanceConfig.safeCashThreshold },
-    { label: `낙폭 ${Math.round(balanceConfig.maxDrawdownThreshold * 100)}% 이하`, passed: state.maxDrawdown <= balanceConfig.maxDrawdownThreshold },
+    { label: `생활자금 ${(profileLimits(state).safeCash / 10000).toFixed(0)}만 원`, passed: state.cash - state.livingDebt >= profileLimits(state).safeCash },
+    { label: `낙폭 ${Math.round(profileLimits(state).maxDrawdown * 100)}% 이하`, passed: state.maxDrawdown <= profileLimits(state).maxDrawdown },
     { label: `분산 ${need}종 이상`, passed: score.diversification >= need },
-    { label: `성향 목표 위험비중과 ${Math.round(balanceConfig.profileAlignBand * 100)}%p 이내`, passed: score.profileAligned }
+    { label: `성향 목표 구성 차이 ${Math.round(balanceConfig.profileAlignBand * 100)}%p 이내`, passed: score.profileAligned }
   ];
 }
 
@@ -129,15 +129,15 @@ export function starLockReason(state: GameState, score: ScoreResult): StarLock {
     // 별 1 = (95% 이상·미달) 또는 (달성·생활자금 부족). 둘 중 어느 쪽인지로 다음 조건이 갈린다.
     reason = !score.goalMet
       ? `목표 월 연금 ${won(state.goalMonthly)}에 ${won(gap)} 모자랍니다`
-      : `생활자금 ${won(state.cash)}이 기준 ${won(balanceConfig.safeCashThreshold)}에 ${won(balanceConfig.safeCashThreshold - state.cash)} 모자랍니다`;
+      : `생활자금 ${won(state.cash)}이 기준 ${won(profileLimits(state).safeCash)}에 ${won(profileLimits(state).safeCash - state.cash)} 모자랍니다`;
   } else if (score.stars === 2) {
     nextStars = 3;
     const need = diversificationNeeded(state.profileId);
-    reason = state.maxDrawdown > balanceConfig.maxDrawdownThreshold
-      ? `최대 낙폭 ${Math.round(state.maxDrawdown * 100)}%가 기준 ${Math.round(balanceConfig.maxDrawdownThreshold * 100)}%를 넘었습니다`
+    reason = state.maxDrawdown > profileLimits(state).maxDrawdown
+      ? `최대 낙폭 ${Math.round(state.maxDrawdown * 100)}%가 기준 ${Math.round(profileLimits(state).maxDrawdown * 100)}%를 넘었습니다`
       : score.diversification < need
         ? `5% 이상 보유 상품이 ${score.diversification}종 — ${need}종 이상이어야 합니다`
-        : `위험비중 ${Math.round(score.riskRatio * 100)}%가 성향 목표 ${Math.round(rebalanceTargetRisk(state.profileId) * 100)}%와 ${Math.round(balanceConfig.profileAlignBand * 100)}%p 넘게 다릅니다`;
+        : `목표 구성에서 옮겨야 할 비중 ${Math.round(profileDistance(state) * 100)}%가 허용 범위보다 ${Math.round(balanceConfig.profileAlignBand * 100)}%p 넘게 다릅니다`;
   }
   const line = reason
     ? `${total}개 조건 중 ${passed}개 통과 · 별 ${nextStars}개까지: ${reason}`
@@ -193,9 +193,9 @@ export function calculateScore(state: GameState): ScoreResult {
   const riskRatio = riskAssetRatio(state);
   const diversification = diversificationCount(state);
   const actualProfile = behaviorProfile(state);
-  const profileAligned = Math.abs(riskRatio - rebalanceTargetRisk(state.profileId)) <= balanceConfig.profileAlignBand;
-  const safeCash = state.cash - state.livingDebt >= balanceConfig.safeCashThreshold;
-  const drawdownOk = state.maxDrawdown <= balanceConfig.maxDrawdownThreshold;
+  const profileAligned = profileDistance(state) <= balanceConfig.profileAlignBand;
+  const safeCash = state.cash - state.livingDebt >= profileLimits(state).safeCash;
+  const drawdownOk = state.maxDrawdown <= profileLimits(state).maxDrawdown;
   const diversified = diversification >= diversificationNeeded(state.profileId);
   const nearGoal = goalRate >= balanceConfig.nearGoalRate;
 
@@ -207,7 +207,7 @@ export function calculateScore(state: GameState): ScoreResult {
 
   const incomeScore = Math.min(50, Math.max(0, goalRate * 50));
   const stabilityScore = Math.min(30, Math.max(0,
-    (safeCash ? 9 : Math.max(0, 9 * state.cash / balanceConfig.safeCashThreshold)) +
+    (safeCash ? 9 : Math.max(0, 9 * Math.max(0, state.cash - state.livingDebt) / profileLimits(state).safeCash)) +
     (drawdownOk ? 9 : Math.max(0, 9 * (1 - state.maxDrawdown))) +
     Math.min(7, diversification * 2.4) +
     Math.max(0, 5 - state.cashShortages * 2)

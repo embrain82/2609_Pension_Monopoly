@@ -12,8 +12,8 @@ function withHoldings(
 }
 
 describe('별 사다리 헬퍼', () => {
-  it('위험중립형 리밸런싱 목표 위험은 약 27.8%이다', () => {
-    expect(rebalanceTargetRisk('balanced')).toBeCloseTo(0.2778, 3);
+  it('위험중립형 리밸런싱 목표 위험은 30%이다', () => {
+    expect(rebalanceTargetRisk('balanced')).toBeCloseTo(0.3, 3);
   });
 
   it('안정형은 허용 상품이 2개라 분산 하한이 2이다', () => {
@@ -73,7 +73,7 @@ describe('별 사다리 공식', () => {
       '생활자금 600만 원',
       '낙폭 12% 이하',
       '분산 3종 이상',
-      '성향 목표 위험비중과 10%p 이내'
+      '성향 목표 구성 차이 10%p 이내'
     ]);
     expect(rows[0].passed).toBe(false);
     expect(rows[1].passed).toBe(true);

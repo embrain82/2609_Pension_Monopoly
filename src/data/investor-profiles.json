@@ -4,40 +4,108 @@
     "name": "안정형",
     "minScore": 5,
     "maxScore": 7,
-    "expectedRiskRatio": 0.15,
+    "expectedRiskRatio": 0,
     "maxDrawdown": 0.05,
     "description": "원금 안정과 낮은 변동성을 우선합니다.",
-    "minRiskGrade": 5
+    "minRiskGrade": 5,
+    "allocation": {
+      "deposit": 0.8,
+      "shortBond": 0.2,
+      "longBond": 0,
+      "balanced": 0,
+      "equityEtf": 0,
+      "tdf": 0
+    },
+    "startingAllocation": {
+      "deposit": 0.8,
+      "shortBond": 0.2,
+      "longBond": 0,
+      "balanced": 0,
+      "equityEtf": 0,
+      "tdf": 0
+    },
+    "safeCash": 8000000
   },
   {
     "id": "stableGrowth",
     "name": "안정추구형",
     "minScore": 8,
     "maxScore": 10,
-    "expectedRiskRatio": 0.3,
+    "expectedRiskRatio": 0,
     "maxDrawdown": 0.08,
     "description": "안정을 중심에 두고 제한된 성장을 추구합니다.",
-    "minRiskGrade": 4
+    "minRiskGrade": 4,
+    "allocation": {
+      "deposit": 0.55,
+      "shortBond": 0.3,
+      "longBond": 0.15,
+      "balanced": 0,
+      "equityEtf": 0,
+      "tdf": 0
+    },
+    "startingAllocation": {
+      "deposit": 0.6,
+      "shortBond": 0.25,
+      "longBond": 0.15,
+      "balanced": 0,
+      "equityEtf": 0,
+      "tdf": 0
+    },
+    "safeCash": 7000000
   },
   {
     "id": "balanced",
     "name": "위험중립형",
     "minScore": 11,
     "maxScore": 13,
-    "expectedRiskRatio": 0.5,
+    "expectedRiskRatio": 0.3,
     "maxDrawdown": 0.12,
     "description": "손실 가능성과 성장 가능성의 균형을 추구합니다.",
-    "minRiskGrade": 3
+    "minRiskGrade": 3,
+    "allocation": {
+      "deposit": 0.3,
+      "shortBond": 0.15,
+      "longBond": 0.1,
+      "balanced": 0.3,
+      "equityEtf": 0,
+      "tdf": 0.15
+    },
+    "startingAllocation": {
+      "deposit": 0.6,
+      "shortBond": 0,
+      "longBond": 0,
+      "balanced": 0.4,
+      "equityEtf": 0,
+      "tdf": 0
+    },
+    "safeCash": 6000000
   },
   {
     "id": "growth",
     "name": "적극투자형",
     "minScore": 14,
     "maxScore": 17,
-    "expectedRiskRatio": 0.65,
+    "expectedRiskRatio": 0.6,
     "maxDrawdown": 0.18,
     "description": "변동을 감수하며 장기 성장을 추구합니다.",
-    "minRiskGrade": 2
+    "minRiskGrade": 2,
+    "allocation": {
+      "deposit": 0.15,
+      "shortBond": 0.1,
+      "longBond": 0.05,
+      "balanced": 0.25,
+      "equityEtf": 0.35,
+      "tdf": 0.1
+    },
+    "startingAllocation": {
+      "deposit": 0.4,
+      "shortBond": 0,
+      "longBond": 0,
+      "balanced": 0.3,
+      "equityEtf": 0.3,
+      "tdf": 0
+    },
+    "safeCash": 5000000
   },
   {
     "id": "aggressive",
@@ -47,6 +115,23 @@
     "expectedRiskRatio": 0.7,
     "maxDrawdown": 0.25,
     "description": "큰 변동 가능성을 이해하고 높은 성장 노출을 선택합니다.",
-    "minRiskGrade": 2
+    "minRiskGrade": 2,
+    "allocation": {
+      "deposit": 0.1,
+      "shortBond": 0.05,
+      "longBond": 0.05,
+      "balanced": 0.15,
+      "equityEtf": 0.55,
+      "tdf": 0.1
+    },
+    "startingAllocation": {
+      "deposit": 0.3,
+      "shortBond": 0,
+      "longBond": 0,
+      "balanced": 0.2,
+      "equityEtf": 0.5,
+      "tdf": 0
+    },
+    "safeCash": 4000000
   }
 ]
