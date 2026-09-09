@@ -156,7 +156,7 @@ describe('정산 창 접기와 자동 진행', () => {
 
 describe('저장 v6', () => {
   it('기본 저장은 v6이고 속도 1×·자동 진행 끔·정산 접힘·업적 없음·컬렉션 0', () => {
-    expect(defaultSave.version).toBe(6);
+    expect(defaultSave.version).toBe(7);
     expect(defaultSave.settings.speed).toBe(1);
     expect(defaultSave.settings.autoSettle).toBe(false);
     expect(defaultSave.settings.settleExpanded).toBe(false);
@@ -168,7 +168,7 @@ describe('저장 v6', () => {
   it('v5 저장은 새 설정 기본값과 빈 업적으로 올라온다', () => {
     const v5 = { getItem: () => JSON.stringify({ version: 5, settings: { reducedMotion: false, sound: false, characters: true, ghost: false }, unlockedCards: [], bestScore: 1, lastSeed: 'x', defaultOption: 'lowRisk' }) };
     const loaded = loadSave(v5);
-    expect(loaded.version).toBe(6);
+    expect(loaded.version).toBe(7);
     expect(loaded.settings.ghost).toBe(false);
     expect(loaded.settings.speed).toBe(1);
     expect(loaded.settings.autoSettle).toBe(false);

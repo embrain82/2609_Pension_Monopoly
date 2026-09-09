@@ -9,10 +9,10 @@ export function effectiveRiskRatio(productId: ProductId): number {
 }
 
 export function riskAssetValue(state: GameState): number {
-  const holdingRisk = state.holdings.reduce((sum, holding) => sum + holding.amount * effectiveRiskRatio(holding.productId), 0);
+  const holdingRisk = state.holdings.reduce((sum, holding) => sum + (holding.amount - (holding.defaultAmount ?? 0)) * effectiveRiskRatio(holding.productId), 0);
   const pendingBuyRisk = state.pendingOrders
     .filter((order) => order.side === 'buy' || order.stage === 'received')
-    .reduce((sum, order) => sum + order.amount * effectiveRiskRatio(order.productId), 0);
+    .reduce((sum, order) => sum + (order.amount - (order.defaultAmount ?? 0)) * effectiveRiskRatio(order.productId), 0);
   return holdingRisk + pendingBuyRisk;
 }
 

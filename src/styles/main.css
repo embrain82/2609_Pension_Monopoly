@@ -838,3 +838,11 @@ details.settle-more > summary:hover { background: #f3f6f0; border-radius: 10px; 
 }
 
 html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, html[data-reduce-motion="true"] *::after { animation: none !important; transition: none !important; }
+
+/* 자동운용 상태는 설정·포트폴리오·결과에서 같은 문법으로 표시 */
+.default-status { margin: 16px 0; padding: 16px; background: #edf4ee; border: 1px solid #c6d8cb; border-radius: 14px; text-align: left; overflow-wrap: anywhere; }
+.default-status h3 { margin: 0 0 8px; font-size: 1rem; }
+.default-status p, .default-status li { font-size: .85rem; line-height: 1.6; }
+.default-status ul { padding-left: 20px; }
+.setting-row select { max-width: 100%; min-height: 44px; border-radius: 8px; padding: 8px; color: #183635; background: #fff; }
+@media (max-width: 520px) { .setting-row:has(select) { flex-wrap: wrap; gap: 8px; } .setting-row select { width: 100%; } }

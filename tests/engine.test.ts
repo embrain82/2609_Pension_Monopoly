@@ -215,7 +215,7 @@ describe('정책과 주문', () => {
     expect(fund.state.pendingOrders).toHaveLength(1);
     expect(fund.state.holdings.some((item) => item.productId === 'longBond')).toBe(false);
     expect(etf.state.pendingOrders).toHaveLength(0);
-    expect(etf.state.holdings.find((item) => item.productId === 'equityEtf')?.amount).toBe(5_000_000);
+    expect(etf.state.holdings.find((item) => item.productId === 'equityEtf')!.amount - state.holdings.find(h => h.productId === 'equityEtf')!.amount).toBe(5_000_000);
     expect(portfolioValue(fund.state)).toBeCloseTo(portfolioValue(state), 2);
   });
 
@@ -227,7 +227,7 @@ describe('정책과 주문', () => {
     expect(switched.ok).toBe(true);
     const etf = switched.state.holdings.find((holding) => holding.productId === 'equityEtf')?.amount ?? 0;
     expect(etf).toBeGreaterThan(100000);
-    expect(etf).toBeLessThan(deposit);
+    expect(etf - (state.holdings.find(h => h.productId === 'equityEtf')?.amount ?? 0)).toBeLessThan(deposit);
     expect(switched.state.irpCash).toBeGreaterThan(100000);
     expect(riskAssetRatio(switched.state)).toBeLessThanOrEqual(policyRules.riskAssetLimit + 0.00001);
     expect(switched.message).toMatch(/대기자금/);
@@ -371,7 +371,7 @@ describe('정책과 주문', () => {
     expect(shares.longBond).toBe(0);
     expect(shares.tdf).toBe(0);
     expect(shares.deposit + shares.shortBond).toBeCloseTo(1, 10);
-    expect(shares.deposit / shares.shortBond).toBeCloseTo(0.3 / 0.15, 10);
+    expect(shares.deposit / shares.shortBond).toBeCloseTo(0.8 / 0.2, 10);
 
     const before = createGame('rebalance-stable', 'stable');
     const submitted = rebalancePortfolio(before);
@@ -401,7 +401,7 @@ describe('시장, 리밸런싱, 생활사건', () => {
   it('리밸런싱 후 목표 위험비중에 접근한다', () => {
     const submitted = rebalancePortfolio(createGame('rebalance', 'aggressive'));
     const settled = settleAllOrders(submitted.state);
-    const targetRisk = 0.25 + 0.1;
+    const targetRisk = 0.15 + 0.55;
     expect(riskAssetRatio(settled)).toBeCloseTo(targetRisk, 5);
     expect(settled.pendingOrders).toHaveLength(0);
   });
@@ -482,7 +482,7 @@ describe('점수와 저장 복구', () => {
     expect(loadSave(v3).settings.characters).toBe(false);
     expect(loadSave(v3).settings.ghost).toBe(true);
     expect(loadSave(v4).settings.ghost).toBe(false);
-    expect(loadSave(v4).version).toBe(6);
+    expect(loadSave(v4).version).toBe(7);
     expect(defaultSave.settings.sound).toBe(false);
     expect(defaultSave.settings.ghost).toBe(true);
   });
@@ -494,7 +494,7 @@ describe('점수와 저장 복구', () => {
         : null
     };
     const loaded = loadSave(legacy);
-    expect(loaded.version).toBe(6);
+    expect(loaded.version).toBe(7);
     expect(loaded.settings.reducedMotion).toBe(true);
     expect(loaded.settings.characters).toBe(true);
     expect(loaded.settings.ghost).toBe(true);

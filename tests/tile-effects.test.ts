@@ -255,7 +255,7 @@ describe('제도 안내 · 리밸런싱 · 분산 광장 · 성향 점검', () =
     const state = landOn(seedWithoutEventAt(1, 'prof'), 20);
     const effect = state.tileEffects.find((item) => item.kind === 'profile-check')!;
     expect(effect.detail).toContain('진단');
-    expect(effect.detail).toContain('행동');
+    expect(effect.detail).toContain('현재 구성 유사 성향');
     expect(state.unlockedCards).toContain('profile');
     expect([0, 1]).toContain(effect.understanding);
   });

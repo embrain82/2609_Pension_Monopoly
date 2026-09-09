@@ -46,7 +46,7 @@ describe('3.2 뉴스는 이미 가격에 반영 — 시장이 먼저, 행동은 
   });
 
   it('속보를 보고 산 ETF는 이번 턴 수익률을 받지 않는다(다음 턴 시장에 노출)', () => {
-    const state = { ...openTurn('order-etf', 'aggressive'), irpCash: 5_000_000 };
+    const state = { ...openTurn('order-etf', 'aggressive'), holdings: [{ productId: 'deposit' as const, amount: 20000000, principal: 20000000, depositTurnsHeld: 0 }], irpCash: 5_000_000 };
     const bought = performAction(state, { kind: 'buy', productId: 'equityEtf', amount: 5_000_000 });
     expect(bought.ok).toBe(true);
     expect(holding(bought.state, 'equityEtf')).toBe(5_000_000);

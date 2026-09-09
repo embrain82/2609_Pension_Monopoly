@@ -11,7 +11,7 @@ export function emptyCollection(): Collection {
 }
 
 export const defaultSave: SaveData = {
-  version: 6,
+  version: 7,
   settings: { reducedMotion: false, sound: false, characters: true, ghost: true, speed: 1, autoSettle: false, settleExpanded: false },
   defaultOption: null,
   achievements: [],
@@ -24,7 +24,7 @@ export const defaultSave: SaveData = {
   bestGoalRate: 0,
   playCount: 0,
   howtoSeen: false,
-  profileId: 'balanced',
+  profileId: 'balanced', avatarId: 'balanced',
   goalMonthly: 500_000
 };
 
@@ -65,6 +65,7 @@ function migrateSave(value: unknown): SaveData | null {
     playCount?: unknown;
     howtoSeen?: unknown;
     profileId?: unknown;
+    avatarId?: unknown;
     goalMonthly?: unknown;
     defaultOption?: unknown;
     achievements?: unknown;
@@ -73,9 +74,9 @@ function migrateSave(value: unknown): SaveData | null {
   if (!finiteNumber(data.bestScore) || typeof data.lastSeed !== 'string') return null;
   if (!Array.isArray(data.unlockedCards) || !data.unlockedCards.every((item) => typeof item === 'string')) return null;
   if (!data.settings || typeof data.settings.reducedMotion !== 'boolean' || typeof data.settings.sound !== 'boolean') return null;
-  if (![1, 2, 3, 4, 5, 6].includes(data.version ?? 0)) return null;
+  if (![1, 2, 3, 4, 5, 6, 7].includes(data.version ?? 0)) return null;
   return {
-    version: 6,
+    version: 7,
     settings: {
       reducedMotion: data.settings.reducedMotion,
       sound: data.settings.sound,
@@ -96,6 +97,7 @@ function migrateSave(value: unknown): SaveData | null {
     bestGoalRate: finiteNumber(data.bestGoalRate) ? data.bestGoalRate : 0,
     playCount: finiteNumber(data.playCount) ? data.playCount : 0,
     howtoSeen: data.howtoSeen === true,
+    avatarId: isProfileId(data.avatarId) ? data.avatarId : isProfileId(data.profileId) ? data.profileId : 'balanced',
     profileId: isProfileId(data.profileId) ? data.profileId : 'balanced',
     goalMonthly: clampGoalMonthly(finiteNumber(data.goalMonthly) ? data.goalMonthly : 500_000),
     // v1~v4 저장에는 없던 값. null이면 다음 판 시작에 고른다.

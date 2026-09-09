@@ -34,7 +34,7 @@ describe('배포용 매뉴얼', () => {
     expect(operator).toContain('구현된 기능');
     expect(operator).toContain('QA 케이스 매트릭스');
     expect(operator).toContain('vercel');
-    expect(operator).toContain('pension-road.vercel.app');
+    expect(operator).toContain('2609-pension-monopoly.vercel.app');
     expect(operator).toContain('policy-rules.json');
     expect(operator).toContain('pages.yml');
     expect(operator).toContain('비중을 더 키우지 않는');
@@ -92,7 +92,7 @@ describe('배포용 매뉴얼', () => {
   it('2026-09-06 현행화: 구현 기준일·운영 태그·모듈 목록·기능 목록이 최신이다', () => {
     const user = readFileSync('public/user-manual.html', 'utf8');
     const operator = readFileSync('public/operator-manual.html', 'utf8');
-    expect(operator).toContain('구현 기준 2026-09-06');
+    expect(operator).toContain('구현 기준 2026-09-10');
     expect(operator).not.toContain('구현 기준 2026-08-17');
     expect(operator).not.toContain('2026-08-17)');
     expect(operator).toContain('prod-2026-09-06-token-3d');
@@ -114,7 +114,7 @@ describe('배포용 매뉴얼', () => {
     expect(operator).not.toContain('Q1~Q45');
     expect(operator).not.toContain('Q1~Q16');
     expect(operator).not.toContain('Q1~Q36');
-    expect(user).toContain('구현 기준 2026-09-06');
+    expect(user).toContain('구현 기준 2026-09-10');
     expect(user).not.toContain('구현 기준 2026-08-17');
     expect(user).toContain('12턴 IRP 곡선');
     expect(user).toContain('효과음 10종');
@@ -180,7 +180,7 @@ describe('배포용 매뉴얼', () => {
     expect(user).toContain('디폴트옵션 지정');
     expect(user).toContain('이 옵션으로 시작');
     expect(user).toContain('지정 안 함');
-    expect(user).toContain('자동 균등 매수');
+    expect(user).toContain('현금 유지 지시');
     expect(user).toContain('원리금보장형');
     expect(user).toContain('사전지정운용');
     expect(user).toContain('선택지 3개');

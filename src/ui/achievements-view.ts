@@ -1,4 +1,3 @@
-import { investorProfiles } from '../data/content';
 import { ACHIEVEMENTS, achievementDef, isWeeklySeed, weeklyLabel, weeklySeed } from '../engine/achievements';
 import { PROFILE_IDS } from '../engine/profile-engine';
 import type { AchievementId, Collection, GameState, LifeResolution } from '../types';
@@ -27,13 +26,12 @@ export function renderAchievementGallery(owned: AchievementId[]): string {
 /** 도감 「캐릭터 컬렉션」 탭. 성향 5종 동물, 완주 수, 최고 별 */
 export function renderCollectionGallery(collection: Collection, characters: boolean): string {
   const items = PROFILE_IDS.map((id) => {
-    const profile = investorProfiles.find((item) => item.id === id)!;
     const entry = collection[id];
     const done = entry.plays > 0;
     const stars = `${'★'.repeat(entry.bestStars)}${'☆'.repeat(3 - entry.bestStars)}`;
     return `<article class="collection-card ${done ? 'earned' : 'locked'}">
-        ${characters ? renderAvatar(id, entry.bestStars >= 2 ? 'happy' : done ? 'calm' : 'tense', 56) : `<b class="collection-initial">${profile.name.slice(0, 1)}</b>`}
-        <h3>${AVATAR_ANIMALS[id]}<small>${profile.name}</small></h3>
+        ${characters ? renderAvatar(id, entry.bestStars >= 2 ? 'happy' : done ? 'calm' : 'tense', 56) : `<b class="collection-initial">${AVATAR_ANIMALS[id].slice(0, 1)}</b>`}
+        <h3>${AVATAR_ANIMALS[id]}<small>모든 투자성향에서 선택 가능</small></h3>
         <p class="collection-stars" aria-label="최고 별 ${entry.bestStars}개">${stars}</p>
         <p>${done ? `${entry.plays}판 완주` : '아직 완주 없음'}</p>
       </article>`;
