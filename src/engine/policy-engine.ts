@@ -1,3 +1,4 @@
+import { tdfEquity } from './scenario-engine';
 import { investorProfiles, policyRules, products } from '../data/content';
 import type { GameState, LifeEvent, ProductId, ProfileId } from '../types';
 import { portfolioValue } from './portfolio-engine';
@@ -134,7 +135,7 @@ export function canWithdrawForEvent(event: LifeEvent): boolean {
 
 /** 규제 한도와 별개인 가상 기초 주식 노출. 채권의 금리·신용 위험까지 요약하는 지표는 아니다. */
 export function equityExposureRatio(state: GameState): number {
-  const exposure = (id: ProductId) => products.find(p => p.id === id)!.equityExposure;
+  const exposure = (id: ProductId) => id === 'tdf' && state.campaign ? tdfEquity(state.turn) : products.find(p => p.id === id)!.equityExposure;
   const held = state.holdings.reduce((sum, h) => sum + h.amount * exposure(h.productId), 0);
   const pending = state.pendingOrders.filter(o => o.side === 'sell' ? o.stage === 'received' : o.stage === 'priced')
     .reduce((sum, o) => sum + o.amount * exposure(o.productId), 0);

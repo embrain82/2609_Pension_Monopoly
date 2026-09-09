@@ -1,3 +1,4 @@
+import { inflatedEvent } from './scenario-engine';
 import { addAccountFlow, grossForNet, withdrawalTax, TRANSFER_TAX_NOTICE } from './account-engine';
 import { lifeEvents, policyRules } from '../data/content';
 import type { ActionResult, GameState, LifeChoice, LifeChoiceOption, LifeEvent, LifeResolution } from '../types';
@@ -151,7 +152,8 @@ function finish(state: GameState, event: LifeEvent, resolution: LifeResolution, 
 
 /** 생활사건 선택 실행. 선택지가 사건 종류·상태에 맞지 않으면 거절한다 */
 export function resolveLifeChoice(state: GameState, choice: LifeChoice): ActionResult {
-  const event = lifeEvents.find((item) => item.id === state.currentEventId);
+  const rawEvent = lifeEvents.find((item) => item.id === state.currentEventId);
+  const event = rawEvent ? inflatedEvent(state, rawEvent) : undefined;
   if (!event) return { ok: false, message: '해결할 생활사건이 없습니다.', state };
   const options = lifeChoicesFor(state, event);
   const option = options.find((item) => item.id === choice);

@@ -10,6 +10,7 @@ export function clampGoalMonthly(value: number): number {
 }
 
 export function applyGoalToGame(game: GameState, goalMonthly: number): GameState {
+  if (game.campaign) return game; // 시작 전에 정한 미션 목표 고정
   const next = clampGoalMonthly(goalMonthly);
   return game.goalMonthly === next ? game : { ...game, goalMonthly: next };
 }

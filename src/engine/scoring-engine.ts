@@ -1,3 +1,4 @@
+import { missionResult } from './scenario-engine';
 import { profileDistance, profileLimits } from './profile-engine';
 import { accountPayout } from './account-engine';
 import { balanceConfig, investorProfiles, policyRules, products } from '../data/content';
@@ -66,9 +67,9 @@ export interface KnowledgeBreakdown {
 /** 지식 점수(0~20)의 항목 분해. 퀴즈 정답 ×2(최대 8), 이해 포인트(최대 6), 리밸런싱 ×2(최대 4) */
 export function knowledgeBreakdown(state: GameState): KnowledgeBreakdown {
   const quizCorrect = state.quizLog.filter((record) => record.correct).length;
-  const quiz = Math.min(KNOWLEDGE_CAPS.quiz, quizCorrect * 2);
-  const understanding = Math.min(KNOWLEDGE_CAPS.understanding, Math.max(0, state.understandingPoints));
-  const rebalance = Math.min(KNOWLEDGE_CAPS.rebalance, state.rebalanceCount * 2);
+  const quiz = Math.min(state.campaign ? 16 : KNOWLEDGE_CAPS.quiz, quizCorrect * 2);
+  const understanding = state.campaign ? 0 : Math.min(KNOWLEDGE_CAPS.understanding, Math.max(0, state.understandingPoints));
+  const rebalance = state.campaign ? 0 : Math.min(KNOWLEDGE_CAPS.rebalance, state.rebalanceCount * 2);
   const penalty = state.ruleBreaches * KNOWLEDGE_CAPS.breachPenalty;
   const total = Math.min(20, Math.max(0, KNOWLEDGE_CAPS.base + quiz + understanding + rebalance - penalty));
   return { quizCorrect, quiz, understanding, rebalance, penalty, total };
@@ -84,6 +85,11 @@ export function starTitle(stars: 0 | 1 | 2 | 3): string {
 
 export function starChecklist(state: GameState, score: ScoreResult): { label: string; passed: boolean }[] {
   const need = diversificationNeeded(state.profileId);
+  if (state.campaign) return [
+    { label: missionResult(state,score.monthlyPension).progress, passed: missionResult(state,score.monthlyPension).passed },
+    { label: '생활자금과 미지급 생활비 관리', passed: state.cash-state.livingDebt >= profileLimits(state).safeCash && state.livingDebt === 0 },
+    { label: '시작 성향의 운용 낙폭 예산', passed: state.campaign.drawdown <= profileLimits(state).maxDrawdown }
+  ];
   return [
     { label: `월 연금이 목표의 ${Math.round(balanceConfig.nearGoalRate * 100)}%에 닿음`, passed: score.goalRate >= balanceConfig.nearGoalRate },
     { label: `생활자금 ${(profileLimits(state).safeCash / 10000).toFixed(0)}만 원`, passed: state.cash - state.livingDebt >= profileLimits(state).safeCash },
@@ -118,6 +124,10 @@ export function starLockReason(state: GameState, score: ScoreResult): StarLock {
   const passed = checklist.filter((item) => item.passed).length;
   const total = checklist.length;
   const gap = Math.max(0, state.goalMonthly - score.monthlyPension);
+  if (state.campaign) {
+    const reason = checklist.find(c => !c.passed)?.label ?? null;
+    return { stars:score.stars,nextStars:score.stars===3 ? null : (score.stars+1) as 1|2|3,reason,passed,total,line:reason ? `${passed}/${total} 조건 통과 · 남은 과제: ${reason}` : '미션·생활 안정·위험 예산 모두 달성' };
+  }
   let nextStars: StarLock['nextStars'] = null;
   let reason: string | null = null;
   if (score.stars === 0) {
@@ -205,6 +215,10 @@ export function calculateScore(state: GameState): ScoreResult {
   if (goalMet && safeCash) stars = 2;
   if (stars === 2 && drawdownOk && diversified && profileAligned) stars = 3;
 
+  if (state.campaign) {
+    const mission=missionResult(state,pension);
+    stars=mission.passed ? (safeCash && state.livingDebt===0 ? (drawdownOk ? 3 : 2) : 1) : 0;
+  }
   const incomeScore = Math.min(50, Math.max(0, goalRate * 50));
   const stabilityScore = Math.min(30, Math.max(0,
     (safeCash ? 9 : Math.max(0, 9 * Math.max(0, state.cash - state.livingDebt) / profileLimits(state).safeCash)) +
@@ -215,14 +229,14 @@ export function calculateScore(state: GameState): ScoreResult {
   const knowledgeScore = knowledgeScoreOf(state);
   const totalScore = Math.round(Math.min(100, Math.max(0, incomeScore + stabilityScore + knowledgeScore)));
   const returnRate = balanceConfig.startingIrp <= 0 ? 0 : (irpValue - balanceConfig.startingIrp) / balanceConfig.startingIrp;
-  const investmentReturnRate = balanceConfig.startingIrp <= 0 ? 0 : (irpValue - balanceConfig.startingIrp - state.cashFlows.reduce((sum, flow) => sum + flow.amount, 0)) / balanceConfig.startingIrp;
+  const investmentReturnRate = state.campaign ? state.campaign.index - 1 : balanceConfig.startingIrp <= 0 ? 0 : (irpValue - balanceConfig.startingIrp - state.cashFlows.reduce((sum, flow) => sum + flow.amount, 0)) / balanceConfig.startingIrp;
 
-  const bestDecision = state.rebalanceCount > 0
+  const bestDecision = state.campaign ? (state.campaign.reviews.length ? `가장 큰 시장 변화는 ${[...state.campaign.reviews].sort((a,b)=>Math.abs(b.market)-Math.abs(a.market))[0].turn}턴에 발생했습니다. 아래 복기에서 당시 보유와 다음 선택을 비교하세요.` : "아직 완료한 턴이 없습니다.") : state.rebalanceCount > 0
     ? '시장 변화 뒤 목표비중을 다시 맞춰 위험을 관리한 결정'
     : state.contributionTotal > 0
       ? '생활자금과 IRP를 나누면서 추가납입한 결정'
       : '급한 판단을 피하고 시장 흐름을 끝까지 확인한 결정';
-  const improvement = !safeCash
+  const improvement = state.campaign ? (!safeCash ? '다음 판에는 납입 전 생활자금 완충을 먼저 확보해 보세요.' : !drawdownOk ? '다음 판에는 주식·금리 노출을 줄여 낙폭 예산을 지켜 보세요.' : '같은 시드에서 다른 미션이나 운용 선택을 비교해 보세요. 거래 횟수는 지식 점수를 높이지 않습니다.') : !safeCash
     ? 'IRP 납입 전 비상생활자금 기준을 먼저 확보해보세요.'
     : !diversified
       ? '서로 다르게 움직이는 자산 3종 이상으로 분산해보세요.'

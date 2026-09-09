@@ -44,6 +44,7 @@ export function renderQuizModal(card: LearningCard, view: QuizViewState): string
     <h2 class="quiz-question">${card.quiz.q}</h2>
     <div class="quiz-options">${options}</div>
     ${verdict}
+    ${answered ? `<details><summary>학습 목표·근거</summary><p>${card.learningObjective ?? card.key}</p><p>${card.gameAssumption ?? ""}</p><a href="${card.source_url}" target="_blank" rel="noreferrer">사실 근거</a> · 검수 ${card.reviewed_at}</details>` : ""}
     <div class="button-stack">${next}${skip}</div>`;
 }
 
