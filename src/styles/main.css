@@ -841,3 +841,33 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
 
 .setting-row select { max-width: 100%; min-height: 44px; border-radius: 8px; padding: 8px; color: #183635; background: #fff; }
 @media (max-width: 520px) { .setting-row:has(select) { flex-wrap: wrap; gap: 8px; } .setting-row select { width: 100%; } }
+
+/* 단계 C: 선택 전 탐색과 되돌아가기 */
+.decision-tools { display:flex; flex-wrap:wrap; gap:8px; margin:0 40px 18px 0; }
+.decision-tools button, .route-options button { min-height:44px; }
+.route-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.route-options article { border:1px solid #b9d2c4; border-radius:18px; padding:18px; background:#f0f6ed; }
+.route-options h3 { font-size:1.2rem; }
+.region-progress { margin:10px 0; border:1px solid #cbd9cd; border-radius:14px; padding:12px; background:#f7f8ef; font-size:14px; }
+.region-progress>div { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.region-progress span { color:#586e69; }
+.region-progress .complete { color:#97610f; font-weight:700; }
+.tile[role="button"] { cursor:pointer; }
+.tile:focus { outline:none; }
+.tile:focus rect { stroke:#d97926; stroke-width:5px; }
+.modal-explore select { display:block; width:100%; min-height:44px; font-size:16px; margin:8px 0 20px; }
+@media (min-width: 900px) { .board-stage { width:min(100%,calc(100dvh - 245px)); } }
+@media (max-width: 600px) {
+  .route-options { grid-template-columns:1fr; }
+  .decision-tools { padding-top:8px; }
+  .modal-sheet p, .modal-sheet small, .modal-sheet select, .action-list small { font-size:14px; }
+  .modal-sheet { max-height:calc(100dvh - 24px); overflow:auto; }
+}
+.tile.region-0 rect { stroke:#7aab9a; }
+.tile.region-1 rect { stroke:#d4a257; }
+.tile.region-2 rect { stroke:#cc8d88; }
+.tile.region-3 rect { stroke:#9a97bd; }
+.tile.active rect, .tile:focus rect { stroke:#d97926; stroke-width:5px; }
+.visit-stamp { fill:#27695d; }
+.decision-market { margin-right:44px; }
+.region-progress>div button { min-height:44px; padding:5px 8px; font-size:14px; }

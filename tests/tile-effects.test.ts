@@ -140,7 +140,7 @@ describe('운용지시 칸 — 행동 2회', () => {
 });
 
 describe('상품 거리 — 스포트라이트', () => {
-  it('혼합형 거리도 일반 펀드 결제를 지키고 정보 보상만 추가한다', () => {
+  it('혼합형 거리는 일반 펀드 결제를 지키며 매수 자체에 지식 보상을 주지 않는다', () => {
     const state = { ...landOn(seedWithoutEventAt(1, 'spot'), 8), irpCash: 1_000_000 };
     expect(state.spotlightProductId).toBe('balanced');
     const before = holding(state, 'balanced');
@@ -148,8 +148,8 @@ describe('상품 거리 — 스포트라이트', () => {
     expect(bought.ok).toBe(true);
     expect(bought.state.pendingOrders).toHaveLength(1);
     expect(holding(bought.state, 'balanced')).toBeCloseTo(before, 6);
-    expect(bought.state.understandingPoints).toBe(state.understandingPoints + 1);
-    expect(bought.message).toContain('이해 +1');
+    expect(bought.state.understandingPoints).toBe(state.understandingPoints);
+    expect(bought.message).not.toContain('이해 +1');
     expect(bought.state.spotlightProductId).toBeNull();
   });
 

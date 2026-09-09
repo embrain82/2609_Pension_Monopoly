@@ -62,7 +62,7 @@ export function renderGhostVerdict(state: GameState): string {
   return `<div class="ghost-verdict ${verdict.beat ? 'beat' : 'behind'}">
       <div class="ghost-verdict-head">${badge}<span class="ghost-legend"><i class="me"></i>내 판단 <i class="ghost"></i>그대로 둔 나</span></div>
       <p class="ghost-worth">판단의 값어치 <b class="${verdict.pensionGap < 0 ? 'neg' : ''}">월 연금 ${signedWon(verdict.pensionGap)}</b> · 총자산 기준 <b class="${verdict.totalGap < 0 ? 'neg' : ''}">${signedWon(verdict.totalGap)}</b></p>
-      <p class="ghost-detail">그대로 뒀다면 IRP ${formatWon(verdict.ghostIrp)} · 생활자금 ${formatWon(state.ghost!.finalCash)}. 같은 시드·같은 주사위·같은 사건에서 행동만 "그대로"였던 경로입니다.</p>
+      <p class="ghost-detail">그대로 뒀다면 IRP ${formatWon(verdict.ghostIrp)} · 생활자금 ${formatWon(state.ghost!.finalCash)}. 같은 시드·주사위로 항상 합계 경로를 택하고 직접 운용하지 않은 기준 경로입니다. 내 경로·납입·생활 선택과 달라 추가 사건과 현금흐름도 다를 수 있습니다.</p>
       ${widest}
     </div>`;
 }

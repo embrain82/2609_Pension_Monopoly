@@ -1,3 +1,4 @@
+import type { RouteProgress } from './engine/route-engine';
 export type ProductId = 'deposit' | 'shortBond' | 'longBond' | 'balanced' | 'equityEtf' | 'tdf';
 export type ProductKind = 'deposit' | 'fund' | 'etf';
 export type TileKind = 'start' | 'product' | 'market' | 'life' | 'trade' | 'rebalance' | 'policy' | 'profile' | 'outlook';
@@ -402,8 +403,9 @@ export interface CashFlow {
 }
 
 export interface GameState {
+  route: RouteProgress;
   accountType: 'IRP';
-  rulesetVersion: '2026-09-09-p0' | '2026-09-10-b';
+  rulesetVersion: '2026-09-09-p0' | '2026-09-10-b' | '2026-09-10-c';
   avatarId: AvatarId;
   accountBasis: AccountBasis;
   cashFlows: CashFlow[];

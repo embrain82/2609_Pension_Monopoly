@@ -1,3 +1,4 @@
+import { newRouteProgress, stampVisit } from './route-engine';
 import { initialHoldings } from './profile-engine';
 import { addAccountFlow, accountPayout } from './account-engine';
 import { balanceConfig, boardTiles, defaultOptions, learningCards, lifeEvents, marketScenario, marketShocks, policyRules, investorProfiles } from '../data/content';
@@ -85,7 +86,8 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
   const tileEffectsEnabled = options.tileEffects !== false;
   const goal = clampGoalMonthly(goalMonthly);
   const state: GameState = {
-    accountType: 'IRP', rulesetVersion: '2026-09-10-b', avatarId: options.avatarId ?? 'balanced',
+    route: newRouteProgress(),
+    accountType: 'IRP', rulesetVersion: '2026-09-10-c', avatarId: options.avatarId ?? 'balanced',
     accountBasis: { retirement: 90_000_000, retirementTax: 1_800_000, deducted: 9_000_000, nonDeducted: 9_000_000 },
     cashFlows: [], livingDebt: 0, orderSequence: 0, rebalancePlan: null,
     prices: { deposit: 1000, shortBond: 1000, longBond: 1000, balanced: 1000, equityEtf: 1000, tdf: 1000 },
@@ -262,7 +264,7 @@ export function startTurn(state: GameState, steps = 0): ActionResult {
   if (next.tileEffectsEnabled) {
     next = applyTileArrival(next, { position, crossedStart, scheduledEvent: Boolean(scheduled) });
   }
-  next = queueTileQuiz(next, position);
+  next = stampVisit(queueTileQuiz(next, position));
   if (scheduled) {
     next = { ...next, eventHistory: [...next.eventHistory, scheduled.eventId] };
     return { ok: true, message: '생활사건이 발생했습니다.', state: next };
@@ -317,16 +319,6 @@ function contribute(state: GameState, amount: number): ActionResult {
   return { ok: true, message: `${accepted.toLocaleString('ko-KR')}원 추가납입. ${creditNote}`, state: funded };
 }
 
-/** 스포트라이트 상품을 이번 턴에 샀는가(매수·교체 매수). 이해 +1의 근거. */
-function boughtSpotlight(before: GameState, after: GameState, action: GameAction): boolean {
-  const productId = before.spotlightProductId;
-  if (!productId) return false;
-  const target = action.kind === 'buy' ? action.productId : action.kind === 'switch' ? action.toProductId : undefined;
-  if (target !== productId) return false;
-  const pendingBefore = before.pendingOrders.filter((order) => order.side === 'buy' && order.productId === productId).length;
-  const pendingAfter = after.pendingOrders.filter((order) => order.side === 'buy' && order.productId === productId).length;
-  return holdingOf(after, productId) > holdingOf(before, productId) + 1 || pendingAfter > pendingBefore;
-}
 
 /**
  * 운용 행동 1회. 시장은 턴 시작에 이미 반영됐으므로 여기서는 행동만 처리한다. 행동이 남아 있으면
@@ -368,10 +360,6 @@ export function performAction(state: GameState, action: GameAction): ActionResul
   let message = result.message;
   if (action.kind === 'rebalance') {
     acted = { ...acted, record: { ...acted.record, rebalanceTurns: [...acted.record.rebalanceTurns, state.turn] } };
-  }
-  if (boughtSpotlight(opened, acted, action)) {
-    acted = { ...acted, understandingPoints: acted.understandingPoints + 1 };
-    message = `${message} 스포트라이트 상품 · 이해 +1.`;
   }
   if (action.kind === 'rebalance' && opened.rebalanceBonusTurn === opened.turn) {
     acted = { ...acted, understandingPoints: acted.understandingPoints + REBALANCE_TILE_BONUS, rebalanceBonusTurn: null };
