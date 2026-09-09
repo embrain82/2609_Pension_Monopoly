@@ -6,6 +6,7 @@ import { defaultSave, STORAGE_KEY } from '../src/ui/ui-state';
 import { CHECKPOINT_KEY, parseCheckpoint } from '../src/ui/play-checkpoint';
 import { createGame, startTurn, performAction } from '../src/engine/game-engine';
 import { updateView } from '../src/ui/dom-view';
+import { dicePairForTurn } from '../src/engine/random-engine';
 import { AnimationController } from '../src/ui/animation-controller';
 let root: HTMLElement;
 const click = (selector: string) => { const el = root.querySelector<HTMLElement>(selector); expect(el, selector).not.toBeNull(); el!.click(); };
@@ -24,6 +25,8 @@ afterEach(() => { vi.useRealTimers(); });
 describe('운용 선택 탐색', () => {
   it('취소·포트폴리오 확인·재진입은 금액과 행동 횟수를 유지한다', () => {
     const game = mountAction(true);
+    expect(root.textContent).not.toContain("취소하고 보드로");
+    expect(root.querySelectorAll('[role="dialog"] [data-action="close-modal"]')).toHaveLength(1);
     click('[data-action="action-view"][data-view="buy"]');
     const select = root.querySelector<HTMLSelectElement>('#buy-product');
     if(select) { select.focus(); select.value='shortBond'; select.dispatchEvent(new Event('change',{bubbles:true})); expect(document.activeElement).toBe(select); }
@@ -60,11 +63,11 @@ it('취소된 애니메이션 대기는 완료 콜백을 실행하지 않는다'
   const pending=controller.wait(1000,id); controller.cancel(); await expect(pending).resolves.toBe(false);
   await vi.runAllTimersAsync(); expect(controller.valid(id)).toBe(false);
 });
-it('경로 선택을 포함한 12턴 UI를 완주하고 결과 중복 집계 없이 진행 저장을 지운다', () => {
+it('경로 선택 없이 자동 이동하는 12턴 UI를 완주하고 결과 중복 집계 없이 진행 저장을 지운다', () => {
   new PensionRoadApp(root); click('[data-action="begin"]'); click('[data-action="skip-default-option"]');
   for(let i=0;i<120 && !root.querySelector('.result-screen');i++) {
     const dialog = root.querySelector('[role="dialog"]');
-    const actions = dialog ? ['choose-route','dismiss-howto','dismiss-news','quiz-skip','quiz-next','resolve-life','do-hold','dismiss-settle','choose-payout'] : ['roll-dice','open-action'];
+    const actions = dialog ? ['dismiss-howto','dismiss-news','quiz-skip','quiz-next','resolve-life','do-hold','dismiss-settle','choose-payout'] : ['roll-dice','open-action'];
     const action = actions.find(a => (dialog ?? root).querySelector(`[data-action="${a}"]`));
     expect(action, (dialog ?? root).textContent ?? '').toBeTruthy();
     if(action === 'resolve-life') click('[data-action="resolve-life"][data-choice="cash"]');
@@ -75,21 +78,20 @@ it('경로 선택을 포함한 12턴 UI를 완주하고 결과 중복 집계 없
   expect(localStorage.getItem(CHECKPOINT_KEY)).toBeNull();
   expect(JSON.parse(localStorage.getItem(STORAGE_KEY)!).playCount).toBe(1);
 });
-it('이동 도중 탭 중단·복구에서도 보드/말 노드를 유지하고 토큰·급여를 한 번만 처리한다', async () => {
+it('이동 도중 탭 중단·복구에서도 보드/말 노드를 유지하고 시장·급여를 한 번만 처리한다', async () => {
   vi.useFakeTimers();
   localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true}));
   new PensionRoadApp(root); click('[data-action="begin"]'); click('[data-action="skip-default-option"]');
   const board=root.querySelector('.board'), token=root.querySelector('.token-pos');
   click('[data-action="roll-dice"]'); await vi.advanceTimersByTimeAsync(1500);
-  click('[data-action="choose-route"][data-mode="short"]');
   expect(root.querySelector('.board')).toBe(board); expect(root.querySelector('.token-pos')).toBe(token);
   const hidden=vi.spyOn(document,'hidden','get').mockReturnValue(true);
   document.dispatchEvent(new Event('visibilitychange')); hidden.mockRestore();
-  const checkpoint=saved(); expect(checkpoint.routePending).toBe(true); expect(checkpoint.game.turn).toBe(0);
+  const checkpoint=saved(); expect(checkpoint.modal).toBeNull(); expect(checkpoint.game.turn).toBe(0);
   await vi.runAllTimersAsync(); expect(saved().game.turn).toBe(0);
-  const choice=checkpoint.game.route.choices[0]; const expected=startTurn(checkpoint.game,choice.steps).state;
+  const faces=dicePairForTurn(checkpoint.game.seed,checkpoint.game.turn); const expected=startTurn(checkpoint.game,faces[0]+faces[1]).state;
   document.body.innerHTML='<div id="resumed"></div>'; root=document.querySelector('#resumed')!;
   localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));
-  new PensionRoadApp(root); click('[data-action="resume-game"]'); click('[data-action="choose-route"]');
-  expect(saved().game).toEqual(expected); expect(saved().game.route.choices).toHaveLength(1);
+  new PensionRoadApp(root); click('[data-action="resume-game"]'); click('[data-action="roll-dice"]');
+  expect(saved().game).toEqual(expected); expect(saved().game.route).not.toHaveProperty("choices");
 });
