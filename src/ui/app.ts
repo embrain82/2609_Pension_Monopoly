@@ -1,6 +1,6 @@
 import { playScene } from './play-scene';
-import { chooseRoute, reflectRegion } from '../engine/route-engine';
-import { renderExplore, renderRegionProgress, renderRouteChoice } from './route-view';
+import { reflectRegion } from '../engine/route-engine';
+import { renderExplore, renderRegionProgress } from './route-view';
 import { updateView } from './dom-view';
 import { AnimationController } from './animation-controller';
 import { readCheckpoint, writeCheckpoint, clearCheckpoint, type PlayCheckpoint } from './play-checkpoint';
@@ -46,7 +46,7 @@ import { SoundPlayer } from './sound-dom';
 import { renderIrpSparkline, worstTurnLine } from './result-chart';
 
 type Screen = 'title' | 'diagnosis' | 'goal' | 'game' | 'result';
-type Modal = 'life' | 'action' | 'portfolio' | 'market' | 'cards' | 'settings' | 'howto' | 'news' | 'tile' | 'settle' | 'quiz' | 'payout' | 'default-option' | 'route' | 'explore' | null;
+type Modal = 'life' | 'action' | 'portfolio' | 'market' | 'cards' | 'settings' | 'howto' | 'news' | 'tile' | 'settle' | 'quiz' | 'payout' | 'default-option' | 'explore' | null;
 /** 「그대로」는 확인 화면 없이 목록에서 바로 실행되므로 보기가 없다 */
 type ActionView = 'menu' | Exclude<ActionKind, 'hold'>;
 type CardsTab = 'cards' | 'achievements' | 'collection';
@@ -91,7 +91,6 @@ export class PensionRoadApp {
   private tokenFocus = 0;
   private diceFaces: [number, number] = [1, 1];
   private readonly motion = new AnimationController();
-  private routePending = false;
   private exploreIndex = 0;
   private portfolioReturn = false;
   private resumeData: PlayCheckpoint | null = readCheckpoint();
@@ -134,7 +133,7 @@ export class PensionRoadApp {
         this.sound.stop();
         if (this.diceRolling || this.tokenHopping) {
           this.motion.cancel(); this.diceRolling = false; this.tokenHopping = false; this.landed = false;
-          this.modal = 'route'; this.routePending = true; this.render();
+          this.modal = null; this.render();
         }
       }
     });
@@ -289,14 +288,6 @@ export class PensionRoadApp {
     void this.sound.unlock();
     if (action === 'test-sound') { this.setSound(true); this.render(); return; }
     if (action === 'resume-game' && this.resumeData) { this.resumeGame(this.resumeData); this.render(); return; }
-    if (action === 'choose-route' && this.game && this.routePending && !this.tokenHopping && !this.diceRolling) {
-      const mode = button.dataset.mode === 'short' ? 'short' : 'sum';
-      const existing = this.game.route.choices.find(c => c.turn === this.game!.turn + 1);
-      const choice = existing ? { ok: true, state: this.game, message: '저장된 경로로 이동을 이어갑니다.' } : chooseRoute(this.game, mode);
-      if (!choice.ok) { this.announce(choice.message); this.render(); return; }
-      this.game = choice.state; this.announce(choice.message);
-      this.checkpoint(); void this.moveChosenRoute(); return;
-    }
     if (action === 'toggle-sound') {
       this.setSound(!this.save.settings.sound);
       this.render();
@@ -473,7 +464,7 @@ export class PensionRoadApp {
   }
 
   /** ×·Esc로 닫을 수 없는 창: 결정을 요구하는 것들. 퀴즈는 「건너뛰기」, 디폴트옵션은 「지정 안 함」이 있다 */
-  private static readonly STICKY_MODALS: Modal[] = ['life', 'quiz', 'payout', 'default-option', 'route'];
+  private static readonly STICKY_MODALS: Modal[] = ['life', 'quiz', 'payout', 'default-option'];
 
   private closeModal(): void {
     if (PensionRoadApp.STICKY_MODALS.includes(this.modal)) return;
@@ -711,28 +702,25 @@ export class PensionRoadApp {
 
   private async beginDiceRoll(): Promise<void> {
     if (!this.game || this.diceRolling || this.tokenHopping || !canRevealNextTurn(this.game)) return;
-    if (this.routePending) { this.modal = 'route'; this.render(); return; }
     this.diceFaces = dicePairForTurn(this.game.seed, this.game.turn);
-    this.routePending = true;
-    this.modal = 'route'; this.checkpoint(); this.modal = null;
+    this.modal = null; this.checkpoint();
     const id = this.motion.begin();
     const instant = shouldSkipDiceAnimation(this.save.settings.reducedMotion, window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     if (!instant) {
       this.diceRolling = true; this.sound.play('dice'); this.render();
       if (!await this.motion.wait(scaleMs(DICE_ROLL_DURATION_MS + DICE_LAND_HOLD_MS, this.save.settings.speed), id)) return;
     }
-    this.diceRolling = false; this.modal = 'route';
-    this.announce(`주사위 ${this.diceFaces.join(' · ')}. 도착지를 비교하세요.`); this.render();
+    this.diceRolling = false;
+    await this.moveRolledDice();
   }
 
-  private async moveChosenRoute(): Promise<void> {
+  private async moveRolledDice(): Promise<void> {
     if (!this.game) return;
-    const choice = this.game.route.choices.find(c => c.turn === this.game!.turn + 1);
-    if (!choice) return;
+    const steps = this.diceFaces[0] + this.diceFaces[1];
     const id = this.motion.begin();
     const instant = shouldSkipDiceAnimation(this.save.settings.reducedMotion, window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     this.modal = null; this.tokenHopping = true; this.tokenFocus = this.game.position;
-    const path = movePath(this.game.position, choice.steps);
+    const path = movePath(this.game.position, steps);
     for (const [i, position] of path.entries()) {
       if (!this.motion.valid(id)) return;
       this.tokenFocus = position; this.landed = i === path.length - 1;
@@ -745,19 +733,19 @@ export class PensionRoadApp {
       } else this.tokenShown = position;
     }
     if (!this.motion.valid(id)) return;
-    const next = startTurn(this.game, choice.steps);
-    this.game = next.state; this.tokenHopping = false; this.landed = false; this.routePending = false;
+    const next = startTurn(this.game, steps);
+    this.game = next.state; this.tokenHopping = false; this.landed = false;
     // 일반 턴은 대시보드의 시장 요약에서 바로 운용한다. 중요한 충격만 별도 속보를 연다.
     if (this.game.lastMarket.shock) this.modal = 'news'; else this.afterMarketScene();
-    this.announce(`${choice.steps}칸 이동 · ${next.message}`); this.persist(true);
+    this.announce(`${steps}칸 이동 · ${next.message}`); this.persist(true);
     this.sound.play(this.game.lastMarket.shock ? 'shock' : 'arrive'); this.render();
   }
 
   private checkpoint(): void {
     if (!this.game || this.screen !== 'game' || this.diceRolling || this.tokenHopping) return;
-    const data: PlayCheckpoint = { version: 'c1', game: this.game, modal: this.modal, lastSummary: this.lastSummary,
+    const data: PlayCheckpoint = { version: 'c2', game: this.game, modal: this.modal, lastSummary: this.lastSummary,
       quizCardId: this.quizCardId, quizPicked: this.quizPicked, finalQuizQueue: this.finalQuizQueue,
-      finalQuizTotal: this.finalQuizTotal, finishing: this.finishing, defaultOptionAsk: this.defaultOptionAsk, routePending: this.routePending };
+      finalQuizTotal: this.finalQuizTotal, finishing: this.finishing, defaultOptionAsk: this.defaultOptionAsk };
     this.resumeData = data; this.checkpointFailed = !writeCheckpoint(data);
   }
 
@@ -767,11 +755,10 @@ export class PensionRoadApp {
     this.screen = 'game'; this.modal = data.modal as Modal;
     this.lastSummary = data.lastSummary; this.quizCardId = data.quizCardId; this.quizPicked = data.quizPicked;
     this.finalQuizQueue = data.finalQuizQueue; this.finalQuizTotal = data.finalQuizTotal;
-    this.finishing = data.finishing; this.defaultOptionAsk = data.defaultOptionAsk; this.routePending = data.routePending;
+    this.finishing = data.finishing; this.defaultOptionAsk = data.defaultOptionAsk;
     this.diceRolling = false; this.tokenHopping = false; this.landed = false; this.tokenFocus = data.game.position;
     this.diceFaces = dicePairForTurn(data.game.seed, data.game.turn);
     this.actionView = 'menu'; this.amountPreset = 'default'; this.buyLimitConfirm = null;
-    if (this.routePending) this.modal = 'route';
     this.defaultOptionMode = data.game.turn === 0 ? 'start' : 'settings';
     this.defaultOptionPick = data.game.defaultOption;
     this.announce('저장된 결정 시점에서 이어갑니다. 시장·급여·거래를 다시 처리하지 않습니다.');
@@ -779,7 +766,7 @@ export class PensionRoadApp {
 
   private startGame(seed: string): void {
     this.clearDiceTimer();
-    this.routePending = false; this.portfolioReturn = false; this.tokenShown = null; this.lastSummary = null;
+    this.portfolioReturn = false; this.tokenShown = null; this.lastSummary = null;
     // 저장된 디폴트옵션으로 판을 만들고, 시작 모달에서 다시 확인·변경한다(성향 밖 값은 엔진이 추천값으로 바꾼다).
     this.game = createGame(seed, this.profileId, this.goalMonthly, { defaultOption: this.save.defaultOption, avatarId: this.save.avatarId });
     this.selectedBuy = 'deposit';
@@ -1007,7 +994,6 @@ export class PensionRoadApp {
       // 창을 잃어도 막히지 않게: 누르면 마무리(퀴즈·수령 방식)를 이어 간다.
       return `<button class="dice-button ready" data-action="resume-finish"><span>★</span>마무리 · 수령 방식 정하기</button>`;
     }
-    if (this.routePending) return '<button class="dice-button" data-action="roll-dice">경로 선택 이어가기</button>';
     if (canRevealNextTurn(state)) {
       return `<button class="dice-button ready" data-action="roll-dice"><span>⚄</span>주사위 굴리기</button>`;
     }
@@ -1151,12 +1137,8 @@ export class PensionRoadApp {
     const characters = this.save.settings.characters;
     const reducedMotion = shouldSkipDiceAnimation(this.save.settings.reducedMotion, window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     if (this.modal === 'life') content = this.renderLifeModal();
-    if (this.modal === 'route' && this.game) {
-      const chosen = this.game.route.choices.find(c => c.turn === this.game!.turn + 1);
-      content = chosen ? `<h2>정한 경로로 이어가기</h2><p>${chosen.steps}칸 이동 · 아직 시장·급여는 처리하지 않았습니다.</p><button data-action="choose-route" data-mode="${chosen.mode}">이동 이어가기</button>` : renderRouteChoice(this.game);
-    }
     if (this.modal === 'explore' && this.game) content = renderExplore(this.game, this.exploreIndex);
-    if (this.modal === 'action') content = `${this.game ? `<p class="decision-market">${this.game.lastMarket.headline} · 도착 ${boardTiles[this.game.position].label}</p><details><summary>시장·보유자산 영향 자세히</summary>${renderMarketCard(this.game, false)}</details>${this.game.turn <= 2 ? `<p class="hint">${this.game.turn === 1 ? '1턴 실습 · 납입은 생활자금을 IRP 대기자금으로 옮깁니다. 기존 상품을 매도·교체하는 방법도 있습니다.' : '2턴 실습 · 납입만으로 상품이 매수되지는 않습니다. 대기자금과 결제 중인 주문을 확인한 뒤 운용하세요.'}</p>` : ''}` : ''}<div class="decision-tools"><button class="secondary" data-action="action-portfolio">포트폴리오 확인</button><button class="text-button" data-action="close-modal">취소하고 보드로</button></div>` + this.renderActionModal();
+    if (this.modal === 'action') content = `${this.game ? `<p class="decision-market">${this.game.lastMarket.headline} · 도착 ${boardTiles[this.game.position].label}</p><details><summary>시장·보유자산 영향 자세히</summary>${renderMarketCard(this.game, false)}</details>${this.game.turn <= 2 ? `<p class="hint">${this.game.turn === 1 ? '1턴 실습 · 납입은 생활자금을 IRP 대기자금으로 옮깁니다. 기존 상품을 매도·교체하는 방법도 있습니다.' : '2턴 실습 · 납입만으로 상품이 매수되지는 않습니다. 대기자금과 결제 중인 주문을 확인한 뒤 운용하세요.'}</p>` : ''}` : ''}<div class="decision-tools"><button class="secondary" data-action="action-portfolio">포트폴리오 확인</button></div>` + this.renderActionModal();
     if (this.modal === 'portfolio') content = (this.portfolioReturn ? '<button class="secondary" data-action="return-action">← 운용 선택으로 돌아가기</button>' : '') + this.renderPortfolioModal();
     if (this.modal === 'market') content = this.renderMarketModal();
     if (this.modal === 'cards') content = this.renderCardsModal();
@@ -1210,7 +1192,7 @@ export class PensionRoadApp {
     }
     const labels: Record<NonNullable<Modal>, string> = {
       action: '운용 행동 선택', life: '생활사건', howto: '게임 방법', tile: '도착 칸 설명', news: '시장 속보', settle: '턴 정산 요약',
-      route: '경로 선택', explore: '지도·지역 미션', quiz: '퀴즈', payout: '수령 방식 선택', 'default-option': '디폴트옵션 지정', portfolio: '포트폴리오', market: '시장 타임라인', cards: '도감', settings: '설정'
+      explore: '지도·지역 미션', quiz: '퀴즈', payout: '수령 방식 선택', 'default-option': '디폴트옵션 지정', portfolio: '포트폴리오', market: '시장 타임라인', cards: '도감', settings: '설정'
     };
     return `<div class="modal-backdrop"><section class="modal-sheet modal-${this.modal}" role="dialog" aria-modal="true" aria-label="${labels[this.modal]}">${close}${content}<p class="modal-feedback" aria-live="polite">${this.feedback}</p></section></div>`;
   }
@@ -1461,6 +1443,6 @@ export class PensionRoadApp {
       <div class="disclaimer-box"><strong>중요 면책</strong><p>모든 금융 수치는 교육용으로 단순화했습니다. 특정 금융회사·상품을 추천하지 않으며, 수익·원금·세제 혜택을 보장하지 않습니다. 실제 규정과 세무 결과는 개인 상황과 기준일에 따라 달라질 수 있습니다. 은행 계좌·잔고와 연동되지 않는 가상 포트폴리오입니다.</p></div>
       <h3>정책 데이터</h3><p>기준일 ${policyRules.reviewed_at} · 교육용 단순화 ${policyRules.simplified ? '예' : '아니오'}</p>
       <ul class="source-list"><li><a href="${policyRules.source_urls[0]}" target="_blank" rel="noreferrer">국가법령정보센터 · 위험자산 투자한도</a></li><li><a href="${policyRules.source_urls[1]}" target="_blank" rel="noreferrer">국세청 · 퇴직연금 세제</a></li><li><a href="https://pension.kebhana.com/files/POR/Notice/PSNL_IRP_PRD_INVTM.pdf" target="_blank" rel="noreferrer">하나은행 · 개인형 IRP 핵심설명서</a></li></ul>
-      <p class="version">연금로드 v1.3.0 · 경로·탐험·이어하기 · 저장 데이터는 이 브라우저에만 보관됩니다.</p>`;
+      <p class="version">연금로드 v1.3.1 · 탐험·이어하기 · 저장 데이터는 이 브라우저에만 보관됩니다.</p>`;
   }
 }

@@ -844,10 +844,7 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
 
 /* 단계 C: 선택 전 탐색과 되돌아가기 */
 .decision-tools { display:flex; flex-wrap:wrap; gap:8px; margin:0 40px 18px 0; }
-.decision-tools button, .route-options button { min-height:44px; }
-.route-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
-.route-options article { border:1px solid #b9d2c4; border-radius:18px; padding:18px; background:#f0f6ed; }
-.route-options h3 { font-size:1.2rem; }
+.decision-tools button { min-height:44px; }
 .region-progress { margin:10px 0; border:1px solid #cbd9cd; border-radius:14px; padding:12px; background:#f7f8ef; font-size:14px; }
 .region-progress>div { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
 .region-progress span { color:#586e69; }
@@ -858,7 +855,6 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
 .modal-explore select { display:block; width:100%; min-height:44px; font-size:16px; margin:8px 0 20px; }
 @media (min-width: 900px) { .board-stage { width:min(100%,calc(100dvh - 245px)); } }
 @media (max-width: 600px) {
-  .route-options { grid-template-columns:1fr; }
   .decision-tools { padding-top:8px; }
   .modal-sheet p, .modal-sheet small, .modal-sheet select, .action-list small { font-size:14px; }
   .modal-sheet { max-height:calc(100dvh - 24px); overflow:auto; }
