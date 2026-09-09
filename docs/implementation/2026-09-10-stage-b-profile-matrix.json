@@ -1,0 +1,33 @@
+{
+  "games": 200,
+  "errors": 0,
+  "goalMonthly": 450000,
+  "strategy": "steward",
+  "results": [
+    {
+      "profile": "안정형",
+      "games": 40,
+      "threeStars": 40
+    },
+    {
+      "profile": "안정추구형",
+      "games": 40,
+      "threeStars": 40
+    },
+    {
+      "profile": "위험중립형",
+      "games": 40,
+      "threeStars": 39
+    },
+    {
+      "profile": "적극투자형",
+      "games": 40,
+      "threeStars": 38
+    },
+    {
+      "profile": "공격투자형",
+      "games": 40,
+      "threeStars": 38
+    }
+  ]
+}

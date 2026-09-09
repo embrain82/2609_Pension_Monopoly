@@ -204,21 +204,20 @@ export function applyMarketStep(state: GameState, market: MarketStep): GameState
     if (holding.productId === 'deposit') {
       const lots = depositLots(state, holding).map(lot => ({ ...lot,
         amount: lot.amount + (state.turn <= lot.maturityTurn ? lot.principal * lot.ratePerTurn : 0) }));
-      return { ...holding, lots, defaultAmount: lots.filter(l => l.defaultOptionId).reduce((sum, l) => sum + l.amount, 0), amount: lots.reduce((sum, lot) => sum + lot.amount, 0), depositTurnsHeld: holding.depositTurnsHeld + 1 };
+      return { ...holding, lots, amount: lots.reduce((sum, lot) => sum + lot.amount, 0), depositTurnsHeld: holding.depositTurnsHeld + 1 };
     }
     const gross = holding.amount * (1 + market.returns[holding.productId]);
     const fee = Math.max(0, gross * product.feeRate);
     return {
       ...holding,
       amount: Math.max(0, gross - fee),
-      defaultAmount: (holding.defaultAmount ?? 0) * (1 + market.returns[holding.productId]) * (1 - product.feeRate),
       units: Math.max(0, gross - fee) / prices[holding.productId],
       depositTurnsHeld: holding.depositTurnsHeld
     };
   });
   const pendingOrders = state.pendingOrders.map(order => {
     const exposed = (order.side === 'sell' && order.stage === 'received') || (order.side === 'buy' && order.stage === 'priced');
-    return exposed ? { ...order, defaultAmount: (order.defaultAmount ?? 0) * (1 + market.returns[order.productId]) * (1 - products.find(p => p.id === order.productId)!.feeRate), amount: order.amount * (1 + market.returns[order.productId]) * (1 - products.find(p => p.id === order.productId)!.feeRate) } : { ...order };
+    return exposed ? { ...order, amount: order.amount * (1 + market.returns[order.productId]) * (1 - products.find(p => p.id === order.productId)!.feeRate) } : { ...order };
   });
   let next = { ...state, prices, pendingOrders, holdings, lastMarket: market };
   const value = portfolioValue(next);

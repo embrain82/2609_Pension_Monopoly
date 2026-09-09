@@ -1,7 +1,6 @@
 import { initialHoldings } from './profile-engine';
-import { keepCash, registerCash } from './cash-ledger';
 import { addAccountFlow, accountPayout } from './account-engine';
-import { balanceConfig, boardTiles, defaultOptions, investorProfiles, learningCards, lifeEvents, marketScenario, marketShocks, policyRules } from '../data/content';
+import { balanceConfig, boardTiles, defaultOptions, learningCards, lifeEvents, marketScenario, marketShocks, policyRules, investorProfiles } from '../data/content';
 import type { ActionKind, ActionResult, DefaultOptionId, GameState, GhostTrack, LifeChoice, LifeEvent, PayoutChoice, PlayRecord, ProfileId, ProductId } from '../types';
 import { ALERT_CARD_ID, applyMarketStep, emptyMarketStep, generateMarketPath, marketPathOf } from './market-engine';
 import { pickTileBriefing } from './tile-briefing';
@@ -12,7 +11,7 @@ import { diceStepsForTurn, hashSeed, nextRandom } from './random-engine';
 import { applyGoalToGame, clampGoalMonthly } from './goal';
 import { REBALANCE_TILE_BONUS, applyTileArrival } from './tile-effects';
 import { diversificationCount } from './scoring-engine';
-import { advanceDefaultOption, applyDefaultOption, normalizeDefaultOption, optOutDefaultOption, releaseMaturedDeposits, suggestDefaultOption } from './default-option';
+import { applyDefaultOption, normalizeDefaultOption, suggestDefaultOption } from './default-option';
 import { resolveLifeChoice } from './life-engine';
 import { answerQuiz, finalQuizCards, marketTileQuizzes, pickQuizCard, queueQuiz } from './quiz-engine';
 import { milestonesReached, stampMilestones } from './milestones';
@@ -31,7 +30,6 @@ export type AmountPreset = 'default' | 'half' | 'max';
 
 export interface GameOptions {
   avatarId?: ProfileId;
-  newAccount?: boolean;
   /** 칸 효과 켬/끔. 게이트 측정용. 기본 켬 */
   tileEffects?: boolean;
   /** 고스트("그대로 둔 나") 경로를 함께 계산. 시뮬·고스트 자신은 끔. 기본 켬 */
@@ -75,8 +73,8 @@ export function emptyRecord(): PlayRecord {
 }
 
 /** 같은 시드·같은 주사위·행동은 늘 "그대로"인 경로. 결과 화면과 정산의 비교 기준. */
-export function ghostTrackFor(seed: string, profileId: ProfileId, goalMonthly: number, tileEffects: boolean, newAccount = false): GhostTrack {
-  const ghost = autoplay(seed, 'passive', profileId, { ghost: false, tileEffects, goalMonthly, newAccount });
+export function ghostTrackFor(seed: string, profileId: ProfileId, goalMonthly: number, tileEffects: boolean): GhostTrack {
+  const ghost = autoplay(seed, 'passive', profileId, { ghost: false, tileEffects, goalMonthly });
   return { irpHistory: ghost.irpHistory, finalCash: ghost.cash };
 }
 
@@ -87,8 +85,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
   const tileEffectsEnabled = options.tileEffects !== false;
   const goal = clampGoalMonthly(goalMonthly);
   const state: GameState = {
-    accountType: 'IRP', rulesetVersion: '2026-09-10-b',
-    avatarId: options.avatarId ?? 'balanced', defaultCashLots: [], cashSequence: 0, defaultOptedOut: false,
+    accountType: 'IRP', rulesetVersion: '2026-09-10-b', avatarId: options.avatarId ?? 'balanced',
     accountBasis: { retirement: 90_000_000, retirementTax: 1_800_000, deducted: 9_000_000, nonDeducted: 9_000_000 },
     cashFlows: [], livingDebt: 0, orderSequence: 0, rebalancePlan: null,
     prices: { deposit: 1000, shortBond: 1000, longBond: 1000, balanced: 1000, equityEtf: 1000, tdf: 1000 },
@@ -101,8 +98,8 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
     goalMonthly: goal,
     profileId,
     cash: balanceConfig.startingCash,
-    irpCash: options.newAccount ? balanceConfig.startingIrp : 0,
-    holdings: options.newAccount ? [] : initialHoldings(profileId),
+    irpCash: 0,
+    holdings: initialHoldings(profileId),
     pendingOrders: [],
     contributionTotal: 0,
     taxCreditEligible: 0,
@@ -119,7 +116,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
     safeActionCount: 0,
     unlockedCards: ['rate-bond'],
     eventHistory: [],
-    logs: [{ turn: 0, type: 'start', message: options.newAccount ? '신규가입 초기입금 체험 · 운용지시 대기. 신규자금은 통지 후 1턴 뒤 지정옵션 적용.' : `${investorProfiles.find(p => p.id === profileId)!.name}에 맞는 가상 시작 포트폴리오로 출발했습니다.` }],
+    logs: [{ turn: 0, type: 'start', message: `${investorProfiles.find(p => p.id === profileId)!.name}에 맞는 가상 시작 포트폴리오로 출발했습니다.` }],
     lastMarket: market,
     marketPath,
     awaitingAction: false,
@@ -135,7 +132,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
     rebalanceBonusTurn: null,
     extraLifeEvents: 0,
     tileEffectsEnabled,
-    ghost: options.ghost === false ? null : ghostTrackFor(seed, profileId, goal, tileEffectsEnabled, options.newAccount),
+    ghost: options.ghost === false ? null : ghostTrackFor(seed, profileId, goal, tileEffectsEnabled),
     payoutChoice: null,
     defaultOption: options.defaultOption ? normalizeDefaultOption(profileId, options.defaultOption) : null,
     lifeResolution: null,
@@ -147,8 +144,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
     record: emptyRecord()
   };
   // 시작 시점에 이미 넘어선 이정표(기본 목표면 90%까지)는 배너 없이 기록만 한다.
-  const funded = options.newAccount ? registerCash(state, balanceConfig.startingIrp, 'newAccount') : state;
-  return { ...funded, milestonesHit: milestonesReached(funded) };
+  return { ...state, milestonesHit: milestonesReached(state) };
 }
 
 /**
@@ -178,14 +174,14 @@ function unlock(state: GameState, cardId: string): GameState {
 
 /**
  * 디폴트옵션 지정·변경·해제. 판 시작 모달과 설정이 함께 쓴다. 성향 밖 값은 추천값으로 바뀌고,
- * 지정하면 `default-option` 카드가 열린다. 진행 중 변경은 새 통지를 거쳐 적용한다.
+ * 지정하면 `default-option` 카드가 열린다. 진행 중 판에도 바로 적용된다(다음 「그대로」부터).
  */
 export function setDefaultOption(state: GameState, wanted: DefaultOptionId | null): GameState {
   const next = wanted ? normalizeDefaultOption(state.profileId, wanted) : null;
-  if (next === state.defaultOption && !state.defaultOptedOut) return state;
+  if (next === state.defaultOption) return state;
   const name = next ? defaultOptions.find((option) => option.id === next)?.name ?? next : null;
-  const message = next ? `디폴트옵션 ${name} 지정 · 대상 자금은 통지·대기 후 자동운용됩니다. 즉시 운용은 별도 옵트인입니다.` : '디폴트옵션 해제 · 대기자금은 직접 매수해야 합니다.';
-  const stamped: GameState = { ...state, defaultOption: next, defaultOptedOut: false, defaultCashLots: state.defaultCashLots.map(l => ({ ...l, optionId: null, noticeAt: null, activateAt: null })), logs: [...state.logs, { turn: state.turn, type: 'default-option', message }] };
+  const message = next ? `디폴트옵션 ${name} 지정 · 「그대로」를 고르면 대기자금을 이 옵션으로 운용합니다.` : '디폴트옵션 해제 · 대기자금은 직접 매수해야 합니다.';
+  const stamped: GameState = { ...state, defaultOption: next, logs: [...state.logs, { turn: state.turn, type: 'default-option', message }] };
   return next ? unlock(stamped, 'default-option') : stamped;
 }
 
@@ -249,9 +245,7 @@ export function startTurn(state: GameState, steps = 0): ActionResult {
     pendingQuizCardId: null,
     turnMilestones: []
   }, market);
-  next = releaseMaturedDeposits(next);
   next = settleOrders(next);
-  next = advanceDefaultOption(next);
   next = {
     ...next,
     ledger: { open, afterMarket: portfolioValue(next), beforeAction: null },
@@ -353,16 +347,21 @@ export function performAction(state: GameState, action: GameAction): ActionResul
     case 'sell': result = action.productId ? sellProduct(opened, action.productId, action.amount) : { ok: false, message: '매도 상품을 선택하세요.', state }; break;
     case 'switch': result = action.fromProductId && action.toProductId ? switchProduct(opened, action.fromProductId, action.toProductId, action.amount) : { ok: false, message: '교체할 두 상품을 선택하세요.', state }; break;
     case 'rebalance': result = rebalancePortfolio(opened); break;
-    case 'default-opt-in': {
-      const auto = applyDefaultOption({ ...opened, defaultOptedOut: false });
-      result = { ok: auto.bought.length > 0, state: auto.bought.length ? auto.state : opened,
-        message: auto.message || '옵션을 지정하고, 주문 결제 후 10만원 이상의 대기자금으로 실행하세요.' };
+    case 'hold': {
+      // 운용지시가 없으면 디폴트옵션이 대기자금을 운용한다(제도의 사전지정운용). 없으면 예전처럼 유지.
+      const auto = applyDefaultOption(opened);
+      const ran = auto.bought.length > 0;
+      result = {
+        ok: true,
+        message: ran ? auto.message : '이번 턴은 행동하지 않고 현재 구성을 유지했습니다.',
+        state: {
+          ...auto.state,
+          safeActionCount: auto.state.safeActionCount + 1,
+          record: ran ? { ...auto.state.record, defaultOptionRuns: auto.state.record.defaultOptionRuns + 1 } : auto.state.record
+        }
+      };
       break;
     }
-    case 'default-opt-out': result = optOutDefaultOption(opened); break;
-    case 'cash-instruction': result = { ok: true, state: keepCash(opened), message: '현재 대기자금의 현금 유지 지시 · 자동운용 대상에서 제외했습니다. 이후 새 만기 자금은 별도 판단합니다.' }; break;
-    case 'hold': result = { ok: true, state: { ...opened, safeActionCount: opened.safeActionCount + 1 },
-      message: '이번 턴은 행동하지 않고 현재 구성을 유지했습니다. 통지된 자동운용 일정은 계속됩니다.' }; break;
   }
   if (!result.ok) return { ...result, state: { ...result.state, ledger: state.ledger } };
   let acted: GameState = result.state;
@@ -497,8 +496,8 @@ export function autoplay(seed: string, strategy: AutoStrategy = 'balanced', prof
       } else action = state.cash > balanceConfig.contributionAmount ? { kind: 'contribute' } : { kind: 'hold' };
     }
     else if (strategy === 'contributor') action = state.cash > balanceConfig.contributionAmount ? { kind: 'contribute' } : { kind: 'hold' };
-    // 대기자금이 있으면 명시적 옵트인, 없으면 납입하거나 대기한다.
-    else if (strategy === 'defaultOption') action = state.irpCash >= 100000 && !state.pendingOrders.length ? { kind: 'default-opt-in' } : state.cash > balanceConfig.safeCashThreshold + balanceConfig.contributionAmount ? { kind: 'contribute' } : { kind: 'hold' };
+    // 납입 여력이 있으면 납입, 아니면 「그대로」 — 매수는 디폴트옵션에 맡긴다.
+    else if (strategy === 'defaultOption') action = state.cash > balanceConfig.safeCashThreshold + balanceConfig.contributionAmount ? { kind: 'contribute' } : { kind: 'hold' };
     else if (strategy === 'growth') action = state.turn % 2 === 1
       ? { kind: 'contribute' }
       : { kind: 'buy', productId: 'equityEtf', amount: balanceConfig.contributionAmount };
