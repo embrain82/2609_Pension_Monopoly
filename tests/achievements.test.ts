@@ -65,7 +65,7 @@ describe('판 업적 판정', () => {
   it('기록 필드는 행동을 따라 쌓인다: 리밸런싱 턴·분산 턴·디폴트옵션 운용·사건 선택', () => {
     const rebalancer = play('ach-record', (state) => state.turn === 1 || state.turn === 5 ? { kind: 'rebalance' } : { kind: 'hold' });
     expect(rebalancer.record.rebalanceTurns).toEqual([1, 5]);
-    expect(rebalancer.record.diversifiedTurns).toBe(balanceConfig.maxTurns);
+    expect(rebalancer.record.diversifiedTurns).toBe(8);
     expect(rebalancer.record.lifeChoices).toHaveLength(rebalancer.eventHistory.length);
     expect(rebalancer.record.lifeChoices.every((item) => item.choice === 'cash')).toBe(true);
     // 출발 구성(예금·혼합형 2종)을 그대로 두면 분산 턴이 0
@@ -77,7 +77,7 @@ describe('판 업적 판정', () => {
     expect(auto.record.defaultOptionRuns).toBeGreaterThanOrEqual(2);
   });
 
-  it('분산 12턴·목표·연금 선택은 손 플레이로 성립한다', () => {
+  it('분산 8턴·목표·연금 선택은 손 플레이로 성립한다', () => {
     const state = play('ach-hand-1', (game) => game.turn === 1 ? { kind: 'rebalance' } : game.cash > 8_000_000 ? { kind: 'contribute', amount: 1_000_000 } : { kind: 'hold' });
     const chosen = choosePayout(state, 'annuity20').state;
     const ids = evaluateGame(chosen);

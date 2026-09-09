@@ -26,7 +26,7 @@ describe('3.2 뉴스는 이미 가격에 반영 — 시장이 먼저, 행동은 
     for (const product of products) {
       const before = holding(created, product.id);
       if (before <= 0) continue;
-      const gross = before * (1 + step.returns[product.id]);
+      const gross = product.id === 'deposit' ? before * (1 + balanceConfig.market.depositBase + balanceConfig.market.depositPerRatePct * balanceConfig.market.rateStartPct) : before * (1 + step.returns[product.id]);
       expect(holding(started, product.id)).toBeCloseTo(gross - gross * product.feeRate, 2);
     }
     expect(started.ledger.open).toBe(balanceConfig.startingIrp);
@@ -57,24 +57,30 @@ describe('3.2 뉴스는 이미 가격에 반영 — 시장이 먼저, 행동은 
     expect(holding(nextTurn, 'equityEtf')).toBeCloseTo(gross - gross * etf.feeRate, 2);
   });
 
-  it('펀드 주문은 다음 턴 시작에 체결되고 그 턴 수익률은 받지 않는다', () => {
+  it('펀드 매수는 다음 턴 가격 확정 전에 지난 수익률을 받지 않는다', () => {
     const state = { ...openTurn('order-fund'), irpCash: 2_000_000 };
     const bought = performAction(state, { kind: 'buy', productId: 'shortBond', amount: 2_000_000 });
     expect(bought.ok).toBe(true);
     expect(bought.state.pendingOrders).toHaveLength(1);
     expect(holding(bought.state, 'shortBond')).toBe(0);
     const nextTurn = startTurn(bought.state, 1).state;
-    expect(nextTurn.pendingOrders).toHaveLength(0);
-    expect(holding(nextTurn, 'shortBond')).toBe(2_000_000);
+    expect(nextTurn.pendingOrders).toHaveLength(1);
+    expect(nextTurn.pendingOrders[0].stage).toBe('priced');
+    expect(holding(nextTurn, 'shortBond')).toBe(0);
+    expect(nextTurn.pendingOrders[0].amount).toBe(2_000_000);
   });
 
-  it('무행동 경로의 최종 IRP는 시작 보유분에 12턴 수익률을 순서대로 곱한 값이다', () => {
+  it('무행동 경로의 최종 IRP는 예금 약정과 투자상품 시장수익을 각각 반영한 값이다', () => {
     const done = autoplay('order-passive', 'passive', undefined, OPTIONS);
     const path = done.marketPath;
     let expected = 0;
     for (const product of products) {
       let amount = balanceConfig.startingIrp * balanceConfig.defaultAllocation[product.id];
       if (amount <= 0) continue;
+      if (product.id === 'deposit') {
+        expected += amount * (1 + balanceConfig.depositMaturityTurns * (balanceConfig.market.depositBase + balanceConfig.market.depositPerRatePct * balanceConfig.market.rateStartPct));
+        continue;
+      }
       for (const step of path) {
         const gross = amount * (1 + step.returns[product.id]);
         amount = gross - gross * product.feeRate;

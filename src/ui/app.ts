@@ -1,3 +1,4 @@
+import { accountPayout, sourceBalances } from '../engine/account-engine';
 import { balanceConfig, boardTiles, investorProfiles, learningCards, policyRules, products } from '../data/content';
 import { applyGoalToGame, choosePayout, clampGoalMonthly, createGame, performAction, resolveActionAmount, resolveLifeEvent, setDefaultOption, startTurn, submitQuiz, type AmountPreset, type GameAction } from '../engine/game-engine';
 import { getLifeEvent, getLearningCard } from '../engine/content-engine';
@@ -9,15 +10,15 @@ import { renderLearnedBlock, renderQuizModal } from './quiz-view';
 import { renderPayoutLine, renderPayoutModal } from './payout-view';
 import { ACHIEVEMENTS, newlyUnlocked, recordCollection, resultShareText } from '../engine/achievements';
 import { renderAchievementGallery, renderCollectionGallery, renderLifeResolvedStrip, renderNewAchievements, renderSeedLine, renderWeeklyButton } from './achievements-view';
-import { portfolioValue, rebalanceShares, sellProduct } from '../engine/portfolio-engine';
-import { canBuyForProfile, contributionCredit, decideBuyAgainstRiskLimit, expectedRiskAfterBuy, maxBuyWithinRiskLimit, riskAssetRatio, type BuyLimitDecision } from '../engine/policy-engine';
+import { portfolioValue, rebalanceShares, sellProduct, depositLots } from '../engine/portfolio-engine';
+import { canBuyForProfile, contributionCredit, decideBuyAgainstRiskLimit, expectedRiskAfterBuy, equityExposureRatio, maxBuyWithinRiskLimit, riskAssetRatio, type BuyLimitDecision } from '../engine/policy-engine';
 import { rebalanceGapLine } from '../engine/tile-effects';
 import { heldProductIds, pickHeldProduct, tradeBlockReason } from './action-form';
 import { randomSeed } from '../engine/random-engine';
 import { emptyMarketStep } from '../engine/market-engine';
 import { applyProfileToGame, profileFromScore } from '../engine/profile-engine';
 import { pickTileBriefing } from '../engine/tile-briefing';
-import { KNOWLEDGE_CAPS, calculateScore, knowledgeBreakdown, payoutPlan, shortfallPlan, starChecklist, starLockReason } from '../engine/scoring-engine';
+import { KNOWLEDGE_CAPS, calculateScore, knowledgeBreakdown, shortfallPlan, starChecklist, starLockReason } from '../engine/scoring-engine';
 import type { AchievementId, ActionKind, DefaultOptionId, GameState, LifeChoice, PayoutChoice, ProfileId, ProductId, SaveData, TurnSummary } from '../types';
 import { DICE_LAND_HOLD_MS, DICE_ROLL_DURATION_MS, canRevealNextTurn, dicePairForTurn, dicePairLabel, diceSteps, renderDiceMarkup, shouldSkipDiceAnimation } from './dice';
 import { TOKEN_STEP_MS, boardViewFor, movePath, renderBoardMarkup } from './board';
@@ -975,7 +976,7 @@ export class PensionRoadApp {
             <div class="big-number"><span>IRP 평가액</span><strong>${animatedNumber('shortWon', shown?.irp ?? null, score.irpValue)}</strong></div>
             <div class="metric-row"><span><abbr title="최종 IRP 평가액을 240개월로 나눈 교육용 값">예상 월 연금</abbr><strong>${animatedNumber('won', shown?.pension ?? null, score.monthlyPension)}</strong></span><span>시작 대비<strong class="${score.returnRate < 0 ? 'neg' : ''}">${animatedNumber('signedPercent', shown?.returnRate ?? null, score.returnRate)}</strong></span></div>
             ${renderGoalMeter(state, score, this.save.settings.ghost ? ghostMonthlyNow(state) : null)}
-            <div class="profile-line"><span>투자 성향 <b>${profile?.name ?? ''}</b></span><span>${profile?.maxRiskGrade ?? 0}등급까지 매수</span></div>
+            <p class="hint">미지급 생활비 ${formatWon(state.livingDebt)} · 다음 급여에서 우선 지급</p><div class="profile-line"><span>투자 성향 <b>${profile?.name ?? ''}</b></span><span>${profile?.minRiskGrade ?? 0}~6등급 매수</span></div>
             <div class="risk-line"><span>위험자산 비중 <b>${percent(score.riskRatio)}</b></span><span>생활자금 ${formatShortWon(state.cash)}</span></div>
             ${renderRiskMeter(score.riskRatio, policyRules.riskAssetLimit)}
             ${state.marketLimitExceeded ? '<p class="warning">시장 상승으로 한도 초과 · 위험자산 추가매수 제한, 예금·채권 매수나 리밸런싱은 가능</p>' : ''}
@@ -1009,7 +1010,7 @@ export class PensionRoadApp {
     const ghostOn = this.save.settings.ghost && Boolean(this.game.ghost);
     const ghostHistory = ghostOn ? this.game.ghost!.irpHistory : null;
     const payout = this.game.payoutChoice ?? 'annuity20';
-    const plan = payoutPlan(score.irpValue, payout);
+    const plan = accountPayout(score.irpValue, payout, this.game.accountBasis);
     const lock = starLockReason(this.game, score);
     const shortfall = shortfallPlan(this.game, score);
     const knowledge = knowledgeBreakdown(this.game);
@@ -1167,7 +1168,7 @@ export class PensionRoadApp {
         ? `<div class="preview-box action-sofar"><strong>이번 턴 지금까지</strong><p>${game.turnActionLines.join(' · ')}</p></div>`
         : '';
       const spotlightNote = spotlight
-        ? `<p class="spotlight-note">☆ 오늘의 스포트라이트 <b>${spotlight.name}</b> · 사면 이해 +1${spotlight.kind === 'fund' ? ' · 기준가 즉시 확정' : spotlight.kind === 'deposit' ? ' · 해지 불이익 없음' : ''}</p>`
+        ? `<p class="spotlight-note">☆ 오늘의 스포트라이트 <b>${spotlight.name}</b> · 사면 이해 +1${spotlight.kind === 'fund' ? ' · 일반 결제 규칙 적용' : spotlight.kind === 'deposit' ? ' · 가입 건별 약정 유지' : ''}</p>`
         : '';
       // 사건을 막 해결하고 온 길이면 두 번째 결정처럼 느껴지지 않게 한 흐름으로 잇는다.
       const resolved = game.lifeResolution && done === 0 ? renderLifeResolvedStrip(game.lifeResolution) : '';
@@ -1203,8 +1204,8 @@ export class PensionRoadApp {
       const expected = expectedRiskAfterBuy(game, this.selectedBuy, amount);
       const isSpotlight = game.spotlightProductId === this.selectedBuy;
       const pending = isSpotlight
-        ? `오늘 스포트라이트 · ${product.kind === 'fund' ? '기준가 즉시 확정' : '즉시 체결'} · 이해 +1`
-        : product.kind === 'fund' ? '펀드·TDF는 다음 턴에 잔고 반영' : '예금·ETF는 즉시 체결 · 수익률은 다음 턴부터';
+        ? `오늘 스포트라이트 · ${product.kind === 'fund' ? '일반 결제 규칙 적용' : '즉시 체결'} · 이해 +1`
+        : product.kind === 'fund' ? '펀드·TDF는 다음 턴 가격 확정, 그다음 턴 결제' : '예금·ETF는 즉시 체결 · 수익률은 다음 턴부터';
       const suitability = canBuyForProfile(game.profileId, this.selectedBuy);
       const decision = suitability.ok ? decideBuyAgainstRiskLimit(game, this.selectedBuy, amount) : null;
       const preview = !suitability.ok
@@ -1240,12 +1241,9 @@ export class PensionRoadApp {
       this.selectedSell = pickHeldProduct(game, this.selectedSell);
       const amount = this.currentAmount('sell', this.selectedSell);
       const blocked = tradeBlockReason(game, 'sell', amount);
-      const depositWaived = game.spotlightProductId === 'deposit' && this.selectedSell === 'deposit';
-      const sellNote = depositWaived
-        ? '오늘은 예금 거리 스포트라이트 · 만기 전 해지 불이익이 없습니다. 펀드는 다음 턴 대금.'
-        : '예금은 만기 전 해지 불이익, 펀드는 다음 턴 대금.';
+      const sellNote = sellProduct(game, this.selectedSell, amount).message;
       return `<button class="text-button" data-action="action-view" data-view="menu">← 행동 목록</button>
-        <p class="eyebrow">매도${depositWaived ? ' · 해지 불이익 면제' : ''}</p><h2>무엇을 줄일까요?</h2>
+        <p class="eyebrow">매도</p><h2>무엇을 줄일까요?</h2>
         <label for="sell-product">상품</label><select id="sell-product">${this.productOptions(this.selectedSell, true)}</select>
         ${this.amountButtons('sell', this.selectedSell)}
         <div class="preview-box ${blocked ? 'warning' : ''}"><strong>미리보기</strong><p>${blocked ?? `${formatWon(amount)} 매도. ${sellNote}`}</p></div>
@@ -1273,15 +1271,15 @@ export class PensionRoadApp {
         .map((product) => `${product.shortName} ${(shares[product.id] * 100).toFixed(0)}%`)
         .join(' · ');
       const skipNote = skipped.length
-        ? `${skipped.map((item) => item.shortName).join('·')}은 성향보다 등급이 높아 빼고 나머지로 맞춥니다.`
+        ? `${skipped.map((item) => item.shortName).join('·')}은 성향 허용 범위보다 위험이 커서 빼고 나머지로 맞춥니다.`
         : '오른 자산을 줄이고 낮아진 자산을 채워 위험 수준을 맞춥니다.';
       const bonus = game.rebalanceBonusTurn === game.turn;
       const gap = `<div class="preview-box rebalance-gap${bonus ? ' bonus' : ''}"><strong>지금 → 목표${bonus ? ' · 리밸런싱 칸 보너스 이해 +2' : ''}</strong><p>${rebalanceGapLine(game)}</p></div>`;
       return `<button class="text-button" data-action="action-view" data-view="menu">← 행동 목록</button>
         <p class="eyebrow">리밸런싱</p><h2>목표비중으로 되돌릴까요?</h2>
         ${gap}
-        <div class="preview-box"><strong>목표비중</strong><p>${targets}</p><p>${skipNote}</p></div>
-        <button class="primary jumbo" data-action="do-rebalance">리밸런싱 실행</button>`;
+        <div class="preview-box"><strong>목표비중</strong><p>${targets}</p><p>${skipNote}</p><p>차액 주문으로 처리합니다. 매도 결제 후 매수하며 10만원 미만 차액은 대기자금으로 남을 수 있습니다.</p></div>
+        <p class="hint">${game.pendingOrders.length || game.rebalancePlan ? "접수 주문 정산 후 실행할 수 있습니다." : "예금 이자 조정과 펀드 가격·결제 대기를 적용합니다."}</p><button class="primary jumbo" data-action="do-rebalance" ${game.pendingOrders.length || game.rebalancePlan ? "disabled" : ""}>리밸런싱 실행</button>`;
     }
     return '';
   }
@@ -1293,7 +1291,7 @@ export class PensionRoadApp {
 
   /** 「그대로」는 확인 화면 없이 바로 실행되므로 무슨 일이 일어나는지 목록 한 줄이 다 말해야 한다 */
   private holdMenuNote(game: GameState): string {
-    if (this.holdAutoRuns(game)) return `대기자금 ${formatShortWon(game.irpCash)}을 디폴트옵션(${defaultOptionName(game.defaultOption)})이 ${defaultOptionProducts(game.defaultOption)}로 균등 매수 · 바로 마감`;
+    if (this.holdAutoRuns(game)) return `대기자금 ${formatShortWon(game.irpCash)}을 지정옵션(${defaultOptionName(game.defaultOption)})으로 ${defaultOptionProducts(game.defaultOption)} 균등 매수 실행(옵트인 체험) · 바로 마감`;
     if (game.defaultOption) {
       const cash = game.irpCash < 10_000 ? '대기자금이 없어' : `대기자금 ${formatShortWon(game.irpCash)}은 10만 원 미만이라`;
       return `구성 그대로 마감 · ${cash} 디폴트옵션(${defaultOptionName(game.defaultOption)})이 살 것이 없음`;
@@ -1304,13 +1302,16 @@ export class PensionRoadApp {
   private renderPortfolioModal(): string {
     if (!this.game) return '';
     const total = portfolioValue(this.game);
+    const basis = sourceBalances(total, this.game.accountBasis);
     const rows = products.map((product) => {
       const amount = this.game!.holdings.find((holding) => holding.productId === product.id)?.amount ?? 0;
       const ret = this.game!.lastMarket.returns[product.id] ?? 0;
-      return `<tr><td><span class="risk-symbol ${product.risk_asset_ratio > 0 ? 'risky' : 'safe'}">${product.risk_asset_ratio > 0 ? '▲' : '●'}</span>${product.shortName}<small>${product.riskLabel}</small></td><td>${formatShortWon(amount)}</td><td>${total ? percent(amount / total) : '0%'}</td><td class="${ret < 0 ? 'neg' : ''}">${signedPercent(ret)}</td></tr>`;
+      return `<tr><td><span class="risk-symbol ${!product.principal_guaranteed ? 'risky' : 'safe'}">${!product.principal_guaranteed ? '▲' : '●'}</span>${product.shortName}<small>${product.riskLabel}</small></td><td>${formatShortWon(amount)}</td><td>${total ? percent(amount / total) : '0%'}</td><td class="${ret < 0 ? 'neg' : ''}">${product.id === 'deposit' ? '가입 건별 약정' : signedPercent(ret)}</td></tr>`;
     }).join('');
-    const orders = this.game.pendingOrders.length ? this.game.pendingOrders.map((order) => `<li>${order.side === 'buy' ? '매수' : '환매'} · ${products.find((item) => item.id === order.productId)?.shortName} · ${order.stage === 'received' ? '주문 접수' : '기준가 확정'} → ${order.settlesTurn}턴 반영</li>`).join('') : '<li>대기 주문 없음</li>';
-    return `<p class="eyebrow">포트폴리오</p><h2>${formatWon(total)}</h2><p>위험자산 ${percent(riskAssetRatio(this.game))} · IRP 대기자금 ${formatWon(this.game.irpCash)}</p><div class="table-wrap"><table><thead><tr><th>상품</th><th>평가액</th><th>비중</th><th>이번 턴</th></tr></thead><tbody>${rows}</tbody></table></div><h3>주문 처리</h3><ul class="order-list">${orders}</ul>`;
+    const deposit = this.game.holdings.find(h => h.productId === 'deposit');
+    const lots = deposit ? depositLots(this.game, deposit).map(lot => `<li>${formatWon(lot.amount)} · 가입 ${lot.openedTurn}턴 / 만기 ${lot.maturityTurn}턴 · 턴당 약정 ${percent(lot.ratePerTurn)}${this.game!.turn >= lot.maturityTurn ? ' · 만기 후 보관' : ''}</li>`).join('') : '';
+    const orders = this.game.pendingOrders.length ? this.game.pendingOrders.map((order) => `<li>${order.side === 'buy' ? '매수' : '환매'} · ${products.find((item) => item.id === order.productId)?.shortName} · ${formatWon(order.amount)} · ${order.units != null ? `${order.units.toFixed(2)} 모형수량 · ` : ''}${order.stage === 'received' ? '주문 접수' : '기준가 확정'} → ${order.settlesTurn}턴 반영</li>`).join('') : '<li>대기 주문 없음</li>';
+    return `<p class="eyebrow">포트폴리오</p><h2>${formatWon(total)}</h2><p>규제 위험자산 ${percent(riskAssetRatio(this.game))} · 기초 주식 노출 ${percent(equityExposureRatio(this.game))} · IRP 대기자금 ${formatWon(this.game.irpCash)}</p><div class="table-wrap"><table><thead><tr><th>상품</th><th>평가액</th><th>비중</th><th>이번 턴</th></tr></thead><tbody>${rows}</tbody></table></div><p class="hint">적격 TDF의 한도 예외는 손실 위험이 없다는 뜻이 아닙니다. 주식 노출 외에 금리·신용 위험도 있습니다.</p><h3>자금 원천</h3><p>퇴직급여 ${formatWon(basis.retirement)} · 미공제 원금 ${formatWon(basis.nonDeducted)} · 공제 원금 ${formatWon(basis.deducted)} · 운용수익 ${formatWon(basis.earnings)}</p><h3>예금 약정</h3><ul class="order-list">${lots || "<li>예금 보유 없음</li>"}</ul><h3>주문 처리</h3><ul class="order-list">${orders}</ul>`;
   }
 
   private renderMarketModal(): string {
@@ -1345,8 +1346,8 @@ export class PensionRoadApp {
     const playing = this.game ? investorProfiles.find((item) => item.id === this.game!.profileId) : null;
     const nextProfile = investorProfiles.find((item) => item.id === this.profileId);
     const profileNote = playing
-      ? `이번 판 성향은 <strong>${playing.name}</strong>이며 ${playing.maxRiskGrade}등급까지 매수할 수 있습니다. 다시 진단하면 지금 판부터 바로 바뀝니다.`
-      : `저장된 성향은 <strong>${nextProfile?.name ?? '위험중립형'}</strong>이며 ${nextProfile?.maxRiskGrade ?? 4}등급까지 매수할 수 있습니다.`;
+      ? `이번 판 성향은 <strong>${playing.name}</strong>이며 ${playing.minRiskGrade}~6등급 매수할 수 있습니다. 다시 진단하면 지금 판부터 바로 바뀝니다.`
+      : `저장된 성향은 <strong>${nextProfile?.name ?? '위험중립형'}</strong>이며 ${nextProfile?.minRiskGrade ?? 4}~6등급 매수할 수 있습니다.`;
     return `<p class="eyebrow">설정 · 면책 · 출처</p><h2>교육용 게임 안내</h2>
       <p class="profile-note">${profileNote}</p>
       <label class="setting-row" for="reduced-motion"><span><strong>동작 줄이기</strong><small>전환·주사위 애니메이션을 즉시 표시합니다.</small></span><input id="reduced-motion" type="checkbox" ${this.save.settings.reducedMotion ? 'checked' : ''}></label>

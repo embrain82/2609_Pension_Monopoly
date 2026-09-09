@@ -8,7 +8,7 @@ import type { ScenePace } from './fx';
 
 const DIAL_SWEEP_DEG = 120;
 
-export const COACH_MARKET_FIRST = '뉴스를 본 순간 가격은 이미 움직였어요. 위 수익률은 턴 시작에 보유분에 들어갔고, 지금 고르는 행동은 다음 턴 흐름에 거는 거예요.';
+export const COACH_MARKET_FIRST = '뉴스를 본 순간 가격은 이미 움직였어요. 투자상품 수익률은 턴 시작에 보유분에 들어갔고, 지금 고르는 행동은 다음 턴 흐름에 거는 거예요.';
 
 export interface NewsFlashOptions {
   characters: boolean;
@@ -57,7 +57,7 @@ export function renderNewsFlash(step: MarketStep, prev: MarketStep, tile: BoardT
   const arrows = products.map((product, index) => {
     const value = step.returns[product.id];
     const direction = value > 0.0005 ? 'up' : value < -0.0005 ? 'down' : 'flat';
-    return `<li class="news-arrow ${direction}" style="--i:${index};--mag:${arrowMagnitude(value).toFixed(2)}"><span>${product.shortName}</span><i aria-hidden="true"></i><b>${signedPercent(value)}</b></li>`;
+    return `<li class="news-arrow ${direction}" style="--i:${index};--mag:${arrowMagnitude(value).toFixed(2)}"><span>${product.id === 'deposit' ? '예금 예시' : product.shortName}</span><i aria-hidden="true"></i><b>${signedPercent(value)}</b></li>`;
   }).join('');
   const applied = options.ledger ? renderIrpApplied(options.ledger) : '';
   const coach = options.coach
@@ -76,7 +76,7 @@ export function renderNewsFlash(step: MarketStep, prev: MarketStep, tile: BoardT
     </div>
     <ul class="news-arrows">${arrows}</ul>
     ${applied}
-    ${reason}
+    ${reason}<p class="hint">예금 숫자는 가상 시장 예시입니다. 보유 예금은 가입 건별 고정 약정으로 계산하며, 실제 약정은 포트폴리오에서 확인하세요.</p>
     ${coach}
     ${renderMarketAlert(step)}
     <p class="news-arrival">도착 · ${String(tile.index + 1).padStart(2, '0')} ${tile.label}</p>

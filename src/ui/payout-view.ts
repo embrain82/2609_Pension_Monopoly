@@ -1,5 +1,5 @@
 import { policyRules } from '../data/content';
-import { payoutPlan } from '../engine/scoring-engine';
+import { accountPayout, SCENARIO_CLOCK } from '../engine/account-engine';
 import type { GameState, PayoutChoice, PayoutPlan } from '../types';
 import { portfolioValue } from '../engine/portfolio-engine';
 import { renderSpeech } from './speech';
@@ -38,16 +38,16 @@ function planCard(plan: PayoutPlan, goalMonthly: number, current: PayoutChoice |
  */
 export function renderPayoutModal(state: GameState, options: PayoutViewOptions): string {
   const irp = portfolioValue(state);
-  const annuity = payoutPlan(irp, 'annuity20');
-  const lump = payoutPlan(irp, 'lumpSum');
+  const annuity = accountPayout(irp, 'annuity20', state.accountBasis);
+  const lump = accountPayout(irp, 'lumpSum', state.accountBasis);
   const diff = lump.tax - annuity.tax;
   return `<div class="modal-icon payout">₩</div>
     <p class="eyebrow">12턴 끝 · 마지막 결정</p>
     <h2>어떻게 받을까요?</h2>
-    <p class="modal-lead">IRP 평가액 <b>${formatWon(irp)}</b>. 연금으로 나눠 받으면 연금소득세, 지금 한 번에 받으면 기타소득세가 붙습니다(교육용 단순화 ${pct(policyRules.pensionTaxRate)} / ${pct(policyRules.lumpSumTaxRate)}).</p>
+    <p class="modal-lead">IRP 평가액 <b>${formatWon(irp)}</b>. 미공제 원금은 과세 제외, 퇴직급여는 원천징수영수증의 이연세액, 공제 원금·수익은 수령 방식과 나이에 따른 세금으로 구분합니다. 표시 비율은 전체 잔액 대비 평균 세금입니다.</p>
     <div class="payout-grid">${planCard(annuity, state.goalMonthly, options.current)}${planCard(lump, state.goalMonthly, options.current)}</div>
-    ${renderSpeech('coach', `<p>일시금은 세금이 <b>${formatWon(diff)}</b> 더 붙습니다. 목표 달성률은 연금 수령을 기준으로 재므로, 일시금을 고르면 같은 IRP라도 달성률이 ${Math.round((1 - lump.monthlyBasis / annuity.monthlyBasis) * 100)}% 낮게 잡힙니다. 정답은 없습니다 — 급한 목돈이 필요하면 일시금도 선택입니다.</p>`, { characters: options.characters, title: '한 줄 정리' })}
-    <p class="hint">실제 세율은 나이·수령 기간·개인 상황에 따라 다르며(연금소득세 3.3~5.5%, 연금 외 수령 16.5% 등), 게임은 두 숫자로 단순화했습니다.</p>`;
+    ${renderSpeech('coach', `<p>이번 재원 구성에서는 일시금 세금이 <b>${formatWon(diff)}</b> 더 붙습니다. 목표 달성률은 연금 수령을 기준으로 재므로, 일시금을 고르면 같은 IRP라도 달성률이 ${Math.round((1 - (annuity.monthlyBasis > 0 ? lump.monthlyBasis / annuity.monthlyBasis : 1)) * 100)}% 낮게 잡힙니다. 정답은 없습니다 — 급한 목돈이 필요하면 일시금도 선택입니다.</p>`, { characters: options.characters, title: '한 줄 정리' })}
+    <p class="hint">${SCENARIO_CLOCK.description} 초기 퇴직급여 9천만원의 이연세액 180만원은 가상 영수증의 값입니다. 손실 시 재원 비례 축소·수령 중 운용수익 없음 가정이며 실제 세무 계산서는 아닙니다.</p>`;
 }
 
 /** 결과 화면 수령 방식 한 줄 */

@@ -1,3 +1,4 @@
+import { accountPayout } from './account-engine';
 import { balanceConfig, investorProfiles, policyRules, products } from '../data/content';
 import type { GameState, PayoutChoice, PayoutPlan, ProfileId, ScoreResult } from '../types';
 import { portfolioValue, rebalanceTargetRisk } from './portfolio-engine';
@@ -167,7 +168,9 @@ export function shortfallPlan(state: GameState, score: ScoreResult): ShortfallPl
   if (score.goalMet) return null;
   const gapMonthly = state.goalMonthly - score.monthlyPension;
   const choice: PayoutChoice = state.payoutChoice ?? 'annuity20';
-  const neededIrp = (gapMonthly * policyRules.receivingMonths) / payoutFactor(choice);
+  // 계좌별 현재 세후 비교 비율을 사용한 근사치. 추가 납입으로 재원 구성이 바뀌면 다시 계산해야 한다.
+  const currentFactor = score.irpValue > 0 ? score.payout.monthlyBasis * policyRules.receivingMonths / score.irpValue : 1;
+  const neededIrp = (gapMonthly * policyRules.receivingMonths) / currentFactor;
   const contributionRoom = Math.max(0, policyRules.annualContributionLimit - state.contributionTotal);
   const withinLimit = neededIrp <= contributionRoom;
   const creditRoom = Math.max(0, policyRules.annualTaxCreditLimit - state.taxCreditEligible);
@@ -175,15 +178,15 @@ export function shortfallPlan(state: GameState, score: ScoreResult): ShortfallPl
   const refundEstimate = Math.min(neededIrp, contributionRoom, creditRoom) * policyRules.taxCreditRate;
   const payoutNote = choice === 'lumpSum' ? '(일시금은 세금이 더 붙어 필요액이 늘어납니다) ' : '';
   const line = withinLimit
-    ? `월 ${won(gapMonthly)} 부족 → IRP ${won(neededIrp)}이 더 있었으면 목표. ${payoutNote}남은 납입 한도 ${won(contributionRoom)} 안이라 납입만으로 닿을 수 있었고, 그 납입은 세액공제 약 ${won(refundEstimate)}로 일부 돌아옵니다.`
-    : `월 ${won(gapMonthly)} 부족 → IRP ${won(neededIrp)}이 더 있었어야 합니다. ${payoutNote}남은 납입 한도 ${won(contributionRoom)}를 넘어 납입만으로는 부족했고, 운용 수익(분산·리밸런싱)이 함께 필요했습니다.`;
+    ? `월 ${won(gapMonthly)} 부족 → 현재 재원 비율 기준 근사 IRP ${won(neededIrp)}이 더 있었으면 목표. ${payoutNote}남은 납입 한도 ${won(contributionRoom)} 안이라 납입만으로 닿을 수 있었고, 그 납입은 세액공제 약 ${won(refundEstimate)}로 일부 돌아옵니다.`
+    : `월 ${won(gapMonthly)} 부족 → 현재 재원 비율 기준 근사 IRP ${won(neededIrp)}이 더 있었어야 합니다. ${payoutNote}남은 납입 한도 ${won(contributionRoom)}를 넘어 납입만으로는 부족했고, 운용 수익(분산·리밸런싱)이 함께 필요했습니다.`;
   return { gapMonthly, neededIrp, contributionRoom, withinLimit, refundEstimate, line };
 }
 
 export function calculateScore(state: GameState): ScoreResult {
   const irpValue = portfolioValue(state);
   const choice: PayoutChoice = state.payoutChoice ?? 'annuity20';
-  const payout = payoutPlan(irpValue, choice);
+  const payout = accountPayout(irpValue, choice, state.accountBasis);
   const pension = payout.monthlyBasis;
   const goalRate = state.goalMonthly <= 0 ? 0 : pension / state.goalMonthly;
   const goalMet = goalRate >= 1;
@@ -191,7 +194,7 @@ export function calculateScore(state: GameState): ScoreResult {
   const diversification = diversificationCount(state);
   const actualProfile = behaviorProfile(state);
   const profileAligned = Math.abs(riskRatio - rebalanceTargetRisk(state.profileId)) <= balanceConfig.profileAlignBand;
-  const safeCash = state.cash >= balanceConfig.safeCashThreshold;
+  const safeCash = state.cash - state.livingDebt >= balanceConfig.safeCashThreshold;
   const drawdownOk = state.maxDrawdown <= balanceConfig.maxDrawdownThreshold;
   const diversified = diversification >= diversificationNeeded(state.profileId);
   const nearGoal = goalRate >= balanceConfig.nearGoalRate;
@@ -212,7 +215,7 @@ export function calculateScore(state: GameState): ScoreResult {
   const knowledgeScore = knowledgeScoreOf(state);
   const totalScore = Math.round(Math.min(100, Math.max(0, incomeScore + stabilityScore + knowledgeScore)));
   const returnRate = balanceConfig.startingIrp <= 0 ? 0 : (irpValue - balanceConfig.startingIrp) / balanceConfig.startingIrp;
-  const investmentReturnRate = balanceConfig.startingIrp <= 0 ? 0 : (irpValue - balanceConfig.startingIrp - state.contributionTotal) / balanceConfig.startingIrp;
+  const investmentReturnRate = balanceConfig.startingIrp <= 0 ? 0 : (irpValue - balanceConfig.startingIrp - state.cashFlows.reduce((sum, flow) => sum + flow.amount, 0)) / balanceConfig.startingIrp;
 
   const bestDecision = state.rebalanceCount > 0
     ? '시장 변화 뒤 목표비중을 다시 맞춰 위험을 관리한 결정'

@@ -1,0 +1,189 @@
+{
+  "reviewedAt": "2026-09-09",
+  "commit": "e4a6e950ddd0812845636ee0ae1f3a0ffeb1d97f",
+  "method": "100 identical seeds per strategy; default strategy-specific profiles; quiz none; payout default annuity20. Strategy packages, not isolated causal effects.",
+  "reproductions": {
+    "illegalCashFallback": {
+      "event": "moving",
+      "eligible": false,
+      "ok": true,
+      "irpLost": 2530365,
+      "message": "생활자금이 부족해 예금 2,530,365원을 매도해 비용을 지급했습니다."
+    },
+    "illegalDepositRoute": {
+      "event": "moving",
+      "eligible": false,
+      "ok": true,
+      "irpLost": 2530365
+    },
+    "earlyPrincipalPenalty": {
+      "noInterestYet": true,
+      "sold": 1000000,
+      "received": 988000,
+      "lost": 12000
+    },
+    "rebalanceBypassesPending": {
+      "beforePending": 1,
+      "afterPending": 0,
+      "irpChange": 0
+    },
+    "redemptionPriceFrozen": {
+      "before": 1000000,
+      "after10PercentFall": 1000000
+    },
+    "transferCountedAsReturn": {
+      "transferred": 6000000,
+      "investmentReturnRate": 0.05555555555555555
+    },
+    "unfundedWithdrawal": {
+      "ok": true,
+      "irpBefore": 6000000,
+      "irpAfter": 6000000,
+      "eventCleared": true
+    },
+    "finalSwitchLeavesPending": {
+      "ok": true,
+      "status": "finished",
+      "pendingOrders": [
+        {
+          "id": "12-buy-tdf-0",
+          "side": "buy",
+          "productId": "tdf",
+          "amount": 1000000,
+          "submittedTurn": 12,
+          "settlesTurn": 13,
+          "stage": "received"
+        }
+      ]
+    },
+    "uniformTaxExample": {
+      "annuity": {
+        "choice": "annuity20",
+        "taxRate": 0.055,
+        "tax": 330000,
+        "net": 5670000,
+        "monthlyNet": 23625,
+        "monthlyBasis": 25000
+      },
+      "lumpSum": {
+        "choice": "lumpSum",
+        "taxRate": 0.165,
+        "tax": 990000,
+        "net": 5010000,
+        "monthlyNet": 20875,
+        "monthlyBasis": 22089.947089947087
+      }
+    },
+    "profileTargets": [
+      {
+        "id": "stable",
+        "statedExpectedRisk": 0.15,
+        "rebalanceTarget": 0
+      },
+      {
+        "id": "stableGrowth",
+        "statedExpectedRisk": 0.3,
+        "rebalanceTarget": 0
+      },
+      {
+        "id": "balanced",
+        "statedExpectedRisk": 0.5,
+        "rebalanceTarget": 0.21666666666666667
+      },
+      {
+        "id": "growth",
+        "statedExpectedRisk": 0.65,
+        "rebalanceTarget": 0.29500000000000004
+      },
+      {
+        "id": "aggressive",
+        "statedExpectedRisk": 0.7,
+        "rebalanceTarget": 0.29500000000000004
+      }
+    ],
+    "counts": {
+      "products": 6,
+      "lifeEvents": 12,
+      "quizzes": 20
+    }
+  },
+  "pairedStrategies": [
+    {
+      "strategy": "balanced",
+      "runs": 100,
+      "goalRate": 0.74,
+      "threeStarRate": 0.74,
+      "averageDrawdown": 0.017533996401010877
+    },
+    {
+      "strategy": "passive",
+      "runs": 100,
+      "goalRate": 0.08,
+      "threeStarRate": 0,
+      "averageDrawdown": 0.019827555623309238
+    },
+    {
+      "strategy": "contributor",
+      "runs": 100,
+      "goalRate": 0.99,
+      "threeStarRate": 0,
+      "averageDrawdown": 0.008734208977706808
+    },
+    {
+      "strategy": "growth",
+      "runs": 100,
+      "goalRate": 0.72,
+      "threeStarRate": 0.6,
+      "averageDrawdown": 0.016038922201359766
+    },
+    {
+      "strategy": "steward",
+      "runs": 100,
+      "goalRate": 0.98,
+      "threeStarRate": 0.95,
+      "averageDrawdown": 0.010637855856267378
+    },
+    {
+      "strategy": "etfOnly",
+      "runs": 100,
+      "goalRate": 0.47,
+      "threeStarRate": 0,
+      "averageDrawdown": 0.0852028651732036
+    },
+    {
+      "strategy": "stopLoss",
+      "runs": 100,
+      "goalRate": 0.39,
+      "threeStarRate": 0,
+      "averageDrawdown": 0.0669843282866262
+    },
+    {
+      "strategy": "momentum",
+      "runs": 100,
+      "goalRate": 0.33,
+      "threeStarRate": 0,
+      "averageDrawdown": 0.018565371220409254
+    },
+    {
+      "strategy": "newsChaser",
+      "runs": 100,
+      "goalRate": 0.38,
+      "threeStarRate": 0,
+      "averageDrawdown": 0.0623448927319443
+    },
+    {
+      "strategy": "defaultOption",
+      "runs": 100,
+      "goalRate": 0.99,
+      "threeStarRate": 0,
+      "averageDrawdown": 0.009145805066941971
+    },
+    {
+      "strategy": "withdrawer",
+      "runs": 100,
+      "goalRate": 0.51,
+      "threeStarRate": 0.51,
+      "averageDrawdown": 0.027810478978594982
+    }
+  ]
+}

@@ -33,7 +33,7 @@ describe('선택지 표(lifeChoicesFor)', () => {
     const choices = lifeChoicesFor(state, event('moving'));
     expect(choices.map((choice) => choice.id)).toEqual(['cash', 'deposit', 'withdraw']);
     expect(choices[0].enabled).toBe(true);
-    expect(choices[1].enabled).toBe(true);
+    expect(choices[1].enabled).toBe(false);
     expect(choices[2].enabled).toBe(false);
     expect(choices[2].reason).toContain('사유');
     for (const choice of choices) {
@@ -46,7 +46,8 @@ describe('선택지 표(lifeChoicesFor)', () => {
     const choices = lifeChoicesFor(withEvent(base(), 'medical'), event('medical'));
     const withdraw = choices.find((choice) => choice.id === 'withdraw')!;
     expect(withdraw.enabled).toBe(true);
-    expect(withdraw.immediate).toContain('3%');
+    expect(withdraw.immediate).toContain('재원별 세금');
+    expect(withdraw.immediate).not.toContain('3%');
   });
 
   it('예금이 없으면 예금 해지는 비활성', () => {
@@ -67,7 +68,7 @@ describe('선택지 표(lifeChoicesFor)', () => {
     const choices = lifeChoicesFor(withEvent(base(), 'severance'), event('severance'));
     expect(choices.map((choice) => choice.id)).toEqual(['transfer-irp', 'cash']);
     expect(choices[1].label).toBe('지금 받기(일시 수령)');
-    expect(choices[1].immediate).toContain('16.5%');
+    expect(choices[1].immediate).toContain('퇴직소득세 60,000원');
   });
 });
 
@@ -79,46 +80,34 @@ describe('선택 실행(resolveLifeChoice)', () => {
     expect(out.state.cash).toBeCloseTo(state.cash - 2_500_000, 0);
     expect(out.state.lifeResolution?.choice).toBe('cash');
     expect(out.state.lifeResolution?.cashDelta).toBeCloseTo(-2_500_000, 0);
-    expect(out.state.lifeResolution?.alternative.length).toBeGreaterThan(0);
+    expect(out.state.lifeResolution?.alternative).toBe('');
     expect(out.state.awaitingAction).toBe(true);
     expect(out.state.currentEventId).toBeNull();
   });
 
-  it('예금 중도해지: 비용만큼 예금을 깨고 불이익 1.2%를 뺀다. 생활자금은 그대로', () => {
+  it('비허용 사건은 예금 해지로도 계좌 밖 지급을 우회하지 못한다', () => {
     const state = withEvent(base(), 'moving');
-    const depositBefore = state.holdings.find((holding) => holding.productId === 'deposit')!.amount;
     const out = resolveLifeChoice(state, 'deposit');
-    expect(out.ok).toBe(true);
-    const depositAfter = out.state.holdings.find((holding) => holding.productId === 'deposit')!.amount;
-    const gross = depositBefore - depositAfter;
-    expect(gross).toBeGreaterThan(2_500_000);
-    expect(gross * (1 - policyRules.earlyDepositPenaltyRate)).toBeCloseTo(2_500_000, -2);
-    expect(out.state.cash).toBeCloseTo(state.cash, 0);
-    expect(out.state.lifeResolution?.penalty).toBeGreaterThan(0);
-    expect(out.state.lifeResolution?.sales[0].productId).toBe('deposit');
-    expect(out.state.unlockedCards).toContain('deposit-rate');
+    expect(out.ok).toBe(false);
+    expect(out.state).toBe(state);
   });
 
-  it('예금이 모자라면 나머지는 생활자금에서 낸다', () => {
-    const state = withEvent(base(), 'career');
-    const small: GameState = { ...state, holdings: state.holdings.map((holding) => holding.productId === 'deposit' ? { ...holding, amount: 1_000_000, principal: 1_000_000 } : holding) };
-    const out = resolveLifeChoice(small, 'deposit');
-    expect(out.ok).toBe(true);
-    expect(out.state.holdings.find((holding) => holding.productId === 'deposit')?.amount ?? 0).toBeLessThan(1);
-    expect(out.state.cash).toBeLessThan(small.cash);
-    expect(out.state.cash).toBeGreaterThan(small.cash - 4_200_000);
-  });
-
-  it('중도인출: 허용 사유만, 비용+3%를 IRP에서 뺀다', () => {
+  it('결제 자금이 부족하면 인출은 거절하고 생활자금 경로를 사용한다', () => {
     const state = withEvent(base(), 'medical');
-    const irpBefore = portfolioValue(state);
+    const onlyFund: GameState = { ...state, holdings: state.holdings.filter(h => h.productId !== 'deposit') };
+    expect(resolveLifeChoice(onlyFund, 'deposit').ok).toBe(false);
+    expect(resolveLifeChoice(onlyFund, 'cash').ok).toBe(true);
+  });
+
+  it('중도인출은 재원별 세금과 공통 거래 비용을 따로 기록한다', () => {
+    const state = withEvent(base(), 'medical');
     const out = resolveLifeChoice(state, 'withdraw');
     expect(out.ok).toBe(true);
-    expect(irpBefore - portfolioValue(out.state)).toBeCloseTo(3_500_000 * 1.03, -2);
-    expect(out.state.cash).toBeCloseTo(state.cash, 0);
-    expect(out.state.lifeResolution?.fee).toBeCloseTo(3_500_000 * 0.03, -1);
-    const blocked = resolveLifeChoice(withEvent(base(), 'moving'), 'withdraw');
-    expect(blocked.ok).toBe(false);
+    const resolution = out.state.lifeResolution!;
+    expect(portfolioValue(state) - portfolioValue(out.state)).toBeCloseTo(3_500_000 + resolution.fee + resolution.penalty, 4);
+    expect(out.state.cash).toBe(state.cash);
+    expect(resolution.fee).not.toBe(3_500_000 * .03);
+    expect(resolveLifeChoice(withEvent(base(), 'moving'), 'withdraw').ok).toBe(false);
   });
 
   it('보너스 전액 납입: 연간 한도 안에서 IRP 대기자금으로, 공제는 환급 대기', () => {
@@ -147,8 +136,8 @@ describe('선택 실행(resolveLifeChoice)', () => {
     expect(irp.state.irpCash).toBeCloseTo(state.irpCash + 6_000_000, 0);
     expect(irp.state.contributionTotal).toBe(state.contributionTotal);
     const cash = resolveLifeChoice(state, 'cash');
-    expect(cash.state.cash).toBeCloseTo(state.cash + 6_000_000 * (1 - policyRules.lumpSumTaxRate), 0);
-    expect(cash.state.lifeResolution?.fee).toBeCloseTo(6_000_000 * policyRules.lumpSumTaxRate, 0);
+    expect(cash.state.cash).toBeCloseTo(state.cash + 5_940_000, 0);
+    expect(cash.state.lifeResolution?.fee).toBeCloseTo(60_000, 0);
     expect(cash.state.lifeResolution?.choiceLabel).toBe('지금 받기(일시 수령)');
   });
 
@@ -163,11 +152,11 @@ describe('선택 실행(resolveLifeChoice)', () => {
 describe('게임 엔진 연결', () => {
   it('resolveLifeEvent는 새 선택지를 받고, 정산 요약에 사건 블록이 붙고, 다음 턴에 비워진다', () => {
     const state = withEvent(base(), 'moving');
-    const resolved = resolveLifeEvent(state, 'deposit');
+    const resolved = resolveLifeEvent(state, 'cash');
     expect(resolved.ok).toBe(true);
     const acted = performAction(resolved.state, { kind: 'hold' });
     expect(acted.summary?.lifeEvent?.eventId).toBe('moving');
-    expect(acted.summary?.lifeEvent?.choice).toBe('deposit');
+    expect(acted.summary?.lifeEvent?.choice).toBe('cash');
     const next = startTurn(acted.state, 2).state;
     expect(next.lifeResolution).toBeNull();
   });

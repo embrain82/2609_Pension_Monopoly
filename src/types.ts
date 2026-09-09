@@ -11,15 +11,17 @@ export interface Product {
   kind: ProductKind;
   description: string;
   legal_classification: string;
-  risk_asset_ratio: number;
   principal_guaranteed: boolean;
   tdf_exception_eligible: boolean;
   classification_reviewed_at: string;
   source_url: string;
   duration: number;
+  /** 교육 모형의 턴당 보수율(실제 상품의 연 보수율 아님). */
   feeRate: number;
   riskLabel: string;
   riskGrade: number;
+  regulatoryRisk: boolean;
+  equityExposure: number;
 }
 
 export type Regime = 'easing' | 'hold' | 'tightening' | 'pivot';
@@ -210,12 +212,9 @@ export interface PolicyRules {
   source_urls: string[];
   simplified: boolean;
   riskAssetLimit: number;
-  tdfAdjustedRiskRatio: number;
   annualContributionLimit: number;
   annualTaxCreditLimit: number;
   taxCreditRate: number;
-  earlyDepositPenaltyRate: number;
-  allowedWithdrawalFeeRate: number;
   receivingMonths: number;
   /** 연금 수령 시 연금소득세(교육용 단순화) */
   pensionTaxRate: number;
@@ -278,7 +277,7 @@ export interface InvestorProfile {
   maxScore: number;
   expectedRiskRatio: number;
   maxDrawdown: number;
-  maxRiskGrade: number;
+  minRiskGrade: number;
   description: string;
 }
 
@@ -348,6 +347,8 @@ export interface Holding {
   amount: number;
   principal: number;
   depositTurnsHeld: number;
+  units?: number;
+  lots?: DepositLot[];
 }
 
 export interface PendingOrder {
@@ -358,6 +359,9 @@ export interface PendingOrder {
   submittedTurn: number;
   settlesTurn: number;
   stage: 'received' | 'priced';
+  units?: number;
+  priceTurn?: number;
+  groupId?: string;
   targetProductId?: ProductId;
 }
 
@@ -370,7 +374,37 @@ export interface GameLog {
   impact?: number;
 }
 
+export interface DepositLot {
+  principal: number;
+  amount: number;
+  openedTurn: number;
+  maturityTurn: number;
+  ratePerTurn: number;
+}
+
+export interface AccountBasis {
+  retirement: number;
+  retirementTax: number;
+  deducted: number;
+  nonDeducted: number;
+}
+
+export interface CashFlow {
+  turn: number;
+  kind: 'contribution' | 'transfer' | 'withdrawal';
+  amount: number;
+}
+
 export interface GameState {
+  accountType: 'IRP';
+  rulesetVersion: '2026-09-09-p0';
+  accountBasis: AccountBasis;
+  cashFlows: CashFlow[];
+  livingDebt: number;
+  prices: Record<ProductId, number>;
+  orderSequence: number;
+  rebalancePlan: Record<ProductId, number> | null;
+
   seed: string;
   rngState: number;
   status: 'playing' | 'finished';
@@ -415,7 +449,7 @@ export interface GameState {
   /** 납입 세액공제 중 아직 환급되지 않은 금액. 연말정산 칸 통과 시 생활자금으로 돌아온다. */
   pendingTaxCredit: number;
   taxCreditRefunded: number;
-  /** 상품 거리 도착: 이번 턴 그 상품은 즉시 체결·해지 불이익 면제·이해 +1 */
+  /** 상품 거리 도착: 이번 턴 그 상품의 정보 강조·이해 +1(일반 거래 규칙 유지) */
   spotlightProductId: ProductId | null;
   /** 리밸런싱 칸 도착 턴이면 그 턴 번호. 그 턴 리밸런싱은 이해 +2 */
   rebalanceBonusTurn: number | null;

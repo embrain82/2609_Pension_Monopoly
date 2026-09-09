@@ -1,3 +1,4 @@
+import { accountPayout } from '../src/engine/account-engine';
 import { describe, expect, it } from 'vitest';
 import { learningCards, policyRules } from '../src/data/content';
 import { autoplay, choosePayout, createGame } from '../src/engine/game-engine';
@@ -50,11 +51,11 @@ describe('수령 방식(3.6)', () => {
     expect(annuity.stars).toBe(asIs.stars);
   });
 
-  it('일시금을 고르면 달성률이 0.8836배로 떨어지고 별이 내려갈 수 있다', () => {
+  it('일시금 달성률은 그 계좌의 재원별 수령 계산과 일치한다', () => {
     const finished = autoplay('payout-seed-2', 'contributor');
     const annuity = calculateScore(choosePayout(finished, 'annuity20').state);
     const lump = calculateScore(choosePayout(finished, 'lumpSum').state);
-    expect(lump.goalRate).toBeCloseTo(annuity.goalRate * payoutFactor('lumpSum'), 6);
+    expect(lump.goalRate).toBeCloseTo(accountPayout(lump.irpValue, 'lumpSum', finished.accountBasis).monthlyBasis / finished.goalMonthly, 6);
     expect(lump.monthlyPension).toBeLessThan(annuity.monthlyPension);
     expect(lump.stars).toBeLessThanOrEqual(annuity.stars);
     expect(lump.payout.choice).toBe('lumpSum');

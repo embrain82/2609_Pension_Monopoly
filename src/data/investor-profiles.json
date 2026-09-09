@@ -1,7 +1,52 @@
 [
-  {"id":"stable","name":"안정형","minScore":5,"maxScore":7,"expectedRiskRatio":0.15,"maxDrawdown":0.05,"maxRiskGrade":2,"description":"원금 안정과 낮은 변동성을 우선합니다."},
-  {"id":"stableGrowth","name":"안정추구형","minScore":8,"maxScore":10,"expectedRiskRatio":0.3,"maxDrawdown":0.08,"maxRiskGrade":3,"description":"안정을 중심에 두고 제한된 성장을 추구합니다."},
-  {"id":"balanced","name":"위험중립형","minScore":11,"maxScore":13,"expectedRiskRatio":0.5,"maxDrawdown":0.12,"maxRiskGrade":4,"description":"손실 가능성과 성장 가능성의 균형을 추구합니다."},
-  {"id":"growth","name":"적극투자형","minScore":14,"maxScore":17,"expectedRiskRatio":0.65,"maxDrawdown":0.18,"maxRiskGrade":5,"description":"변동을 감수하며 장기 성장을 추구합니다."},
-  {"id":"aggressive","name":"공격투자형","minScore":18,"maxScore":20,"expectedRiskRatio":0.7,"maxDrawdown":0.25,"maxRiskGrade":5,"description":"큰 변동 가능성을 이해하고 높은 성장 노출을 선택합니다."}
+  {
+    "id": "stable",
+    "name": "안정형",
+    "minScore": 5,
+    "maxScore": 7,
+    "expectedRiskRatio": 0.15,
+    "maxDrawdown": 0.05,
+    "description": "원금 안정과 낮은 변동성을 우선합니다.",
+    "minRiskGrade": 5
+  },
+  {
+    "id": "stableGrowth",
+    "name": "안정추구형",
+    "minScore": 8,
+    "maxScore": 10,
+    "expectedRiskRatio": 0.3,
+    "maxDrawdown": 0.08,
+    "description": "안정을 중심에 두고 제한된 성장을 추구합니다.",
+    "minRiskGrade": 4
+  },
+  {
+    "id": "balanced",
+    "name": "위험중립형",
+    "minScore": 11,
+    "maxScore": 13,
+    "expectedRiskRatio": 0.5,
+    "maxDrawdown": 0.12,
+    "description": "손실 가능성과 성장 가능성의 균형을 추구합니다.",
+    "minRiskGrade": 3
+  },
+  {
+    "id": "growth",
+    "name": "적극투자형",
+    "minScore": 14,
+    "maxScore": 17,
+    "expectedRiskRatio": 0.65,
+    "maxDrawdown": 0.18,
+    "description": "변동을 감수하며 장기 성장을 추구합니다.",
+    "minRiskGrade": 2
+  },
+  {
+    "id": "aggressive",
+    "name": "공격투자형",
+    "minScore": 18,
+    "maxScore": 20,
+    "expectedRiskRatio": 0.7,
+    "maxDrawdown": 0.25,
+    "description": "큰 변동 가능성을 이해하고 높은 성장 노출을 선택합니다.",
+    "minRiskGrade": 2
+  }
 ]

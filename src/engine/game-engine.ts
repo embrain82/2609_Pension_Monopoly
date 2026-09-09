@@ -1,14 +1,15 @@
+import { addAccountFlow, accountPayout } from './account-engine';
 import { balanceConfig, boardTiles, defaultOptions, learningCards, lifeEvents, marketScenario, marketShocks, policyRules, products } from '../data/content';
 import type { ActionKind, ActionResult, DefaultOptionId, GameState, GhostTrack, LifeChoice, LifeEvent, PayoutChoice, PlayRecord, ProfileId, ProductId } from '../types';
 import { ALERT_CARD_ID, applyMarketStep, emptyMarketStep, generateMarketPath, marketPathOf } from './market-engine';
 import { pickTileBriefing } from './tile-briefing';
-import { buyProduct, portfolioValue, rebalancePortfolio, sellProduct, settleOrders, switchProduct } from './portfolio-engine';
+import { buyProduct, portfolioValue, rebalancePortfolio, sellProduct, settleOrders, settleAllOrders, switchProduct } from './portfolio-engine';
 import { contributionCredit, riskAssetRatio } from './policy-engine';
 import { holdingsMap, summarizeTurn } from './settlement-engine';
 import { diceStepsForTurn, hashSeed, nextRandom } from './random-engine';
 import { applyGoalToGame, clampGoalMonthly } from './goal';
 import { REBALANCE_TILE_BONUS, applyTileArrival } from './tile-effects';
-import { diversificationCount, payoutPlan } from './scoring-engine';
+import { diversificationCount } from './scoring-engine';
 import { applyDefaultOption, normalizeDefaultOption, suggestDefaultOption } from './default-option';
 import { resolveLifeChoice } from './life-engine';
 import { answerQuiz, finalQuizCards, marketTileQuizzes, pickQuizCard, queueQuiz } from './quiz-engine';
@@ -42,7 +43,8 @@ function initialHoldings() {
       productId: product.id,
       amount: balanceConfig.startingIrp * balanceConfig.defaultAllocation[product.id],
       principal: balanceConfig.startingIrp * balanceConfig.defaultAllocation[product.id],
-      depositTurnsHeld: product.id === 'deposit' ? 0 : 0
+      depositTurnsHeld: 0,
+      ...(product.id === 'deposit' ? { lots: [{ principal: balanceConfig.startingIrp * balanceConfig.defaultAllocation.deposit, amount: balanceConfig.startingIrp * balanceConfig.defaultAllocation.deposit, openedTurn: 0, maturityTurn: balanceConfig.depositMaturityTurns, ratePerTurn: balanceConfig.market.depositBase + balanceConfig.market.depositPerRatePct * balanceConfig.market.rateStartPct }] } : {})
     }));
 }
 
@@ -92,6 +94,10 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
   const tileEffectsEnabled = options.tileEffects !== false;
   const goal = clampGoalMonthly(goalMonthly);
   const state: GameState = {
+    accountType: 'IRP', rulesetVersion: '2026-09-09-p0',
+    accountBasis: { retirement: 90_000_000, retirementTax: 1_800_000, deducted: 9_000_000, nonDeducted: 9_000_000 },
+    cashFlows: [], livingDebt: 0, orderSequence: 0, rebalancePlan: null,
+    prices: { deposit: 1000, shortBond: 1000, longBond: 1000, balanced: 1000, equityEtf: 1000, tdf: 1000 },
     seed,
     rngState: scheduled.rngState,
     status: 'playing',
@@ -157,11 +163,11 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
 export function choosePayout(state: GameState, choice: PayoutChoice): ActionResult {
   if (state.status !== 'finished') return { ok: false, message: '12턴을 마친 뒤에 수령 방식을 정할 수 있습니다.', state };
   const irp = portfolioValue(state);
-  const plan = payoutPlan(irp, choice);
+  const plan = accountPayout(irp, choice, state.accountBasis);
   const label = choice === 'lumpSum' ? '일시금' : '연금(20년)';
   const message = choice === 'lumpSum'
-    ? `일시금 수령 · 교육용 기타소득세 ${Math.round(policyRules.lumpSumTaxRate * 1000) / 10}% ${Math.round(plan.tax).toLocaleString('ko-KR')}원을 뺀 ${Math.round(plan.net).toLocaleString('ko-KR')}원.`
-    : `연금 수령 · 교육용 연금소득세 ${Math.round(policyRules.pensionTaxRate * 1000) / 10}%를 뺀 월 ${Math.round(plan.monthlyNet).toLocaleString('ko-KR')}원을 240개월.`;
+    ? `일시금 수령 · 재원별 합산 세금(잔액 대비 ${Math.round(plan.taxRate * 10000) / 100}%) ${Math.round(plan.tax).toLocaleString('ko-KR')}원을 뺀 ${Math.round(plan.net).toLocaleString('ko-KR')}원.`
+    : `연금 수령 · 재원별 합산 세금(잔액 대비 ${Math.round(plan.taxRate * 10000) / 100}%)을 뺀 평균 월 ${Math.round(plan.monthlyNet).toLocaleString('ko-KR')}원을 240개월.`;
   let next: GameState = {
     ...state,
     payoutChoice: choice,
@@ -236,7 +242,8 @@ export function startTurn(state: GameState, steps = 0): ActionResult {
     position,
     phase: market.phase,
     marketPath: path,
-    cash: state.cash + balanceConfig.salarySurplusPerTurn,
+    cash: Math.max(0, state.cash + balanceConfig.salarySurplusPerTurn - state.livingDebt),
+    livingDebt: Math.max(0, state.livingDebt - state.cash - balanceConfig.salarySurplusPerTurn),
     logs: [...state.logs, { turn, type: 'market', message: `${market.headline} · ${market.signal}` }],
     tileEffects: [],
     actionsLeft: 1,
@@ -297,6 +304,7 @@ export function resolveLifeEvent(state: GameState, choice: LifeChoice): ActionRe
 }
 
 function contribute(state: GameState, amount: number): ActionResult {
+  if (!Number.isFinite(amount) || amount <= 0) return { ok: false, message: "납입 금액은 유한한 양수여야 합니다.", state };
   const accepted = Math.min(amount, state.cash, Math.max(0, policyRules.annualContributionLimit - state.contributionTotal));
   if (accepted < 100000) return { ok: false, message: '생활자금 또는 교육용 납입 가능 한도가 부족합니다.', state };
   const credit = contributionCredit(state.contributionTotal, accepted);
@@ -314,7 +322,8 @@ function contribute(state: GameState, amount: number): ActionResult {
   const creditNote = credit.benefit > 0
     ? `세액공제 ${Math.round(credit.benefit).toLocaleString('ko-KR')}원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다.`
     : '공제 한도를 넘어 이번 납입은 세액공제가 없습니다.';
-  return { ok: true, message: `${accepted.toLocaleString('ko-KR')}원 추가납입. ${creditNote}`, state: next };
+  const funded = addAccountFlow(next, accepted, 'contribution', credit.eligible);
+  return { ok: true, message: `${accepted.toLocaleString('ko-KR')}원 추가납입. ${creditNote}`, state: funded };
 }
 
 /** 스포트라이트 상품을 이번 턴에 샀는가(매수·교체 매수). 이해 +1의 근거. */
@@ -402,7 +411,7 @@ export function performAction(state: GameState, action: GameAction): ActionResul
 export function finalizeTurn(state: GameState): GameState {
   let next = state;
   if (state.turn === balanceConfig.maxTurns) {
-    next = settleOrders({ ...next, pendingOrders: next.pendingOrders.map((order) => ({ ...order, settlesTurn: state.turn })) });
+    next = settleAllOrders(next);
     if (next.pendingTaxCredit > 0) {
       const refund = next.pendingTaxCredit;
       next = {
