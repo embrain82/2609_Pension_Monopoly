@@ -107,9 +107,9 @@ npm run build
 
 ### Vercel
 
-운영 주소: [https://pension-road.vercel.app/](https://pension-road.vercel.app/)
+운영 주소: [https://2609-pension-monopoly.vercel.app/](https://2609-pension-monopoly.vercel.app/)
 
-프로젝트 `nonsleepers-projects/pension-road`에 GitHub 저장소가 연결되어 있습니다. Framework는 Vite, Output은 `dist`입니다. `vercel.json`이 같은 값을 고정합니다.
+프로젝트 `nonsleepers-projects/2609-pension-monopoly`에 `embrain82/2609_Pension_Monopoly` 저장소가 연결되어 있습니다. Framework는 Vite, Output은 `dist`입니다. `vercel.json`이 같은 값을 고정합니다.
 
 ```bash
 npx vercel login
