@@ -1,3 +1,4 @@
+import { REGIONS, regionOf } from '../engine/route-engine';
 import { boardTiles } from '../data/content';
 import type { GameState, TileKind } from '../types';
 import { AVATAR_ANIMALS, avatarBody, type Mood } from './avatars';
@@ -99,8 +100,9 @@ export function renderBoardMarkup(
     const { x, y } = boardPosition(item.index);
     const active = item.index === token;
     const landed = active && Boolean(view.landed);
-    return `<g class="tile tile-${item.kind}${active ? ' active' : ''}${landed ? ' landed' : ''}" transform="translate(${x} ${y})">
+    return `<g data-key="tile-${item.index}" data-action="open-explore" data-tile="${item.index}" role="button" tabindex="${active ? 0 : -1}" aria-label="${item.index+1}. ${item.label} · ${REGIONS[regionOf(item.index)]} 지역 · 칸 정보" class="tile tile-${item.kind} region-${regionOf(item.index)}${active ? ' active' : ''}${landed ? ' landed' : ''}" transform="translate(${x} ${y})">
         <rect x="3" y="3" width="94" height="94" rx="15"></rect>
+        ${state.route.visits.includes(item.index) ? '<circle class="visit-stamp" cx="50" cy="18" r="5"></circle>' : ''}
         <text class="tile-icon" x="14" y="30">${TILE_ICONS[item.kind]}</text>
         <text class="tile-number" x="84" y="24" text-anchor="end">${String(item.index + 1).padStart(2, '0')}</text>
         <text class="tile-label" x="50" y="70" text-anchor="middle">${item.label.length > 7 ? item.label.slice(0, 7) : item.label}</text>
@@ -126,7 +128,7 @@ export function renderBoardMarkup(
       <text class="rate" x="350" y="392" text-anchor="middle">금리 ${state.lastMarket.ratePct.toFixed(2)}%</text>
       <text x="350" y="420" text-anchor="middle">${state.lastMarket.signal}</text>
       <text class="seed" x="350" y="452" text-anchor="middle">TURN ${String(state.turn).padStart(2, '0')} / 12 · ${tile.label}</text>`;
-  return `<svg class="board" viewBox="0 0 700 700" role="img" aria-label="24칸 순환 보드. 현재 말은 ${token + 1}번 칸 ${tile.label}에 있습니다.">
+  return `<svg class="board" viewBox="0 0 700 700" role="group" aria-label="24칸 순환 보드. 현재 말은 ${token + 1}번 칸 ${tile.label}에 있습니다.">
       <rect class="board-bg" x="0" y="0" width="700" height="700" rx="28"></rect>${tiles}
       <g class="board-center">${center}</g>
     </svg>`;

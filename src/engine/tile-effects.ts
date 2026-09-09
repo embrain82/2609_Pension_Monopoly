@@ -82,7 +82,7 @@ function spotlight(state: GameState, tile: BoardTile): Applied {
       tileIndex: tile.index,
       productId,
       title: `${tile.label} 스포트라이트`,
-      detail: `${product.name} ${product.riskGrade}등급${sensitivity} · ${settlementNote(productId)} · 오늘 사면 이해 +1`
+      detail: `${product.name} ${product.riskGrade}등급${sensitivity} · ${settlementNote(productId)} · 매수와 무관한 상품 정보`
     }
   };
 }

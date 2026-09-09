@@ -100,7 +100,7 @@ export function tokenClasses(view: Pick<TokenView, 'characters'>): string {
 
 /**
  * 2.5D 말(퍽) 오버레이. 위치 정보는 보드 SVG의 aria-label이 전달하므로 이 레이어는 aria-hidden.
- * 이동·hop·착지 애니메이션은 매 렌더 새 노드가 만들어져도 동작하도록 app.ts의 animateToken이
+ * 이동·hop·착지 애니메이션은 유지되는 말 노드에 app.ts의 animateToken이
  * 위 키프레임을 Web Animations API로 붙인다. 마크업 자체는 정지 자세만 그린다.
  */
 export function renderTokenLayer(state: GameState, view: TokenView): string {
