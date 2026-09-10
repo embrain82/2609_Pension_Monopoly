@@ -722,7 +722,7 @@ td small { display: block; margin: 3px 0 0 20px; color: var(--muted); font-size:
 /* 디폴트옵션 */
 .default-option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0 4px; }
 .default-option-card { display: grid; gap: 5px; padding: 14px; text-align: left; border: 2px solid var(--line); border-radius: 15px; background: #fff; }
-.default-option-card:not(:disabled):hover { border-color: var(--green-2); transform: translateY(-1px); }
+.default-option-card:not(:disabled):hover { box-shadow: 0 3px 12px #18363518; }
 .default-option-card.picked { border-color: var(--green); background: #e9f2e7; }
 .default-option-card.locked { background: #f3f4f0; }
 .default-option-name { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; font-weight: 850; }
@@ -730,7 +730,8 @@ td small { display: block; margin: 3px 0 0 20px; color: var(--muted); font-size:
 .default-option-card.locked strong { color: var(--muted); }
 .default-option-card small { color: var(--muted); font-size: .76rem; line-height: 1.45; }
 .tag { padding: 2px 7px; border-radius: 99px; font-size: .64rem; font-weight: 850; letter-spacing: .02em; }
-.tag.suggest { background: var(--green); color: var(--lime); }
+.tag.suggest { background: #fff0cb; color: #725015; }
+.tag.selected { background: var(--green); color: #fff; }
 .tag.locked { background: #e4ebe6; color: var(--muted); }
 .modal-default-option .speech { margin-top: 14px; }
 .modal-default-option .button-stack { margin-top: 14px; }
@@ -890,3 +891,25 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
 .default-positions { margin:24px 0; }
 #default-trade-amount { width:100%; min-width:0; padding:14px; border:1px solid #ccdcd3; border-radius:12px; background:white; color:inherit; font:inherit; }
 @media(max-width:480px) { .default-trade-stats { gap:8px; } .default-trade-stats>div { padding:12px; } .default-trade-tabs button { padding:12px 8px; font-size:16px; } }
+
+/* 플레이테스트 FB-001~003: 선택, 실행 가능 여부, 버튼 상태를 색 이외의 문구로도 구분한다. */
+.default-option-selection { padding: 12px; border-radius: 10px; background: #edf3ef; }
+.action-list article.unavailable { background: #f2f4f1; border-color: #d4dcd6; }
+.action-list .availability-reason, .availability-reason { margin: 8px 0 0; color: #52625e; font-size: .8rem; line-height: 1.5; overflow-wrap: anywhere; }
+.action-list button:disabled, .default-trade-tabs button:disabled, .default-trade-presets button:disabled { opacity: 1; background: #e5eae5; color: #54645e; border-color: #c8d2ca; }
+.default-trade-tabs { gap: 10px; background: transparent; padding: 0; align-items: start; }
+.default-trade-tabs > div, .default-trade-presets > div { min-width: 0; }
+.default-trade-tabs button { width: 100%; min-height: 76px; padding: 14px 10px; border: 1px solid var(--line); border-radius: 12px; background: #fff; white-space: normal; }
+.default-trade-tabs button.active:not(:disabled) { background: var(--green); color: white; }
+.default-trade-presets { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-items: start; }
+.default-trade-presets button { width: 100%; min-height: 76px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; white-space: normal; overflow-wrap: anywhere; }
+.default-trade-presets small { font-size: .85em; font-weight: 600; }
+#default-trade-option, #default-trade-amount { width: 100%; min-width: 0; min-height: 48px; font-size: max(16px, 1rem); padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: white; color: var(--ink); }
+@media (max-width: 420px) { .action-list article.unavailable { align-items: start; } .action-list button { white-space: normal; } }
+
+.action-list .availability-reason { grid-column: 1 / -1; }
+
+.modal-close-bar { position: sticky; top: -28px; z-index: 3; display: flex; justify-content: flex-end; margin: -28px -28px 12px; padding: 10px 18px; background: var(--paper); border-bottom: 1px solid var(--line); }
+.modal-close-bar .modal-close { position: static; float: none; flex: 0 0 44px; }
+.default-trade-tabs button { font-size: max(16px, 1rem); }
+@media (max-width: 760px) { .modal-close-bar { top: -22px; margin: -22px -18px 12px; } }

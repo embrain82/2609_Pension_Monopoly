@@ -155,6 +155,7 @@ describe('정책과 주문', () => {
     const state = {
       ...base,
       awaitingAction: true,
+      actionsLeft: 1,
       currentEventId: null,
       irpCash: 5_000_000,
       holdings: [
@@ -260,6 +261,7 @@ describe('정책과 주문', () => {
     const state = {
       ...createGame('buy-cap-ask', 'growth'),
       awaitingAction: true,
+      actionsLeft: 1,
       currentEventId: null,
       irpCash: 80_000_000,
       holdings: [{ productId: 'deposit' as const, amount: 20_000_000, principal: 20_000_000, depositTurnsHeld: 4 }]

@@ -1,3 +1,4 @@
+import { blockReason, tradeAmountConstraint, rebalanceConstraint } from './action-constraints';
 import { allowedPortfolios, validDefaultScope } from '../data/default-portfolios';
 import { scopedHolding, putScopedHolding, manualPortfolioValue } from './position-engine';
 import { balanceConfig, investorProfiles, products } from '../data/content';
@@ -18,9 +19,7 @@ export function depositLots(state: GameState, holding: Holding): DepositLot[] {
 }
 
 function invalid(state: GameState, amount: number, internal: boolean): string | null {
-  if (!Number.isFinite(amount) || amount <= 0) return '거래 금액은 유한한 양수여야 합니다.';
-  if (!internal && state.rebalancePlan) return '리밸런싱 주문 처리 중입니다. 정산 후 다시 거래하세요.';
-  return null;
+  return blockReason(tradeAmountConstraint(state, amount, internal));
 }
 function orderFor(state: GameState, side: 'buy' | 'sell', productId: ProductId, amount: number): PendingOrder {
   return { id: `order-${state.orderSequence}`, side, productId, amount, submittedTurn: state.turn,
@@ -183,9 +182,9 @@ export function rebalanceTargetRisk(profileId: GameState['profileId']): number {
   return products.reduce((s, p) => s + shares[p.id] * effectiveRiskRatio(p.id), 0);
 }
 export function rebalancePortfolio(state: GameState): ActionResult {
-  if (state.pendingOrders.length || state.rebalancePlan) return { ok: false, message: '접수한 주문 정산 후 리밸런싱할 수 있습니다. 기존 주문은 보존됩니다.', state };
+  const error = blockReason(rebalanceConstraint(state));
+  if (error) return { ok: false, message: error, state };
   const total = manualPortfolioValue(state);
-  if (total <= 0) return { ok: false, message: '리밸런싱할 자산이 없습니다.', state };
   const shares = rebalanceShares(state.profileId);
   let next: GameState = { ...state, rebalancePlan: shares };
   for (const product of products) {
