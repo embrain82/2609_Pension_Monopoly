@@ -878,3 +878,15 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
 .campaign-report { text-align:left; padding:20px; border:1px solid #b9d2c4; border-radius:18px; margin:24px 0; }
 .campaign-report table { min-width:640px; }
 .campaign-report th, .campaign-report td { padding:10px; }
+
+/* 디폴트옵션은 기존 운용 카드에서 진입하고 상세 화면만 두 거래로 나눈다. */
+.default-trade-stats { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0; }
+.default-trade-stats > div { border:1px solid #ccdcd3; background:white; border-radius:14px; padding:16px; min-width:0; }
+.default-trade-stats strong { display:block; font-size:clamp(18px,2.5vw,27px); overflow-wrap:anywhere; }
+.default-trade-tabs { display:grid; grid-template-columns:1fr 1fr; margin:20px 0; }
+.default-trade-tabs small { display:block; color:inherit; font-size:.82em; margin-top:3px; }
+.default-order-history { margin-top:20px; }
+.default-order-history small,.order-list small { display:block; }
+.default-positions { margin:24px 0; }
+#default-trade-amount { width:100%; min-width:0; padding:14px; border:1px solid #ccdcd3; border-radius:12px; background:white; color:inherit; font:inherit; }
+@media(max-width:480px) { .default-trade-stats { gap:8px; } .default-trade-stats>div { padding:12px; } .default-trade-tabs button { padding:12px 8px; font-size:16px; } }

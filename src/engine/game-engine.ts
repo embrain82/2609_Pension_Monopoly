@@ -1,3 +1,5 @@
+import { initializePositions, scopedHolding } from './position-engine';
+import { executeDefaultTrade, nextDefaultCommand } from './default-trade-engine';
 import { beginPerformance, finishPerformance } from './performance-engine';
 import { scenarioConfig, withGlidePath, inflatedEvent, type ScenarioId, type MissionId } from './scenario-engine';
 import { newRouteProgress, stampVisit } from './route-engine';
@@ -27,11 +29,16 @@ export interface GameAction {
   fromProductId?: ProductId;
   toProductId?: ProductId;
   amount?: number;
+  optionId?: DefaultOptionId;
+  fraction?: .5 | 1;
+  commandId?: string;
 }
 
 export type AmountPreset = 'default' | 'half' | 'max';
 
 export interface GameOptions {
+  /** 새 직접매매 규칙. C/D 저장과 기존 시뮬은 생략 시 구 규칙 유지. */
+  defaultTrading?: boolean;
   scenario?: ScenarioId;
   mission?: MissionId;
   weekly?: boolean;
@@ -93,7 +100,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
   const goal = clampGoalMonthly(goalMonthly);
   const state: GameState = {
     route: newRouteProgress(),
-    accountType: 'IRP', rulesetVersion: options.scenario ? '2026-09-10-d' : '2026-09-10-c', avatarId: options.avatarId ?? 'balanced',
+    accountType: 'IRP', rulesetVersion: options.defaultTrading ? '2026-09-10-e' : options.scenario ? '2026-09-10-d' : '2026-09-10-c', avatarId: options.avatarId ?? 'balanced',
     accountBasis: { retirement: 90_000_000, retirementTax: 1_800_000, deducted: 9_000_000, nonDeducted: 9_000_000 },
     cashFlows: [], livingDebt: 0, orderSequence: 0, rebalancePlan: null,
     prices: { deposit: 1000, shortBond: 1000, longBond: 1000, balanced: 1000, equityEtf: 1000, tdf: 1000 },
@@ -142,7 +149,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
     tileEffectsEnabled,
     ghost: options.ghost === false ? null : ghostTrackFor(seed, profileId, goal, tileEffectsEnabled, options),
     payoutChoice: null,
-    defaultOption: options.defaultOption ? normalizeDefaultOption(profileId, options.defaultOption) : null,
+    defaultOption: options.defaultOption ? normalizeDefaultOption(profileId, options.defaultOption, options.defaultTrading) : null,
     lifeResolution: null,
     quizLog: [],
     quizStreak: 0,
@@ -159,6 +166,10 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
       open: balanceConfig.startingIrp, afterMarket: balanceConfig.startingIrp, flowStart: 0,
       benchmark: balanceConfig.startingIrp, benchmarkOpen: balanceConfig.startingIrp,
       baselineWeights: { deposit:0, shortBond:0, longBond:0, balanced:0, equityEtf:0, tdf:0, ...weights }, reviews: [], branches: [] };
+  }
+  if(options.defaultTrading) {
+    state.defaultTrading={version:'e1',groups:[]};
+    state.holdings=initializePositions(state).holdings;
   }
   // 시작 시점에 이미 넘어선 이정표(기본 목표면 90%까지)는 배너 없이 기록만 한다.
   return { ...state, milestonesHit: milestonesReached(state) };
@@ -194,10 +205,10 @@ function unlock(state: GameState, cardId: string): GameState {
  * 지정하면 `default-option` 카드가 열린다. 진행 중 판에도 바로 적용된다(다음 「그대로」부터).
  */
 export function setDefaultOption(state: GameState, wanted: DefaultOptionId | null): GameState {
-  const next = wanted ? normalizeDefaultOption(state.profileId, wanted) : null;
+  const next = wanted ? normalizeDefaultOption(state.profileId, wanted, !!state.defaultTrading) : null;
   if (next === state.defaultOption) return state;
   const name = next ? defaultOptions.find((option) => option.id === next)?.name ?? next : null;
-  const message = next ? `디폴트옵션 ${name} 지정 · 「그대로」를 고르면 대기자금을 이 옵션으로 운용합니다.` : '디폴트옵션 해제 · 대기자금은 직접 매수해야 합니다.';
+  const message = state.defaultTrading ? (next ? `사전지정 ${name} 저장 · 자산은 바뀌지 않습니다. 디폴트옵션 메뉴에서 직접 매수하세요.` : '사전지정 해제 · 보유한 디폴트옵션 자산은 유지됩니다.') : next ? `디폴트옵션 ${name} 지정 · 「그대로」를 고르면 대기자금을 이 옵션으로 운용합니다.` : '디폴트옵션 해제 · 대기자금은 직접 매수해야 합니다.';
   const stamped: GameState = { ...state, defaultOption: next, logs: [...state.logs, { turn: state.turn, type: 'default-option', message }] };
   return next ? unlock(stamped, 'default-option') : stamped;
 }
@@ -293,7 +304,7 @@ export function startTurn(state: GameState, steps = 0): ActionResult {
 
 export function resolveActionAmount(state: GameState, kind: ActionKind, preset: AmountPreset, productId?: ProductId): number {
   const holdingAmount = productId
-    ? state.holdings.find((holding) => holding.productId === productId)?.amount ?? 0
+    ? scopedHolding(state, productId).amount
     : 0;
   const available = kind === 'contribute' ? state.cash
     : kind === 'buy' ? state.irpCash
@@ -355,9 +366,12 @@ export function performAction(state: GameState, action: GameAction): ActionResul
     case 'sell': result = action.productId ? sellProduct(opened, action.productId, action.amount) : { ok: false, message: '매도 상품을 선택하세요.', state }; break;
     case 'switch': result = action.fromProductId && action.toProductId ? switchProduct(opened, action.fromProductId, action.toProductId, action.amount) : { ok: false, message: '교체할 두 상품을 선택하세요.', state }; break;
     case 'rebalance': result = rebalancePortfolio(opened); break;
+    case 'default-opt-in':
+    case 'default-opt-out':
+      result=executeDefaultTrade(opened,{tab:action.kind==='default-opt-in'?'in':'out',optionId:action.optionId??opened.defaultOption??'principal',amount:action.amount??0,fraction:action.fraction??1},action.commandId);break;
     case 'hold': {
       // 운용지시가 없으면 디폴트옵션이 대기자금을 운용한다(제도의 사전지정운용). 없으면 예전처럼 유지.
-      const auto = applyDefaultOption(opened);
+      const auto = opened.defaultTrading ? {state:opened,bought:[],message:''} : applyDefaultOption(opened);
       const ran = auto.bought.length > 0;
       result = {
         ok: true,
@@ -451,7 +465,7 @@ export function defaultProfileFor(strategy: AutoStrategy): ProfileId {
 }
 
 function holdingOf(state: GameState, productId: ProductId): number {
-  return state.holdings.find((holding) => holding.productId === productId)?.amount ?? 0;
+  return scopedHolding(state, productId).amount;
 }
 
 export interface AutoplayOptions extends GameOptions {
@@ -508,6 +522,7 @@ export function autoplay(seed: string, strategy: AutoStrategy = 'balanced', prof
     }
     else if (strategy === 'contributor') action = state.cash > balanceConfig.contributionAmount ? { kind: 'contribute' } : { kind: 'hold' };
     // 납입 여력이 있으면 납입, 아니면 「그대로」 — 매수는 디폴트옵션에 맡긴다.
+    else if (strategy === 'defaultOption' && state.defaultTrading && state.irpCash>=100000) action={kind:'default-opt-in',optionId:state.defaultOption??'principal',amount:Math.floor(state.irpCash),commandId:nextDefaultCommand(state)};
     else if (strategy === 'defaultOption') action = state.cash > balanceConfig.safeCashThreshold + balanceConfig.contributionAmount ? { kind: 'contribute' } : { kind: 'hold' };
     else if (strategy === 'growth') action = state.turn % 2 === 1
       ? { kind: 'contribute' }

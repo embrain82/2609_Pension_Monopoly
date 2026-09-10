@@ -1,3 +1,4 @@
+import { scopedHolding } from '../engine/position-engine';
 import { products } from '../data/content';
 import type { GameState, ProductId } from '../types';
 
@@ -9,7 +10,7 @@ type Holdings = Pick<GameState, 'holdings'>;
 /** 최소 거래 단위 이상 들고 있는 상품을 상품 목록 순서대로 돌려준다. 매도·교체 '기존 상품' 셀렉트의 항목과 같다. */
 export function heldProductIds(state: Holdings): ProductId[] {
   return products
-    .filter((product) => (state.holdings.find((holding) => holding.productId === product.id)?.amount ?? 0) >= MIN_TRADE_AMOUNT)
+    .filter((product) => scopedHolding(state,product.id).amount >= MIN_TRADE_AMOUNT)
     .map((product) => product.id);
 }
 

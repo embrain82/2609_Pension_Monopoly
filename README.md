@@ -126,7 +126,7 @@ npx vercel --yes --prod
 2. **태그로 돌아가기.** 배포 기준점에는 `prod-YYYY-MM-DD` 태그를 붙입니다. `git checkout prod-2026-09-04`로 그 시점을 확인하고, 필요하면 `git revert`로 그 상태까지 되돌립니다.
 3. **Vercel 대시보드.** Deployments에서 이전 성공 배포를 골라 Promote to Production을 누르면 코드 변경 없이 즉시 되돌아갑니다.
 
-기능 작업은 `cursor/<이름>-5ed6` 브랜치와 PR로만 `main`에 넣습니다. 큰 변경(시장 엔진·별 기준) 전에는 새 `prod-` 태그를 먹입니다.
+기능 작업은 `codex/<이름>` 브랜치와 PR로 `main`에 넣습니다. 배포 버전은 `v1.x.x` 태그로 구분합니다.
 
 ### GitHub Pages
 
@@ -195,3 +195,15 @@ npx vercel --yes --prod
 
 검증: npm test, npm run build, npm run lint, npm run verify:d.
 [구현·가정·제한](docs/implementation/2026-09-10-stage-d.md) · [학습 명세](public/learning-guide.html).
+
+## 2026-09-10 · 디폴트옵션 직접 거래 (v1.5.0)
+
+- 기존 운용 카드 여섯 개를 유지하고 「디폴트옵션 옵트인/아웃」 카드 하나를 추가했습니다. 하위 화면에서 직접 매수와 보유분 50%/전량 환매를 구분합니다.
+- 실행 전 금액·결제 일정·이자 조정과 위험 비중을 확인합니다. X/Esc 취소는 행동을 소비하지 않으며 포트폴리오 왕복·재접속 시 입력 초안이 복원됩니다.
+- 직접 매수한 상품과 디폴트옵션 구성품을 출처별로 분리합니다. 일반 매도·교체·리밸런싱은 직접 운용분을 대상으로 합니다.
+- 사전지정과 거래를 분리합니다. 새 게임의 「이번엔 그대로」는 자동 매수 없이 마감하며, 옵트아웃 대금은 IRP 안에 남습니다.
+- 가상 예금/BF/TDF 포트폴리오와 성향 적합성을 적용하고 주식 노출은 별도로 표시합니다. 실제 승인 상품이나 추천 상품이 아닙니다.
+- 새 판은 E 규칙·c3 저장을 사용합니다. 기존 C/D 저장은 이전 규칙으로 이어가며, 통지·대기 후 자동운용과 환매 후 연결 매수는 후속 검토입니다.
+
+검증: 433개 테스트, 빌드·타입 검사·린트, `npm run verify:default`의 5,600판 오류 0건.
+[구현·검증 기록](docs/implementation/2026-09-10-default-trading.md) · [남은 후속 검토](docs/backlog/default-option-redesign.md).

@@ -1,3 +1,4 @@
+import { positionsOf } from './position-engine';
 import { SCENARIO_CLOCK } from './scenario-engine';
 import { portfolioValue } from './portfolio-engine';
 import { products } from '../data/content';
@@ -25,5 +26,5 @@ export function finishPerformance(state: GameState): GameState {
   const benchmark=d.benchmarkOpen+flow;
   return {...state,maxDrawdown:Math.max(d.drawdown,1-index/peak),campaign:{...d,index,peak,drawdown:Math.max(d.drawdown,1-index/peak),benchmark,
     reviews:[...d.reviews,{turn:state.turn,tile:state.position,headline:state.lastMarket.headline,actions:[...state.turnActionLines],
-      irp:value,flow,market:d.afterMarket-d.open,costs,cash:state.cash-state.livingDebt,index,realIndex:index/d.priceIndex,benchmark,chapter:state.turn%3===0,holdings:state.holdings.map(h=>({productId:h.productId,amount:h.amount}))}]}};
+      irp:value,flow,market:d.afterMarket-d.open,costs,cash:state.cash-state.livingDebt,index,realIndex:index/d.priceIndex,benchmark,chapter:state.turn%3===0,holdings:state.holdings.map(h=>({productId:h.productId,amount:h.amount})),...(state.defaultTrading?{defaultHoldings:state.holdings.flatMap(h=>positionsOf(h).filter(p=>p.scope).map(p=>({productId:h.productId,amount:p.amount,optionId:p.scope!.optionId}))),defaultOrders:state.pendingOrders.filter(o=>o.defaultScope).map(o=>({id:o.id,side:o.side,stage:o.stage,amount:o.amount}))}:{})}]}};
 }

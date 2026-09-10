@@ -51,6 +51,8 @@ export interface TurnReview {
   flow: number; market: number; costs: number; cash: number; index: number; realIndex: number;
   benchmark: number; chapter: boolean;
   holdings: Array<{productId: ProductId; amount: number}>;
+  defaultHoldings?: Array<{productId:ProductId;amount:number;optionId:string}>;
+  defaultOrders?: Array<{id:string;side:string;stage:string;amount:number}>;
 }
 export interface Campaign {
   scenario: ScenarioId; mission: MissionId; weekly: boolean;

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>디폴트옵션 옵트인·아웃 — 구현 검토안</title>
+<style>
+:root{--ink:#193c38;--muted:#58716b;--paper:#f5f6ee;--line:#d3dfd7;--green:#205b50;--soft:#e8f0e6;--accent:#c85c33;--white:#fff;--blue:#eaf0f8}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.8 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif}main{max-width:1120px;margin:auto;padding:52px 28px 100px}h1{font-size:clamp(30px,4.4vw,52px);line-height:1.25;letter-spacing:-.045em;margin:12px 0 24px}h2{font-size:27px;line-height:1.4;letter-spacing:-.03em;margin:0 0 22px}h3{font-size:19px;margin:26px 0 10px}p{margin:12px 0}a{color:var(--green);text-underline-offset:4px}button,input{font:inherit}button{cursor:pointer;border:1px solid var(--line);background:white;color:var(--ink);padding:11px 18px;border-radius:12px;font-weight:700}button:hover{border-color:var(--green)}button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}button[aria-pressed=true],.primary{background:var(--green);color:white;border-color:var(--green)}.eyebrow{color:var(--accent);font-weight:800;letter-spacing:.08em;font-size:13px}.lead{font-size:21px;max-width:900px}.muted,small{color:var(--muted)}.pill{display:inline-block;border:1px solid var(--line);padding:3px 12px;border-radius:99px;font-size:13px;background:white}.intro{padding-bottom:32px}.callout{padding:20px 24px;border-radius:18px;background:var(--soft);margin:24px 0}.callout p:first-child{margin-top:0}.callout p:last-child{margin-bottom:0}nav{display:flex;flex-wrap:wrap;gap:10px 22px;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}section{padding-top:56px}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:15px}th,td{text-align:left;vertical-align:top;padding:14px 16px;border-bottom:1px solid var(--line)}th{background:var(--soft)}.table-wrap{overflow-x:auto}ul,ol{padding-left:24px}li{margin:8px 0}code{font:13px/1.7 ui-monospace,SFMono-Regular,monospace;background:#e9ece4;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.card{background:white;border:1px solid var(--line);padding:24px;border-radius:18px}.card h3{margin-top:0}.step{display:grid;grid-template-columns:54px 1fr;gap:14px;padding:20px 0;border-bottom:1px solid var(--line)}.number{background:var(--green);color:white;width:42px;height:42px;display:grid;place-items:center;border-radius:50%;font-weight:800}.step h3{margin:0}.mock{background:#dee7dd;padding:24px;border-radius:24px;margin-top:24px}.mock-label{font-size:13px;color:var(--muted);margin-bottom:16px}.mock-window{background:#fcfcf7;border-radius:20px;padding:28px;max-width:720px;margin:auto;border:1px solid #bfd0c4;box-shadow:0 8px 28px #193c380a}.row{display:flex;align-items:center;justify-content:space-between;gap:16px}.mock-window h3{font-size:25px;margin:10px 0}.mock-window h4{font-size:19px;margin:0}.close{font-size:25px;line-height:1;width:44px;height:44px;padding:0}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0}.tabs button{font-size:16px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{border:1px solid var(--line);border-radius:12px;background:white;padding:12px 16px}.stat strong{display:block;font-size:23px}.stat small{display:block}.summary{background:var(--soft);padding:18px;border-radius:14px;margin:18px 0}.summary p{margin:3px 0}.mock-controls{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.mock-foot{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:20px}.link-button{border:0;background:transparent;padding:4px;color:var(--green);text-decoration:underline;text-underline-offset:3px}.mock [hidden]{display:none!important}.status{min-height:28px;font-size:14px;color:var(--accent);margin-top:12px}.source-list{font-size:14px}.source-list li{margin:15px 0}.tag{display:inline-block;background:var(--blue);border-radius:6px;padding:1px 7px;font-size:12px}footer{margin-top:56px;border-top:1px solid var(--line);padding-top:24px;color:var(--muted);font-size:14px}.flow{padding:20px;background:white;border:1px solid var(--line);border-radius:14px;font-weight:700;text-align:center}.checklist li::marker{color:var(--green)}
+@media(max-width:650px){main{padding:30px 18px 70px}.grid{grid-template-columns:1fr}.mock{padding:10px}.mock-window{padding:18px}.mock-foot{align-items:stretch;flex-direction:column}.tabs button{font-size:14px;padding:10px 6px}.stat{padding:10px}.stat strong{font-size:21px}th,td{padding:12px 10px}h2{font-size:24px}.lead{font-size:18px}.row{gap:10px}.table-wrap table{min-width:570px}}
+@media print{body{background:white;font-size:11pt}main{max-width:none;padding:0}.mock{break-inside:avoid}section{padding-top:28px}nav,.mock-controls,.mock-foot,.close{display:none}.card,.callout{break-inside:avoid}a{color:inherit}table{font-size:10pt}}
+</style>
+</head>
+<body><main>
+<header class="intro">
+<div class="eyebrow">PENSION MONOPOLY · DESIGN PROPOSAL</div>
+<h1>디폴트옵션은 한 곳에서,<br>매수와 환매는 분명하게.</h1>
+<div class="pill">검토안 · 미구현</div> <div class="pill">기준: v1.4.0 / 2026-09-10</div>
+<p class="lead">운용지시에 <strong>「디폴트옵션 옵트인/아웃」 하나만 추가</strong>하고, 같은 하위 창에서 직접 매수와 직접 운용 전환을 선택하는 구성을 권장합니다.</p>
+<p class="muted">이 문서는 현재 코드와 공식 제도 안내를 검토한 구현 제안입니다. 아래 화면은 입력 흐름을 설명하는 시안이며 실제 게임에 주문을 보내지 않습니다.</p>
+</header>
+<nav aria-label="문서 목차"><a href="#decision">추천 범위</a><a href="#concept">용어</a><a href="#screen">화면 시안</a><a href="#rules">거래 규칙</a><a href="#impact">기존 영향</a><a href="#engine">엔진 설계</a><a href="#delivery">구현 순서</a><a href="#acceptance">완료 기준</a></nav>
+
+<section id="decision"><h2>01. 이번 구현의 범위</h2>
+<div class="grid"><div class="card"><h3>우선 한 번에 출시할 범위</h3><ul><li>단일 메뉴와 2단계 거래 화면</li><li>옵트인: 지정 또는 선택한 옵션 직접 매수</li><li>옵트아웃: 보유 옵션 일부·전체 환매 → IRP 대기자금</li><li>‘이번엔 그대로’는 신규 주문 없이 턴 마감</li><li>출처별 잔고, 미결제 주문, 취소·복귀, 저장 호환</li><li>D 복기·성과·학습 문구와 회귀 검증</li></ul></div><div class="card"><h3>이후 별도로 확장할 범위</h3><ul><li>만기 자금 판별 → 통지 → 대기기간 → 자동운용</li><li>옵트아웃 환매대금으로 다른 상품 연결 매수</li><li>옵션 A에서 B로 결제 후 자동 교체</li><li>여러 옵션 동시 보유·사업자별 세부 운영 차이</li></ul><p>먼저 직접 거래 흐름을 완성합니다. 자동운용과 교체까지 한 화면에 넣으면 이전에 줄이려던 선택지가 다시 늘어납니다.</p></div></div>
+<div class="callout"><strong>개발은 순차적으로, 출시는 하나의 완성된 흐름으로.</strong><p>잔고 구조부터 바꾸고 거래와 UI를 붙인 뒤 통합 검증합니다. ‘그대로’의 매수 기능만 먼저 없애거나 옵트인만 공개하는 중간 배포는 하지 않는 안입니다.</p></div>
+</section>
+
+<section id="concept"><h2>02. 지정·옵트인·옵트아웃을 구분하기</h2>
+<div class="table-wrap"><table><thead><tr><th>개념</th><th>의미</th><th>게임에서의 처리</th></tr></thead><tbody>
+<tr><td><strong>사전지정</strong></td><td>향후 제도의 적용 요건을 충족했을 때 사용할 운용방법을 선택</td><td>설정값 저장. 즉시 매수하거나 기존 자산을 바꾸지 않음</td></tr>
+<tr><td><strong>옵트인</strong></td><td>자동 적용 대기 없이 디폴트옵션 상품을 직접 매수</td><td>선택한 금액을 주문. 펀드 가격확정·결제는 별도 진행</td></tr>
+<tr><td><strong>옵트아웃</strong></td><td>디폴트옵션 운용 자산을 매도하여 다른 운용으로 전환</td><td>해당 옵션 보유분 일부·전체 환매. 첫 버전은 대기자금으로 전환</td></tr>
+<tr><td><strong>자동운용</strong></td><td>적용 대상 자금에 운용지시가 없고 통지·대기 요건을 충족했을 때 실행</td><td>별도 단계. 이번 직접 거래 화면의 실행 조건으로 사용하지 않음</td></tr>
+</tbody></table></div>
+<p>산업은행은 직접매수와 매도를 옵트인·옵트아웃으로 설명하고, 등록/변경과 직접매매 진입점을 구분합니다. 매도 시 포트폴리오에 포함된 예금의 중도해지이율이 적용될 수 있습니다. <a href="#source-kdb">[1]</a></p>
+<p><strong>‘옵트아웃 = 지정 해제’ 또는 ‘자동운용 OFF’로 표시하면 안 됩니다.</strong> 현재의 지정값 삭제는 이미 산 자산을 환매하지 않습니다. 새 화면에서도 거래 완료와 사전지정값 변경은 서로 다른 결과입니다.</p>
+<p>기존 상품 만기 후 자동 적용은 4주 경과 시 통지, 통지 후 2주 동안 별도 운용방법을 정하지 않는 절차가 있습니다. 신규 가입과 만기 자금의 조건도 구별해야 합니다. D의 1턴은 가상 3개월이므로 ‘4주 = 4턴’으로 구현할 수 없습니다. <a href="#source-law">[2]</a></p>
+</section>
+
+<section id="screen"><h2>03. 권장 화면과 문구</h2>
+<p>첫 운용 화면은 기존 추가납입·매수·매도·바꾸기·리밸런싱·이번엔 그대로를 유지하고, 그 사이에 <strong>디폴트옵션 진입 행 하나</strong>를 둡니다. 첫 화면에는 ‘현금 유지’나 개별 옵트인·아웃 행을 추가하지 않습니다.</p>
+<div class="flow">운용지시 → 디폴트옵션 옵트인/아웃 → 같은 창에서 거래 선택·금액 검토 → 확정</div>
+<p>하위 창은 ‘직접 매수(옵트인)’와 ‘직접 운용 전환(옵트아웃)’ 탭으로 구성합니다. 탭 전환과 금액 입력은 미리보기만 바꿉니다. 확정 버튼은 입력 내용에 맞춰 ‘100만원 매수 지시’, ‘보유분 50% 환매 지시’처럼 결과를 설명합니다.</p>
+<div class="mock" id="mock">
+<div class="mock-label">인터랙티브 화면 시안 · 중위험 보유분 400만원, 대기자금 200만원의 예시 · 상품·금액 고정</div>
+<div class="mock-window">
+<div id="mock-board" hidden><div class="eyebrow">BOARD</div><h3>보드로 돌아왔습니다</h3><p>확정 전 닫기라서 자산과 행동 횟수는 바뀌지 않았습니다.</p><button class="primary" id="reopen">운용지시 다시 열기</button></div>
+<div id="mock-menu"><div class="row"><div class="eyebrow">TURN 4 · 행동 1회 남음</div><button class="close" data-close aria-label="운용지시 닫기">×</button></div><h3>무엇을 할까요?</h3><p class="muted">추가납입 · 매수 · 매도 · 바꾸기 · 리밸런싱</p><div class="summary row"><div><h4>디폴트옵션 옵트인/아웃</h4><small>지정된 상품을 직접 사거나, 보유분을 환매해요.</small></div><button class="primary" id="open-trade">선택</button></div><p class="muted">이번엔 그대로 — 새 주문 없이 턴 마감</p></div>
+<div id="mock-trade" hidden>
+<div class="row"><button class="link-button" id="back-menu">← 운용지시</button><button class="close" data-close aria-label="거래 검토 닫기">×</button></div>
+<h3>디폴트옵션</h3><p class="muted">사전지정: 중위험 · 보유 상품: 중위험<br>예시 상품 · 미결제 주문 없음</p>
+<div class="stats"><div class="stat"><small>디폴트옵션 보유</small><strong>400만원</strong></div><div class="stat"><small>주문 가능 대기자금</small><strong>200만원</strong></div></div>
+<div class="tabs" role="group" aria-label="거래 선택"><button id="tab-in" aria-pressed="true">직접 매수<br><small style="color:inherit">옵트인</small></button><button id="tab-out" aria-pressed="false">직접 운용 전환<br><small style="color:inherit">옵트아웃</small></button></div>
+<p id="trade-description">보유 중인 중위험 옵션을 추가 매수합니다. 사용 가능한 IRP 대기자금 안에서 선택합니다.</p>
+<div class="mock-controls" role="group" aria-label="거래량 선택"><button id="half" aria-pressed="true">절반 · 100만원</button><button id="all" aria-pressed="false">전액 · 200만원</button></div>
+<div class="summary" aria-live="polite"><p id="preview-title"><strong>매수 신청 100만원</strong></p><p id="preview-assets">혼합형 50만원 + TDF 50만원</p><p id="preview-cash">접수 후 주문 가능 대기자금 100만원</p><p id="preview-timing" class="muted">게임 시간: 이번 턴 접수 → 다음 턴 가격확정 → 그다음 턴 결제</p></div>
+<small id="trade-note">사전지정값은 그대로 유지됩니다. 상품 구성·수수료·결제 예상 일정은 확정 전에 표시합니다.</small>
+<div class="mock-foot"><button class="link-button" id="view-portfolio">포트폴리오 확인</button><button class="primary" id="preview-submit">100만원 매수 지시</button></div>
+</div>
+<div id="mock-portfolio" hidden><div class="row"><div class="eyebrow">PORTFOLIO</div><button class="close" data-close aria-label="포트폴리오 닫기">×</button></div><h3>운용 출처별 보기</h3><p>직접 운용 TDF <strong>300만원</strong></p><p>디폴트옵션 <strong>400만원</strong><br><small>혼합형 200만원 + TDF 200만원</small></p><p>IRP 대기자금 <strong>200만원</strong></p><p class="muted">같은 TDF여도 직접 운용분과 디폴트옵션분을 구분합니다.</p><button class="primary" id="return-trade">거래 검토로 돌아가기</button></div>
+<div id="mock-status" class="status" role="status"></div>
+</div></div>
+<div class="grid"><div><h3>닫기와 포트폴리오 왕복</h3><ul><li><strong>X / Esc:</strong> 확정 전 거래 창을 닫고 보드로 복귀. 행동 0회 사용.</li><li><strong>← 운용지시:</strong> 같은 창의 상위 메뉴로 이동. 별도의 ‘취소하고 보드로’ 버튼은 만들지 않음.</li><li><strong>포트폴리오 확인:</strong> 현재 탭·상품·금액 초안을 보존하여 돌아옴.</li><li><strong>접수 후:</strong> X는 이미 접수한 주문을 취소하는 기능이 아님. 접수 사실을 명확히 알림.</li></ul></div><div><h3>비어 있거나 거래 불가한 상태</h3><ul><li>보유분 없음: 옵트인 기본 표시, 아웃 탭에 ‘환매할 보유분이 없습니다’ 안내.</li><li>주문 가능 현금 없음: 매수 확정 비활성화, 포트폴리오와 뒤로 이동은 가능.</li><li>관련 주문 처리 중: 진행 단계 표시. 첫 버전은 같은 옵션에 대한 추가 지시를 막아 중복 접수를 방지.</li><li>사전지정 없음: 직접매수할 옵션을 이 창에서 선택. 사전지정 등록을 몰래 함께 처리하지 않음.</li></ul></div></div>
+</section>
+
+<section id="rules"><h2>04. 거래별 상세 계약</h2>
+<div class="table-wrap"><table><thead><tr><th>항목</th><th>옵트인</th><th>옵트아웃</th></tr></thead><tbody>
+<tr><td>거래 대상</td><td>선택한 디폴트옵션 전체 구성</td><td>해당 옵션 출처로 보유한 자산만</td></tr>
+<tr><td>입력</td><td>절반 / 전액 / 직접 입력. 기본은 절반, 확정 전 미리보기</td><td>50% / 100%. 금액은 현재 평가액 기준 예상값</td></tr>
+<tr><td>자금</td><td>사용 가능한 IRP 대기자금. 생활자금·미결제 환매대금은 사용 불가</td><td>결제 시 IRP 대기자금에 반영. 계좌 밖 인출이 아님</td></tr>
+<tr><td>구성 유지</td><td>명시된 신규 매수 비중으로 분할. 소액이라고 첫 상품에 몰아주지 않음</td><td>구성 상품의 매도 가능한 수량에 같은 환매 비율 적용. 특정 구성품만 선택 불가</td></tr>
+<tr><td>최소 금액</td><td>묶음 주문 최소 10만원을 게임 규칙으로 유지. 구성품 내부 분할에는 별도 10만원 최소를 적용하지 않음</td><td>소액 잔액도 전체 환매 허용. 수량·원 단위 반올림 잔여 처리 명시</td></tr>
+<tr><td>행동 차감</td><td colspan="2">거래 묶음 접수 성공 시 1회. 입력·취소·실패·결제 진행은 0회. 행동 2회 칸에서는 접수 후 1회 남음</td></tr>
+<tr><td>가격·결제</td><td colspan="2">공통 엔진의 상품별 일정 사용. 펀드는 접수 턴 t → 기준가 t+1 → 결제 t+2. 실제 금융상품 영업일 규칙과 다른 게임 시간임을 표시</td></tr>
+<tr><td>비용</td><td>선택한 구성품의 기존 보수·수수료만 적용. 묶음이라는 이유로 별도 중복 과금하지 않음</td><td>예금은 해당 출처의 약정만 부분 해지하고 약정별 중도해지 조건 반영</td></tr>
+<tr><td>완료 후 지정</td><td colspan="2">자동으로 바꾸거나 해제하지 않음. ‘사전지정’과 ‘현재 보유’는 각자 표시</td></tr>
+</tbody></table></div>
+<p>포트폴리오형 옵션을 구성품별로 쪼개 매도하지 않는 설계는 KB증권의 실제 운영 안내를 참고했습니다. 비율 환매는 시장 변동 후 보유 수량에 같은 비율을 적용하는 것이며, 최초 매수 목표비중으로 다시 맞추는 리밸런싱이 아닙니다. <a href="#source-kb">[3]</a></p>
+<p><strong>게임의 단순화:</strong> 최초 버전은 한 종류의 옵션만 보유·주문할 수 있게 합니다. 보유 중이면 같은 옵션만 추가매수하고, 전부 환매·결제한 뒤 다른 옵션을 매수합니다. 실제 사업자별 복수 보유 처리까지 보편적 법칙으로 설명하지 않습니다.</p>
+<h3>핵심 예시</h3><div class="callout"><p>직접 매수한 TDF 300만원과 중위험 옵션 400만원(혼합형 200만원 + TDF 200만원)을 가진 경우, <strong>50% 옵트아웃은 옵션의 혼합형·TDF 각 절반만 환매</strong>합니다. 직접 매수 TDF 300만원은 유지됩니다.</p><p>200만원은 현재 평가액 기준 예상치입니다. 실제 IRP 대기자금 반영액은 가격확정과 비용에 따라 달라지고, 그동안 중복 사용하지 못합니다.</p></div>
+</section>
+
+<section id="impact"><h2>05. 구현 전에 알아야 할 기존 기능 영향</h2>
+<p>이 검토안을 구현할 때 함께 달라져야 하는 부분입니다. 현재 실행 코드에는 아직 적용하지 않았습니다.</p>
+<div class="table-wrap"><table><thead><tr><th>영향 범위</th><th>현재 확인된 상태</th><th>권장 변경</th></tr></thead><tbody>
+<tr><td>이번엔 그대로</td><td><code>performAction('hold')</code>가 지정옵션 매수를 실행</td><td>새 규칙에서는 신규 주문 없이 마감. 명시적인 옵트인 행동으로 매수를 이동</td></tr>
+<tr><td>직접 매도·바꾸기</td><td>상품 ID 기준으로 모든 잔고를 함께 처리</td><td>직접 운용분만 대상. 옵션 잔고는 옵션 단위로 환매</td></tr>
+<tr><td>리밸런싱</td><td>전체 보유상품을 목표비중으로 조정</td><td>1차는 직접 운용분과 사용 가능 현금 대상. 미리보기에 대상 범위·제외된 옵션 평가액 표시. 전체 IRP 노출은 계속 보여줌</td></tr>
+<tr><td>만기·적격 중도인출</td><td>현재 코드는 만기 후 예금 잔고를 남기고 약정이자를 중단. 생활사건은 예금·ETF를 상품별로 청산</td><td>약정·청산 시 출처 장부 동기화. 현행 만기 처리 유지, 자동 상환·재투자는 P1에서 함께 설계</td></tr>
+<tr><td>자동 플레이·업적</td><td>defaultOption 전략이 hold에 의존, 일부 설명도 ‘그대로’와 연결</td><td>전략이 명시적 옵트인 사용. 거래 횟수로 점수·별을 반복 획득하지 않도록 문구·기록 정리</td></tr>
+<tr><td>D 운용성과·복기</td><td>순입출금과 내부 거래를 구분하고 3·6·9턴 분기 저장</td><td>옵션 매수·환매는 외부 입출금에 넣지 않음. 비용과 출처별 결과·접수/결제를 복기에 반영</td></tr>
+<tr><td>C/D 진행 저장</td><td>기존 잔고에는 매수 출처가 없고 파서가 현재 게임 모양을 검사</td><td>새 판에 새 규칙 적용. 기존 판·분기는 기존 규칙으로 완료 가능하게 유지</td></tr>
+<tr><td>학습·매뉴얼</td><td>‘다음 턴 체결’ 안내와 실제 t+2 결제가 불일치하는 부분 존재</td><td>지정·매수·환매와 접수·가격확정·결제 설명을 코드·퀴즈·매뉴얼에서 일치시킴</td></tr>
+</tbody></table></div>
+<p><strong>C의 X 닫기와 주사위 합 자동 이동, B의 투자자성향/캐릭터 분리는 유지</strong>합니다. 매 턴 경로 선택이나 ‘현금 유지’ 별도 버튼을 되살릴 이유는 없습니다.</p>
+</section>
+
+<section id="engine"><h2>06. 엔진과 데이터 설계</h2>
+<h3>A. 상품별 총액 안에 운용 출처를 기록</h3>
+<p>현재 <code>Holding</code>과 <code>PendingOrder</code>에는 디폴트옵션 매수 출처가 없습니다. <code>portfolio-engine.ts</code>는 같은 <code>productId</code>를 하나로 합칩니다. 출처 없이 옵트아웃을 넣으면 직접 산 TDF까지 환매하는 문제가 생깁니다.</p>
+<p>권장 구조는 <strong>상품별 Holding을 유지하면서 내부에 출처별 position을 두는 방식</strong>입니다. 같은 상품 ID의 Holding을 여러 개 추가하면 현재의 <code>.find(productId)</code> 사용 지점이 첫 잔고만 읽을 수 있습니다.</p>
+<div class="table-wrap"><table><thead><tr><th>데이터</th><th>주요 필드 제안</th><th>역할</th></tr></thead><tbody>
+<tr><td>사전지정</td><td><code>defaultSelection: { optionId, optionVersion } | null</code></td><td>향후 선택값. 보유액·운용 여부로 사용하지 않음</td></tr>
+<tr><td>옵션 운용 단위</td><td><code>mandateId, optionId, optionVersion, openedTurn</code></td><td>어느 옵션 구성으로 산 포지션인지 묶음 식별</td></tr>
+<tr><td>출처별 포지션</td><td><code>positionId, source, mandateId?, units, principal, depositLots</code></td><td>직접 운용/옵션 운용을 구분. 예금 lot의 금리·만기도 보존</td></tr>
+<tr><td>주문 묶음</td><td><code>groupId, commandId, kind, mandateId, memberOrderIds</code></td><td>한 번의 확정·행동 차감과 구성품별 결제 추적</td></tr>
+<tr><td>구성품 주문</td><td><code>positionId, source, mandateId, reservedUnits</code> + 기존 필드</td><td>매수 편입/환매 대상 출처와 중복 사용 방지</td></tr>
+<tr><td>화면 초안</td><td><code>view, tab, optionId, amount, fraction, returnTo</code></td><td>포트폴리오 왕복과 새로고침 복귀. 실제 주문과 분리</td></tr>
+</tbody></table></div>
+<p>출처별 포지션을 유일한 잔고 원본으로 삼고 상품별 총액은 공통 함수에서 합산합니다. 호환용 총액 필드를 남기더라도 직접 수정하지 않고 원본에서 다시 계산합니다. 주문 묶음이나 옵션 요약 금액을 자산총액에 한 번 더 더하지 않습니다.</p>
+<p>시장 수익·보수·가격확정·부분 환매·예금 약정·적격 중도인출 모두 공통 잔고 변경 함수를 거쳐야 합니다. 옵션 보유/주문 잔액이 모두 0이면 종료된 운용 단위로 기록합니다. 현재 예금은 만기 이후 자동 상환되지 않고 잔고를 유지하므로, P0에서는 이 동작을 유지합니다. P1에서 자동 상환을 구현할 때 포지션 제거와 현금 반영을 한 번의 거래로 처리합니다.</p>
+<p><strong>생활사건 청산 순서:</strong> 기존 결제 현금 → 직접 운용 예금·ETF → 모든 구성품이 즉시 결제 가능한 옵션의 비율 환매 순서로 검토합니다. P0의 펀드 혼합 옵션은 생활비를 즉시 마련하기 위해 구성품 예금만 따로 팔지 않습니다. 즉시 결제 자금이 부족하면 기존 생활비 분할 지급 흐름을 안내하고, 펀드 결제를 기다려야 한다는 이유를 표시합니다. 예금만 현금화하는 선택지는 직접 운용 예금과 예금 100% 옵션만 대상으로 합니다. 이 청산은 생활사건 해결에 포함하며 운용지시 행동을 추가 차감하지 않습니다.</p>
+
+<h3>B. 미리보기와 실행이 같은 거래계획 사용</h3>
+<ol><li><code>previewDefaultOptIn(state, optionId, amount)</code> 또는 <code>previewDefaultOptOut(state, mandateId, fraction)</code>이 읽기 전용 계획을 생성합니다.</li><li>현금·출처별 수량·성향·옵션 구성·관련 주문·비용·한도를 묶음 전체 기준으로 검사합니다. 계좌 전체의 예약현금과 리밸런싱 계획도 검사하고, P0에서는 리밸런싱 처리 중 옵션 지시를 막습니다. 반대로 리밸런싱 접수도 진행 중 옵션 주문과 자금 충돌을 검사합니다.</li><li>확정 시 상태 버전을 확인하고 같은 검증을 다시 실행합니다. 변동됐으면 미리보기를 갱신하여 재확인합니다.</li><li>임시 상태에서 모든 구성품 주문을 만든 후 전체 성공일 때만 상태를 교체합니다. 한 상품만 매수되고 다른 상품은 누락되는 접수는 허용하지 않습니다. 내부 구성품의 최소금액 예외와 거래 잠금 우회 권한은 분리합니다. 기존 <code>internal=true</code>를 그대로 재사용해 리밸런싱 잠금까지 우회하지 않습니다.</li><li>고유한 <code>commandId</code>로 재클릭·복원 시 중복 주문을 차단하고, 행동은 묶음당 1회 차감합니다.</li><li>접수 후 개별 구성품은 기존 상품별 일정으로 결제합니다. ‘일부 결제’와 ‘완료’를 묶음 상태로 보여줍니다. 일부 결제는 접수 실패와 다른 정상 진행 상태입니다.</li></ol>
+<p>새 게임 행동은 <code>default-opt-in</code>, <code>default-opt-out</code>으로 명시합니다. 순수 함수와 읽기 전용 미리보기를 유지하고, UI에서 현금·잔고를 직접 수정하지 않습니다.</p>
+
+<h3>C. 승인 포트폴리오 규칙과 경제적 위험을 분리</h3>
+<p>현재 4개 옵션은 일반 상품을 나열한 교육용 묶음이며 고위험형에는 주식 ETF가 들어 있습니다. 이 데이터만으로 실제 승인 상품이라고 할 수 없습니다. 법령상 운용유형·승인 구조와, 승인 사전지정운용방법에 적용되는 규제 분류를 구별해야 합니다. <a href="#source-law">[2]</a> <a href="#source-regulation">[4]</a></p>
+<ul><li><strong>구현 첫 단계의 필수 산출물:</strong> 옵션별 명시적 구성비·가상 위험등급·원리금보장 여부·적격 유형 가정·제도 근거·검수일·버전. ETF를 섞은 현 고위험안을 곧바로 승인 포트폴리오로 취급하지 말고 TDF/BF형 학습 모형으로 재구성합니다. 구체 배분과 등급은 이 데이터 검토에서 확정합니다.</li><li><strong>교육용 모형 표시:</strong> ‘승인 제도 구조를 설명하는 가상 상품’이라고 표시합니다. 실제 승인받은 상품명이나 승인을 받았다는 문구는 사용하지 않습니다.</li><li><strong>한도 계산:</strong> 검수된 옵션 운용 문맥에서 승인유형 예외를 모사합니다. 일반 매수 ETF나 같은 펀드 전체에 예외가 전파되지 않도록 출처·옵션 버전을 기준으로 판단합니다.</li><li><strong>성향 적합성:</strong> 포트폴리오의 검수된 가상 위험등급으로 판단합니다. 규제상 편입한도 예외와 원금보장·개인 성향 적합성을 같은 개념으로 취급하지 않습니다.</li><li><strong>실제 주식 노출:</strong> 옵션 구성품까지 합산해 D 위험 설명·전망·낙폭에 반영합니다. 규제상 위험자산 계산에서 예외라고 손실위험이 0이 되지는 않습니다.</li></ul>
+<p>이 검수가 끝나지 않은 가상 묶음에 예외를 켜지 않습니다. 사용자 화면보다 먼저 고정할 데이터 계약이며, 개별 상품의 기존 위험값을 일괄 변경하는 방식은 피합니다.</p>
+
+<h3>D. 기존 저장과 분기 복원</h3>
+<p>과거 동일 상품 잔고의 직접 매수분과 옵션 매수분을 텍스트 로그만으로 정확히 복원하기는 어렵습니다. <strong>기존 C/D 판을 강제 변환하지 않고 새 판부터 새 규칙을 적용</strong>하는 안을 권장합니다.</p>
+<ul><li>체크포인트·규칙 버전을 명시하고 버전별 파서와 거래 동작을 분리합니다. 새 필드를 기존 게임 생성 결과로 일괄 검사하면 옛 저장이 거부될 수 있습니다.</li><li>D의 3·6·9턴 분기에도 당시 옵션 버전·출처·미결 주문을 저장합니다. 기존 분기는 당시 규칙으로 다시 시작합니다.</li><li>새로고침 시 미확정 초안은 검토 화면으로 복원하지만 주문을 자동 실행하지 않습니다. 접수 후 저장은 확정된 주문 ID로 복원합니다.</li><li>기존 모드의 상품 구성도 버전별로 보존해야 합니다. 공용 JSON만 바꾸면 이전 판의 추천·hold 실행 결과까지 바뀔 수 있습니다.</li></ul>
+</section>
+
+<section id="files"><h2>07. 예상 변경 파일과 책임</h2>
+<div class="table-wrap"><table><thead><tr><th>대상</th><th>변경 목적</th></tr></thead><tbody>
+<tr><td><code>src/types.ts</code>, <code>src/data/default-options.json</code></td><td>버전별 옵션 계약, 출처·운용 단위·주문 묶음 타입</td></tr>
+<tr><td><code>src/engine/default-option.ts</code></td><td>지정과 거래 분리, 미리보기·묶음 접수·진행 상태</td></tr>
+<tr><td><code>src/engine/portfolio-engine.ts</code>, <code>settlement-engine.ts</code></td><td>출처별 잔고, 예약 수량·현금, 상품별 결제·비용</td></tr>
+<tr><td><code>src/engine/policy-engine.ts</code>, <code>market-engine.ts</code>, <code>life-engine.ts</code></td><td>옵션 문맥의 한도·성향 확인, 수익·만기·자동 청산 시 출처 보존</td></tr>
+<tr><td><code>src/engine/game-engine.ts</code>, <code>performance-engine.ts</code></td><td>새 행동, hold 분리, 1회 차감, 내부 거래의 성과 처리</td></tr>
+<tr><td><code>src/ui/app.ts</code>, <code>default-option-view.ts</code>, 신규 거래 view</td><td>단일 진입점, 지정 화면과 거래 화면 분리, X/Esc·왕복 초안</td></tr>
+<tr><td><code>src/ui/play-checkpoint.ts</code>, <code>src/engine/scenario-engine.ts</code></td><td>버전별 저장 검증, D 분기·복기 기록</td></tr>
+<tr><td><code>src/engine/achievements.ts</code>, <code>quiz-engine.ts</code>, 학습 JSON</td><td>옵트인·아웃 학습 연결과 거래 횟수 보상 방지</td></tr>
+<tr><td><code>scripts/build-learning-guide.ts</code>, 사용자·운영자 매뉴얼, 검증 스크립트</td><td>같은 원본으로 문서 생성, 새 규칙과 전략 검증</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="delivery"><h2>08. 순차 구현 계획</h2>
+<div class="step"><div class="number">1</div><div><h3>규칙·상품·화면 계약 고정 <span class="tag">P0</span></h3><p>단일 메뉴, 옵트아웃 환매 범위, 순수 마감, 가상 옵션 구성·등급·예외 조건, 결제 표시를 확정합니다. 옵션 검수와 구 규칙 보존이 완료 조건입니다.</p></div></div>
+<div class="step"><div class="number">2</div><div><h3>출처 장부와 저장 호환 <span class="tag">P0</span></h3><p>출처별 포지션·예금 lot·주문 문맥을 도입합니다. 일반 잔고 합계와 총자산 불변식을 검증하고 C/D 실제 저장 fixture와 분기 복원을 통과시킵니다.</p></div></div>
+<div class="step"><div class="number">3</div><div><h3>옵트인·옵트아웃 거래 엔진 <span class="tag">P0</span></h3><p>묶음 미리보기·전체 접수·1회 차감·중복 방지·부분 환매를 구현합니다. hold, 일반 거래·리밸런싱 범위, 만기·생활사건 자동 청산을 함께 수정합니다.</p></div></div>
+<div class="step"><div class="number">4</div><div><h3>2단계 UI와 D 연결 <span class="tag">P0</span></h3><p>새 거래 창, 포트폴리오 왕복, 처리 중 상태, 새로고침 복원을 붙입니다. D 복기·분기·성과·자동 플레이와 학습·매뉴얼을 새 의미에 맞춥니다.</p></div></div>
+<div class="step"><div class="number">5</div><div><h3>통합 검증 후 한 번에 배포 <span class="tag">P0</span></h3><p>회계·행동·저장·UI 회귀, 12턴 완주와 분기 연습, 기존 4,400판 매트릭스 및 옵션 혼합 전략을 검증합니다. 메뉴를 중간 상태로 노출하지 않고 완성본을 릴리스합니다.</p></div></div>
+<div class="step"><div class="number">6</div><div><h3>자동운용·연결 교체 확장 <span class="tag">P1 · 별도 백로그</span></h3><p>만기/납입/자발적 환매 현금을 구분하고, 가상 달력에서 통지·대기를 구현합니다. 연결 매수는 실제 결제된 해당 묶음 대금만 사용하도록 설계합니다. 이번 P0의 필수 조건에 섞지 않습니다.</p></div></div>
+<div class="callout"><strong>출시 단위와 개발 순서는 다릅니다.</strong><p>P0 내부 작업은 의존성에 따라 순차 구현합니다. 출처 장부를 건드리는 포트폴리오·정산·시장은 같은 책임자가 묶어 수정하고, 계약 확정 뒤 화면·교육자료 작업을 병렬로 진행할 수 있습니다.</p></div>
+</section>
+
+<section id="acceptance"><h2>09. 반드시 통과해야 할 시나리오</h2>
+<ol class="checklist">
+<li><strong>메뉴 단순성:</strong> 첫 화면 디폴트옵션 관련 행은 정확히 하나. X만으로 보드에 복귀 가능.</li>
+<li><strong>미확정 무변경:</strong> 탭·금액 변경, 뒤로, X/Esc, 포트폴리오 왕복 전후 자산·행동 횟수 동일.</li>
+<li><strong>출처 분리:</strong> 같은 TDF를 직접 운용·옵션 운용으로 함께 보유한 상태에서 옵션분만 환매.</li>
+<li><strong>부분/전체:</strong> 50%·100% 환매 후 모든 구성품 수량과 원금 기록 일치. 소액 잔여 청산 가능.</li>
+<li><strong>소액 매수:</strong> 10만·15만원도 명시 비중 유지. 첫 상품으로 몰아주는 분기 없음.</li>
+<li><strong>주문 실패:</strong> 한도·성향·잔액·구성 검증 실패 시 일부 주문·현금 차감·행동 소비 없음.</li>
+<li><strong>한도 문맥:</strong> 승인유형 학습 예외는 해당 옵션 출처에만 적용. 같은 일반 상품·일반 ETF에 전파되지 않음.</li>
+<li><strong>대기자금:</strong> 예약 현금·미결제 환매대금·생활자금 사용 불가. 총자산에 주문 금액 중복 합산 없음.</li>
+<li><strong>중복 실행:</strong> 더블클릭과 접수/가격확정/결제 단계 새로고침 후 중복 주문·수익·차감 없음.</li>
+<li><strong>행동 2회 칸:</strong> 옵션 구성품 수와 무관하게 1회 차감. 순수 마감은 남은 행동 종료.</li>
+<li><strong>약정 보존:</strong> 서로 다른 금리·만기의 직접 운용 예금과 옵션 예금 중 대상 lot만 해지.</li>
+<li><strong>일반 거래:</strong> 일반 매도·교체·리밸런싱이 옵션 구성품을 임의로 환매하지 않음. 자동 청산과 만기도 장부 동기화.</li>
+<li><strong>수익 계산:</strong> 매수·환매만으로 외부 납입·세액공제·순입출금 증가 없음. 비용만 D 성과에 반영.</li>
+<li><strong>마지막 턴:</strong> 12턴 신규 주문을 추가 급여·시장 수익 없이 끝까지 결제. 미결 주문과 잠금이 남지 않음.</li>
+<li><strong>저장 호환:</strong> 기존 C/D 진행·3/6/9턴 분기와 새 버전 분기 모두 각 규칙으로 복원.</li>
+<li><strong>교육 일치:</strong> 지정 해제가 옵트아웃이라는 문장 없음. 즉시 주문과 즉시 결제, 환매와 인출을 구분.</li>
+<li><strong>게임성:</strong> 옵션 거래 반복만으로 점수 획득 불가. 옵션 보유·직접 운용·혼합 전략의 미션 성과 비교.</li>
+<li><strong>브라우저:</strong> 데스크톱·390px 화면, 키보드 포커스·Esc·미결제 알림·포트폴리오 복귀 확인.</li>
+</ol>
+<p>기존 테스트·빌드·린트와 D 매트릭스를 재실행하되, 기존 11전략 외에 ‘일부 옵트아웃’, ‘직접/옵션 동일 상품 혼합’, ‘마지막 턴 주문’ 전략을 추가해야 새 기능을 검증할 수 있습니다.</p>
+</section>
+
+<section id="future"><h2>10. 자동운용을 나중에 붙일 때의 경계</h2>
+<p>자동운용은 ‘이번엔 그대로’를 누르는 순간의 부수 효과로 다시 넣지 않습니다. 대상 자금의 발생 사유·시점과 통지 기록을 가진 별도 이벤트로 처리해야 합니다. 직접 환매해 대기 중인 자금이 다음 턴에 다시 옵션으로 들어가는 순환도 막아야 합니다.</p>
+<p>D의 가상 분기 달력 안에서 주 단위 통지·대기 이벤트를 계산하거나, 교육용 단계를 명시하는 별도 시나리오를 설계합니다. 최초 가입, 기존 상품 만기, 자발적 환매, 추가납입을 같은 ‘현금 잔액’ 조건으로 처리하지 않습니다. 자동운용을 구현하기 전에는 시작·설정·도움말에서 <strong>이번 버전의 체험은 직접매수/환매 중심</strong>이라고 일관되게 설명합니다.</p>
+</section>
+
+<section id="sources"><h2>확인한 공식 근거</h2><p class="muted">검토일 2026-09-10. 아래는 제도와 실제 운영 예시의 근거이며, 위 금액·화면·턴·최소주문·한 종류 보유 정책은 게임 설계 제안입니다.</p><ol class="source-list">
+<li id="source-kdb"><a href="https://pension.kdb.co.kr/jsp/common/consultPageViewer.jsp?CS_WSVC_ID=%2Fitb%2Fbr%2Fpw%2Fdm%2FBRPWDM06N10.html">산업은행 — 디폴트옵션 알아보기 / 직접매매 FAQ</a><br>옵트인·옵트아웃 의미, 동일 상품 추가매수, 예금 중도해지 영향의 운영 예시.</li>
+<li id="source-law"><a href="https://www.law.go.kr/LSW/lsLinkCommonInfo.do?chrClsCd=010202&amp;lsJoLnkSeq=1030452711">국가법령정보센터 — 근로자퇴직급여 보장법 제21조의2~4</a><br>2026-07-01 시행 본문. 승인 운용유형, 사전지정, 통지·대기 및 가입자의 운용방법 선택 구조.</li>
+<li id="source-kb"><a href="https://www.kbsec.com/go.able?linkcd=s08180001P010">KB증권 — 디폴트옵션 안내 자세히 보기</a><br>DC/IRP 적용, 승인 상품, 직접매수·자동매수, 포트폴리오 비율 매도 및 특정 구성품 매도 제한의 운영 예시.</li>
+<li id="source-regulation"><a href="https://www.law.go.kr/LSW/admRulSideInfoP.do?admRulSeq=2100000231486&amp;chrClsCd=010201&amp;dashNo=&amp;docCls=jo&amp;joBrNo=00&amp;joNo=0011&amp;urlMode=admRulScJoRltInfoR">국가법령정보센터 — 퇴직연금감독규정 제11조</a><br>제1항 제10호의 고용노동부장관 승인 사전지정운용방법 분류. 한도 예외와 상품 자체의 경제적 위험을 분리하는 근거.</li>
+</ol></section>
+<footer>검토 기준: main / v1.4.0 · 실행 코드 변경 없음 · 실제 배포 전 상품 데이터 계약과 위 완료 기준의 검증 필요</footer>
+</main>
+<script>
+(() => {
+  const el = id => document.getElementById(id);
+  const pages = ['board','menu','trade','portfolio'];
+  let page = 'menu', mode = 'in', fraction = .5;
+  function show(next) { page = next; pages.forEach(name => {el('mock-'+name).hidden = name !== next;}); el('mock-status').textContent = ''; }
+  function render() {
+    const isIn = mode === 'in', amount = (isIn ? 200 : 400) * fraction;
+    el('tab-in').setAttribute('aria-pressed', String(isIn));
+    el('tab-out').setAttribute('aria-pressed', String(!isIn));
+    el('half').setAttribute('aria-pressed', String(fraction === .5));
+    el('all').setAttribute('aria-pressed', String(fraction === 1));
+    el('half').textContent = isIn ? '절반 · 100만원' : '50% · 약 200만원';
+    el('all').textContent = isIn ? '전액 · 200만원' : '100% · 약 400만원';
+    el('trade-description').textContent = isIn ? '보유 중인 중위험 옵션을 추가 매수합니다. 사용 가능한 IRP 대기자금 안에서 선택합니다.' : '중위험 옵션 보유분을 환매해 IRP 대기자금으로 전환합니다. 직접 매수한 TDF는 대상이 아닙니다.';
+    el('preview-title').textContent = isIn ? `매수 신청 ${amount}만원` : `보유분 ${fraction*100}% 환매 신청 · 평가액 약 ${amount}만원`;
+    el('preview-assets').textContent = isIn ? `혼합형 ${amount/2}만원 + TDF ${amount/2}만원` : `혼합형·TDF 각각 보유 수량의 ${fraction*100}% 환매`;
+    el('preview-cash').textContent = isIn ? `접수 후 주문 가능 대기자금 ${200-amount}만원` : '대금 결제 시 대기자금에 반영 · 예상 금액은 가격·비용에 따라 변동';
+    el('trade-note').textContent = isIn ? '사전지정값은 그대로 유지됩니다. 상품 구성·수수료·결제 예상 일정은 확정 전에 표시합니다.' : '사전지정값은 해제되지 않습니다. IRP 계좌 밖으로 출금되지 않으며 실제 대금은 가격확정·비용에 따라 달라집니다.';
+    el('preview-submit').textContent = isIn ? `${amount}만원 매수 지시` : `보유분 ${fraction*100}% 환매 지시`;
+    el('mock-status').textContent = '';
+  }
+  el('open-trade').onclick = () => {show('trade');render();el('tab-in').focus();};
+  el('reopen').onclick = () => {show('menu');el('open-trade').focus();};
+  el('back-menu').onclick = () => {show('menu');el('open-trade').focus();};
+  document.querySelectorAll('[data-close]').forEach(button => {button.onclick = () => {show('board');el('reopen').focus();};});
+  el('tab-in').onclick = () => {mode='in';render();};
+  el('tab-out').onclick = () => {mode='out';render();};
+  el('half').onclick = () => {fraction=.5;render();};
+  el('all').onclick = () => {fraction=1;render();};
+  el('view-portfolio').onclick = () => {show('portfolio');el('return-trade').focus();};
+  el('return-trade').onclick = () => {show('trade');render();el('view-portfolio').focus();};
+  el('preview-submit').onclick = () => {el('mock-status').textContent = '화면 검토용 시안입니다. 실제 주문·자산 변경·행동 차감은 실행하지 않습니다.';};
+  document.addEventListener('keydown', event => {if(event.key==='Escape' && page!=='board' && el('mock').contains(document.activeElement)){show('board');el('reopen').focus();}});
+})();
+</script>
+</body></html>

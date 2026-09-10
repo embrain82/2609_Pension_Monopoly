@@ -1,3 +1,4 @@
+import { manualPortfolioValue, scopedHolding } from './position-engine';
 import { depositLots } from './portfolio-engine';
 import { scenarioConfig, withGlidePath } from './scenario-engine';
 import { profileDistance } from './profile-engine';
@@ -151,12 +152,12 @@ function policyBrief(state: GameState, tile: BoardTile): Applied {
 }
 
 export function rebalanceGapLine(state: GameState): string {
-  const total = portfolioValue(state);
+  const total = manualPortfolioValue(state);
   const shares = rebalanceShares(state.profileId);
   return products
-    .filter((product) => shares[product.id] > 0 || (state.holdings.find((holding) => holding.productId === product.id)?.amount ?? 0) > 0)
+    .filter((product) => shares[product.id] > 0 || (scopedHolding(state,product.id).amount) > 0)
     .map((product) => {
-      const current = total > 0 ? (state.holdings.find((holding) => holding.productId === product.id)?.amount ?? 0) / total : 0;
+      const current = total > 0 ? (scopedHolding(state,product.id).amount) / total : 0;
       return `${product.shortName} ${pct(current)}→${pct(shares[product.id])}`;
     })
     .join(' · ');
