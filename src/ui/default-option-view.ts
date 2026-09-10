@@ -1,3 +1,4 @@
+import { DEFAULT_PORTFOLIOS, defaultPortfolio } from '../data/default-portfolios';
 import { defaultOptions, products } from '../data/content';
 import { allowedDefaultOptions, suggestDefaultOption } from '../engine/default-option';
 import type { DefaultOptionId, ProfileId } from '../types';
@@ -10,30 +11,32 @@ export interface DefaultOptionViewOptions {
   characters: boolean;
   /** 판 시작 모달이면 "이 옵션으로 시작", 설정이면 "저장" */
   mode: 'start' | 'settings';
+  modern?: boolean;
 }
 
-export function defaultOptionName(id: DefaultOptionId | null): string {
-  return defaultOptions.find((option) => option.id === id)?.name ?? '지정 안 함';
+export function defaultOptionName(id: DefaultOptionId | null, modern = false): string {
+  return (modern ? DEFAULT_PORTFOLIOS : defaultOptions).find((option) => option.id === id)?.name ?? '지정 안 함';
 }
 
-export function defaultOptionProducts(id: DefaultOptionId | null): string {
-  const option = defaultOptions.find((item) => item.id === id);
+export function defaultOptionProducts(id: DefaultOptionId | null, modern = false): string {
+  const option = (modern ? DEFAULT_PORTFOLIOS : defaultOptions).find((item) => item.id === id);
   if (!option) return '';
+  if(modern) return option.products.map(id=>`${products.find(p=>p.id===id)?.shortName} ${defaultPortfolio(option.id).weights[id]!*100}%`).join(' · ');
   return option.products.map((productId) => products.find((product) => product.id === productId)?.shortName ?? productId).join(' · ');
 }
 
 /** 옵션 카드 4장. 성향 밖은 잠기고 이유가 보인다 */
 export function renderDefaultOptionCards(view: DefaultOptionViewOptions): string {
-  const allowed = new Set(allowedDefaultOptions(view.profileId).map((option) => option.id));
-  const suggested = suggestDefaultOption(view.profileId);
+  const allowed = new Set(allowedDefaultOptions(view.profileId, view.modern).map((option) => option.id));
+  const suggested = suggestDefaultOption(view.profileId, view.modern);
   const picked = view.current ?? suggested;
-  return `<div class="default-option-grid" role="radiogroup" aria-label="디폴트옵션">${defaultOptions.map((option) => {
+  return `<div class="default-option-grid" role="radiogroup" aria-label="디폴트옵션">${(view.modern ? DEFAULT_PORTFOLIOS : defaultOptions).map((option) => {
     const ok = allowed.has(option.id);
-    const grade = Math.min(...option.products.map((productId) => products.find((product) => product.id === productId)?.riskGrade ?? 1));
+    const grade = view.modern ? defaultPortfolio(option.id).riskGrade : Math.min(...option.products.map((productId) => products.find((product) => product.id === productId)?.riskGrade ?? 1));
     const tags = [option.id === suggested ? '<span class="tag suggest">성향 추천</span>' : '', ok ? '' : `<span class="tag locked">성향 밖 · ${grade}등급</span>`].join('');
     return `<button type="button" role="radio" aria-checked="${picked === option.id}" class="default-option-card ${picked === option.id ? 'picked' : ''} ${ok ? '' : 'locked'}" data-action="pick-default-option" data-option="${option.id}" ${ok ? '' : 'disabled'}>
         <span class="default-option-name">${option.name}${tags}</span>
-        <strong>${defaultOptionProducts(option.id)}</strong>
+        <strong>${defaultOptionProducts(option.id,view.modern)}</strong>
         <small>${option.blurb}</small>
       </button>`;
   }).join('')}</div>`;
@@ -51,7 +54,7 @@ export function renderDefaultOptionModal(view: DefaultOptionViewOptions): string
   return `<div class="modal-icon default">⚙</div>
     <p class="eyebrow">${view.mode === 'start' ? '판 시작 · 사전지정운용' : '설정 · 사전지정운용'}</p>
     <h2>디폴트옵션을 정해 두세요</h2>
-    <p class="modal-lead">현재 게임은 지정옵션을 직접 실행하는 <b>옵트인 체험</b>입니다. 운용 메뉴에서 실행을 선택하면 IRP 대기자금이 정한 상품으로 <b>자동 균등 매수</b>됩니다. 실제 디폴트옵션 자동 적용의 사전지정·통지·대기 시간은 이 체험과 다릅니다. 위험한도를 넘는 만큼은 사지 않고 남깁니다.</p>
+    ${view.modern ? '<p class="modal-lead">사전지정은 선호하는 운용방법을 저장합니다. <b>지정만으로 매수되지 않습니다.</b> 운용지시의 <b>디폴트옵션 옵트인/아웃</b>에서 직접 매수·환매하세요. 이 버전은 직접 거래 체험이며 통지·대기 후 자동운용은 실행하지 않습니다. 아래 상품과 위험등급은 교육용 가정입니다.</p>' : `<p class="modal-lead">현재 게임은 지정옵션을 직접 실행하는 <b>옵트인 체험</b>입니다. 운용 메뉴에서 실행을 선택하면 IRP 대기자금이 정한 상품으로 <b>자동 균등 매수</b>됩니다. 실제 디폴트옵션 자동 적용의 사전지정·통지·대기 시간은 이 체험과 다릅니다. 위험한도를 넘는 만큼은 사지 않고 남깁니다.</p>`}
     ${renderDefaultOptionCards(view)}
     ${renderSpeech('coach', '<p>실제 제도에서도 가입자가 사전지정운용방법을 정해 두고, 일정 기간 운용지시가 없으면 그 방법으로 운용됩니다. 납입만 하고 매수를 잊는 실수를 제도가 막아 주지만, 어떤 옵션이냐는 여전히 내 판단입니다.</p>', { characters: view.characters, title: '왜 있나요' })}
     <div class="button-stack">

@@ -1,7 +1,8 @@
+import { defaultScopes, scopedHolding } from './position-engine';
 import { inflatedEvent } from './scenario-engine';
 import { addAccountFlow, grossForNet, withdrawalTax, TRANSFER_TAX_NOTICE } from './account-engine';
 import { lifeEvents, policyRules } from '../data/content';
-import type { ActionResult, GameState, LifeChoice, LifeChoiceOption, LifeEvent, LifeResolution } from '../types';
+import type { ActionResult, GameState, DefaultScope, LifeChoice, LifeChoiceOption, LifeEvent, LifeResolution } from '../types';
 import { sellProduct, portfolioValue } from './portfolio-engine';
 import { contributionCredit } from './policy-engine';
 
@@ -31,21 +32,24 @@ function withdrawalPlan(state: GameState, event: LifeEvent, depositOnly = false)
   let next = state;
   const amount = Math.abs(event.cost);
   const covers = (candidate: GameState) => withdrawalTax(portfolioValue(candidate), candidate.accountBasis, candidate.irpCash).net >= amount;
-  for (const id of (depositOnly ? ['deposit'] : ['deposit', 'equityEtf']) as Array<'deposit' | 'equityEtf'>) {
+  const targets: Array<{id:'deposit'|'equityEtf';scope?:DefaultScope}> = (depositOnly ? ['deposit'] as const : ['deposit','equityEtf'] as const).map(id=>({id}));
+  // 즉시 결제 가능한 예금 100% 옵션만 생활사건에서 환매한다. 펀드 혼합의 예금만 꺼내지 않는다.
+  if(state.defaultTrading) for(const scope of defaultScopes(state)) if(scope.optionId==='principal') targets.push({id:'deposit',scope});
+  for (const {id,scope} of targets) {
     if (covers(next)) break;
-    const holding = next.holdings.find(h => h.productId === id);
+    const holding = scopedHolding(next,id,scope);
     if (!holding || holding.amount <= 0) continue;
-    const full = sellProduct(next, id, holding.amount, true);
+    const full = sellProduct(next, id, holding.amount, true, scope);
     if (!full.ok) continue;
     if (!covers(full.state)) { next = full.state; continue; }
     let low = 0, high = holding.amount;
     for (let i = 0; i < 48; i++) {
       const mid = (low + high) / 2;
-      const candidate = sellProduct(next, id, mid, true);
+      const candidate = sellProduct(next, id, mid, true, scope);
       if (candidate.ok && covers(candidate.state)) high = mid;
       else low = mid;
     }
-    next = sellProduct(next, id, high, true).state;
+    next = sellProduct(next, id, high, true, scope).state;
   }
   const gross = grossForNet(portfolioValue(next), next.accountBasis, amount);
   if (!Number.isFinite(gross) || next.irpCash + 0.001 < gross) return { ok: false, message: '결제된 IRP 자금이 부족합니다. 펀드·대기주문을 즉시 인출할 수 없습니다.', state };

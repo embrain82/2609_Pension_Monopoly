@@ -360,6 +360,22 @@ export interface Holding {
   depositTurnsHeld: number;
   units?: number;
   lots?: DepositLot[];
+  /** E판 원본 잔고. 바깥 합계는 공통 함수가 계산하는 표시용 집계다. */
+  positions?: HoldingPosition[];
+}
+
+export interface DefaultScope { mandateId: string; optionId: DefaultOptionId; optionVersion: 'e1' }
+export interface HoldingPosition extends Omit<Holding, 'productId' | 'positions'> {
+  id: string;
+  source: 'manual' | 'default';
+  scope?: DefaultScope;
+}
+export interface DefaultTradeGroup {
+  id: string; commandId: string; kind: 'in' | 'out'; scope: DefaultScope;
+  turn: number; amount: number; orderIds: string[];
+}
+export interface DefaultTrading {
+  version: 'e1'; groups: DefaultTradeGroup[];
 }
 
 export interface PendingOrder {
@@ -374,9 +390,10 @@ export interface PendingOrder {
   priceTurn?: number;
   groupId?: string;
   targetProductId?: ProductId;
+  defaultScope?: DefaultScope;
 }
 
-export type ActionKind = 'contribute' | 'buy' | 'sell' | 'switch' | 'rebalance' | 'hold';
+export type ActionKind = 'contribute' | 'buy' | 'sell' | 'switch' | 'rebalance' | 'hold' | 'default-opt-in' | 'default-opt-out';
 
 export interface GameLog {
   turn: number;
@@ -410,7 +427,8 @@ export interface GameState {
   campaign?: Campaign;
   route: RouteProgress;
   accountType: 'IRP';
-  rulesetVersion: '2026-09-09-p0' | '2026-09-10-b' | '2026-09-10-c' | '2026-09-10-d';
+  rulesetVersion: '2026-09-09-p0' | '2026-09-10-b' | '2026-09-10-c' | '2026-09-10-d' | '2026-09-10-e';
+  defaultTrading?: DefaultTrading;
   avatarId: AvatarId;
   accountBasis: AccountBasis;
   cashFlows: CashFlow[];

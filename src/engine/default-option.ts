@@ -1,10 +1,12 @@
+import { allowedPortfolios } from '../data/default-portfolios';
 import { defaultOptions, products } from '../data/content';
 import type { DefaultOption, DefaultOptionId, GameState, ProductId, ProfileId } from '../types';
 import { buyProduct } from './portfolio-engine';
 import { canBuyForProfile, maxBuyWithinRiskLimit } from './policy-engine';
 
 /** 성향 허용 등급을 상품 모두가 통과하는 옵션만. 상품 목록 순서를 지킨다. */
-export function allowedDefaultOptions(profileId: ProfileId): DefaultOption[] {
+export function allowedDefaultOptions(profileId: ProfileId, modern = false): DefaultOption[] {
+  if(modern) return allowedPortfolios(profileId);
   return defaultOptions.filter((option) => option.products.every((productId) => canBuyForProfile(profileId, productId).ok));
 }
 
@@ -17,17 +19,17 @@ const SUGGESTION: Record<ProfileId, DefaultOptionId> = {
 };
 
 /** 성향별 추천 옵션. 허용 범위를 벗어나면 허용되는 가장 높은 것. */
-export function suggestDefaultOption(profileId: ProfileId): DefaultOptionId {
-  const allowed = allowedDefaultOptions(profileId);
+export function suggestDefaultOption(profileId: ProfileId, modern = false): DefaultOptionId {
+  const allowed = allowedDefaultOptions(profileId, modern);
   const wanted = SUGGESTION[profileId];
   if (allowed.some((option) => option.id === wanted)) return wanted;
   return allowed.at(-1)?.id ?? 'principal';
 }
 
 /** 지정값이 성향 밖이거나 없으면 추천값으로. createGame과 설정이 같은 규칙을 쓴다. */
-export function normalizeDefaultOption(profileId: ProfileId, wanted: DefaultOptionId | null | undefined): DefaultOptionId {
-  if (wanted && allowedDefaultOptions(profileId).some((option) => option.id === wanted)) return wanted;
-  return suggestDefaultOption(profileId);
+export function normalizeDefaultOption(profileId: ProfileId, wanted: DefaultOptionId | null | undefined, modern = false): DefaultOptionId {
+  if (wanted && allowedDefaultOptions(profileId, modern).some((option) => option.id === wanted)) return wanted;
+  return suggestDefaultOption(profileId, modern);
 }
 
 export function isDefaultOptionId(value: unknown): value is DefaultOptionId {

@@ -3,9 +3,14 @@ import { products } from '../data/content';
 import { emptyMarketStep } from '../engine/market-engine';
 import { createGame } from '../engine/game-engine';
 import type { GameState, TurnSummary } from '../types';
+import { validDefaultLedger } from './default-checkpoint';
+import type { DefaultTradeDraft } from '../engine/default-trade-engine';
+import { isDefaultOptionId } from '../engine/default-option';
+import { DEFAULT_PORTFOLIOS } from '../data/default-portfolios';
 export const CHECKPOINT_KEY = 'pension-road-play-c1';
 export interface PlayCheckpoint {
-  version: 'c2';
+  version: 'c2' | 'c3';
+  actionContext?: { view: 'menu' | 'default'; draft: DefaultTradeDraft | null; portfolioReturn: boolean };
   game: GameState;
   modal: string | null;
   lastSummary: TurnSummary | null;
@@ -16,7 +21,7 @@ export interface PlayCheckpoint {
   finishing: boolean;
   defaultOptionAsk: boolean;
 }
-// 설정 저장과 분리한다. c1 저장 키를 유지해 기존 진행을 c2로 변환한다.
+// 설정 저장과 분리한다. 기존 저장 키를 유지하고 새 거래 장부는 c3으로 구분한다.
 function shape(template: unknown, value: unknown): boolean {
   if (template === null) return value === null || typeof value === 'object' || typeof value === 'string' || typeof value === 'number';
   if (Array.isArray(template)) return Array.isArray(value);
@@ -29,23 +34,34 @@ function validCampaign(d: Campaign, depth = 0): boolean {
   if (!['stable','stableGrowth','balanced','growth','aggressive'].includes(d.startingProfile)) return false;
   if (!products.every(p=>Number.isFinite(d.baselineWeights[p.id]) && d.baselineWeights[p.id]>=0)) return false;
   if (!Array.isArray(d.reviews) || d.reviews.length>12 || !d.reviews.every(r=>Number.isInteger(r.turn) && r.turn>=1 && r.turn<=12 && [r.irp,r.flow,r.market,r.costs,r.cash,r.index,r.realIndex,r.benchmark].every(Number.isFinite) && typeof r.headline==='string' && Array.isArray(r.actions) && r.actions.every(a=>typeof a==='string') && Array.isArray(r.holdings) && r.holdings.every(h=>products.some(p=>p.id===h.productId) && Number.isFinite(h.amount) && h.amount>=0))) return false;
+  if (!d.reviews.every(r =>
+    (r.defaultHoldings === undefined || (Array.isArray(r.defaultHoldings) && r.defaultHoldings.every(h => products.some(p => p.id === h.productId) && DEFAULT_PORTFOLIOS.some(p => p.id === h.optionId) && Number.isFinite(h.amount) && h.amount >= 0))) &&
+    (r.defaultOrders === undefined || (Array.isArray(r.defaultOrders) && r.defaultOrders.every(o => typeof o.id === 'string' && ['buy','sell'].includes(o.side) && ['received','priced'].includes(o.stage) && Number.isFinite(o.amount) && o.amount >= 0)))
+  )) return false;
   if (!Array.isArray(d.branches) || d.branches.length>3 || (depth>0 && d.branches.length)) return false;
-  return d.branches.every(b=>[3,6,9].includes(b.turn) && b.state.turn===b.turn && b.state.status==='playing' && shape(createGame('validate','balanced',500000,{ghost:false}),b.state) && validCampaign({...b.progress,branches:[]},depth+1));
+  return d.branches.every(b=>[3,6,9].includes(b.turn) && b.state.turn===b.turn && b.state.status==='playing' && shape(createGame('validate','balanced',500000,{ghost:false}),b.state) && validDefaultLedger(b.state) && validCampaign({...b.progress,branches:[]},depth+1));
 }
 export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
   try {
     if (!raw || raw.length > 1000000) return null;
     const legacy = JSON.parse(raw);
-    if (!['c1', 'c2'].includes(legacy.version) || !legacy.game?.route) return null;
+    if (!['c1', 'c2', 'c3'].includes(legacy.version) || !legacy.game?.route) return null;
     if (legacy.version === 'c1' && (legacy.routePending || legacy.modal === 'route')) legacy.modal = null;
     const { visits, badges, reflections } = legacy.game.route;
-    const data: PlayCheckpoint = { ...legacy, version: 'c2', game: { ...legacy.game, route: { visits, badges, reflections } } };
+    const data: PlayCheckpoint = { ...legacy, version: legacy.version==='c3'?'c3':'c2', game: { ...legacy.game, route: { visits, badges, reflections } } };
     delete (data as PlayCheckpoint & { routePending?: boolean }).routePending;
     if (!shape(createGame('validate', 'balanced', 500000, { ghost: false }), data.game)) return null;
     const g = data.game;
     if(g.campaign && !validCampaign(g.campaign)) return null;
     const finite = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
-    if (g.rulesetVersion !== (g.campaign ? '2026-09-10-d' : '2026-09-10-c')) return null;
+    if (g.rulesetVersion !== (data.version==='c3' ? '2026-09-10-e' : g.campaign ? '2026-09-10-d' : '2026-09-10-c')) return null;
+    if(!validDefaultLedger(g)) return null;
+    if(data.actionContext) {
+      const c=data.actionContext,d=c.draft;
+      if(!g.defaultTrading||!['menu','default'].includes(c.view)||typeof c.portfolioReturn!=='boolean') return null;
+      if(d&&(!['in','out'].includes(d.tab)||!isDefaultOptionId(d.optionId)||!finite(d.amount)||d.amount<0||![.5,1].includes(d.fraction))) return null;
+      if(c.view==='default'&&!d) return null;
+    }
     if (!g.holdings.every(h => h && products.some(p => p.id === h.productId) && finite(h.amount) && h.amount >= 0 && finite(h.principal))) return null;
     if (!g.pendingOrders.every(o => o && products.some(p => p.id === o.productId) && ['buy','sell'].includes(o.side) && finite(o.amount) && finite(o.settlesTurn))) return null;
     if (!g.marketPath.every(m => shape(emptyMarketStep(),m)) || !shape(emptyMarketStep(),g.lastMarket)) return null;

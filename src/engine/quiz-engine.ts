@@ -93,7 +93,7 @@ export function quizCorrectCount(state: GameState): number {
   return state.quizLog.filter((record) => record.correct).length;
 }
 
-export const ACTION_LESSONS: Record<string,string> = {contribute:'contribution-limit',buy:'fund-order',sell:'sale-vs-withdrawal',switch:'fund-order',rebalance:'rebalance',hold:'inflation-value'};
+export const ACTION_LESSONS: Record<string,string> = {contribute:'contribution-limit',buy:'fund-order',sell:'sale-vs-withdrawal',switch:'fund-order',rebalance:'rebalance',hold:'inflation-value','default-opt-in':'default-option','default-opt-out':'default-option'};
 /** 성공한 행동만 연결하며 팝업은 정산에서 자율 선택한다. */
 export function actionLesson(state: GameState, kind: string): GameState {
   if(!state.campaign) return state;

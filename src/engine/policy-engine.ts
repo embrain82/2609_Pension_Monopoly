@@ -1,3 +1,5 @@
+import { positionsOf } from './position-engine';
+import { validDefaultScope } from '../data/default-portfolios';
 import { tdfEquity } from './scenario-engine';
 import { investorProfiles, policyRules, products } from '../data/content';
 import type { GameState, LifeEvent, ProductId, ProfileId } from '../types';
@@ -10,10 +12,10 @@ export function effectiveRiskRatio(productId: ProductId): number {
 }
 
 export function riskAssetValue(state: GameState): number {
-  const holdingRisk = state.holdings.reduce((sum, holding) => sum + holding.amount * effectiveRiskRatio(holding.productId), 0);
+  const holdingRisk = state.holdings.reduce((sum, holding) => sum + positionsOf(holding).reduce((s,p)=>s+p.amount*(state.defaultTrading && p.source === 'default' && validDefaultScope(p.scope,holding.productId) ? 0 : effectiveRiskRatio(holding.productId)),0), 0);
   const pendingBuyRisk = state.pendingOrders
     .filter((order) => order.side === 'buy' || order.stage === 'received')
-    .reduce((sum, order) => sum + order.amount * effectiveRiskRatio(order.productId), 0);
+    .reduce((sum, order) => sum + order.amount * (state.defaultTrading && validDefaultScope(order.defaultScope,order.productId) ? 0 : effectiveRiskRatio(order.productId)), 0);
   return holdingRisk + pendingBuyRisk;
 }
 

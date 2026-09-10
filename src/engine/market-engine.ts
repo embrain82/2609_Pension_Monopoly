@@ -1,3 +1,4 @@
+import { mapHoldingBalances } from './position-engine';
 import { balanceConfig, marketShocks, policyRules, products } from '../data/content';
 import type { GameState, MarketConfig, MarketShock, MarketStep, ProductId, Regime } from '../types';
 import { hashSeed } from './random-engine';
@@ -198,7 +199,7 @@ export function marketPathOf(state: Pick<GameState, 'seed' | 'marketPath'>): Mar
 export function applyMarketStep(state: GameState, market: MarketStep): GameState {
   const prices = { ...state.prices };
   for (const product of products) prices[product.id] *= (1 + market.returns[product.id]) * (1 - product.feeRate);
-  const holdings = state.holdings.map((holding) => {
+  const holdings = state.holdings.map((entry) => mapHoldingBalances(entry, (holding) => {
     const product = products.find((item) => item.id === holding.productId);
     if (!product) return holding;
     if (holding.productId === 'deposit') {
@@ -214,7 +215,7 @@ export function applyMarketStep(state: GameState, market: MarketStep): GameState
       units: Math.max(0, gross - fee) / prices[holding.productId],
       depositTurnsHeld: holding.depositTurnsHeld
     };
-  });
+  }));
   const pendingOrders = state.pendingOrders.map(order => {
     const exposed = (order.side === 'sell' && order.stage === 'received') || (order.side === 'buy' && order.stage === 'priced');
     return exposed ? { ...order, amount: order.amount * (1 + market.returns[order.productId]) * (1 - products.find(p => p.id === order.productId)!.feeRate) } : { ...order };
