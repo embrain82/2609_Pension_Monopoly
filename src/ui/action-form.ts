@@ -3,7 +3,8 @@ import { products } from '../data/content';
 import type { GameState, ProductId } from '../types';
 
 /** 매도·교체의 최소 거래 단위. 엔진(portfolio-engine)이 "잔고 부족"으로 거절하는 기준과 같다. */
-export const MIN_TRADE_AMOUNT = 100_000;
+import { MIN_TRADE_AMOUNT } from '../engine/action-constraints';
+export { MIN_TRADE_AMOUNT };
 
 type Holdings = Pick<GameState, 'holdings'>;
 

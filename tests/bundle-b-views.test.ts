@@ -152,7 +152,7 @@ describe('수령 방식 모달(payout-view)', () => {
 });
 
 describe('디폴트옵션 모달(default-option-view)', () => {
-  it('카드 4장, 성향 밖은 잠금 + 등급 이유, 추천에는 태그, 지정값이 없으면 추천을 눌러 둔다', () => {
+  it('카드 4장, 성향 밖은 잠금 + 등급 이유, 추천에는 태그, 명시적인 미지정이면 체크하지 않는다', () => {
     const html = renderDefaultOptionCards({ profileId: 'stable', current: null, characters: true, mode: 'start' });
     expect(count(html, 'data-action="pick-default-option"')).toBe(4);
     expect(html).toMatch(/data-option="midRisk"[^>]*disabled/);
@@ -160,18 +160,18 @@ describe('디폴트옵션 모달(default-option-view)', () => {
     expect(html).not.toMatch(/data-option="principal"[^>]*disabled/);
     expect(html).toContain('성향 추천');
     expect(html).toContain('성향 밖');
-    expect(html).toMatch(/aria-checked="true"[^>]*data-option="principal"/);
+    expect(html).not.toContain('aria-checked="true"');
   });
 
-  it('시작 모드는 「이 옵션으로 시작」+「지정 안 함」, 설정 모드는 「저장」+「지정 해제」', () => {
+  it('시작 모드는 「중위험으로 시작」+「지정 안 함」, 설정 모드는 「저장」+「지정 해제」', () => {
     const start = renderDefaultOptionModal({ profileId: 'balanced', current: 'midRisk', characters: true, mode: 'start' });
-    expect(start).toContain('이 옵션으로 시작');
+    expect(start).toContain('중위험으로 시작');
     expect(start).toContain('지정 안 함');
     expect(start).toContain('data-action="confirm-default-option"');
     expect(start).toContain('data-action="skip-default-option"');
     expect(start).toContain('자동 균등 매수');
     const settings = renderDefaultOptionModal({ profileId: 'balanced', current: 'midRisk', characters: false, mode: 'settings' });
-    expect(settings).toContain('이 옵션으로 저장');
+    expect(settings).toContain('중위험으로 저장');
     expect(settings).toContain('지정 해제');
   });
 });

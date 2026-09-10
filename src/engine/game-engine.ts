@@ -1,3 +1,4 @@
+import { acceptedContribution, contributionConstraint, actionTiming, blockReason } from './action-constraints';
 import { initializePositions, scopedHolding } from './position-engine';
 import { executeDefaultTrade, nextDefaultCommand } from './default-trade-engine';
 import { beginPerformance, finishPerformance } from './performance-engine';
@@ -324,9 +325,9 @@ export function resolveLifeEvent(state: GameState, choice: LifeChoice): ActionRe
 }
 
 function contribute(state: GameState, amount: number): ActionResult {
-  if (!Number.isFinite(amount) || amount <= 0) return { ok: false, message: "납입 금액은 유한한 양수여야 합니다.", state };
-  const accepted = Math.min(amount, state.cash, Math.max(0, policyRules.annualContributionLimit - state.contributionTotal));
-  if (accepted < 100000) return { ok: false, message: '생활자금 또는 교육용 납입 가능 한도가 부족합니다.', state };
+  const error = blockReason(contributionConstraint(state, amount));
+  if (error) return { ok: false, message: error, state };
+  const accepted = acceptedContribution(state, amount);
   const credit = contributionCredit(state.contributionTotal, accepted);
   const next = unlock({
     ...state,
@@ -353,9 +354,8 @@ function contribute(state: GameState, amount: number): ActionResult {
  * "그대로"는 남은 행동을 모두 쓴다.
  */
 export function performAction(state: GameState, action: GameAction): ActionResult {
-  if (!state.awaitingAction || state.currentEventId) {
-    return { ok: false, message: '먼저 이번 턴 시장을 확인하고 생활사건을 해결하세요.', state };
-  }
+  const timing = actionTiming(state);
+  if (!timing.enabled) return { ok: false, message: timing.reason, state };
   const opened: GameState = state.ledger.beforeAction
     ? state
     : { ...state, ledger: { ...state.ledger, beforeAction: { irp: portfolioValue(state), risk: riskAssetRatio(state), holdings: holdingsMap(state) } } };
