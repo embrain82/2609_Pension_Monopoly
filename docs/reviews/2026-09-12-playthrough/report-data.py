@@ -188,3 +188,8 @@ item('D10','결과를 성취·배운 것·다음 도전 순서로 디자인','P2
 for proposal in ITEMS:
     if proposal["id"] in {"F01", "F02", "F03", "F04"}:
         proposal["status"] = "승인 · v1.6.1 구현·검증 완료"
+
+# 2026-09-12 후속 승인: P1 전체와 FB-007. 최초 리뷰 20개 ID는 보존한다.
+for proposal in ITEMS:
+    if proposal["priority"] == "P1":
+        proposal["status"] = "승인 · v1.7.0 구현"

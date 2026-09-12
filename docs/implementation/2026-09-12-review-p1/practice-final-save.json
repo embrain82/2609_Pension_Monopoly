@@ -1,0 +1,82 @@
+{
+  "version": 7,
+  "settings": {
+    "reducedMotion": false,
+    "sound": false,
+    "characters": true,
+    "ghost": true,
+    "speed": 1,
+    "autoSettle": false,
+    "settleExpanded": false
+  },
+  "unlockedCards": [
+    "rate-bond",
+    "db-dc-irp",
+    "pricing-vs-settlement",
+    "tdf-glide",
+    "risk-limit",
+    "tdf-exception",
+    "contribution-limit",
+    "pension-tax",
+    "default-option",
+    "inflation-value",
+    "profile",
+    "irp-withdrawal",
+    "tax-credit",
+    "duration",
+    "signal-vs-forecast",
+    "fund-order",
+    "emergency-cash",
+    "etf-order",
+    "rebalance",
+    "sale-vs-withdrawal",
+    "payout-choice"
+  ],
+  "bestScore": 86,
+  "lastSeed": "1cio9xl-1s4mfpi",
+  "disclaimerAccepted": true,
+  "bestReturnRate": 0.10686124962839884,
+  "bestGoalRate": 0.9961751246655589,
+  "playCount": 1,
+  "howtoSeen": true,
+  "avatarId": "balanced",
+  "profileId": "growth",
+  "profileAssessment": {
+    "profileId": "growth",
+    "origin": "diagnosed"
+  },
+  "goalMonthly": 500000,
+  "defaultOption": "midRisk",
+  "achievements": [
+    "calm-seas",
+    "diversified-12",
+    "annuity-choice",
+    "default-option-run"
+  ],
+  "collection": {
+    "stable": {
+      "plays": 0,
+      "bestStars": 0
+    },
+    "stableGrowth": {
+      "plays": 0,
+      "bestStars": 0
+    },
+    "balanced": {
+      "plays": 1,
+      "bestStars": 0
+    },
+    "growth": {
+      "plays": 0,
+      "bestStars": 0
+    },
+    "aggressive": {
+      "plays": 0,
+      "bestStars": 0
+    }
+  },
+  "bestReturnRule": {
+    "ruleset": "2026-09-10-e",
+    "perTurnLimit": 2000000
+  }
+}
