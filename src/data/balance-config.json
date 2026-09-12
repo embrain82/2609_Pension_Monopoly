@@ -8,6 +8,7 @@
   "minGoal":350000,
   "maxGoal":700000,
   "contributionAmount":1000000,
+  "contributionPerTurnLimit":2000000,
   "tradeAmount":8000000,
   "safeCashThreshold":6000000,
   "diversificationMin":3,

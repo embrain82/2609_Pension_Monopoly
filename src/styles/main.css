@@ -844,8 +844,6 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
 @media (max-width: 520px) { .setting-row:has(select) { flex-wrap: wrap; gap: 8px; } .setting-row select { width: 100%; } }
 
 /* 단계 C: 선택 전 탐색과 되돌아가기 */
-.decision-tools { display:flex; flex-wrap:wrap; gap:8px; margin:0 40px 18px 0; }
-.decision-tools button { min-height:44px; }
 .region-progress { margin:10px 0; border:1px solid #cbd9cd; border-radius:14px; padding:12px; background:#f7f8ef; font-size:14px; }
 .region-progress>div { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
 .region-progress span { color:#586e69; }
@@ -856,7 +854,6 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
 .modal-explore select { display:block; width:100%; min-height:44px; font-size:16px; margin:8px 0 20px; }
 @media (min-width: 900px) { .board-stage { width:min(100%,calc(100dvh - 245px)); } }
 @media (max-width: 600px) {
-  .decision-tools { padding-top:8px; }
   .modal-sheet p, .modal-sheet small, .modal-sheet select, .action-list small { font-size:14px; }
   .modal-sheet { max-height:calc(100dvh - 24px); overflow:auto; }
 }
@@ -913,3 +910,41 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
 .modal-close-bar .modal-close { position: static; float: none; flex: 0 0 44px; }
 .default-trade-tabs button { font-size: max(16px, 1rem); }
 @media (max-width: 760px) { .modal-close-bar { top: -22px; margin: -22px -18px 12px; } }
+
+/* FB-004~006: 같은 턴의 탐색과 납입 한도 */
+.action-footer { border-top:1px solid var(--line); margin-top:24px; padding-top:20px; }
+.action-footer button { width:100%; min-height:52px; }
+.action-footer small { display:block; margin-top:8px; color:var(--muted); text-align:center; }
+.market-impact-details { margin:14px 0 20px; border:2px solid #739f8a; border-radius:16px; background:#eaf3e9; overflow:hidden; }
+.market-impact-details > summary { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:64px; padding:16px; cursor:pointer; list-style:none; }
+.market-impact-details > summary::-webkit-details-marker { display:none; }
+.market-impact-details > summary:hover { background:#dfeede; }
+.market-impact-details > summary:focus-visible { outline:3px solid #d97926; outline-offset:-4px; border-radius:14px; }
+.market-impact-details > summary > span:first-child { min-width:0; }
+.market-impact-details strong { display:block; font-size:1rem; }
+.market-impact-details > summary small { display:block; margin-top:4px; font-size:.75rem; color:var(--muted); }
+.market-impact-toggle { display:flex; align-items:center; gap:7px; flex-shrink:0; color:var(--green); font-size:.8rem; font-weight:800; }
+.market-impact-chevron { display:inline-block; font-size:1.1rem; transition:transform .15s ease; }
+.market-impact-details[open] .market-impact-chevron { transform:rotate(180deg); }
+.market-impact-details[open] > summary { border-bottom:1px solid #acc5b0; }
+.market-impact-content { padding:14px; background:#f7faf4; }
+.contribution-budget { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:18px 0; }
+.contribution-budget > div { padding:14px; border:1px solid var(--line); border-radius:14px; background:#fff; }
+.contribution-budget small,.contribution-budget strong { display:block; overflow-wrap:anywhere; }
+.contribution-budget small { color:var(--muted); }
+.contribution-budget strong { margin-top:5px; font-variant-numeric:tabular-nums; }
+.contribution-presets { grid-template-columns:repeat(auto-fit,minmax(80px,1fr)); }
+.contribution-presets button { min-width:0; min-height:80px; align-content:center; text-align:center; padding:12px 6px; gap:4px; }
+.contribution-presets button.active { border:2px solid var(--green); }
+.contribution-presets button:disabled { background:#e8ece7; color:#58665e; border-color:#ccd5cc; }
+@media (max-width:520px) {
+  .market-impact-details > summary { padding:14px 11px; gap:8px; }
+  .market-impact-details strong { font-size:14px; }
+  .market-impact-details > summary small { font-size:12px; }
+  .market-impact-toggle { font-size:12px; gap:4px; }
+  .market-impact-content { padding:10px; }
+  .contribution-budget > div { padding:12px; }
+  .contribution-budget strong { font-size:15px; }
+  .contribution-presets button { font-size:14px; }
+  .contribution-presets small { font-size:12px; }
+}

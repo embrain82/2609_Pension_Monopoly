@@ -1,4 +1,5 @@
 import { acceptedContribution, contributionConstraint, actionTiming, blockReason } from './action-constraints';
+import { previewContribution } from './contribution-engine';
 import { initializePositions, scopedHolding } from './position-engine';
 import { executeDefaultTrade, nextDefaultCommand } from './default-trade-engine';
 import { beginPerformance, finishPerformance } from './performance-engine';
@@ -38,6 +39,8 @@ export interface GameAction {
 export type AmountPreset = 'default' | 'half' | 'max';
 
 export interface GameOptions {
+  /** 개인 추가납입 속도 제한. 새 UI 판에서 켜며 기존 저장·시뮬은 명시하지 않으면 유지. */
+  contributionPacing?: boolean;
   /** 새 직접매매 규칙. C/D 저장과 기존 시뮬은 생략 시 구 규칙 유지. */
   defaultTrading?: boolean;
   scenario?: ScenarioId;
@@ -100,6 +103,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
   const tileEffectsEnabled = options.tileEffects !== false;
   const goal = clampGoalMonthly(goalMonthly);
   const state: GameState = {
+    ...(options.contributionPacing ? { contributionPacing: { version: 'v1' as const, perTurnLimit: balanceConfig.contributionPerTurnLimit } } : {}),
     route: newRouteProgress(),
     accountType: 'IRP', rulesetVersion: options.defaultTrading ? '2026-09-10-e' : options.scenario ? '2026-09-10-d' : '2026-09-10-c', avatarId: options.avatarId ?? 'balanced',
     accountBasis: { retirement: 90_000_000, retirementTax: 1_800_000, deducted: 9_000_000, nonDeducted: 9_000_000 },
@@ -307,12 +311,13 @@ export function resolveActionAmount(state: GameState, kind: ActionKind, preset: 
   const holdingAmount = productId
     ? scopedHolding(state, productId).amount
     : 0;
-  const available = kind === 'contribute' ? state.cash
+  const available = kind === 'contribute' ? previewContribution(state, { requested: state.cash }).available
     : kind === 'buy' ? state.irpCash
       : kind === 'sell' || kind === 'switch' ? holdingAmount
         : 0;
   const base = kind === 'contribute' ? balanceConfig.contributionAmount : balanceConfig.tradeAmount;
   if (preset === 'max') return Math.floor(available);
+  if (kind === 'contribute' && state.contributionPacing) return preset === 'half' ? base / 2 : base;
   if (preset === 'half') return Math.floor(Math.min(base, available) / 2);
   return Math.min(base, available);
 }

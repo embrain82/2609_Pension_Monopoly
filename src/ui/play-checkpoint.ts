@@ -7,6 +7,7 @@ import { validDefaultLedger } from './default-checkpoint';
 import type { DefaultTradeDraft } from '../engine/default-trade-engine';
 import { isDefaultOptionId } from '../engine/default-option';
 import { DEFAULT_PORTFOLIOS } from '../data/default-portfolios';
+import { validContributionPacing } from '../engine/contribution-engine';
 export const CHECKPOINT_KEY = 'pension-road-play-c1';
 export interface PlayCheckpoint {
   version: 'c2' | 'c3';
@@ -28,7 +29,7 @@ function shape(template: unknown, value: unknown): boolean {
   if (typeof template === 'object') return value !== null && typeof value === 'object' && Object.entries(template as object).every(([k,v]) => shape(v, (value as Record<string, unknown>)[k]));
   return typeof value === typeof template && (typeof value !== 'number' || Number.isFinite(value));
 }
-function validCampaign(d: Campaign, depth = 0): boolean {
+function validCampaign(d: Campaign, depth = 0, pacing?: GameState['contributionPacing']): boolean {
   if (!d || !Object.hasOwn(SCENARIOS,d.scenario) || !Object.hasOwn(MISSIONS,d.mission) || typeof d.weekly !== 'boolean') return false;
   if (![d.priceIndex,d.index,d.peak,d.drawdown,d.open,d.afterMarket,d.flowStart,d.benchmark,d.benchmarkOpen,d.startingGoal].every(Number.isFinite) || d.priceIndex <= 0 || d.index < 0 || d.peak <= 0) return false;
   if (!['stable','stableGrowth','balanced','growth','aggressive'].includes(d.startingProfile)) return false;
@@ -39,7 +40,8 @@ function validCampaign(d: Campaign, depth = 0): boolean {
     (r.defaultOrders === undefined || (Array.isArray(r.defaultOrders) && r.defaultOrders.every(o => typeof o.id === 'string' && ['buy','sell'].includes(o.side) && ['received','priced'].includes(o.stage) && Number.isFinite(o.amount) && o.amount >= 0)))
   )) return false;
   if (!Array.isArray(d.branches) || d.branches.length>3 || (depth>0 && d.branches.length)) return false;
-  return d.branches.every(b=>[3,6,9].includes(b.turn) && b.state.turn===b.turn && b.state.status==='playing' && shape(createGame('validate','balanced',500000,{ghost:false}),b.state) && validDefaultLedger(b.state) && validCampaign({...b.progress,branches:[]},depth+1));
+  return d.branches.every(b=>[3,6,9].includes(b.turn) && b.state.turn===b.turn && b.state.status==='playing' && shape(createGame('validate','balanced',500000,{ghost:false}),b.state) && validDefaultLedger(b.state) && validContributionPacing(b.state) &&
+    b.state.contributionPacing?.version === pacing?.version && b.state.contributionPacing?.perTurnLimit === pacing?.perTurnLimit && validCampaign({...b.progress,branches:[]},depth+1,pacing));
 }
 export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
   try {
@@ -52,7 +54,7 @@ export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
     delete (data as PlayCheckpoint & { routePending?: boolean }).routePending;
     if (!shape(createGame('validate', 'balanced', 500000, { ghost: false }), data.game)) return null;
     const g = data.game;
-    if(g.campaign && !validCampaign(g.campaign)) return null;
+    if(!validContributionPacing(g) || (g.campaign && !validCampaign(g.campaign,0,g.contributionPacing))) return null;
     const finite = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
     if (g.rulesetVersion !== (data.version==='c3' ? '2026-09-10-e' : g.campaign ? '2026-09-10-d' : '2026-09-10-c')) return null;
     if(!validDefaultLedger(g)) return null;

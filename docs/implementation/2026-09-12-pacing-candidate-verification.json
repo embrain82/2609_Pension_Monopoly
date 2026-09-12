@@ -1,0 +1,416 @@
+{
+  "date": "2026-09-12",
+  "version": "1.6.0",
+  "baselineCommit": "932faf28d9d655f5c1a2c7a235809517da7971a4",
+  "method": {
+    "purpose": "Verify engine pacing against the approved planning experiment; not human-play win rates.",
+    "games": 5000,
+    "pairedCasesPerCap": 1000,
+    "seedCount": 50,
+    "scenarios": [
+      "classic",
+      "inflation",
+      "recession",
+      "recovery"
+    ],
+    "profiles": [
+      "stable",
+      "stableGrowth",
+      "balanced",
+      "growth",
+      "aggressive"
+    ],
+    "strategy": "Each action contributes the largest eligible amount, otherwise holds. All life events choose cash. No product trading, no quiz answers, default option unset; board effects enabled.",
+    "capApplication": "2m candidate enforced by the engine while requesting the entire cash balance (1000 games). Other 4000 games retain caller-limited candidate inputs.",
+    "goalDefinition": "First end-of-turn IRP / 240 >= 500,000 KRW; final goal uses calculateScore with the default annuity choice.",
+    "limitations": [
+      "No bonus contribution or retirement transfer chosen; these paths require dedicated implementation tests.",
+      "Same seed is paired across caps; scenarios and profiles share 50 seeds, so 1000 cases are not 1000 independent market paths.",
+      "Maximum-contribution strategy measures the reported shortcut, not optimal or representative play.",
+      "Earlier goal attainment may be lost later; final attainment is reported separately."
+    ]
+  },
+  "screenshotCase": {
+    "openingIrp": 108000000,
+    "marketGain": 1534447,
+    "contribution": 13400000,
+    "target": 500000,
+    "candidates": [
+      {
+        "cap": null,
+        "contribution": 13400000,
+        "monthly": 512227
+      },
+      {
+        "cap": 1000000,
+        "contribution": 1000000,
+        "monthly": 460560
+      },
+      {
+        "cap": 2000000,
+        "contribution": 2000000,
+        "monthly": 464727
+      },
+      {
+        "cap": 3000000,
+        "contribution": 3000000,
+        "monthly": 468894
+      },
+      {
+        "cap": 5000000,
+        "contribution": 5000000,
+        "monthly": 477227
+      }
+    ]
+  },
+  "summary": [
+    {
+      "cap": null,
+      "n": 1000,
+      "firstTurnGoalPct": 94.4,
+      "byThirdTurnGoalPct": 98.8,
+      "everGoalPct": 99.2,
+      "finalGoalPct": 88.6,
+      "medianFirstGoalTurnAmongReached": 1,
+      "meanContributionActions": 4.04,
+      "meanTotalContribution": 17825172,
+      "anyCashShortagePct": 74.5,
+      "finalLivingDebtPct": 11
+    },
+    {
+      "cap": 1000000,
+      "n": 1000,
+      "firstTurnGoalPct": 0,
+      "byThirdTurnGoalPct": 2.3,
+      "everGoalPct": 76.2,
+      "finalGoalPct": 74.3,
+      "medianFirstGoalTurnAmongReached": 10,
+      "meanContributionActions": 11.99,
+      "meanTotalContribution": 11987459,
+      "anyCashShortagePct": 0.5,
+      "finalLivingDebtPct": 0
+    },
+    {
+      "cap": 2000000,
+      "n": 1000,
+      "firstTurnGoalPct": 0,
+      "byThirdTurnGoalPct": 7.7,
+      "everGoalPct": 92.3,
+      "finalGoalPct": 88.6,
+      "medianFirstGoalTurnAmongReached": 6,
+      "meanContributionActions": 9.27,
+      "meanTotalContribution": 17798527,
+      "anyCashShortagePct": 32,
+      "finalLivingDebtPct": 6.5
+    },
+    {
+      "cap": 3000000,
+      "n": 1000,
+      "firstTurnGoalPct": 0,
+      "byThirdTurnGoalPct": 21.3,
+      "everGoalPct": 95.3,
+      "finalGoalPct": 88.6,
+      "medianFirstGoalTurnAmongReached": 4,
+      "meanContributionActions": 6.66,
+      "meanTotalContribution": 17804454,
+      "anyCashShortagePct": 50.5,
+      "finalLivingDebtPct": 8.5
+    },
+    {
+      "cap": 5000000,
+      "n": 1000,
+      "firstTurnGoalPct": 0.1,
+      "byThirdTurnGoalPct": 86.6,
+      "everGoalPct": 97.7,
+      "finalGoalPct": 88.6,
+      "medianFirstGoalTurnAmongReached": 3,
+      "meanContributionActions": 5.11,
+      "meanTotalContribution": 17803076,
+      "anyCashShortagePct": 59,
+      "finalLivingDebtPct": 8.5
+    }
+  ],
+  "byScenario": [
+    {
+      "scenario": "classic",
+      "values": [
+        {
+          "cap": null,
+          "n": 250,
+          "firstTurnGoalPct": 96.8,
+          "byThirdTurnGoalPct": 100,
+          "everGoalPct": 100,
+          "finalGoalPct": 94.4,
+          "medianFirstGoalTurnAmongReached": 1,
+          "meanContributionActions": 4.04,
+          "meanTotalContribution": 17831525,
+          "anyCashShortagePct": 74,
+          "finalLivingDebtPct": 10
+        },
+        {
+          "cap": 1000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 1.2,
+          "everGoalPct": 82.4,
+          "finalGoalPct": 80.8,
+          "medianFirstGoalTurnAmongReached": 10,
+          "meanContributionActions": 12,
+          "meanTotalContribution": 11988833,
+          "anyCashShortagePct": 0,
+          "finalLivingDebtPct": 0
+        },
+        {
+          "cap": 2000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 6.8,
+          "everGoalPct": 98,
+          "finalGoalPct": 94.4,
+          "medianFirstGoalTurnAmongReached": 6,
+          "meanContributionActions": 9.28,
+          "meanTotalContribution": 17807644,
+          "anyCashShortagePct": 32,
+          "finalLivingDebtPct": 6
+        },
+        {
+          "cap": 3000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 24.4,
+          "everGoalPct": 99.2,
+          "finalGoalPct": 94.4,
+          "medianFirstGoalTurnAmongReached": 4,
+          "meanContributionActions": 6.66,
+          "meanTotalContribution": 17813084,
+          "anyCashShortagePct": 50,
+          "finalLivingDebtPct": 8
+        },
+        {
+          "cap": 5000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 88.4,
+          "everGoalPct": 100,
+          "finalGoalPct": 94.4,
+          "medianFirstGoalTurnAmongReached": 3,
+          "meanContributionActions": 5.1,
+          "meanTotalContribution": 17810794,
+          "anyCashShortagePct": 58,
+          "finalLivingDebtPct": 8
+        }
+      ]
+    },
+    {
+      "scenario": "inflation",
+      "values": [
+        {
+          "cap": null,
+          "n": 250,
+          "firstTurnGoalPct": 96.8,
+          "byThirdTurnGoalPct": 100,
+          "everGoalPct": 100,
+          "finalGoalPct": 93.6,
+          "medianFirstGoalTurnAmongReached": 1,
+          "meanContributionActions": 4,
+          "meanTotalContribution": 17794804,
+          "anyCashShortagePct": 76,
+          "finalLivingDebtPct": 14
+        },
+        {
+          "cap": 1000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 2,
+          "everGoalPct": 82.4,
+          "finalGoalPct": 80.8,
+          "medianFirstGoalTurnAmongReached": 10,
+          "meanContributionActions": 11.98,
+          "meanTotalContribution": 11980000,
+          "anyCashShortagePct": 2,
+          "finalLivingDebtPct": 0
+        },
+        {
+          "cap": 2000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 6.4,
+          "everGoalPct": 97.6,
+          "finalGoalPct": 93.6,
+          "medianFirstGoalTurnAmongReached": 6,
+          "meanContributionActions": 9.2,
+          "meanTotalContribution": 17753620,
+          "anyCashShortagePct": 36,
+          "finalLivingDebtPct": 8
+        },
+        {
+          "cap": 3000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 24,
+          "everGoalPct": 98.8,
+          "finalGoalPct": 93.6,
+          "medianFirstGoalTurnAmongReached": 4,
+          "meanContributionActions": 6.62,
+          "meanTotalContribution": 17764715,
+          "anyCashShortagePct": 54,
+          "finalLivingDebtPct": 10
+        },
+        {
+          "cap": 5000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 88,
+          "everGoalPct": 100,
+          "finalGoalPct": 93.6,
+          "medianFirstGoalTurnAmongReached": 3,
+          "meanContributionActions": 5.1,
+          "meanTotalContribution": 17763336,
+          "anyCashShortagePct": 62,
+          "finalLivingDebtPct": 10
+        }
+      ]
+    },
+    {
+      "scenario": "recession",
+      "values": [
+        {
+          "cap": null,
+          "n": 250,
+          "firstTurnGoalPct": 87.6,
+          "byThirdTurnGoalPct": 95.2,
+          "everGoalPct": 96.8,
+          "finalGoalPct": 67.6,
+          "medianFirstGoalTurnAmongReached": 1,
+          "meanContributionActions": 4.06,
+          "meanTotalContribution": 17842834,
+          "anyCashShortagePct": 74,
+          "finalLivingDebtPct": 10
+        },
+        {
+          "cap": 1000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 0.4,
+          "everGoalPct": 46.8,
+          "finalGoalPct": 44.4,
+          "medianFirstGoalTurnAmongReached": 11,
+          "meanContributionActions": 12,
+          "meanTotalContribution": 11992169,
+          "anyCashShortagePct": 0,
+          "finalLivingDebtPct": 0
+        },
+        {
+          "cap": 2000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 0.8,
+          "everGoalPct": 74.4,
+          "finalGoalPct": 67.6,
+          "medianFirstGoalTurnAmongReached": 6,
+          "meanContributionActions": 9.3,
+          "meanTotalContribution": 17825201,
+          "anyCashShortagePct": 28,
+          "finalLivingDebtPct": 6
+        },
+        {
+          "cap": 3000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 2.8,
+          "everGoalPct": 84,
+          "finalGoalPct": 67.6,
+          "medianFirstGoalTurnAmongReached": 4,
+          "meanContributionActions": 6.7,
+          "meanTotalContribution": 17826932,
+          "anyCashShortagePct": 48,
+          "finalLivingDebtPct": 8
+        },
+        {
+          "cap": 5000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 76.4,
+          "everGoalPct": 90.8,
+          "finalGoalPct": 67.6,
+          "medianFirstGoalTurnAmongReached": 3,
+          "meanContributionActions": 5.12,
+          "meanTotalContribution": 17827380,
+          "anyCashShortagePct": 58,
+          "finalLivingDebtPct": 8
+        }
+      ]
+    },
+    {
+      "scenario": "recovery",
+      "values": [
+        {
+          "cap": null,
+          "n": 250,
+          "firstTurnGoalPct": 96.4,
+          "byThirdTurnGoalPct": 100,
+          "everGoalPct": 100,
+          "finalGoalPct": 98.8,
+          "medianFirstGoalTurnAmongReached": 1,
+          "meanContributionActions": 4.04,
+          "meanTotalContribution": 17831525,
+          "anyCashShortagePct": 74,
+          "finalLivingDebtPct": 10
+        },
+        {
+          "cap": 1000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 5.6,
+          "everGoalPct": 93.2,
+          "finalGoalPct": 91.2,
+          "medianFirstGoalTurnAmongReached": 10,
+          "meanContributionActions": 12,
+          "meanTotalContribution": 11988833,
+          "anyCashShortagePct": 0,
+          "finalLivingDebtPct": 0
+        },
+        {
+          "cap": 2000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 16.8,
+          "everGoalPct": 99.2,
+          "finalGoalPct": 98.8,
+          "medianFirstGoalTurnAmongReached": 6,
+          "meanContributionActions": 9.28,
+          "meanTotalContribution": 17807644,
+          "anyCashShortagePct": 32,
+          "finalLivingDebtPct": 6
+        },
+        {
+          "cap": 3000000,
+          "n": 250,
+          "firstTurnGoalPct": 0,
+          "byThirdTurnGoalPct": 34,
+          "everGoalPct": 99.2,
+          "finalGoalPct": 98.8,
+          "medianFirstGoalTurnAmongReached": 4,
+          "meanContributionActions": 6.66,
+          "meanTotalContribution": 17813084,
+          "anyCashShortagePct": 50,
+          "finalLivingDebtPct": 8
+        },
+        {
+          "cap": 5000000,
+          "n": 250,
+          "firstTurnGoalPct": 0.4,
+          "byThirdTurnGoalPct": 93.6,
+          "everGoalPct": 100,
+          "finalGoalPct": 98.8,
+          "medianFirstGoalTurnAmongReached": 3,
+          "meanContributionActions": 5.1,
+          "meanTotalContribution": 17810794,
+          "anyCashShortagePct": 58,
+          "finalLivingDebtPct": 8
+        }
+      ]
+    }
+  ],
+  "matchesPlanningBaseline": true
+}
