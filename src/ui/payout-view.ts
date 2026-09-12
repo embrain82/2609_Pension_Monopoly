@@ -48,7 +48,7 @@ export function renderPayoutModal(state: GameState, options: PayoutViewOptions):
   const mission = missionDisplay(state);
   const goalExplanation = mission.id === 'pension'
     ? `연금 미션은 목표용 월 환산액으로 판정합니다. 일시금은 세후 비교 비율을 반영하므로 같은 IRP라도 목표용 환산액이 ${Math.round((1 - (annuity.monthlyBasis > 0 ? lump.monthlyBasis / annuity.monthlyBasis : 1)) * 100)}% 낮게 잡힙니다. 실제 월 지급액은 아닙니다.`
-    : `이번 ${mission.name} 미션은 ${mission.metric}로 판정합니다. 이 화면에서 수령 방식을 바꿔도 해당 미션의 판정은 달라지지 않습니다.`;
+    : `이번 ${mission.name} 미션은 ${mission.metric} 기준으로 판정합니다. 이 화면에서 수령 방식을 바꿔도 해당 미션의 판정은 달라지지 않습니다.`;
   return `<div class="modal-icon payout">₩</div>
     <p class="eyebrow">12턴 끝 · 마지막 결정</p>
     <h2>어떻게 받을까요?</h2>

@@ -1,0 +1,16 @@
+{
+  "turn": 5,
+  "checks": {
+    "seed": true,
+    "turn": true,
+    "cash": true,
+    "livingDebt": true,
+    "irpCash": true,
+    "holdings": true,
+    "pendingOrders": true,
+    "cashFlows": true,
+    "ledger": true,
+    "campaign": true,
+    "contributionPacing": true
+  }
+}
