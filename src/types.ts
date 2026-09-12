@@ -336,11 +336,20 @@ export interface TileEffect {
 }
 
 /** 이번 턴 장부. 정산 장면이 "시장이 한 일"과 "내가 한 일"을 나눠 보이기 위한 세 지점. */
+export interface MarketHoldingEffect {
+  productId: ProductId;
+  opening: number;
+  delta: number;
+  returnRate: number;
+}
+
 export interface TurnLedger {
   /** 턴 시작(시장 반영 전) IRP */
   open: number;
   /** 시장 반영·주문 체결 직후 IRP */
   afterMarket: number;
+  /** 주문 결제 전, 실제 시장 노출분의 변화. 구 저장에는 없을 수 있다. */
+  marketEffects?: MarketHoldingEffect[];
   /** 첫 행동 직전(생활사건 뒤) 스냅샷. 아직 행동 전이면 null */
   beforeAction: { irp: number; risk: number; holdings: Record<ProductId, number> } | null;
 }
@@ -552,6 +561,7 @@ export interface TurnSummary {
   tradingDelta?: number;
   /** 같은 턴·같은 입출금을 반영한 가상 기준 지수. */
   benchmarkIrp?: number | null;
+  marketEffects?: MarketHoldingEffect[];
   riskBefore: number;
   riskAfter: number;
   tileEffects: TileEffect[];
@@ -570,7 +580,7 @@ export interface TurnSummary {
   productReturns: Record<ProductId, number>;
   /** 정산 후 IRP 평가액 대비 보유 비중. */
   holdingShares: Record<ProductId, number>;
-  /** 보유 중 |수익률 × 비중|이 가장 큰 상품. 보유가 없으면 null. */
+  /** 턴 시작 시장 구간에서 실제 원화 영향이 가장 큰 상품. 구 저장·보유 없음은 null. */
   biggestMover: ProductId | null;
   reaction: string;
 }

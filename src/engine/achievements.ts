@@ -19,7 +19,7 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   { id: 'three-stars', title: '별 셋', detail: '해당 판의 3별 조건을 모두 통과했다. 새 판은 미션·생활자금·운용 낙폭, 이전 판은 분산·성향 조건도 포함한다.', scope: 'game' },
   { id: 'calm-seas', title: '잔잔한 항해', detail: `12턴 최대 낙폭을 ${Math.round(CALM_SEAS_DRAWDOWN * 100)}% 안에서 지켰다.`, scope: 'game' },
   { id: 'diversified-12', title: '분산 8턴', detail: `8턴 이상 마감에 5% 이상 보유 상품이 ${balanceConfig.diversificationMin}종 이상이었다.`, scope: 'game' },
-  { id: 'pre-shock-rebalance', title: '충격 전 리밸런싱', detail: '충격이 오기 바로 전 턴에 리밸런싱했다. 신호를 읽고 위험을 맞춘 것.', scope: 'game' },
+  { id: 'pre-shock-rebalance', title: '충격 전 리밸런싱', detail: '충격이 오기 바로 전 턴에 리밸런싱했다. 이 기록만으로 예측 성공이나 손실 방어를 뜻하지는 않습니다.', scope: 'game' },
   { id: 'tax-credit-max', title: '공제 한도 채움', detail: `세액공제 대상 납입 ${(policyRules.annualTaxCreditLimit / 10_000).toFixed(0)}만 원을 다 채웠다.`, scope: 'game' },
   { id: 'quiz-perfect', title: '퀴즈 만점', detail: `${QUIZ_PERFECT_MIN}문항 이상 풀고 전부 맞혔다.`, scope: 'game' },
   { id: 'ghost-crusher', title: '고스트 격파', detail: `납입·생활 선택이 다른 고스트보다 세전 월 환산액이 ${(GHOST_CRUSH_GAP / 10_000).toFixed(0)}만 원 이상 컸다. 운용만의 비교는 아니다.`, scope: 'game' },

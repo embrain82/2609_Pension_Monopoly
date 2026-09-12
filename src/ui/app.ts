@@ -1,3 +1,4 @@
+import { marketExplanation } from '../engine/market-explanation';
 import { renderBenchmarkResult } from './performance-view';
 import { normalizeMissionMilestones } from '../engine/milestones';
 import { missionDisplay } from '../engine/progress-engine';
@@ -343,7 +344,7 @@ export class PensionRoadApp {
       this.persist();
       this.startGame(button.dataset.seed || randomSeed());
     } else if (action === 'export-run' && this.game) {
-      const blob=new Blob([JSON.stringify({version:'1.6.0',ruleset:this.game.rulesetVersion,contributionPacing:this.game.contributionPacing??null,defaultTrading:this.game.defaultTrading,seed:this.game.seed,profile:this.game.profileId,goal:this.game.goalMonthly,campaign:this.game.campaign,quiz:this.game.quizLog},null,2)],{type:'application/json'});
+      const blob=new Blob([JSON.stringify({version:'1.6.1',ruleset:this.game.rulesetVersion,contributionPacing:this.game.contributionPacing??null,defaultTrading:this.game.defaultTrading,seed:this.game.seed,profile:this.game.profileId,goal:this.game.goalMonthly,campaign:this.game.campaign,quiz:this.game.quizLog},null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob),link=document.createElement('a'); link.href=url; link.download='pension-road-replay.json'; link.click(); window.setTimeout(()=>URL.revokeObjectURL(url),1000);
     } else if (action === 'replay-chapter' && this.game) {
       const replay=replayChapter(this.game,Number(button.dataset.turn));
@@ -1264,7 +1265,7 @@ export class PensionRoadApp {
     const reducedMotion = shouldSkipDiceAnimation(this.save.settings.reducedMotion, window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     if (this.modal === 'life') content = this.renderLifeModal();
     if (this.modal === 'explore' && this.game) content = renderExplore(this.game, this.exploreIndex);
-    if (this.modal === 'action') content = `${this.game && this.actionView!=='default' ? `<p class="decision-market">${this.game.lastMarket.headline} · 도착 ${boardTiles[this.game.position].label}</p><details class="market-impact-details" data-turn="${this.game.turn}" ${this.marketDetailsOpen ? 'open' : ''}><summary><span><strong>시장·보유자산 영향 자세히</strong><small>금리 변화와 내 상품의 영향을 확인하세요</small></span><span class="market-impact-toggle"><span data-market-toggle-label>${this.marketDetailsOpen ? '접기' : '상세 보기'}</span><span class="market-impact-chevron" aria-hidden="true">⌄</span></span></summary><div class="market-impact-content">${renderMarketCard(this.game, false)}</div></details>${this.game.turn <= 2 ? `<p class="hint">${this.game.turn === 1 ? '1턴 실습 · 납입은 생활자금을 IRP 대기자금으로 옮깁니다. 기존 상품을 매도·교체하는 방법도 있습니다.' : '2턴 실습 · 납입만으로 상품이 매수되지는 않습니다. 대기자금과 결제 중인 주문을 확인한 뒤 운용하세요.'}</p>` : ''}` : ''}` + this.renderActionModal();
+    if (this.modal === 'action') content = `${this.game && this.actionView!=='default' ? `<p class="decision-market">${marketExplanation(this.game.lastMarket).headline} · 도착 ${boardTiles[this.game.position].label}</p><details class="market-impact-details" data-turn="${this.game.turn}" ${this.marketDetailsOpen ? 'open' : ''}><summary><span><strong>시장·보유자산 영향 자세히</strong><small>금리 변화와 내 상품의 영향을 확인하세요</small></span><span class="market-impact-toggle"><span data-market-toggle-label>${this.marketDetailsOpen ? '접기' : '상세 보기'}</span><span class="market-impact-chevron" aria-hidden="true">⌄</span></span></summary><div class="market-impact-content">${renderMarketCard(this.game, false)}</div></details>${this.game.turn <= 2 ? `<p class="hint">${this.game.turn === 1 ? '1턴 실습 · 납입은 생활자금을 IRP 대기자금으로 옮깁니다. 기존 상품을 매도·교체하는 방법도 있습니다.' : '2턴 실습 · 납입만으로 상품이 매수되지는 않습니다. 대기자금과 결제 중인 주문을 확인한 뒤 운용하세요.'}</p>` : ''}` : ''}` + this.renderActionModal();
     if(this.modal==='action' && this.actionView==='default') content=this.renderActionModal();
     if (this.modal === 'portfolio') content = (this.portfolioReturn ? '<button class="secondary" data-action="return-action">← 운용 선택으로 돌아가기</button>' : '') + this.renderPortfolioModal();
     if (this.modal === 'market') content = this.renderMarketModal();
@@ -1274,6 +1275,7 @@ export class PensionRoadApp {
     if (this.modal === 'settle' && this.lastSummary) {
       const summary = this.lastSummary;
       content = renderSettlementModal(summary, {
+        market: this.game?.lastMarket,
         characters,
         ghost: this.save.settings.ghost,
         reducedMotion,
@@ -1303,7 +1305,7 @@ export class PensionRoadApp {
       const prev = this.game.marketPath[this.game.turn - 2] ?? emptyMarketStep();
       content = renderNewsFlash(this.game.lastMarket, prev, boardTiles[this.game.position], {
         characters,
-        ledger: { open: this.game.ledger.open, afterMarket: this.game.ledger.afterMarket },
+        ledger: this.game.ledger,
         tileEffects: this.game.tileEffects,
         coach: this.game.turn === 1,
         pace: scenePace(this.game.turn, Boolean(this.game.lastMarket.shock))
@@ -1572,6 +1574,6 @@ export class PensionRoadApp {
       <div class="disclaimer-box"><strong>중요 면책</strong><p>모든 금융 수치는 교육용으로 단순화했습니다. 특정 금융회사·상품을 추천하지 않으며, 수익·원금·세제 혜택을 보장하지 않습니다. 실제 규정과 세무 결과는 개인 상황과 기준일에 따라 달라질 수 있습니다. 은행 계좌·잔고와 연동되지 않는 가상 포트폴리오입니다.</p></div>
       ${this.game?.campaign ? "<p>이번 판의 미션·성향·월 연금 목표는 시작 조건으로 고정되어 있습니다. 캐릭터 외형은 자유롭게 변경할 수 있습니다.</p>" : ""}<h3>정책 데이터</h3><p>기준일 ${policyRules.reviewed_at} · 교육용 단순화 ${policyRules.simplified ? '예' : '아니오'}</p>
       <ul class="source-list"><li><a href="${policyRules.source_urls[0]}" target="_blank" rel="noreferrer">국가법령정보센터 · 위험자산 투자한도</a></li><li><a href="${policyRules.source_urls[1]}" target="_blank" rel="noreferrer">국세청 · 퇴직연금 세제</a></li><li><a href="https://pension.kebhana.com/files/POR/Notice/PSNL_IRP_PRD_INVTM.pdf" target="_blank" rel="noreferrer">하나은행 · 개인형 IRP 핵심설명서</a></li></ul>
-      <p class="hint">${this.game ? contributionRuleLabel(this.game) : `새 게임 추가납입 턴당 ${formatShortWon(balanceConfig.contributionPerTurnLimit)}`} · 게임 진행용 한도</p><p class="version">연금로드 v1.6.0 · 납입 속도·운용 화면 개선 · 저장 데이터는 이 브라우저에만 보관됩니다.</p>`;
+      <p class="hint">${this.game ? contributionRuleLabel(this.game) : `새 게임 추가납입 턴당 ${formatShortWon(balanceConfig.contributionPerTurnLimit)}`} · 게임 진행용 한도</p><p class="version">연금로드 v1.6.1 · 미션·성과·시장 설명 개선 · 저장 데이터는 이 브라우저에만 보관됩니다.</p>`;
   }
 }

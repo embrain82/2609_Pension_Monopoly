@@ -3,7 +3,7 @@ import { SCENARIOS, MISSIONS, type Campaign } from '../engine/scenario-engine';
 import { products } from '../data/content';
 import { emptyMarketStep } from '../engine/market-engine';
 import { createGame } from '../engine/game-engine';
-import type { GameState, TurnSummary } from '../types';
+import type { GameState, MarketHoldingEffect, TurnSummary } from '../types';
 import { validDefaultLedger } from './default-checkpoint';
 import type { DefaultTradeDraft } from '../engine/default-trade-engine';
 import { isDefaultOptionId } from '../engine/default-option';
@@ -41,9 +41,19 @@ function validCampaign(d: Campaign, depth = 0, pacing?: GameState['contributionP
     (r.defaultOrders === undefined || (Array.isArray(r.defaultOrders) && r.defaultOrders.every(o => typeof o.id === 'string' && ['buy','sell'].includes(o.side) && ['received','priced'].includes(o.stage) && Number.isFinite(o.amount) && o.amount >= 0)))
   )) return false;
   if (!Array.isArray(d.branches) || d.branches.length>3 || (depth>0 && d.branches.length)) return false;
-  return d.branches.every(b=>[3,6,9].includes(b.turn) && b.state.turn===b.turn && b.state.status==='playing' && shape(createGame('validate','balanced',500000,{ghost:false}),b.state) && validDefaultLedger(b.state) && validContributionPacing(b.state) &&
+  return d.branches.every(b=>[3,6,9].includes(b.turn) && b.state.turn===b.turn && b.state.status==='playing' && shape(createGame('validate','balanced',500000,{ghost:false}),b.state) && validMarketEffects(b.state.ledger.marketEffects) && validDefaultLedger(b.state) && validContributionPacing(b.state) &&
     b.state.contributionPacing?.version === pacing?.version && b.state.contributionPacing?.perTurnLimit === pacing?.perTurnLimit && validCampaign({...b.progress,branches:[]},depth+1,pacing));
 }
+/** 새 표시 내역만 검증한다. 없는 구 저장에는 보유 영향을 추정하지 않는다. */
+function validMarketEffects(value: unknown): boolean {
+  if (value === undefined) return true;
+  if (!Array.isArray(value) || value.length > products.length) return false;
+  return new Set(value.map(e => e?.productId)).size === value.length && value.every((effect: Partial<MarketHoldingEffect> | null) =>
+    effect && products.some(p => p.id === effect.productId) && typeof effect.opening === 'number' && Number.isFinite(effect.opening) && effect.opening > 0 &&
+    typeof effect.delta === 'number' && Number.isFinite(effect.delta) && typeof effect.returnRate === 'number' && Number.isFinite(effect.returnRate) &&
+    Math.abs(effect.delta / effect.opening - effect.returnRate) < 1e-8);
+}
+
 export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
   try {
     if (!raw || raw.length > 1000000) return null;
@@ -55,6 +65,7 @@ export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
     delete (data as PlayCheckpoint & { routePending?: boolean }).routePending;
     if (!shape(createGame('validate', 'balanced', 500000, { ghost: false }), data.game)) return null;
     const g = data.game;
+    if (!validMarketEffects(g.ledger.marketEffects) || !validMarketEffects(data.lastSummary?.marketEffects)) return null;
     if(!validContributionPacing(g) || (g.campaign && !validCampaign(g.campaign,0,g.contributionPacing))) return null;
     const finite = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
     if (g.rulesetVersion !== (data.version==='c3' ? '2026-09-10-e' : g.campaign ? '2026-09-10-d' : '2026-09-10-c')) return null;

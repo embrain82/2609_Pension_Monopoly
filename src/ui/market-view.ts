@@ -1,7 +1,8 @@
+import { explainMarketStep } from '../engine/market-explanation';
+import { renderMarketImpacts } from './market-impact-view';
 import { balanceConfig, products } from '../data/content';
 import { formatRateDelta } from '../engine/market-engine';
 import { isUrgent } from '../engine/milestones';
-import { portfolioValue } from '../engine/portfolio-engine';
 import type { GameState, MarketStep } from '../types';
 import { isCompletedTurn, isRevealedTurn, isUpcomingSpoiler } from './dice';
 
@@ -14,13 +15,11 @@ export function signedPercent(value: number): string {
 }
 
 export function renderProductReturns(state: GameState): string {
-  const total = portfolioValue(state);
   const rows = products.map((product) => {
-    const amount = state.holdings.find((holding) => holding.productId === product.id)?.amount ?? 0;
     const ret = state.lastMarket.returns[product.id] ?? 0;
-    return `<li class="${ret < 0 ? 'down' : ret > 0 ? 'up' : ''}"><span>${product.shortName}</span><b>${signedPercent(ret)}</b><small>${total ? percent(amount / total) : '0%'}</small></li>`;
+    return `<li class="${ret < 0 ? 'down' : ret > 0 ? 'up' : ''}"><span>${product.shortName}</span><b>${signedPercent(ret)}</b><small>시장 예시</small></li>`;
   }).join('');
-  return `<ul class="product-returns">${rows}</ul>`;
+  return `<p class="market-note">상품별 시장 예시 · 보수 전 · 실제 보유분 수익과 다름</p><ul class="product-returns">${rows}</ul>`;
 }
 
 function deltaClass(value: number): string {
@@ -45,6 +44,7 @@ export function renderMarketAlert(step: MarketStep): string {
 }
 
 export function renderMarketCard(state: GameState, pending: boolean): string {
+  state = { ...state, lastMarket: explainMarketStep(state.lastMarket) };
   if (pending && state.turn === 0) {
     return `<article class="market-card pending">
             <div class="card-label">TURN 01 · 시장 대기</div>
@@ -52,6 +52,7 @@ export function renderMarketCard(state: GameState, pending: boolean): string {
             <p class="signal">주사위 눈의 합만큼 말이 이동한 뒤 브리핑이 공개됩니다.</p>
             <p>시장 국면은 이번 판 시드마다 달라지고, 말은 나온 숫자만큼 보드를 돕니다.</p>
             ${marketBars(state.lastMarket, true)}
+            ${renderMarketImpacts(state.ledger.marketEffects, state.turn)}
             ${renderProductReturns(state)}
           </article>`;
   }
@@ -65,6 +66,7 @@ export function renderMarketCard(state: GameState, pending: boolean): string {
             <p>주사위를 굴려 다음 턴(${nextTurn}턴) 시장을 확인하세요. 시장 국면은 이번 판 시드마다 달라집니다.</p>
             ${renderMarketAlert(state.lastMarket)}
             ${marketBars(state.lastMarket)}
+            ${renderMarketImpacts(state.ledger.marketEffects, state.turn)}
             ${renderProductReturns(state)}
           </article>`;
   }
@@ -75,8 +77,9 @@ export function renderMarketCard(state: GameState, pending: boolean): string {
             <p>${state.lastMarket.reason}</p>
             ${renderMarketAlert(state.lastMarket)}
             ${marketBars(state.lastMarket)}
+            ${renderMarketImpacts(state.ledger.marketEffects, state.turn)}
             ${renderProductReturns(state)}
-            <p class="market-note applied-note">투자상품 수익률은 턴 시작에 보유분에 반영됩니다. 보유 예금은 시장 예시 수익률 대신 가입 건별 고정 약정을 따릅니다.</p>
+            <p class="market-note applied-note">내 보유분은 턴 시작 수량과 약정으로 계산한 실제 영향입니다. 지금 주문한 금액으로 이전 수익을 다시 계산하지 않습니다. 펀드·TDF는 원금 손실이 가능합니다.</p>
           </article>`;
 }
 
@@ -127,7 +130,8 @@ export function renderTurnTrack(state: GameState, waiting: boolean): string {
 export function renderMarketTimeline(state: GameState | null, waiting: boolean): string {
   const currentTurn = state?.turn ?? 0;
   const path = state?.marketPath ?? [];
-  return `<p class="eyebrow">시장 흐름 · 금리의 두 얼굴</p><h2>12턴 타임라인</h2><div class="timeline">${path.map((step) => {
+  return `<p class="eyebrow">시장 흐름 · 금리의 두 얼굴</p><h2>12턴 타임라인</h2><div class="timeline">${path.map((storedStep) => {
+    const step = explainMarketStep(storedStep);
     const current = isRevealedTurn(step.turn, currentTurn, waiting);
     const past = isCompletedTurn(step.turn, currentTurn, waiting);
     const spoiler = isUpcomingSpoiler(step.turn, currentTurn);

@@ -1,6 +1,7 @@
+import { explainMarketStep } from './market-explanation';
 import { mapHoldingBalances } from './position-engine';
 import { balanceConfig, marketShocks, policyRules, products } from '../data/content';
-import type { GameState, MarketConfig, MarketShock, MarketStep, ProductId, Regime } from '../types';
+import type { GameState, MarketConfig, MarketShock, MarketStep, MarketHoldingEffect, ProductId, Regime } from '../types';
 import { hashSeed } from './random-engine';
 import { depositLots, portfolioValue } from './portfolio-engine';
 import { riskAssetRatio } from './policy-engine';
@@ -29,20 +30,6 @@ const THIRD_POSITIVE_RATE = 0.7;
 export const WEAK_ALERT_TEXT = '시장 경계감이 커집니다 · 방향은 불확실';
 export const WEAK_ALERT_HINT = '신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요.';
 export const ALERT_CARD_ID = 'signal-vs-forecast';
-
-const REGIME_HEADLINES: Record<Regime, string[]> = {
-  easing: ['금리가 낮아지며 회복 기대가 자랍니다', '완화 기조에 위험자산이 힘을 받습니다', '낮은 금리가 소비와 투자를 데웁니다'],
-  hold: ['방향이 뚜렷하지 않은 관망 국면입니다', '금리는 제자리, 시장은 눈치를 봅니다', '지표가 엇갈려 분산을 점검할 때입니다'],
-  tightening: ['물가 압력에 금리 인상이 이어집니다', '긴축이 길어지며 채권이 눌립니다', '높아진 금리가 경제를 식힙니다'],
-  pivot: ['금리 인하 기대가 채권을 받칩니다', '긴축의 끝이 보이며 위험자산이 숨을 고릅니다', '정책 전환 기대가 커집니다']
-};
-
-const REGIME_REASONS: Record<Regime, string> = {
-  easing: '금리가 내려가면 이미 들고 있는 채권 가격은 오르고, 새로 드는 예금 이자는 낮아집니다. 주식은 회복 기대를 먼저 반영합니다.',
-  hold: '한 방향을 예측하기보다 목표 위험비중과 생활자금을 점검할 시점입니다.',
-  tightening: '금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.',
-  pivot: '앞으로 금리가 낮아질 것이라는 기대는 만기 긴 채권 가격에 더 크게 반영됩니다.'
-};
 
 export function emptyMarketStep(): MarketStep {
   const config = balanceConfig.market;
@@ -92,29 +79,15 @@ export function planShocks(rng: Rng, config: MarketConfig = balanceConfig.market
   return plan;
 }
 
-function arrow(value: number, threshold: number): string {
-  if (value >= threshold * 2) return '↗↗';
-  if (value >= threshold) return '↗';
-  if (value <= -threshold * 2) return '↘↘';
-  if (value <= -threshold) return '↘';
-  return '→';
-}
-
 export function formatRateDelta(deltaPct: number): string {
   if (Math.abs(deltaPct) < 1e-9) return '→';
   return `${deltaPct > 0 ? '▲' : '▼'}${Math.abs(deltaPct).toFixed(2)}`;
 }
 
-function regimeBriefing(rng: Rng, regime: Regime, rateDeltaPct: number, stockReturn: number, config: MarketConfig): Pick<MarketStep, 'phase' | 'headline' | 'signal' | 'reason'> {
-  const headlines = REGIME_HEADLINES[regime];
-  const headline = headlines[Math.floor(rng.next() * headlines.length)];
-  const bond = Math.abs(rateDeltaPct) >= config.rateStepPct * 2 ? ` · 장기채 ${arrow(-rateDeltaPct, 0.25)}` : '';
-  return {
-    phase: config.regimes[regime].phase,
-    headline,
-    signal: `금리 ${formatRateDelta(rateDeltaPct)} · 주식 ${arrow(stockReturn, 0.02)}${bond}`,
-    reason: REGIME_REASONS[regime]
-  };
+function regimeBriefing(rng: Rng, regime: Regime, config: MarketConfig): Pick<MarketStep, 'phase' | 'headline' | 'signal' | 'reason'> {
+  // 구 버전의 헤드라인 추첨 1회를 유지해야 이후 시장·충격·신호의 난수 순서가 같다.
+  rng.next();
+  return { phase: config.regimes[regime].phase, headline: '', signal: '', reason: '' };
 }
 
 export function generateMarketPath(seed: string, config: MarketConfig = balanceConfig.market, origin?: MarketStep): MarketStep[] {
@@ -146,7 +119,7 @@ export function generateMarketPath(seed: string, config: MarketConfig = balanceC
     const returns = productReturns(rng, { ratePct: next.ratePct, rateDeltaPct: actualDelta, stockReturn, shock }, config);
     const briefing = shock
       ? { phase: shock.phase, headline: shock.headline, signal: shock.signal, reason: shock.reason }
-      : regimeBriefing(rng, regime, actualDelta, stockReturn, config);
+      : regimeBriefing(rng, regime, config);
     path.push({
       turn,
       ...briefing,
@@ -170,7 +143,7 @@ export function generateMarketPath(seed: string, config: MarketConfig = balanceC
     else if (recoveryLeft > 0) recoveryLeft -= 1;
     macro = { ...next, regime: regimeAfter };
   }
-  return attachAlerts(rng, path, config);
+  return attachAlerts(rng, path, config).map(explainMarketStep);
 }
 
 /** 충격 턴 t의 신호는 t−1 스텝에 붙는다. 충격 앞이 아닌 턴에도 낮은 확률로 약한 신호가 온다. */
@@ -193,10 +166,11 @@ export function attachAlerts(rng: Rng, path: MarketStep[], config: MarketConfig 
 }
 
 export function marketPathOf(state: Pick<GameState, 'seed' | 'marketPath'>): MarketStep[] {
-  return state.marketPath?.length === balanceConfig.maxTurns ? state.marketPath : generateMarketPath(state.seed);
+  return state.marketPath?.length === balanceConfig.maxTurns ? state.marketPath.map(explainMarketStep) : generateMarketPath(state.seed);
 }
 
 export function applyMarketStep(state: GameState, market: MarketStep): GameState {
+  market = explainMarketStep(market);
   const prices = { ...state.prices };
   for (const product of products) prices[product.id] *= (1 + market.returns[product.id]) * (1 - product.feeRate);
   const holdings = state.holdings.map((entry) => mapHoldingBalances(entry, (holding) => {
@@ -231,4 +205,18 @@ export function applyMarketStep(state: GameState, market: MarketStep): GameState
     marketLimitExceeded: riskAssetRatio(next) > policyRules.riskAssetLimit + 0.00001
   };
   return next;
+}
+
+/** applyMarketStep 직후·settleOrders 직전에만 비교한다. 자산 재분류를 시장 손익으로 잡지 않는다. */
+export function marketHoldingEffects(before: GameState, after: GameState): MarketHoldingEffect[] {
+  const exposedOrder = (order: GameState['pendingOrders'][number]) =>
+    (order.side === 'sell' && order.stage === 'received') || (order.side === 'buy' && order.stage === 'priced');
+  return products.flatMap(product => {
+    const amounts = (state: GameState) => (state.holdings.find(h => h.productId === product.id)?.amount ?? 0) +
+      state.pendingOrders.filter(o => o.productId === product.id && exposedOrder(o)).reduce((sum, o) => sum + o.amount, 0);
+    const opening = amounts(before);
+    if (opening <= 0) return [];
+    const delta = amounts(after) - opening;
+    return [{ productId: product.id, opening, delta, returnRate: delta / opening }];
+  });
 }

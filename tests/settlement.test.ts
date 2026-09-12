@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createGame, performAction, startTurn } from '../src/engine/game-engine';
-import { applyMarketStep } from '../src/engine/market-engine';
+import { applyMarketStep, marketHoldingEffects } from '../src/engine/market-engine';
 import {
   HINT_DEFAULT,
   HINT_NEAR_LIMIT,
@@ -197,8 +197,8 @@ describe('턴 정산 요약', () => {
     expect(html).toContain('외부 입출금 +1,000,000원');
     expect(html).toContain('+3,000,000원');
     expect(html).not.toContain('생활사건');
-    expect(html).toContain('시장이 한 일');
-    expect(html).toContain('이미 보유분에 반영');
+    expect(html).toContain('시장 예시와 내 보유분');
+    expect(html).toContain('시장 예시(보수 전)');
   });
 
   it('분해 원장이 없는 구 요약은 합산 변화로 표시하고 행동 2회는 번호 목록으로 보인다', () => {
@@ -264,6 +264,8 @@ describe('턴 정산 요약', () => {
       shock: true,
       returns: { ...before.lastMarket.returns, deposit: 0.01, balanced: -0.04, longBond: -0.09, equityEtf: -0.08 }
     });
+    after.ledger = { ...after.ledger, marketEffects: marketHoldingEffects(before, after) };
+    before.ledger = after.ledger;
     const summary = summarizeTurn(before, after, '그대로 두기');
     expect(summary.productReturns.longBond).toBe(-0.09);
     expect(summary.holdingShares.deposit).toBeGreaterThan(0.5);
@@ -281,6 +283,7 @@ describe('턴 정산 요약', () => {
     const rally = applyMarketStep(before, { ...before.lastMarket, turn: 3, returns: { ...before.lastMarket.returns, equityEtf: 0.08 } });
     expect(reactionLine(before, rally, '유지')).toContain('주식이 크게 올랐습니다');
     const drop = applyMarketStep(before, { ...before.lastMarket, turn: 3, returns: { ...before.lastMarket.returns, balanced: -0.06, deposit: -0.01 } });
+    drop.ledger = { ...drop.ledger, marketEffects: marketHoldingEffects(before, drop) };
     expect(reactionLine(before, drop, '유지')).toContain('평가액이 줄었습니다');
   });
 
@@ -307,9 +310,10 @@ describe('턴 정산 요약', () => {
     expect(html).toContain('settle-bars');
     expect(html).toContain('settle-returns');
     expect(html.match(/class="settle-return /g)?.length).toBe(6);
-    expect(html).toContain('mover');
+    expect(html).not.toContain('held mover');
+    expect(html).toContain('이전 저장에는 상품별 시장 반영 내역이 없습니다');
     expect(html).toContain('settle-reaction');
-    expect(html).toContain('장기채가 크게 밀렸습니다');
+    expect(html).not.toContain('장기채가 크게 밀렸습니다');
     expect(html).toContain('-3,000,000원');
     expect(html).toContain('-3.0%');
   });

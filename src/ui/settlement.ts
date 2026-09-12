@@ -1,5 +1,7 @@
+import { marketExplanation } from '../engine/market-explanation';
+import { renderMarketImpacts } from './market-impact-view';
 import { products } from '../data/content';
-import type { Milestone, TurnSummary } from '../types';
+import type { MarketStep, Milestone, TurnSummary } from '../types';
 import { renderGhostSettleLine } from './ghost';
 import { renderLifeSettleBlock } from './life-view';
 import { percent, signedPercent } from './market-view';
@@ -9,6 +11,8 @@ import type { ScenePace } from './fx';
 import { renderBenchmarkSettleLine } from './performance-view';
 
 export interface SettlementOptions {
+  /** 구 저장 정산의 헤드라인도 이미 공개된 숫자로 복원한다. */
+  market?: MarketStep;
   characters: boolean;
   /** 설정 "그대로 둔 나" 비교. 끄면 고스트 줄을 숨긴다 */
   ghost?: boolean;
@@ -54,7 +58,7 @@ const RETURN_BAR_CAP = 0.15;
 const tone = (delta: number) => (delta < 0 ? 'neg' : delta > 0 ? 'pos' : '');
 
 /**
- * 막대 3개: 턴 시작 → 시장 반영 → 내 행동 후. 시장이 한 일과 내가 한 일을 금액으로 나눠 보인다.
+ * 막대 3개: 턴 시작 → 시장 반영 → 내 행동 후. 시장 예시와 내 보유분과 내가 한 일을 금액으로 나눠 보인다.
  * 생활사건이 IRP를 건드렸으면(중도인출·매도 충당) 그 줄도 덧붙인다.
  */
 function irpBars(summary: TurnSummary): string {
@@ -81,7 +85,7 @@ function returnBars(summary: TurnSummary): string {
     const width = (Math.min(Math.abs(value), RETURN_BAR_CAP) / RETURN_BAR_CAP) * 50;
     const side = value < 0 ? 'down' : value > 0 ? 'up' : 'flat';
     const held = (summary.holdingShares[product.id] ?? 0) > 0;
-    const classes = ['settle-return', side, held ? 'held' : '', summary.biggestMover === product.id ? 'mover' : ''].filter(Boolean).join(' ');
+    const classes = ['settle-return', side, held ? 'held' : ''].filter(Boolean).join(' ');
     return `<li class="${classes}" style="--i:${index}"><span>${product.shortName}</span><div class="track"><i style="--w:${width.toFixed(1)}%"></i></div><b>${signedPercent(value)}</b><small>${held ? percent(summary.holdingShares[product.id]) : '—'}</small></li>`;
   }).join('');
   return `<ul class="settle-returns">${rows}</ul>`;
@@ -118,7 +122,7 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
   const hintsBlock = renderSpeech('coach', `<ul class="settle-hints">${hints.map((hint) => `<li>${hint}</li>`).join('')}</ul>`, { characters: options.characters, title: options.final ? '남은 일' : '다음 판단' });
   const details = `<details class="settle-more"${options.expanded ? ' open' : ''}>
       <summary><span>자세히</span><small>상품별 수익률 · 내가 한 일${summary.tileEffects.length ? ' · 칸 효과' : ''}${options.final ? '' : ' · 다음 판단'}</small></summary>
-      <div class="preview-box settle-market"><strong>시장이 한 일 · 상품별 이번 턴</strong><p class="settle-note">턴 시작에 이미 보유분에 반영된 수익률입니다.</p>${returnBars(summary)}</div>
+      <div class="preview-box settle-market"><strong>시장 예시와 내 보유분 · 상품별 이번 턴</strong><p class="settle-note">상품별 시장 예시(보수 전)입니다. 오른쪽은 정산 후 비중이며 위의 실제 영향과 기준이 다릅니다.</p>${returnBars(summary)}</div>
       ${actionBlock(summary)}
       ${renderTileEffects(summary.tileEffects, { heading: '칸 효과' })}
       ${options.final ? '' : hintsBlock}
@@ -126,14 +130,15 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
   return `<div class="settle-scene${options.pace === 'fast' ? ' fast' : ''}">
     <p class="eyebrow">${summary.turn}턴 정산${shock}${options.final ? '<span class="settle-final">마지막 턴</span>' : ''}</p>
     <h2>무엇이 바뀌었나요?</h2>
-    <p class="settle-headline">${summary.marketHeadline}</p>
+    <p class="settle-headline">${options.market?.turn === summary.turn ? marketExplanation(options.market).headline : summary.marketHeadline}</p>
     ${milestones}
     ${irpBars(summary)}
+    ${renderMarketImpacts(summary.marketEffects, summary.turn)}
     ${renderBenchmarkSettleLine(summary)}
     ${ghost ? `<details class="settle-comparison"><summary>생활 선택까지 다른 고스트 경로 비교</summary>${ghost}</details>` : ''}
     ${renderLifeSettleBlock(summary.lifeEvent)}
     ${alert}
-    <div class="settle-reaction">${renderSpeech('coach', `<p>${summary.reaction}</p>`, { characters: options.characters, title: '한 줄 정리', tone: reactionTone })}</div>
+    <div class="settle-reaction">${renderSpeech('coach', `<p>${summary.marketEffects !== undefined ? summary.reaction : '이번 시장의 변화와 내 보유분 수익을 구분해 확인하세요. 다음 턴 방향은 확정되지 않았습니다.'}</p>`, { characters: options.characters, title: '한 줄 정리', tone: reactionTone })}</div>
     ${options.final ? hintsBlock : ''}
     <div class="settle-cta${auto ? ' auto' : ''}"><button class="primary jumbo" data-action="dismiss-settle">${cta}</button>${autoBar}</div>
     ${details}

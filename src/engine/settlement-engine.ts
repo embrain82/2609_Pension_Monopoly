@@ -1,3 +1,4 @@
+import { marketExplanation } from './market-explanation';
 import { products } from '../data/content';
 import type { GameState, ProductId, TurnSummary } from '../types';
 import { portfolioValue } from './portfolio-engine';
@@ -8,13 +9,13 @@ export const HINT_PENDING_FUND = '펀드는 접수 → 다음 턴 가격 확정 
 export const HINT_NEAR_LIMIT = '위험한도에 가깝습니다. 가능액 매수 전에 미리보기를 보세요.';
 export const HINT_DEFAULT = '다음 턴 시장을 보고 납입·매매·그대로 중 하나를 고르세요.';
 
-export const REACTION_LONG_BOND_DROP = '장기채가 크게 밀렸습니다. 예금·단기채가 방어했는지 보세요.';
-export const REACTION_EQUITY_DROP = '주식이 크게 떨어졌습니다. 급락 뒤 회복도 자주 오니 분산을 지키세요.';
-export const REACTION_EQUITY_RALLY = '주식이 크게 올랐습니다. 위험비중이 한도에 가까워졌는지 확인하세요.';
-export const REACTION_LONG_BOND_RALLY = '금리 인하 기대에 장기채가 뛰었습니다. 채권이 방어 역할을 했습니다.';
+export const REACTION_LONG_BOND_DROP = '시장 예시에서 장기채가 크게 하락했습니다. 내 보유분의 실제 영향과 구분해 보세요.';
+export const REACTION_EQUITY_DROP = '시장 예시에서 주식이 크게 하락했습니다. 반등 시점은 알 수 없으니 생활자금과 위험비중을 점검하세요.';
+export const REACTION_EQUITY_RALLY = '시장 예시에서 주식이 크게 올랐습니다. 보유 중이라면 현재 위험비중을 확인하세요.';
+export const REACTION_LONG_BOND_RALLY = '시장 예시에서 장기채가 크게 올랐습니다. 실제 보유분과 다음 턴의 불확실성을 함께 확인하세요.';
 export const REACTION_CONTRIBUTE = '납입으로 IRP 자금이 늘었습니다. 투자 수익과 구분하고 생활자금 여유도 확인하세요.';
-export const REACTION_DRAWDOWN = '이번 턴은 평가액이 줄었습니다. 12턴 전체를 보고 판단하세요.';
-export const REACTION_DEFAULT = '큰 변화 없는 턴입니다. 다음 신호를 기다리며 분산을 점검하세요.';
+export const REACTION_DRAWDOWN = '이번 시장에서 내 평가액이 줄었습니다. 다음 턴 방향을 단정하지 말고 생활자금과 분산을 점검하세요.';
+export const REACTION_DEFAULT = '이번 시장의 변화는 이미 반영됐습니다. 다음 턴 방향을 단정하지 말고 내 구성과 생활자금을 점검하세요.';
 
 export function reactionLine(before: GameState, after: GameState, actionLine: string): string {
   const returns = after.lastMarket.returns;
@@ -24,9 +25,11 @@ export function reactionLine(before: GameState, after: GameState, actionLine: st
   if (returns.equityEtf >= 0.05) return REACTION_EQUITY_RALLY;
   if (returns.longBond >= 0.04) return REACTION_LONG_BOND_RALLY;
   if (actionLine.includes('추가납입')) return REACTION_CONTRIBUTE;
-  // 턴 시작(시장 반영 전) 대비 턴 끝. 시장이 먼저 움직이므로 행동 직전 값이 아니라 장부의 시작값을 쓴다.
+  // 인출·납입으로 생긴 잔액 변화가 아닌, 시장 구간의 실제 영향만 읽는다.
+  const effects = after.ledger.marketEffects;
+  const marketDelta = effects ? effects.reduce((sum, e) => sum + e.delta, 0) : before.ledger.afterMarket - before.ledger.open;
   const irpOpen = before.ledger?.open ?? portfolioValue(before);
-  if (irpOpen > 0 && (portfolioValue(after) - irpOpen) / irpOpen <= -0.02) return REACTION_DRAWDOWN;
+  if (irpOpen > 0 && marketDelta / irpOpen <= -0.02) return REACTION_DRAWDOWN;
   return REACTION_DEFAULT;
 }
 
@@ -73,15 +76,9 @@ export function summarizeTurn(before: GameState, after: GameState, actionLine: s
     irpAfter > 0 ? holdingAmount(after, product.id) / irpAfter : 0
   ])) as Record<ProductId, number>;
   const productReturns = { ...after.lastMarket.returns };
-  let biggestMover: ProductId | null = null;
-  let biggestImpact = 0;
-  for (const product of products) {
-    const impact = Math.abs(productReturns[product.id] * holdingShares[product.id]);
-    if (holdingShares[product.id] > 0 && impact > biggestImpact) {
-      biggestImpact = impact;
-      biggestMover = product.id;
-    }
-  }
+  const marketEffects = ledger.marketEffects;
+  const biggestMover = marketEffects?.length
+    ? [...marketEffects].sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta))[0].productId : null;
   const actionLines = after.turnActionLines?.length ? after.turnActionLines : [actionLine];
   return {
     turn: before.turn,
@@ -97,13 +94,14 @@ export function summarizeTurn(before: GameState, after: GameState, actionLine: s
     capitalFlow,
     tradingDelta: irpAfter - ledger.afterMarket - capitalFlow,
     benchmarkIrp: after.campaign?.benchmark ?? null,
+    ...(marketEffects ? { marketEffects } : {}),
     riskBefore: snapshot.risk,
     riskAfter,
     tileEffects: before.tileEffects ?? [],
     ghostIrp: after.ghost?.irpHistory[after.turn] ?? null,
     lifeEvent: before.lifeResolution ?? null,
     milestones: after.turnMilestones ?? [],
-    marketHeadline: after.lastMarket.headline,
+    marketHeadline: marketExplanation(after.lastMarket).headline,
     shock: Boolean(after.lastMarket.shock),
     alert: after.lastMarket.alert,
     marketLimitExceeded: after.marketLimitExceeded,
