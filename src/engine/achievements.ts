@@ -1,3 +1,4 @@
+import { contributionRuleLabel } from './contribution-engine';
 import { balanceConfig, investorProfiles, policyRules } from '../data/content';
 import type { AchievementDef, AchievementId, Collection, GameState, ProfileId, ScoreResult } from '../types';
 import { PROFILE_IDS } from './profile-engine';
@@ -136,9 +137,7 @@ export function resultShareText(state: GameState, score: ScoreResult, options: S
     `수익률 ${score.returnRate > 0 ? '+' : ''}${(score.returnRate * 100).toFixed(1)}% · 최대 낙폭 ${(score.maxDrawdown * 100).toFixed(1)}%${gap === null ? '' : ` · 그대로 둔 나 대비 월 ${signedWon(gap)}`}`
   ];
   if (options.newAchievements?.length) lines.push(`새 업적: ${options.newAchievements.map((id) => achievementDef(id).title).join(' · ')}`);
-  lines.push(isWeeklySeed(state.seed)
-    ? `주간 시드 ${weeklyLabel(state.seed)} · 같은 시장에 도전해 보세요`
-    : `시드 ${state.seed}`);
+  lines.push(`${isWeeklySeed(state.seed) ? `주간 시드 ${weeklyLabel(state.seed)} · 같은 시장에 도전해 보세요` : `시드 ${state.seed}`} · ${contributionRuleLabel(state)}`);
   if (options.url) lines.push(options.url);
   return lines.join('\n');
 }

@@ -256,6 +256,7 @@ export interface BalanceConfig {
   minGoal: number;
   maxGoal: number;
   contributionAmount: number;
+  contributionPerTurnLimit: number;
   tradeAmount: number;
   safeCashThreshold: number;
   diversificationMin: number;
@@ -429,6 +430,8 @@ export interface GameState {
   accountType: 'IRP';
   rulesetVersion: '2026-09-09-p0' | '2026-09-10-b' | '2026-09-10-c' | '2026-09-10-d' | '2026-09-10-e';
   defaultTrading?: DefaultTrading;
+  /** 개인 납입 속도 규칙. 생략된 저장은 기존 한 판 합산 한도만 적용. */
+  contributionPacing?: { version: 'v1'; perTurnLimit: number };
   avatarId: AvatarId;
   accountBasis: AccountBasis;
   cashFlows: CashFlow[];

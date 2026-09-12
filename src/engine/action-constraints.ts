@@ -1,10 +1,10 @@
-import { policyRules } from '../data/content';
+import { previewContribution } from './contribution-engine';
 import { allowedPortfolios, defaultPortfolio } from '../data/default-portfolios';
 import type { DefaultOptionId, GameState } from '../types';
 import { defaultScopes, manualPortfolioValue, scopedHolding } from './position-engine';
 
 export const MIN_TRADE_AMOUNT = 100_000;
-export type BlockCode = 'timing' | 'legacy' | 'rebalance-pending' | 'orders-pending' | 'default-pending' | 'cash' | 'contribution-limit' | 'holdings' | 'suitability' | 'risk-limit' | 'amount' | 'no-default' | 'default-choice' | 'no-assets';
+export type BlockCode = 'timing' | 'legacy' | 'rebalance-pending' | 'orders-pending' | 'default-pending' | 'cash' | 'contribution-limit' | 'turn-contribution-limit' | 'holdings' | 'suitability' | 'risk-limit' | 'amount' | 'no-default' | 'default-choice' | 'no-assets';
 export type Availability = { enabled: true; hint?: string } | { enabled: false; code: BlockCode; reason: string };
 export const enabled: Availability = { enabled: true };
 export const unavailable = (code: BlockCode, reason: string): Availability => ({ enabled: false, code, reason });
@@ -23,13 +23,10 @@ export function tradeAmountConstraint(state: GameState, amount: number, internal
   return internal ? enabled : tradeLock(state);
 }
 export function acceptedContribution(state: GameState, requested: number): number {
-  return Math.min(requested, state.cash, Math.max(0, policyRules.annualContributionLimit - state.contributionTotal));
+  return previewContribution(state, { requested }).accepted;
 }
 export function contributionConstraint(state: GameState, requested: number): Availability {
-  if (!Number.isFinite(requested) || requested <= 0) return unavailable('amount', '납입 금액은 유한한 양수여야 합니다.');
-  if (acceptedContribution(state, requested) >= MIN_TRADE_AMOUNT) return enabled;
-  if (policyRules.annualContributionLimit - state.contributionTotal < MIN_TRADE_AMOUNT) return unavailable('contribution-limit', '연간 납입 가능 한도가 10만원 미만입니다.');
-  return unavailable('cash', '납입할 생활자금 또는 선택 금액이 10만원 미만입니다.');
+  return previewContribution(state, { requested }).availability;
 }
 export function rebalanceConstraint(state: GameState): Availability {
   if (state.pendingOrders.length || state.rebalancePlan) return unavailable('orders-pending', '접수한 주문 정산 후 리밸런싱할 수 있습니다. 기존 주문은 보존됩니다.');

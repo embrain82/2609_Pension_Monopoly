@@ -1,4 +1,5 @@
 import { defaultScopes, scopedHolding } from './position-engine';
+import { previewContribution } from './contribution-engine';
 import { inflatedEvent } from './scenario-engine';
 import { addAccountFlow, grossForNet, withdrawalTax, TRANSFER_TAX_NOTICE } from './account-engine';
 import { lifeEvents, policyRules } from '../data/content';
@@ -59,10 +60,6 @@ function withdrawalPlan(state: GameState, event: LifeEvent, depositOnly = false)
   return { ok: true, message: `허용 사유를 확인한 인출 · 생활비 ${won(amount)} + 재원별 세금 ${won(tax.tax)}. 계좌 내 매도와 계좌 밖 인출을 별도 처리했습니다.`, state: next };
 }
 
-function contributionRoom(state: GameState): number {
-  return Math.max(0, policyRules.annualContributionLimit - state.contributionTotal);
-}
-
 /** 선택지와 비용표. 모달이 그대로 그린다. 비활성 선택지도 이유와 함께 돌려준다 */
 export function lifeChoicesFor(state: GameState, event: LifeEvent): LifeChoiceOption[] {
   const amount = Math.abs(event.cost);
@@ -84,24 +81,25 @@ export function lifeChoicesFor(state: GameState, event: LifeEvent): LifeChoiceOp
     ];
   }
   if (event.kind === 'bonus') {
-    const room = contributionRoom(state);
-    const all = Math.min(amount, room);
-    const half = Math.min(Math.floor(amount / 2), room);
+    const fullQuote = previewContribution(state, { requested: amount, availableSource: amount });
+    const halfQuote = previewContribution(state, { requested: Math.floor(amount / 2), availableSource: amount });
+    const all = fullQuote.accepted, half = halfQuote.accepted;
     const creditAll = contributionCredit(state.contributionTotal, all).benefit;
     const creditHalf = contributionCredit(state.contributionTotal, half).benefit;
-    return [
+    const choices: LifeChoiceOption[] = [
       {
-        id: 'contribute-all', label: LIFE_CHOICE_LABELS['contribute-all'], enabled: all >= 100_000, reason: all >= 100_000 ? undefined : '연간 납입 한도가 남지 않았습니다.',
+        id: 'contribute-all', label: state.contributionPacing ? `${won(all)} 납입 · ${won(amount - all)} 생활자금` : LIFE_CHOICE_LABELS['contribute-all'], enabled: fullQuote.availability.enabled, reason: fullQuote.availability.enabled ? undefined : fullQuote.availability.reason,
         immediate: `IRP 대기자금 +${won(all)}${all < amount ? ` (한도 밖 ${won(amount - all)}는 생활자금)` : ''} · 세액공제 ${won(creditAll)} 환급 대기`,
-        longTerm: `월 연금 +${monthly(all)}. 생활자금은 늘지 않습니다.`
+        longTerm: `월 연금 +${monthly(all)}. ${amount > all ? `나머지 ${won(amount - all)}는 생활자금으로 남습니다.` : '생활자금은 늘지 않습니다.'}${state.contributionPacing ? ' 같은 턴의 추가납입 한도를 함께 사용합니다.' : ''}`
       },
       {
-        id: 'contribute-half', label: LIFE_CHOICE_LABELS['contribute-half'], enabled: half >= 100_000, reason: half >= 100_000 ? undefined : '연간 납입 한도가 남지 않았습니다.',
+        id: 'contribute-half', label: state.contributionPacing ? `${won(half)} 납입 · ${won(amount - half)} 생활자금` : LIFE_CHOICE_LABELS['contribute-half'], enabled: halfQuote.availability.enabled, reason: halfQuote.availability.enabled ? undefined : halfQuote.availability.reason,
         immediate: `IRP +${won(half)} · 생활자금 +${won(amount - half)} · 세액공제 ${won(creditHalf)} 환급 대기`,
         longTerm: `월 연금 +${monthly(half)}. 비상자금도 조금 늘어납니다.`
       },
-      { id: 'cash', label: CASH_CHOICE_LABELS.bonus, enabled: true, immediate: `생활자금 +${won(amount)}`, longTerm: 'IRP·월 연금 변화 없음. 다음 턴에 납입할 수 있습니다.' }
+      { id: 'cash', label: CASH_CHOICE_LABELS.bonus, enabled: true, immediate: `생활자금 +${won(amount)}`, longTerm: 'IRP·월 연금 변화 없음. 남은 한도 안에서 운용지시로 납입할 수 있습니다.' }
     ];
+    return state.contributionPacing && all === half ? choices.filter(c => c.id !== 'contribute-half') : choices;
   }
   const tax = amount / TRANSFER_TAX_NOTICE.gross * TRANSFER_TAX_NOTICE.tax;
   return [
@@ -189,9 +187,8 @@ export function resolveLifeChoice(state: GameState, choice: LifeChoice): ActionR
       const next: GameState = { ...state, cash: state.cash + amount };
       return finish(next, event, { ...base, cashDelta: amount, irpDelta: 0, penalty: 0, fee: 0, sales: [], shortage: false, message: '보너스를 생활자금에 반영했습니다.' });
     }
-    const room = contributionRoom(state);
     const wanted = choice === 'contribute-all' ? amount : Math.floor(amount / 2);
-    const accepted = Math.min(wanted, room);
+    const accepted = previewContribution(state, { requested: wanted, availableSource: amount }).accepted;
     const credit = contributionCredit(state.contributionTotal, accepted);
     const next: GameState = {
       ...state,

@@ -1,0 +1,51 @@
+{
+  "version": "1.6.0",
+  "games": 5600,
+  "matrixGames": 4400,
+  "extraGames": 1200,
+  "goals": [
+    350000,
+    500000,
+    700000
+  ],
+  "scenarios": [
+    "classic",
+    "inflation",
+    "recession",
+    "recovery"
+  ],
+  "profiles": [
+    "stable",
+    "stableGrowth",
+    "balanced",
+    "growth",
+    "aggressive"
+  ],
+  "strategies": [
+    "balanced",
+    "passive",
+    "contributor",
+    "growth",
+    "steward",
+    "etfOnly",
+    "stopLoss",
+    "momentum",
+    "newsChaser",
+    "defaultOption",
+    "withdrawer"
+  ],
+  "extraModes": [
+    "partial",
+    "mixed",
+    "lastTurn"
+  ],
+  "coverage": {
+    "bonusContributions": 2200,
+    "transfers": 1980,
+    "withdrawals": 1012,
+    "checkpoints": 5600,
+    "branches": 16800
+  },
+  "errors": 0,
+  "limitations": "Deterministic invariant checks, not human-play win rates. Mission and goal samples are not evenly distributed."
+}
