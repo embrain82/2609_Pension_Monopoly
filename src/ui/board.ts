@@ -61,17 +61,26 @@ function playerToken(state: GameState, view: BoardView): string {
   return '<circle class="player" cx="50" cy="45" r="13"></circle><text class="player-mark" x="50" y="50" text-anchor="middle">나</text>';
 }
 
-const TILE_ICONS: Record<TileKind, string> = {
-  start: '↻',
-  product: '◆',
-  market: '↗',
-  life: '♥',
-  trade: '⇄',
-  rebalance: '◎',
-  policy: '§',
-  profile: '◐',
-  outlook: '⌂'
+const TILE_SHAPES:Record<TileKind,string>={
+ start:'<path d="M20 8a9 9 0 1 0 1 9M20 2v6h-6"/>',
+ product:'<path d="M12 2 22 12 12 22 2 12Z"/><path d="M12 7v10M8 12h8"/>',
+ market:'<path d="M3 3v18h18M6 16l5-6 4 3 6-9M16 4h5v5"/>',
+ life:'<path d="M12 21 3 12C-2 3 8-1 12 6c4-7 14-3 9 6Z"/>',
+ trade:'<path d="M2 7h19l-5-5M22 17H3l5 5"/>',
+ rebalance:'<path d="M12 2v19M3 6h18M6 6 2 15h8ZM18 6l-4 9h8ZM7 22h10"/>',
+ policy:'<path d="M4 2h13l4 4v16H4ZM16 2v6h5M8 12h9M8 17h6"/>',
+ profile:'<circle cx="12" cy="7" r="5"/><path d="M3 23v-3a9 9 0 0 1 18 0v3"/>',
+ outlook:'<path d="M2 11 12 2l10 9M5 9v13h14V9M10 22v-7h4v7"/>'
 };
+function boardSymbols():string {
+ return `<defs>${Object.entries(TILE_SHAPES).map(([kind,shape])=>`<symbol id="board-icon-${kind}" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${shape}</g></symbol>`).join('')}</defs>`;
+}
+function regionLandmarks():string {
+ return `<g class="board-landmarks" aria-hidden="true">${[
+  {x:350,y:145,icon:'policy',region:0},{x:545,y:329,icon:'market',region:1},
+  {x:350,y:525,icon:'life',region:2},{x:155,y:329,icon:'outlook',region:3}
+ ].map(p=>`<g class="region-landmark region-${p.region}" transform="translate(${p.x} ${p.y})"><rect x="-38" y="-27" width="76" height="72" rx="18"/><use href="#board-icon-${p.icon}" x="-12" y="-17" width="24" height="24"/><text y="31" text-anchor="middle">${REGIONS[p.region]}</text></g>`).join('')}</g>`;
+}
 
 export function boardPosition(index: number): { x: number; y: number } {
   if (index <= 6) return { x: index * 100, y: 0 };
@@ -103,7 +112,7 @@ export function renderBoardMarkup(
     return `<g data-key="tile-${item.index}" data-action="open-explore" data-tile="${item.index}" role="button" tabindex="${active ? 0 : -1}" aria-label="${item.index+1}. ${item.label} · ${REGIONS[regionOf(item.index)]} 지역 · 칸 정보" class="tile tile-${item.kind} region-${regionOf(item.index)}${active ? ' active' : ''}${landed ? ' landed' : ''}" transform="translate(${x} ${y})">
         <rect x="3" y="3" width="94" height="94" rx="15"></rect>
         ${state.route.visits.includes(item.index) ? '<circle class="visit-stamp" cx="50" cy="18" r="5"></circle>' : ''}
-        <text class="tile-icon" x="14" y="30">${TILE_ICONS[item.kind]}</text>
+        <use class="tile-kind-icon" href="#board-icon-${item.kind}" x="14" y="12" width="24" height="24" aria-hidden="true"/>
         <text class="tile-number" x="84" y="24" text-anchor="end">${String(item.index + 1).padStart(2, '0')}</text>
         <text class="tile-label" x="50" y="70" text-anchor="middle">${item.label.length > 7 ? item.label.slice(0, 7) : item.label}</text>
         ${landed ? tileFx(item.kind) : ''}
@@ -129,7 +138,7 @@ export function renderBoardMarkup(
       <text x="350" y="420" text-anchor="middle">${state.lastMarket.signal}</text>
       <text class="seed" x="350" y="452" text-anchor="middle">TURN ${String(state.turn).padStart(2, '0')} / 12 · ${tile.label}</text>`;
   return `<svg class="board" viewBox="0 0 700 700" role="group" aria-label="24칸 순환 보드. 현재 말은 ${token + 1}번 칸 ${tile.label}에 있습니다.">
-      <rect class="board-bg" x="0" y="0" width="700" height="700" rx="28"></rect>${tiles}
+      ${boardSymbols()}<rect class="board-bg" x="0" y="0" width="700" height="700" rx="28"></rect>${regionLandmarks()}${tiles}
       <g class="board-center">${center}</g>
     </svg>`;
 }

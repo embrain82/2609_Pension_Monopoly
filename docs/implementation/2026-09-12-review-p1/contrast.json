@@ -1,0 +1,56 @@
+[
+  {
+    "name": "body",
+    "fg": "#183635",
+    "bg": "#fbfcf6",
+    "ratio": 12.58
+  },
+  {
+    "name": "muted",
+    "fg": "#526765",
+    "bg": "#fbfcf6",
+    "ratio": 5.84
+  },
+  {
+    "name": "primary",
+    "fg": "#ffffff",
+    "bg": "#1e5b54",
+    "ratio": 7.84
+  },
+  {
+    "name": "positive",
+    "fg": "#166459",
+    "bg": "#f0f5ee",
+    "ratio": 6.33
+  },
+  {
+    "name": "negative",
+    "fg": "#ad332b",
+    "bg": "#fbfcf6",
+    "ratio": 6.2
+  },
+  {
+    "name": "warning",
+    "fg": "#745013",
+    "bg": "#fff4d9",
+    "ratio": 6.62
+  },
+  {
+    "name": "disabled",
+    "fg": "#526260",
+    "bg": "#e5eae5",
+    "ratio": 5.26
+  },
+  {
+    "name": "selected",
+    "fg": "#ffffff",
+    "bg": "#1e5b54",
+    "ratio": 7.84
+  },
+  {
+    "name": "recommendation",
+    "fg": "#665011",
+    "bg": "#fff1c3",
+    "ratio": 6.85
+  }
+]

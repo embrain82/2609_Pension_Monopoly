@@ -1,3 +1,4 @@
+import { formatWon as won, formatShortWon as shortWon } from './format';
 import { missionDisplay } from '../engine/progress-engine';
 import { profileLimits } from '../engine/profile-engine';
 import { balanceConfig, policyRules } from '../data/content';
@@ -56,4 +57,11 @@ export function renderGoalMeter(state: GameState, score: ScoreResult, ghostMonth
 export function renderRiskMeter(ratio: number, limit: number): string {
   const over = ratio > limit + 0.00001;
   return `<div class="risk-meter${over ? ' over' : ''}" role="img" aria-label="위험자산 비중 ${(ratio * 100).toFixed(1)}%, 한도 ${Math.round(limit * 100)}%"><span style="width:${Math.min(100, ratio * 100).toFixed(1)}%"></span><i class="limit" style="left:${Math.round(limit * 100)}%"></i></div>`;
+}
+
+/** 보드 바로 위의 핵심 정보. 생활자금과 계좌 안 주문 가능 자금을 혼동하지 않게 한다. */
+export function renderBoardHud(state:GameState):string {
+  const mission=missionDisplay(state);
+  const pending=state.pendingOrders.reduce((s,o)=>s+o.amount,0);
+  return `<section class="board-hud" aria-label="이번 판 목표와 자금"><div class="board-mission"><strong>${mission.name}</strong><span>${mission.progress}</span></div><div class="board-funds"><div><small>생활자금 · IRP 밖</small><strong title="${won(state.cash)}">${shortWon(state.cash)}</strong></div><div><small>주문 가능 · IRP 안</small><strong title="${won(state.irpCash)}">${shortWon(state.irpCash)}</strong></div>${pending>0?`<div class="pending-cash"><small>미결제 · 사용 대기</small><strong title="${won(pending)}">${shortWon(pending)}</strong></div>`:''}</div></section>`;
 }

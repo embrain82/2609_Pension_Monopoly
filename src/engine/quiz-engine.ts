@@ -45,7 +45,7 @@ export function marketTileQuizzes(seed: string, turn: number): boolean {
 /** 출제 대기에 올린다. 해금 안 됐거나 이미 푼 카드면 그대로 */
 export function queueQuiz(state: GameState, cardId: string | null): GameState {
   if (!cardId || !state.unlockedCards.includes(cardId) || answered(state, cardId)) return state;
-  return { ...state, pendingQuizCardId: cardId };
+  return { ...state, pendingQuizCardId: cardId, ...(state.learningFlow?{learningFlow:{...state.learningFlow,queue:[cardId,...state.learningFlow.queue.filter(id=>id!==cardId)]}}:{}) };
 }
 
 /** 결과 직전 마무리 퀴즈 후보(최대 3장). 해금·미출제 카드를 시드 결정적으로 고른다 */
@@ -82,6 +82,7 @@ export function answerQuiz(state: GameState, cardId: string, option: number): Qu
   const next: GameState = {
     ...state,
     quizLog: [...state.quizLog, record],
+    ...(state.learningFlow?{learningFlow:{...state.learningFlow,queue:state.learningFlow.queue.filter(id=>id!==cardId)}}:{}),
     quizStreak: streak,
     pendingQuizCardId: state.pendingQuizCardId === cardId ? null : state.pendingQuizCardId,
     logs: [...state.logs, { turn: state.turn, type: 'quiz', message: `퀴즈 「${card.title}」 ${correct ? '정답' : '오답'}` }]
@@ -101,4 +102,15 @@ export function actionLesson(state: GameState, kind: string): GameState {
   if(!card || !learningCards.some(c=>c.id===card)) return state;
   const next={...state,unlockedCards:state.unlockedCards.includes(card)?state.unlockedCards:[...state.unlockedCards,card]};
   return queueQuiz(next,card);
+}
+
+/** 표시 대기만 조회한다. 카드 해금·채점·금융 상태는 바꾸지 않는다. */
+export function optionalQuizCards(state:GameState):string[] {
+  if(!state.learningFlow)return [];
+  const candidates=[...state.learningFlow.queue,...(state.status==='finished'?finalQuizCards(state).map(c=>c.id):[])];
+  return [...new Set(candidates)].filter(id=>!state.learningFlow!.dismissed?.includes(id)&&state.unlockedCards.includes(id)&&!answered(state,id)&&learningCards.some(c=>c.id===id));
+}
+export function validLearningFlow(state:Pick<GameState,'learningFlow'|'unlockedCards'>):boolean {
+  const f=state.learningFlow;
+  return f===undefined || !!f && f.version==='settlement-v1' && Array.isArray(f.queue) && f.queue.length<=learningCards.length && new Set(f.queue).size===f.queue.length && f.queue.every(id=>state.unlockedCards.includes(id)&&learningCards.some(c=>c.id===id)) && (f.dismissed===undefined || Array.isArray(f.dismissed)&&f.dismissed.length<=learningCards.length&&new Set(f.dismissed).size===f.dismissed.length&&f.dismissed.every(id=>state.unlockedCards.includes(id)&&learningCards.some(c=>c.id===id)));
 }

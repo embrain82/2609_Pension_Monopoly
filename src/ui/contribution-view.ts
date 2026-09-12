@@ -1,3 +1,4 @@
+import { formatWon as won } from './format';
 import { previewContribution, MIN_CONTRIBUTION_AMOUNT } from '../engine/contribution-engine';
 import { actionTiming, blockReason } from '../engine/action-constraints';
 import { resolveActionAmount, type AmountPreset } from '../engine/game-engine';
@@ -6,7 +7,6 @@ import { portfolioValue } from '../engine/portfolio-engine';
 import { policyRules } from '../data/content';
 import type { GameState } from '../types';
 
-const won = (n: number) => `${Math.round(n).toLocaleString('ko-KR')}원`;
 const short = (n: number) => n % 10000 === 0 ? `${n / 10000}만원` : won(n);
 
 export function normalizeContributionPreset(state: GameState, preset: AmountPreset): AmountPreset {

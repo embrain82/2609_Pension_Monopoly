@@ -1,0 +1,17 @@
+{
+  "sameGame": true,
+  "before": [
+    {
+      "cardId": "contribution-limit",
+      "correct": true,
+      "turn": 1
+    }
+  ],
+  "after": [
+    {
+      "cardId": "contribution-limit",
+      "correct": true,
+      "turn": 1
+    }
+  ]
+}

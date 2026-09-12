@@ -1,0 +1,20 @@
+{
+  "baseline": "101b12d",
+  "version": "v1.7.0",
+  "tests": 542,
+  "testFiles": 51,
+  "typecheck": "passed via tsc -b and npm run typecheck",
+  "lint": "passed",
+  "build": "passed",
+  "p0MarketPaths": 80,
+  "realBrowser12TurnRuns": 2,
+  "branchPractice": {
+    "fromTurn": 9,
+    "toTurn": 12,
+    "playCount": 1
+  },
+  "screenshots": "Ego screenshot endpoint timed out; PDF renders + DOM checks used",
+  "native200PercentZoom": "not verified; shortcut did not change zoom",
+  "finalCss": "index-DBqXUtpK.css",
+  "finalJs": "index-noqaLiqV.js"
+}

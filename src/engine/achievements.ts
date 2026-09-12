@@ -23,7 +23,7 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   { id: 'tax-credit-max', title: '공제 한도 채움', detail: `세액공제 대상 납입 ${(policyRules.annualTaxCreditLimit / 10_000).toFixed(0)}만 원을 다 채웠다.`, scope: 'game' },
   { id: 'quiz-perfect', title: '퀴즈 만점', detail: `${QUIZ_PERFECT_MIN}문항 이상 풀고 전부 맞혔다.`, scope: 'game' },
   { id: 'ghost-crusher', title: '고스트 격파', detail: `납입·생활 선택이 다른 고스트보다 세전 월 환산액이 ${(GHOST_CRUSH_GAP / 10_000).toFixed(0)}만 원 이상 컸다. 운용만의 비교는 아니다.`, scope: 'game' },
-  { id: 'annuity-choice', title: '일시금 유혹 거절', detail: '연금(20년)으로 받기를 골랐다. 세율 차이를 숫자로 확인한 선택.', scope: 'game' },
+  { id: 'annuity-choice', title: '연금 수령 체험', detail: '연금(20년) 수령 방식을 체험했다. 어느 수령 방식이 더 적절한지는 개인 상황에 따라 다릅니다.', scope: 'game' },
   { id: 'default-option-run', title: '사전지정운용', detail: `디폴트옵션 매수 체험을 완료했다. 새 판은 1회, 이전 판은 ${DEFAULT_OPTION_RUNS}회 기준. 점수·별 추가 보상은 없다.`, scope: 'game' },
   { id: 'severance-to-irp', title: '퇴직급여는 IRP로', detail: '이직 퇴직급여를 지금 받지 않고 IRP로 이전했다(과세 이연).', scope: 'game' },
   { id: 'all-profiles', title: '다섯 캐릭터 완주', detail: '선택 가능한 동물 5종 모두 한 번 이상 12턴을 완주했다.', scope: 'meta' }

@@ -1,3 +1,4 @@
+import { formatWon } from './format';
 import { policyRules } from '../data/content';
 import { accountPayout, SCENARIO_CLOCK } from '../engine/account-engine';
 import type { GameState, PayoutChoice, PayoutPlan } from '../types';
@@ -6,7 +7,6 @@ import { renderSpeech } from './speech';
 import { missionDisplay, pensionBasisLabel } from '../engine/progress-engine';
 import { calculateScore } from '../engine/scoring-engine';
 
-const formatWon = (value: number) => `${Math.round(value).toLocaleString('ko-KR')}원`;
 const pct = (rate: number) => `${Math.round(rate * 1000) / 10}%`;
 
 export interface PayoutViewOptions {
@@ -29,7 +29,7 @@ function planCard(plan: PayoutPlan, state: GameState, current: PayoutChoice | nu
     : `평균 세금 ${pct(plan.taxRate)} · ${policyRules.receivingMonths}개월 · ${pensionBasisLabel(plan.choice)} ${formatWon(plan.monthlyBasis)}`;
   const goal = `<span class="payout-goal ${mission.passed ? 'ok' : 'miss'}">${mission.name} ${mission.passed ? '달성' : '미달'}${mission.passed ? '' : ` · ${mission.remaining}`}</span>`;
   return `<button type="button" class="payout-card ${lump ? 'lump' : 'annuity'} ${current === plan.choice ? 'current' : ''}" data-action="choose-payout" data-choice="${plan.choice}">
-      <span class="payout-name">${payoutLabel(plan.choice)}</span>
+      <span class="payout-name">${payoutLabel(plan.choice)}${current===plan.choice?' · ✓ 현재 선택':''}</span>
       <strong>${headline}</strong>
       <small>${sub}</small>
       ${goal}
@@ -52,9 +52,9 @@ export function renderPayoutModal(state: GameState, options: PayoutViewOptions):
   return `<div class="modal-icon payout">₩</div>
     <p class="eyebrow">12턴 끝 · 마지막 결정</p>
     <h2>어떻게 받을까요?</h2>
-    <p class="modal-lead">IRP 평가액 <b>${formatWon(irp)}</b>. 미공제 원금은 과세 제외, 퇴직급여는 원천징수영수증의 이연세액, 공제 원금·수익은 수령 방식과 나이에 따른 세금으로 구분합니다. 표시 비율은 전체 잔액 대비 평균 세금입니다.</p>
+    <p class="modal-lead">최종 주문 정산을 마친 IRP <b>${formatWon(irp)}</b>로 비교합니다. 두 방식 모두 선택할 수 있고 결과에서 바꿔 볼 수 있습니다.</p><details class="payout-basis"><summary>재원별 세금 계산 기준</summary><p>미공제 원금은 과세 제외, 퇴직급여는 원천징수영수증의 이연세액, 공제 원금·수익은 수령 방식과 나이에 따른 세금으로 구분합니다. 표시 비율은 전체 잔액 대비 평균 세금입니다.</p></details>
     <div class="payout-grid">${planCard(annuity, state, options.current)}${planCard(lump, state, options.current)}</div>
-    ${renderSpeech('coach', `<p>이번 재원 구성에서는 일시금 세금이 <b>${formatWon(diff)}</b> 더 붙습니다. ${goalExplanation} 정답은 없습니다. 급한 목돈이 필요하면 일시금도 선택입니다.</p>`, { characters: options.characters, title: '한 줄 정리' })}
+    ${renderSpeech('coach', `<p>이 판의 가정에 따른 일시금과 연금의 세금 차이는 <b>${formatWon(diff)}</b>입니다. ${goalExplanation} 일시금은 목돈 활용, 연금은 기간에 나눈 수령을 비교하는 체험입니다. 선택 자체에 벌점은 없습니다.</p>`, { characters: options.characters, title: '내 상황에 맞춰 비교' })}
     <p class="hint">${SCENARIO_CLOCK.description} 초기 퇴직급여 9천만원의 이연세액 180만원은 가상 영수증의 값입니다. 손실 시 재원 비례 축소·수령 중 운용수익 없음 가정이며 실제 세무 계산서는 아닙니다.</p>`;
 }
 

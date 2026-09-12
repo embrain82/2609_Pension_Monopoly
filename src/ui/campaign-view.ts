@@ -1,9 +1,9 @@
+import { formatWon as won } from './format';
 import { missionDisplay } from '../engine/progress-engine';
 import { products } from '../data/content';
 import { SCENARIOS, MISSIONS, tdfEquity, type ScenarioId, type MissionId } from '../engine/scenario-engine';
 import { calculateScore } from '../engine/scoring-engine';
 import type { GameState } from '../types';
-const won=(n:number)=>Math.round(n).toLocaleString('ko-KR')+'원';
 const pct=(n:number)=>(n*100).toFixed(1)+'%';
 const esc=(s:string)=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 export function renderCampaignPicker(scenario:ScenarioId,mission:MissionId, open=false):string {

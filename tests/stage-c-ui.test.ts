@@ -64,7 +64,7 @@ it('취소된 애니메이션 대기는 완료 콜백을 실행하지 않는다'
   await vi.runAllTimersAsync(); expect(controller.valid(id)).toBe(false);
 });
 it('경로 선택 없이 자동 이동하는 12턴 UI를 완주하고 결과 중복 집계 없이 진행 저장을 지운다', () => {
-  new PensionRoadApp(root); click('[data-action="begin"]'); click('[data-action="skip-default-option"]');
+  new PensionRoadApp(root); click('[data-action="begin"]');click('[data-action="prepare-continue"]'); click('[data-action="prepare-no-option"]');click('[data-action="confirm-default-option"]');
   for(let i=0;i<120 && !root.querySelector('.result-screen');i++) {
     const dialog = root.querySelector('[role="dialog"]');
     const actions = dialog ? ['dismiss-howto','dismiss-news','quiz-skip','quiz-next','resolve-life','do-hold','dismiss-settle','choose-payout'] : ['roll-dice','open-action'];
@@ -81,7 +81,7 @@ it('경로 선택 없이 자동 이동하는 12턴 UI를 완주하고 결과 중
 it('이동 도중 탭 중단·복구에서도 보드/말 노드를 유지하고 시장·급여를 한 번만 처리한다', async () => {
   vi.useFakeTimers();
   localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true}));
-  new PensionRoadApp(root); click('[data-action="begin"]'); click('[data-action="skip-default-option"]');
+  new PensionRoadApp(root); click('[data-action="begin"]');click('[data-action="prepare-continue"]'); click('[data-action="prepare-no-option"]');click('[data-action="confirm-default-option"]');
   const board=root.querySelector('.board'), token=root.querySelector('.token-pos');
   click('[data-action="roll-dice"]'); await vi.advanceTimersByTimeAsync(1500);
   expect(root.querySelector('.board')).toBe(board); expect(root.querySelector('.token-pos')).toBe(token);

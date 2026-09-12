@@ -1,3 +1,4 @@
+import { formatWon } from './format';
 import { marketExplanation } from '../engine/market-explanation';
 import { renderMarketImpacts } from './market-impact-view';
 import { products } from '../data/content';
@@ -11,6 +12,7 @@ import type { ScenePace } from './fx';
 import { renderBenchmarkSettleLine } from './performance-view';
 
 export interface SettlementOptions {
+  optionalLearning?: boolean;
   /** 구 저장 정산의 헤드라인도 이미 공개된 숫자로 복원한다. */
   market?: MarketStep;
   characters: boolean;
@@ -51,7 +53,6 @@ export function renderMilestoneBanner(milestone: Milestone, reducedMotion = fals
   return `<div class="milestone-banner ${milestone.tone} ${milestone.id}" role="status">${confetti}<span class="milestone-mark" aria-hidden="true">${milestone.tone === 'cheer' ? '★' : '!'}</span><div><strong>${milestone.title}</strong><p>${milestone.detail}</p></div></div>`;
 }
 
-const formatWon = (value: number) => `${Math.round(value).toLocaleString('ko-KR')}원`;
 const signedWon = (value: number) => `${value > 0 ? '+' : ''}${formatWon(value)}`;
 const RETURN_BAR_CAP = 0.15;
 
@@ -114,10 +115,10 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
   const cheer = (summary.milestones ?? []).find((milestone) => milestone.tone === 'cheer');
   const reactionTone = cheer ? 'positive' : summary.shock ? 'shock' : 'default';
   const auto = options.autoSettleMs ?? null;
-  const cta = options.final ? SETTLE_CTA_FINAL : auto ? SETTLE_CTA_AUTO : SETTLE_CTA_NEXT;
+  const cta = options.final ? (options.optionalLearning ? '수령 방식 비교로' : SETTLE_CTA_FINAL) : auto ? SETTLE_CTA_AUTO : SETTLE_CTA_NEXT;
   const autoBar = auto && !options.reducedMotion ? `<i class="auto-bar" style="--ms:${auto}ms" aria-hidden="true"></i>` : '';
   const hints = options.final
-    ? ['12턴이 끝났습니다. 배운 카드에서 마무리 퀴즈(최대 3문항)를 풀고, 연금과 일시금 중 수령 방식을 정하면 결과 리포트가 열립니다.']
+    ? [options.optionalLearning ? '12턴이 끝났습니다. 이 화면의 관련 문제는 선택 학습입니다. 수령 방식 비교로 넘어가 연금 또는 일시금을 고르면 결과가 열립니다.' : '12턴이 끝났습니다. 배운 카드에서 마무리 퀴즈(최대 3문항)를 풀고, 연금과 일시금 중 수령 방식을 정하면 결과 리포트가 열립니다.']
     : summary.nextHints;
   const hintsBlock = renderSpeech('coach', `<ul class="settle-hints">${hints.map((hint) => `<li>${hint}</li>`).join('')}</ul>`, { characters: options.characters, title: options.final ? '남은 일' : '다음 판단' });
   const details = `<details class="settle-more"${options.expanded ? ' open' : ''}>
@@ -138,7 +139,7 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
     ${ghost ? `<details class="settle-comparison"><summary>생활 선택까지 다른 고스트 경로 비교</summary>${ghost}</details>` : ''}
     ${renderLifeSettleBlock(summary.lifeEvent)}
     ${alert}
-    <div class="settle-reaction">${renderSpeech('coach', `<p>${summary.marketEffects !== undefined ? summary.reaction : '이번 시장의 변화와 내 보유분 수익을 구분해 확인하세요. 다음 턴 방향은 확정되지 않았습니다.'}</p>`, { characters: options.characters, title: '한 줄 정리', tone: reactionTone })}</div>
+    <div class="settle-reaction">${renderSpeech('coach', `<p>${options.final ? '마지막 시장과 주문 정산이 끝났습니다. 최종 자금과 수령 방식의 차이를 비교해 보세요.' : summary.marketEffects !== undefined ? summary.reaction : '이번 시장의 변화와 내 보유분 수익을 구분해 확인하세요. 다음 턴 방향은 확정되지 않았습니다.'}</p>`, { characters: options.characters, title: '한 줄 정리', tone: reactionTone })}</div>
     ${options.final ? hintsBlock : ''}
     <div class="settle-cta${auto ? ' auto' : ''}"><button class="primary jumbo" data-action="dismiss-settle">${cta}</button>${autoBar}</div>
     ${details}

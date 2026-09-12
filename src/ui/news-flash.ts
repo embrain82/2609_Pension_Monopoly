@@ -13,6 +13,7 @@ const DIAL_SWEEP_DEG = 120;
 export const COACH_MARKET_FIRST = '뉴스를 본 순간 가격은 이미 움직였어요. 투자상품 수익률은 턴 시작에 보유분에 들어갔고, 지금 고르는 행동은 다음 턴 흐름에 거는 거예요.';
 
 export interface NewsFlashOptions {
+  compact?:boolean;
   characters: boolean;
   /** 턴 시작 → 시장 반영 IRP. 있으면 "내 IRP에 반영" 줄을 그린다 */
   ledger?: Pick<TurnLedger, 'open' | 'afterMarket' | 'marketEffects'>;
@@ -69,19 +70,19 @@ export function renderNewsFlash(step: MarketStep, prev: MarketStep, tile: BoardT
   const effects = renderTileEffects(options.tileEffects ?? [], { compact: true });
   return `<div class="${classes}">
     <div class="news-tape"><span class="news-badge">${step.shock ? '속보 · 충격' : '속보'}</span><span>TURN ${String(step.turn).padStart(2, '0')}</span><span class="news-phase">${step.phase}</span>${live}</div>
-    <h2 class="news-headline">${step.headline}</h2>
-    <div class="news-dial" style="--from:${from}deg;--to:${to}deg" role="img" aria-label="교육용 가상 금리 ${step.ratePct.toFixed(2)}%, 변화 ${formatRateDelta(step.rateDeltaPct)}">
+    <h2 class="news-headline">${step.headline}</h2>${options.compact?applied:''}
+${options.compact?'<details class="news-more"><summary>금리·상품 영향 자세히</summary>':''}<div class="news-dial" style="--from:${from}deg;--to:${to}deg" role="img" aria-label="교육용 가상 금리 ${step.ratePct.toFixed(2)}%, 변화 ${formatRateDelta(step.rateDeltaPct)}">
       <svg viewBox="0 0 200 120" aria-hidden="true">
         <path class="dial-track" d="M20 110 A80 80 0 0 1 180 110"></path>
         <g class="dial-needle"><line x1="100" y1="110" x2="100" y2="38"></line><circle cx="100" cy="110" r="6"></circle></g>
       </svg>
       <p><small>교육용 가상 금리</small><b>${step.ratePct.toFixed(2)}%</b><em>${formatRateDelta(step.rateDeltaPct)}</em></p>
     </div>
-    ${applied}
+    ${options.compact?'':applied}
     ${renderMarketImpacts(options.ledger?.marketEffects, step.turn)}
     <p class="market-note">상품별 시장 예시 · 보수 전 · 내 보유분 수익과 다름</p><ul class="news-arrows">${arrows}</ul>
     ${reason}<p class="hint">예금은 가입 건별 약정·만기를 따릅니다. 펀드·TDF는 원금 손실이 가능합니다. 실제 보유분은 위의 원화 영향으로 확인하세요.</p>
-    ${coach}
+    ${coach}${options.compact?'</details>':''}
     ${renderMarketAlert(step)}
     <p class="news-arrival">도착 · ${String(tile.index + 1).padStart(2, '0')} ${tile.label}</p>
     ${effects}

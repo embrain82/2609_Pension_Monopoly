@@ -1,3 +1,4 @@
+import { validLearningFlow } from '../engine/quiz-engine';
 import { normalizeMissionMilestones } from '../engine/milestones';
 import { SCENARIOS, MISSIONS, type Campaign } from '../engine/scenario-engine';
 import { products } from '../data/content';
@@ -41,7 +42,7 @@ function validCampaign(d: Campaign, depth = 0, pacing?: GameState['contributionP
     (r.defaultOrders === undefined || (Array.isArray(r.defaultOrders) && r.defaultOrders.every(o => typeof o.id === 'string' && ['buy','sell'].includes(o.side) && ['received','priced'].includes(o.stage) && Number.isFinite(o.amount) && o.amount >= 0)))
   )) return false;
   if (!Array.isArray(d.branches) || d.branches.length>3 || (depth>0 && d.branches.length)) return false;
-  return d.branches.every(b=>[3,6,9].includes(b.turn) && b.state.turn===b.turn && b.state.status==='playing' && shape(createGame('validate','balanced',500000,{ghost:false}),b.state) && validMarketEffects(b.state.ledger.marketEffects) && validDefaultLedger(b.state) && validContributionPacing(b.state) &&
+  return d.branches.every(b=>[3,6,9].includes(b.turn) && b.state.turn===b.turn && b.state.status==='playing' && shape(createGame('validate','balanced',500000,{ghost:false}),b.state) && validMarketEffects(b.state.ledger.marketEffects) && validDefaultLedger(b.state) && validContributionPacing(b.state) && validLearningFlow(b.state) &&
     b.state.contributionPacing?.version === pacing?.version && b.state.contributionPacing?.perTurnLimit === pacing?.perTurnLimit && validCampaign({...b.progress,branches:[]},depth+1,pacing));
 }
 /** 새 표시 내역만 검증한다. 없는 구 저장에는 보유 영향을 추정하지 않는다. */
@@ -66,7 +67,7 @@ export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
     if (!shape(createGame('validate', 'balanced', 500000, { ghost: false }), data.game)) return null;
     const g = data.game;
     if (!validMarketEffects(g.ledger.marketEffects) || !validMarketEffects(data.lastSummary?.marketEffects)) return null;
-    if(!validContributionPacing(g) || (g.campaign && !validCampaign(g.campaign,0,g.contributionPacing))) return null;
+    if(!validLearningFlow(g) || !validContributionPacing(g) || (g.campaign && !validCampaign(g.campaign,0,g.contributionPacing))) return null;
     const finite = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
     if (g.rulesetVersion !== (data.version==='c3' ? '2026-09-10-e' : g.campaign ? '2026-09-10-d' : '2026-09-10-c')) return null;
     if(!validDefaultLedger(g)) return null;

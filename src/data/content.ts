@@ -1,3 +1,4 @@
+import { CARD_RULES, LEARNING_RULES, SOURCES, CONTENT_REVIEWED_AT } from './learning-rules';
 import productsJson from './products.json';
 import marketJson from './market-scenarios.json';
 import lifeJson from './life-events.json';
@@ -15,7 +16,11 @@ export const marketScenario = marketJson as MarketStep[];
 export const marketShocks = marketShocksJson as MarketShock[];
 export const lifeEvents = lifeJson as LifeEvent[];
 export const policyRules = policyJson as PolicyRules;
-export const learningCards = learningJson as LearningCard[];
+export const learningCards: LearningCard[] = learningJson.map(card => {
+  const ruleId = CARD_RULES[card.id], rule = LEARNING_RULES[ruleId];
+  return { ...card, ruleId, actualPrinciple: rule.principle, gameAssumption: rule.assumption,
+    source_url: SOURCES[rule.sources[0]].url, reviewed_at: CONTENT_REVIEWED_AT } as LearningCard;
+});
 export const investorProfiles = profilesJson as InvestorProfile[];
 export const balanceConfig = balanceJson as BalanceConfig;
 export const tileBriefings = tileBriefingsJson as TileBriefingSet[];

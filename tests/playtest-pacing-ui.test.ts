@@ -25,7 +25,7 @@ beforeEach(() => {
 });
 
 it('실제 새 판에만 턴 한도를 넣고 구 판의 이어하기는 보존한다', () => {
-  new PensionRoadApp(root); click('[data-action="begin"]');
+  new PensionRoadApp(root); click('[data-action="begin"]'); click('[data-action="prepare-continue"]'); click('[data-action="confirm-default-option"]');
   expect(saved().game.contributionPacing).toEqual({ version: 'v1', perTurnLimit: 2_000_000 });
 });
 it('구 저장에는 200만원 제한을 표시하거나 적용하지 않는다', () => {
@@ -106,4 +106,12 @@ it('공유 결과에서 같은 시드의 서로 다른 납입 규칙을 구분�
     const g = open(paced), text = resultShareText(g, calculateScore(g));
     expect(text).toContain(paced ? '추가납입 턴당 200만원' : '추가납입 이전 규칙');
   }
+});
+
+it('운용에서 정산으로 넘어가면 제목부터 보이고 포트폴리오 왕복 이외의 스크롤은 초기화한다', () => {
+  mount({...open(),actionsLeft:1}); click('[data-view="contribute"]');
+  root.querySelector<HTMLElement>('.modal-sheet')!.scrollTop=640;
+  click('[data-action="do-contribute"]');
+  expect(root.querySelector('[data-action="dismiss-settle"]')).not.toBeNull();
+  expect(root.querySelector<HTMLElement>('.modal-sheet')!.scrollTop).toBe(0);
 });
