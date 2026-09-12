@@ -1,0 +1,35 @@
+{
+  "checked": [
+    {
+      "file": "public/user-manual.html",
+      "links": 9,
+      "ids": 8
+    },
+    {
+      "file": "public/operator-manual.html",
+      "links": 10,
+      "ids": 4
+    },
+    {
+      "file": "public/learning-guide.html",
+      "links": 53,
+      "ids": 41
+    },
+    {
+      "file": "public/manual-archive/user-v1.6.1.html",
+      "links": 30,
+      "ids": 24
+    },
+    {
+      "file": "public/manual-archive/operator-v1.6.1.html",
+      "links": 27,
+      "ids": 19
+    },
+    {
+      "file": "docs/reviews/2026-09-12-playthrough/review-and-implementation-plan.html",
+      "links": 288,
+      "ids": 63
+    }
+  ],
+  "errors": []
+}

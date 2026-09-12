@@ -1,0 +1,114 @@
+/* P2: same game, clearer cover, movement, collection and financial evidence. */
+.title-screen { width:min(100% - 32px,620px); justify-content:flex-start; padding:24px 0 28px; gap:10px; }
+.title-screen h1 { font-size:clamp(3.2rem,12vw,5rem); margin:4px 0; }
+.title-screen .subtitle,.title-screen .lead { margin:0; }
+.title-screen .lead { font-size:1rem; line-height:1.55; }
+.title-cover { width:min(100%,330px); margin:0 auto; }
+.title-cover svg { display:block; width:100%; height:auto; }
+.title-screen .setting-row { width:100%; margin:0; padding:8px 12px; border:1px solid var(--line); border-radius:14px; text-align:left; }
+.title-screen .setting-row small { font-size:.75rem; }
+.title-screen .campaign-picker { margin:0; width:100%; text-align:left; }
+.title-screen .campaign-picker summary { min-height:44px; padding:10px 12px; }
+.title-screen .disclaimer-check { margin:0; padding:10px 12px; text-align:left; font-size:.875rem; line-height:1.5; }
+.title-screen > .hint { margin:2px 0; }
+.title-screen .utility-row { flex-wrap:wrap; }
+/* Feet keep the existing board anchor; remove the coin disc to expose all five silhouettes. */
+.token3d { width:9.2%; }
+.token3d:not(.plain) .token-face { overflow:visible; border:0; border-radius:0; background:none; box-shadow:none; }
+.token3d:not(.plain) .token-face svg { width:100%; height:100%; margin:0; filter:drop-shadow(0 1px 1px #fffdf4); }
+.token3d:not(.plain) .token-rim { inset:auto 12% -1%; height:10%; border-radius:50%; transform:none; box-shadow:none; background:#507c69; border:1px solid var(--ink); }
+.token3d:not(.plain) .token-shadow { bottom:-7%; }
+.token3d.plain { width:6.8%; }
+.token3d.plain .token-face { background:var(--green); }
+.tile.moving rect { stroke-width:2px; stroke-dasharray:5 4; }
+.move-trail { fill:#337769; opacity:.35; }
+.arrival-ring { fill:none; stroke:#205b54; stroke-width:3; transform-origin:50px 50px; animation:arrival-ring .45s ease-out both; }
+@keyframes arrival-ring { from { opacity:.9; transform:scale(.7); } to { opacity:0; transform:scale(1.25); } }
+.region-notice { margin:4px 0 14px; padding:12px 16px; background:#eef2df; color:#344e32; border:1px solid #9fad7b; border-radius:14px; font-weight:750; animation:stamp-in .25s ease-out both; }
+@keyframes stamp-in { from { opacity:.3; transform:scale(.97); } to { opacity:1; transform:none; } }
+.region-progress > div { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+.region-progress > div button { text-align:left; text-decoration:none; border:1px solid var(--line); border-radius:10px; background:#fff; padding:8px; }
+.region-progress button small { display:block; font-size:.75rem; font-weight:500; color:#526961; }
+/* All changes use a shared symmetric amount axis; labels carry sign and category. */
+.change-chart { margin:12px 0; padding:12px; background:#fffefa; border:1px solid var(--line); border-radius:14px; }
+.change-chart figcaption { font-weight:800; font-size:.95rem; }
+.chart-axis { display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px; margin:8px 0; font-size:.75rem; color:#506860; }
+.chart-axis small { display:block; width:100%; text-align:center; font-size:.75rem; }
+.change-chart ul { margin:0; padding:0; list-style:none; display:grid; gap:8px; }
+.change-row > div { display:flex; justify-content:space-between; flex-wrap:wrap; gap:4px 12px; font-size:.875rem; }
+.change-row svg { display:block; width:100%; height:24px; overflow:visible; }
+.change-row rect,.change-row circle { fill:#39768a; }
+.change-row.flow rect,.change-row.flow circle { fill:#31725e; }
+.change-row.trade rect,.change-row.trade circle { fill:#9a662d; }
+.chart-track { stroke:#e4e7e1; stroke-width:8; stroke-linecap:round; }
+.zero-line { stroke:#183635; stroke-width:1; }
+.change-row > div > span::before { content:'● '; color:#39768a; }
+.change-row.flow > div > span::before { content:'◆ '; color:#31725e; }
+.change-row.trade > div > span::before { content:'■ '; color:#9a662d; }
+.market-bars .rate-change { grid-column:1/-1; display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; padding:8px; background:#f4f5ec; border-radius:10px; }
+.rate-change small { color:#566f69; }
+.rate-change em { margin-left:auto; }
+.settle-balance { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 8px; margin:0; font-size:.875rem; }
+.settle-bars .settle-delta { margin:0; font-size:clamp(1.25rem,4vw,1.8rem); }
+.settle-bars .settle-delta small { font-size:.875rem; }
+/* Mission verdict comes before collections and review. */
+.result-screen { width:min(100% - 32px,850px); padding:24px 0; }
+.result-cover { border:1px solid #b3c7bb; border-top:5px solid #377860; border-radius:22px; padding:20px; background:#f4f7ee; }
+.result-cover.unmet { border-top-color:#9a7740; background:#faf7ed; }
+.result-cover .eyebrow { margin:0 0 12px; font-size:.75rem; }
+.result-headline h1 { font-family:inherit; font-size:clamp(1.7rem,5vw,2.5rem); line-height:1.3; margin:0; word-break:keep-all; }
+.result-headline .avatar { flex:0 0 56px; }
+.result-cover .stars { font-size:1.8rem; margin-top:8px; }
+.result-cover .result-hero { display:flex; flex-direction:column; align-items:flex-start; gap:4px; margin:12px 0; padding:0; background:none; color:var(--ink); box-shadow:none; }
+.result-cover .result-hero strong { font-family:inherit; font-size:clamp(1.75rem,6vw,2.7rem); font-variant-numeric:tabular-nums; letter-spacing:-.04em; }
+.result-cover .result-hero small,.result-cover .result-hero span { opacity:1; font-size:.875rem; }
+.result-cause { font-weight:700; margin:10px 0; font-size:.95rem; line-height:1.6; }
+.result-cover > .hint { display:block; font-size:.8rem; line-height:1.55; margin:0; }
+.result-overview { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:16px 0; }
+.result-overview article { min-width:0; display:grid; align-content:start; gap:5px; border:1px solid var(--line); border-radius:14px; background:#fff; padding:14px; }
+.result-overview article strong { font-size:1.3rem; }
+.result-overview article span { font-size:.75rem; line-height:1.6; color:#51685f; }
+.result-collection { border:1px solid var(--line); border-radius:18px; padding:16px; margin:18px 0; }
+.result-collection h2 { margin:0; font-size:1.2rem; }
+.stamp-shelf { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.stamp-shelf > span { display:grid; place-items:center; gap:2px; border:1px dashed #9fad9c; border-radius:14px; padding:10px 4px; }
+.stamp-shelf .earned { color:#664711; border:1px solid #b3934c; background:#fbf3d8; }
+.stamp-shelf b { font-size:1.4rem; }
+.stamp-shelf small { font-size:.75rem; }
+.collection-character { display:flex; align-items:center; gap:8px; font-size:.875rem; }
+.result-details,.route-reflections,.new-collection { border:1px solid var(--line); border-radius:14px; padding:8px 12px; margin:12px 0; }
+.result-details > summary,.route-reflections > summary,.new-collection > summary { min-height:44px; align-content:center; font-weight:750; cursor:pointer; }
+.result-details > .result-journey { margin:16px 0; }
+.result-screen .result-actions { flex-wrap:wrap; }
+.route-reflections .choice-stack { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.route-reflections .choice-stack button { font-size:.875rem; padding:10px; }
+@media (max-width:480px) {
+ .title-cover { width:260px; }
+ .title-screen { gap:7px; padding-top:16px; }
+ .title-screen .setting-row small { display:none; }
+ .title-screen .setting-row select { max-width:50%; }
+ .title-screen .campaign-picker summary { font-size:.875rem; }
+ .result-cover { padding:16px; }
+ .result-overview { gap:6px; }
+ .result-overview article { padding:10px 8px; }
+ .result-overview article strong { font-size:1rem; }
+ .result-overview article small { font-size:.75rem; }
+}
+@media (min-width:1000px) {
+ .title-screen { width:min(100% - 64px,1000px); display:grid; grid-template-columns:1fr 1fr; align-content:center; column-gap:40px; text-align:left; }
+ .title-screen > * { grid-column:2; width:100%; }
+ .title-screen .title-cover { grid-column:1; grid-row:1/9; width:100%; max-width:none; }
+ .title-screen h1 { font-size:4.5rem; }
+ .title-screen .eyebrow { margin:0; }
+}
+[data-reduce-motion="true"] .arrival-ring { animation:none; opacity:1; }
+[data-reduce-motion="true"] .region-notice { animation:none; }
+@media (prefers-reduced-motion:reduce) {
+ .arrival-ring { animation:none; opacity:1; }
+ .region-notice { animation:none; }
+}
+/* Financial evidence stays visible immediately; reduced motion also removes legacy delays. */
+.settle-bars .settle-delta { animation:none; }
+@media (prefers-reduced-motion:reduce) {
+ *,*::before,*::after { animation-delay:0ms !important; }
+}

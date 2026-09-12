@@ -31,9 +31,9 @@ function marketBars(step: MarketStep, muted = false): string {
     return `<div class="market-bars muted"><span>금리 <i></i>—</span><span>물가 <i></i>—</span><span>주가 <i></i>—</span></div>`;
   }
   return `<div class="market-bars">
-      <span>금리 <i style="--level:${step.rate}"></i><b>${step.ratePct.toFixed(2)}%</b><em class="${deltaClass(step.rateDeltaPct)}">${formatRateDelta(step.rateDeltaPct)}</em></span>
-      <span>물가 <i style="--level:${step.inflation}"></i><b>${step.inflationPct.toFixed(1)}%</b></span>
-      <span>주가 <i style="--level:${step.stocks}"></i><b>${step.stockIndex.toFixed(1)}</b><em class="${deltaClass(step.stockReturn)}">${signedPercent(step.stockReturn)}</em></span>
+      <span class="rate-change">금리 <small>이전 ${(step.ratePct - step.rateDeltaPct).toFixed(2)}%</small><span aria-hidden="true">→</span><b>현재 ${step.ratePct.toFixed(2)}%</b><em class="${deltaClass(step.rateDeltaPct)}">${Math.abs(step.rateDeltaPct)<1e-9 ? '→0.00' : formatRateDelta(step.rateDeltaPct)}%p</em></span>
+      <span>물가 <b>${step.inflationPct.toFixed(1)}%</b></span>
+      <span>주가 <b>${step.stockIndex.toFixed(1)}</b><em class="${deltaClass(step.stockReturn)}">${signedPercent(step.stockReturn)}</em></span>
     </div>
     <p class="market-note">교육용 가상 금리 · 실제 금리 전망이 아닙니다</p>`;
 }

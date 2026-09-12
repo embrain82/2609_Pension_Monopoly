@@ -7,6 +7,7 @@ import { AVATAR_ANIMALS, avatarBody, type Mood } from './avatars';
 export const TOKEN_STEP_MS = 260;
 
 export interface BoardView {
+  trail?: number[];
   focusIndex?: number;
   hopping?: boolean;
   /** 설정 "캐릭터 표시". 켜면 말이 성향 동물 아바타가 된다. */
@@ -109,13 +110,14 @@ export function renderBoardMarkup(
     const { x, y } = boardPosition(item.index);
     const active = item.index === token;
     const landed = active && Boolean(view.landed);
-    return `<g data-key="tile-${item.index}" data-action="open-explore" data-tile="${item.index}" role="button" tabindex="${active ? 0 : -1}" aria-label="${item.index+1}. ${item.label} · ${REGIONS[regionOf(item.index)]} 지역 · 칸 정보" class="tile tile-${item.kind} region-${regionOf(item.index)}${active ? ' active' : ''}${landed ? ' landed' : ''}" transform="translate(${x} ${y})">
+    return `<g data-key="tile-${item.index}" data-action="open-explore" data-tile="${item.index}" role="button" tabindex="${active ? 0 : -1}" aria-label="${item.index+1}. ${item.label} · ${REGIONS[regionOf(item.index)]} 지역 · 칸 정보" class="tile tile-${item.kind} region-${regionOf(item.index)}${active ? ' active' : ''}${active && view.hopping && !landed ? ' moving' : ''}${landed ? ' landed' : ''}" transform="translate(${x} ${y})">
         <rect x="3" y="3" width="94" height="94" rx="15"></rect>
         ${state.route.visits.includes(item.index) ? '<circle class="visit-stamp" cx="50" cy="18" r="5"></circle>' : ''}
         <use class="tile-kind-icon" href="#board-icon-${item.kind}" x="14" y="12" width="24" height="24" aria-hidden="true"/>
         <text class="tile-number" x="84" y="24" text-anchor="end">${String(item.index + 1).padStart(2, '0')}</text>
         <text class="tile-label" x="50" y="70" text-anchor="middle">${item.label.length > 7 ? item.label.slice(0, 7) : item.label}</text>
-        ${landed ? tileFx(item.kind) : ''}
+        ${(view.trail ?? []).includes(item.index) ? '<circle class="move-trail" cx="50" cy="46" r="9" aria-hidden="true"/>' : ''}
+        ${landed ? '<ellipse class="arrival-ring" cx="50" cy="50" rx="34" ry="20" aria-hidden="true"/>' + tileFx(item.kind) : ''}
         ${active && view.tokenInSvg !== false ? playerToken(state, view) : ''}
       </g>`;
   }).join('');

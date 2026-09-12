@@ -1,0 +1,15 @@
+{
+  "equal": true,
+  "route": {
+    "visits": [
+      9,
+      18,
+      1,
+      12
+    ],
+    "badges": [],
+    "reflections": [],
+    "version": "auto-v1"
+  },
+  "turn": 4
+}

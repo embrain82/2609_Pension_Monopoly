@@ -1,5 +1,6 @@
 import './styles/main.css';
 import './styles/p1.css';
+import './styles/p2.css';
 import { validateContent } from './data/content';
 import { PensionRoadApp } from './ui/app';
 

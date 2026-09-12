@@ -1,0 +1,73 @@
+[
+  {
+    "id": "A",
+    "seed": "ld8uvj-1agx2j1",
+    "mission": "pension",
+    "turn": 12,
+    "pending": 0,
+    "route": {
+      "visits": [
+        9,
+        18,
+        1,
+        12,
+        21,
+        5,
+        14,
+        0,
+        11,
+        19,
+        22
+      ],
+      "badges": [
+        3,
+        0,
+        2,
+        1
+      ],
+      "reflections": [],
+      "version": "auto-v1"
+    },
+    "irp": 120063459.67376088,
+    "missionValue": "500,264원",
+    "passed": true,
+    "stars": 3,
+    "uiMatches": true,
+    "primaryCount": 1
+  },
+  {
+    "id": "B",
+    "seed": "1nf8jad-azxaxl",
+    "mission": "purchasing",
+    "turn": 12,
+    "pending": 0,
+    "route": {
+      "visits": [
+        5,
+        11,
+        14,
+        23,
+        4,
+        21,
+        1,
+        6,
+        8,
+        18,
+        3
+      ],
+      "badges": [
+        0,
+        3,
+        1
+      ],
+      "reflections": [],
+      "version": "auto-v1"
+    },
+    "irp": 122095806.3146548,
+    "missionValue": "94.4",
+    "passed": false,
+    "stars": 0,
+    "uiMatches": true,
+    "primaryCount": 1
+  }
+]

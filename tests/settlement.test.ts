@@ -193,8 +193,8 @@ describe('턴 정산 요약', () => {
     expect(html).toContain('100,000,000원');
     expect(html).toContain('102,000,000원');
     expect(html).toContain('103,000,000원');
-    expect(html).toContain('시장 손익 +2,000,000원');
-    expect(html).toContain('외부 입출금 +1,000,000원');
+    expect(html.replace(/<[^>]*>/g, '')).toContain('시장 손익+2,000,000원');
+    expect(html.replace(/<[^>]*>/g, '')).toContain('외부 입출금+1,000,000원');
     expect(html).toContain('+3,000,000원');
     expect(html).not.toContain('생활사건');
     expect(html).toContain('시장 예시와 내 보유분');
@@ -219,7 +219,7 @@ describe('턴 정산 요약', () => {
       nextHints: [HINT_DEFAULT],
       ...sceneFields
     }));
-    expect(html).toContain('시장 이후 변화 -1,000,000원 (입출금·거래 포함)');
+    expect(html.replace(/<[^>]*>/g, '')).toContain('시장 이후 변화 (입출금·거래 포함)-1,000,000원');
     expect(html).toContain('settle-actions');
     expect(html).toContain('행동 2회');
     expect(html.match(/<li>/g)!.length).toBeGreaterThanOrEqual(2);

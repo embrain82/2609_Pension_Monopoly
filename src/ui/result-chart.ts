@@ -48,7 +48,7 @@ export function worstTurn(history: number[]): { turn: number; drawdown: number }
  */
 export function renderIrpSparkline(history: number[], shockTurns: number[], ghostHistory: number[] | null = null): string {
   const ghost = ghostHistory && ghostHistory.length >= 2 ? ghostHistory : null;
-  const domain = chartDomain(history, ghost ?? []);
+  const domain = chartDomain([0], history, ghost ?? []);
   const points = sparklinePoints(history, CHART_WIDTH, CHART_HEIGHT, domain);
   if (points.length < 2) return '';
   const line = points.map((point) => `${point.x},${point.y}`).join(' ');
@@ -77,7 +77,7 @@ export function renderIrpSparkline(history: number[], shockTurns: number[], ghos
     labels = `<text class="chart-label me" x="${end.x - 8}" y="${myY}" text-anchor="end">내 IRP</text><text class="chart-label ghost" x="${ghostEnd.x - 8}" y="${ghostY}" text-anchor="end">그대로 둔 나</text>`;
   }
   const ghostAria = ghost ? `, 그대로 둔 나 마지막 ${Math.round(ghost[ghost.length - 1]).toLocaleString('ko-KR')}원` : '';
-  return `<svg class="irp-chart ${rising ? 'up' : 'down'}${ghost ? ' with-ghost' : ''}" viewBox="0 0 ${CHART_WIDTH} ${CHART_HEIGHT}" role="img" aria-label="12턴 IRP 평가액 흐름. 시작 ${Math.round(history[0]).toLocaleString('ko-KR')}원, 마지막 ${Math.round(history[history.length - 1]).toLocaleString('ko-KR')}원${ghostAria}">
+  return `<p class="chart-axis">IRP 잔액 · 입출금 포함 · 0~${history.length-1}턴<small>세로축 0원~${Math.round(domain.max).toLocaleString('ko-KR')}원 · 고스트도 같은 축</small></p><svg class="irp-chart ${rising ? 'up' : 'down'}${ghost ? ' with-ghost' : ''}" viewBox="0 0 ${CHART_WIDTH} ${CHART_HEIGHT}" role="img" aria-label="12턴 IRP 평가액 흐름. 시작 ${Math.round(history[0]).toLocaleString('ko-KR')}원, 마지막 ${Math.round(history[history.length - 1]).toLocaleString('ko-KR')}원${ghostAria}">
       <polygon class="chart-area" points="${area}"></polygon>
       ${ghostMarkup}
       <polyline class="chart-line" points="${line}" pathLength="1"></polyline>

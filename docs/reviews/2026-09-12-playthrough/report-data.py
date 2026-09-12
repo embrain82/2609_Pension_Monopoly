@@ -193,3 +193,8 @@ for proposal in ITEMS:
 for proposal in ITEMS:
     if proposal["priority"] == "P1":
         proposal["status"] = "승인 · v1.7.0 구현"
+
+# 2026-09-12 사용자 후속 승인: P2 다섯 항목. 원본 검토 근거는 보존한다.
+for proposal in ITEMS:
+    if proposal["priority"] == "P2":
+        proposal["status"] = "승인 · v1.8.0 구현·검증 완료"
