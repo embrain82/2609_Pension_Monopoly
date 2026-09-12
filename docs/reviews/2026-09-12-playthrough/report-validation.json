@@ -1,0 +1,55 @@
+{
+  "date": "2026-09-12",
+  "browser": "Ego Browser",
+  "checks": [
+    {
+      "viewport": 390,
+      "bodyWidth": 375,
+      "overflow": false,
+      "cards": 20,
+      "selected": "0"
+    },
+    {
+      "viewport": 1440,
+      "bodyWidth": 1425,
+      "overflow": false,
+      "cards": 20,
+      "selected": "0"
+    },
+    {
+      "searchF04": [
+        "F04",
+        "D08"
+      ]
+    },
+    {
+      "empty": {
+        "count": "0",
+        "messageVisible": true
+      }
+    },
+    {
+      "expanded": 20
+    },
+    {
+      "collapsed": 0
+    }
+  ],
+  "earlierVerified": {
+    "functionalFilterCount": 10,
+    "designFilterCount": 10,
+    "p0FilterCount": 4,
+    "singleCheckboxSelection": 1,
+    "p0Selection": 4,
+    "clearSelection": 0,
+    "hiddenItemAnchorRevealsAndExpands": true,
+    "missionDemoCushion": "921 / 1,800만원",
+    "flowDemoAtZero": "+0.0%",
+    "flowDemoAt18Million": "+16.7%",
+    "localLinksChecked": 289,
+    "missingLocalLinks": 0,
+    "duplicateHtmlIds": 0,
+    "javascriptSyntax": "passed"
+  },
+  "additionalReportScreenshotCapture": "Ego screenshot calls timed out. Report layout was checked through DOM dimensions; the actual game screenshots in evidence were captured earlier. No additional report screenshot is claimed."
+}

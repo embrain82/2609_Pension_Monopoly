@@ -1,0 +1,29 @@
+{
+  "kind": "controlled-boundary-fixture",
+  "description": "Natural runs A/B did not encounter cash shortage; this is an isolated renderer/engine boundary check, not a third completed playthrough.",
+  "input": {
+    "cash": 1000000,
+    "event": "moving",
+    "cost": 2500000
+  },
+  "uiClaimsAutomaticSale": true,
+  "actual": {
+    "ok": true,
+    "cash": 0,
+    "livingDebt": 1500000,
+    "irpBefore": 108000000,
+    "irpAfter": 108000000,
+    "message": "생활비 1,000,000원 지급 · 미지급 1,500,000원는 다음 급여에서 우선 지급합니다. IRP는 인출하지 않았습니다."
+  },
+  "quizCount": 25,
+  "genericHomepageSources": [
+    "rate-bond",
+    "duration",
+    "deposit-rate",
+    "fund-order",
+    "etf-order",
+    "emergency-cash",
+    "liquidity",
+    "pricing-vs-settlement"
+  ]
+}

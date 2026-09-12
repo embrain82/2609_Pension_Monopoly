@@ -1,0 +1,10 @@
+{
+  "kind": "observed-ui-and-saved-path",
+  "seed": "1qjf827-k5ghg8",
+  "turn": 1,
+  "ratePct": 2.5,
+  "rateDeltaPct": 0,
+  "headline": "완화 기조에 위험자산이 힘을 받습니다",
+  "reason": "금리가 내려가면 이미 들고 있는 채권 가격은 오르고, 새로 드는 예금 이자는 낮아집니다. 주식은 회복 기대를 먼저 반영합니다.",
+  "observed": "Ego Browser action menu and dashboard showed the same fixed easing explanation while rate delta was zero."
+}

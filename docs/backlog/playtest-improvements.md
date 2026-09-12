@@ -6,6 +6,8 @@ FB-001~003의 [상세 구현 플랜과 화면 시안](playtest-improvements-plan
 
 현재 누적 **6건 모두 구현·검증 완료**입니다. FB-001~003은 v1.5.1, FB-004~006은 v1.6.0에 반영했습니다. [FB-004~006 승인 계획](playtest-improvements-plan-2026-09-12.html) · [구현·검증 기록](../implementation/2026-09-12-playtest-pacing.md).
 
+2026-09-12 Ego Browser 전반 플레이 리뷰에서 새로 도출한 **기능 10개·디자인 10개는 모두 컨펌 대기**입니다. 기존 6건과 별도로 [리뷰 후보 승인 목록](review-candidates-2026-09-12.md)에서 관리합니다. [20개 상세 구현 계획](../reviews/2026-09-12-playthrough/review-and-implementation-plan.html).
+
 ## 관리 방식
 
 - 사용자가 「개선사항에 추가해줘」라고 요청하면 이 문서에 고유 번호로 추가합니다. 같은 문제의 추가 설명은 기존 항목에 보완합니다.
