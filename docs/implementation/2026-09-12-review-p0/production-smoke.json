@@ -1,0 +1,51 @@
+{
+  "url": "https://2609-pension-monopoly-by6sb0c2u-nonsleepers-projects.vercel.app/",
+  "verifiedAt": "2026-09-12T09:12:49.425Z",
+  "turn": 2,
+  "seed": "15mtcxu-793xof",
+  "mission": "pension",
+  "modal": "턴 정산 요약",
+  "text": "×\n\n2턴 정산\n\n무엇이 바뀌었나요?\n\n가상 금리 동결 · 주가 하락\n\n정산 요약\n턴 시작\n112,240,769원\n시장 반영\n112,633,852원\n정산 후\n112,633,852원\n\nIRP 잔액 변화 +393,083원 (+0.4%)\n\n시장 손익 +393,083원 · 외부 입출금 0원 · 매매·정산 0원\n\n내 보유분에 실제 반영 · 주요 2개\n예금\n+356,400원 (+0.55%)\n가입 건별 약정·만기 반영 · 시장 예시와 다름\n혼합형\n+36,683원 (+0.08%)\n실제 가격 변동·상품 보수 반영\n턴 시작 시장 구간 · 매매·납입 전. 가격 변동 중인 대기 주문 포함.\n같은 입출금으로 비교\n\n내 IRP 112,633,852원 · 기준 지수 112,480,093원\n기준 지수와 차이 +153,759원\n\n초기 상품 비중을 매 턴 복원하고 같은 입출금을 턴 말 반영하는 가상 비교입니다. 실제 예금 약정·거래비용·결제 대기는 재현하지 않습니다.\n생활 선택까지 다른 고스트 경로 비교\n사건 · 자녀 학자금\n\n내 선택: 생활자금으로 해결\n\n생활자금 -3,834,987원\n\n생활자금으로 해결해 IRP를 지켰습니다.\n\n한 줄 정리\n\n이번 시장의 변화는 이미 반영됐습니다. 다음 턴 방향을 단정하지 말고 내 구성과 생활자금을 점검하세요.\n\n다음 턴 준비\n자세히\n상품별 수익률 · 내가 한 일 · 칸 효과 · 다음 판단\n방금 선택과 연결된 한 문제\n\n이번 턴은 행동하지 않고 현재 구성을 유지했습니다.",
+  "buttons": [
+    {
+      "action": "close-modal",
+      "disabled": false,
+      "text": "×"
+    },
+    {
+      "action": "dismiss-settle",
+      "disabled": false,
+      "text": "다음 턴 준비"
+    },
+    {
+      "action": "action-quiz",
+      "disabled": false,
+      "text": "방금 선택과 연결된 한 문제"
+    }
+  ],
+  "state": {
+    "cash": 8965013,
+    "debt": 0,
+    "irpCash": 2000000,
+    "actionsLeft": 0,
+    "rate": 2,
+    "rateDelta": 0,
+    "headline": "가상 금리 동결 · 주가 하락",
+    "marketEffects": [
+      {
+        "productId": "deposit",
+        "opening": 65156400,
+        "delta": 356400,
+        "returnRate": 0.005469915464942815
+      },
+      {
+        "productId": "balanced",
+        "opening": 45084369.22583601,
+        "delta": 36683.092413820326,
+        "returnRate": 0.0008136543339459377
+      }
+    ],
+    "capitalFlows": []
+  },
+  "overflow": false
+}
