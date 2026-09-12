@@ -57,7 +57,7 @@ describe('자금 흐름과 운용 성과 표시', () => {
     const saved = { ...structuredClone(defaultSave), bestReturnRate: .222,
       bestReturnRule: { ruleset: '2026-09-10-e' as const, perTurnLimit: 2_000_000 } };
     saveData(saved, { setItem: (_key, value) => { raw = value; } });
-    expect(loadSave({ getItem: () => raw })).toEqual(saved);
+    expect(loadSave({ getItem: () => raw })).toEqual({...saved,profileAssessment:{profileId:saved.profileId,origin:'legacy'}});
     expect(loadSave({ getItem: () => JSON.stringify({ ...saved, bestReturnRule: undefined }) }).bestReturnRule).toBeUndefined();
     expect(loadSave({ getItem: () => JSON.stringify({ ...saved, bestReturnRule: { ruleset: 'future', perTurnLimit: -1 } }) }).bestReturnRule).toBeUndefined();
   });

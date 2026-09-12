@@ -192,6 +192,8 @@ export interface QuizQuestion {
 }
 
 export interface LearningCard {
+  ruleId?: import('./data/learning-rules').LearningRuleId;
+  actualPrinciple?: string;
   learningObjective?: string;
   relatedActions?: string[];
   gameAssumption?: string;
@@ -444,6 +446,8 @@ export interface CashFlow {
 }
 
 export interface GameState {
+  /** 새 판에서만 정산 자율 학습. 기존 판의 진행·점수 규칙은 보존한다. */
+  learningFlow?: { version: 'settlement-v1'; queue: string[]; dismissed?:string[] };
   campaign?: Campaign;
   route: RouteProgress;
   accountType: 'IRP';
@@ -650,6 +654,8 @@ export type Collection = Record<ProfileId, { plays: number; bestStars: 0 | 1 | 2
 export type AnimationSpeed = 1 | 2;
 
 export interface SaveData {
+  /** 없는 새 설정은 미진단. 이전 저장은 진단 여부를 추정하지 않는다. */
+  profileAssessment?: { profileId: ProfileId; origin: 'diagnosed' | 'confirmed' | 'legacy' };
   version: 7;
   avatarId: AvatarId;
   settings: {

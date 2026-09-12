@@ -2,7 +2,7 @@ import { blockReason, defaultInConstraint, defaultOutConstraint } from './action
 import { defaultPortfolio } from '../data/default-portfolios';
 import { products } from '../data/content';
 import type { ActionResult, DefaultOptionId, DefaultScope, GameState, ProductId } from '../types';
-import { buyProduct, portfolioValue, sellProduct } from './portfolio-engine';
+import { buyProduct, fundTiming, portfolioValue, sellProduct } from './portfolio-engine';
 import { defaultScopes, scopedHolding } from './position-engine';
 
 export interface DefaultTradeDraft {
@@ -33,7 +33,7 @@ export function previewDefaultOptIn(state: GameState, optionId: DefaultOptionId,
     if(!result.ok) return failed(state,result.message);
     next=result.state;
   }
-  return {ok:true,message:`옵트인 · ${option.name} ${amount.toLocaleString('ko-KR')}원 매수 지시. ${timing(legs)} 사전지정은 바뀌지 않습니다.`,state:next,scope,amount,costs:Math.max(0,portfolioValue(state)-portfolioValue(next)),legs};
+  return {ok:true,message:`옵트인 · ${option.name} ${amount.toLocaleString('ko-KR')}원 매수 지시. ${timing(legs,state.turn)} 사전지정은 바뀌지 않습니다.`,state:next,scope,amount,costs:Math.max(0,portfolioValue(state)-portfolioValue(next)),legs};
 }
 export function previewDefaultOptOut(state: GameState, fraction: number): DefaultTradePlan {
   const error=blockReason(defaultOutConstraint(state,fraction));if(error) return failed(state,error);
@@ -50,12 +50,12 @@ export function previewDefaultOptOut(state: GameState, fraction: number): Defaul
     next=result.state;
   }
   const amount=legs.reduce((s,l)=>s+l.amount,0),costs=Math.max(0,portfolioValue(state)-portfolioValue(next));
-  return {ok:true,message:`옵트아웃 · ${option.name} 보유분 ${fraction*100}% 환매 지시(평가액 약 ${Math.round(amount).toLocaleString('ko-KR')}원). ${timing(legs)} 대금은 IRP 안에 남고 사전지정은 유지됩니다.${costs>.001?` 예금 중도해지 이자 조정 ${Math.round(costs).toLocaleString('ko-KR')}원.`:''}`,state:next,scope,amount,costs,legs};
+  return {ok:true,message:`옵트아웃 · ${option.name} 보유분 ${fraction*100}% 환매 지시(평가액 약 ${Math.round(amount).toLocaleString('ko-KR')}원). ${timing(legs,state.turn)} 대금은 IRP 안에 남고 사전지정은 유지됩니다.${costs>.001?` 예금 중도해지 이자 조정 ${Math.round(costs).toLocaleString('ko-KR')}원.`:''}`,state:next,scope,amount,costs,legs};
 }
-function timing(legs: DefaultTradePlan['legs']): string {
+function timing(legs: DefaultTradePlan['legs'],turn:number): string {
   const fund=legs.some(l=>products.find(p=>p.id===l.productId)?.kind==='fund');
   const deposit=legs.some(l=>l.productId==='deposit');
-  return `${deposit?'예금은 이번 턴 반영. ':''}${fund?'펀드는 다음 턴 기준가 확정 → 그다음 턴 결제(게임 시간).':''}`;
+  return `${deposit?'예금은 이번 턴 반영. ':''}${fund?`펀드는 ${fundTiming(turn)}.`:''}`;
 }
 export function executeDefaultTrade(state: GameState, draft: DefaultTradeDraft, commandId?: string): ActionResult {
   if(!commandId||commandId!==nextDefaultCommand(state)||state.defaultTrading?.groups.some(g=>g.commandId===commandId)) return {ok:false,message:'이미 접수했거나 상태가 변경된 지시입니다. 거래 내용을 다시 확인하세요.',state};

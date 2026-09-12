@@ -1,7 +1,7 @@
+import { formatWon } from './format';
 import type { GameState, LifeChoiceOption, LifeEvent, LifeResolution } from '../types';
 import { lifeChoicesFor } from '../engine/life-engine';
 
-const formatWon = (value: number) => `${Math.round(value).toLocaleString('ko-KR')}원`;
 const signedWon = (value: number) => `${value > 0 ? '+' : ''}${formatWon(value)}`;
 
 export function lifeEyebrow(event: LifeEvent): string {

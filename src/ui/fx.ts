@@ -1,3 +1,4 @@
+import { formatWon, formatShortWon } from './format';
 import type { AnimationSpeed } from '../types';
 
 export type NumberKind = 'won' | 'shortWon' | 'percent' | 'signedPercent';
@@ -34,10 +35,8 @@ export function interpolate(from: number, to: number, t: number): number {
 
 export function formatByKind(kind: NumberKind, value: number): string {
   switch (kind) {
-    case 'won': return `${Math.round(value).toLocaleString('ko-KR')}원`;
-    case 'shortWon': return value >= 100_000_000
-      ? `${(value / 100_000_000).toFixed(2)}억원`
-      : `${Math.round(value / 10_000).toLocaleString('ko-KR')}만원`;
+    case 'won': return formatWon(value);
+    case 'shortWon': return formatShortWon(value);
     case 'percent': return `${Math.round(value * 100)}%`;
     case 'signedPercent': return `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`;
   }

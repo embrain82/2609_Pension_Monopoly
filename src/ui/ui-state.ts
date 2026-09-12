@@ -74,6 +74,7 @@ function migrateSave(value: unknown): SaveData | null {
     playCount?: unknown;
     howtoSeen?: unknown;
     profileId?: unknown;
+    profileAssessment?: { profileId?: unknown; origin?: unknown };
     avatarId?: unknown;
     goalMonthly?: unknown;
     defaultOption?: unknown;
@@ -110,6 +111,8 @@ function migrateSave(value: unknown): SaveData | null {
     howtoSeen: data.howtoSeen === true,
     avatarId: isProfileId(data.avatarId) ? data.avatarId : isProfileId(data.profileId) ? data.profileId : 'balanced',
     profileId: isProfileId(data.profileId) ? data.profileId : 'balanced',
+    profileAssessment: { profileId: isProfileId(data.profileId) ? data.profileId : 'balanced',
+      origin: data.profileAssessment?.profileId === data.profileId && ['diagnosed','confirmed'].includes(String(data.profileAssessment?.origin)) ? data.profileAssessment!.origin as 'diagnosed'|'confirmed' : 'legacy' },
     goalMonthly: clampGoalMonthly(finiteNumber(data.goalMonthly) ? data.goalMonthly : 500_000),
     // v1~v4 저장에는 없던 값. null이면 다음 판 시작에 고른다.
     defaultOption: isDefaultOptionId(data.defaultOption) ? data.defaultOption : null,

@@ -3,6 +3,7 @@ import { learningCards } from '../data/content';
 import { renderSpeech } from './speech';
 
 export interface QuizViewState {
+  optional?:boolean;
   /** 고른 선택지. 아직이면 null */
   picked: number | null;
   /** 마무리 퀴즈면 "n / 총" 진행. 턴 중 퀴즈면 null */
@@ -36,15 +37,15 @@ export function renderQuizModal(card: LearningCard, view: QuizViewState): string
     ? `<button class="text-button" data-action="quiz-skip">이번엔 건너뛰기</button>`
     : '';
   const next = answered
-    ? `<button class="primary jumbo" data-action="quiz-next">${view.progress && view.progress.index + 1 < view.progress.total ? '다음 문제' : '계속'}</button>`
+    ? `<button class="primary jumbo" data-action="quiz-next">${view.progress && view.progress.index + 1 < view.progress.total ? '다음 문제' : view.optional?'정산으로 돌아가기':'계속'}</button>`
     : '';
   return `<div class="modal-icon quiz">?</div>
-    <p class="eyebrow">${quizEyebrow(view.progress)}</p>
+    <p class="eyebrow">${view.optional?'선택 학습 · 정산 후 한 문제':quizEyebrow(view.progress)}</p>
     <p class="quiz-card"><span>${card.category}</span> ${card.title}</p>
     <h2 class="quiz-question">${card.quiz.q}</h2>
     <div class="quiz-options">${options}</div>
     ${verdict}
-    ${answered ? `<details><summary>학습 목표·근거</summary><p>${card.learningObjective ?? card.key}</p><p>${card.gameAssumption ?? ""}</p><a href="${card.source_url}" target="_blank" rel="noreferrer">사실 근거</a> · 검수 ${card.reviewed_at}</details>` : ""}
+    ${answered ? `<details><summary>학습 목표·근거</summary><p>${card.learningObjective ?? card.key}</p><p><b>실제 제도·일반 원리</b> ${card.actualPrinciple ?? card.key}</p><p><b>이 판의 가정</b> ${card.gameAssumption ?? ""}</p><a href="${card.source_url}" target="_blank" rel="noreferrer">사실 근거</a> · 검수 ${card.reviewed_at}</details>` : ""}
     <div class="button-stack">${next}${skip}</div>`;
 }
 
@@ -53,7 +54,7 @@ export function renderLearnedBlock(state: GameState): string {
   const total = state.quizLog.length;
   const correct = state.quizLog.filter((record) => record.correct).length;
   if (total === 0) {
-    return `<article class="learned-card"><div class="card-label">배운 것</div><p class="learned-empty">이번 판에는 퀴즈를 풀지 않았습니다. 제도 안내·시장 뉴스 칸에 서면 배운 카드에서 한 문제가 나옵니다.</p></article>`;
+    return `<article class="learned-card"><div class="card-label">배운 것</div><p class="learned-empty">이번 판에는 퀴즈를 풀지 않았습니다. ${state.learningFlow?'정산 화면에서 관련 문제를 선택해 풀 수 있습니다.':'제도 안내·시장 뉴스 칸에 서면 배운 카드에서 한 문제가 나옵니다.'}</p></article>`;
   }
   const rows = state.quizLog.map((record) => {
     const card = learningCards.find((item) => item.id === record.cardId);

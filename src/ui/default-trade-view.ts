@@ -1,3 +1,5 @@
+import { renderTradePreview } from './trade-preview';
+import { formatWon as won } from './format';
 import { defaultTabAvailability } from '../engine/action-availability';
 import { defaultInConstraint, defaultOutConstraint, MIN_TRADE_AMOUNT } from '../engine/action-constraints';
 import { DEFAULT_PORTFOLIOS, DEFAULT_PORTFOLIO_REVIEW, allowedPortfolios, defaultPortfolio } from '../data/default-portfolios';
@@ -6,7 +8,6 @@ import { defaultScopes, defaultValue, scopedHolding } from '../engine/position-e
 import { nextDefaultCommand, previewDefaultOptIn, previewDefaultOptOut, type DefaultTradeDraft } from '../engine/default-trade-engine';
 import { equityExposureRatio, riskAssetRatio } from '../engine/policy-engine';
 import type { GameState } from '../types';
-const won=(n:number)=>`${Math.round(n).toLocaleString('ko-KR')}원`;
 const pct=(n:number)=>`${(n*100).toFixed(1)}%`;
 
 export function renderDefaultOrderStatus(state: GameState): string {
@@ -30,7 +31,7 @@ export function renderDefaultTrade(state: GameState, draft: DefaultTradeDraft): 
   const plan=isIn?previewDefaultOptIn(state,draft.optionId,draft.amount):previewDefaultOptOut(state,draft.fraction);
   const tabs = defaultTabAvailability(state);
   const selection=state.defaultOption?defaultPortfolio(state.defaultOption).name:'지정 안 함';
-  const schedule=plan.legs.map(l=>{const p=products.find(p=>p.id===l.productId)!;return `<li>${p.shortName} · ${isIn?'':'평가액 약 '}${won(l.amount)}<small>${p.kind==='fund'?`접수 ${state.turn}턴 → 기준가 ${state.turn+1>12?'최종 정산':`${state.turn+1}턴`} → 결제 ${state.turn+2>12?'최종 정산':`${state.turn+2}턴`}`:isIn?'이번 턴 신규 예금 약정 가입':'이번 턴 반영 · 예금 중도해지 조건 적용'}</small></li>`;}).join('');
+
   return `<button class="text-button" data-action="action-view" data-view="menu">← 운용지시</button>
     <p class="eyebrow">TURN ${state.turn} · 확정 시 행동 1회</p><h2>디폴트옵션</h2>
     <p>사전지정: <strong>${selection}</strong> · 현재 보유: <strong>${held?defaultPortfolio(held.optionId).name:'없음'}</strong></p>
@@ -43,8 +44,8 @@ export function renderDefaultTrade(state: GameState, draft: DefaultTradeDraft): 
       const active = amount > 0 && available.enabled && (isIn ? draft.amount === amount : draft.fraction === fraction);
       return `<div><button class="${active ? 'active' : ''}" aria-pressed="${active}" data-action="default-trade-${isIn ? 'amount' : 'fraction'}" data-fraction="${fraction}" ${available.enabled ? '' : `disabled aria-describedby="preset-${fraction}-reason"`}><span>${isIn ? fraction === .5 ? '대기자금 절반' : '대기자금 전액' : fraction === .5 ? '보유분 50%' : '보유분 전부'}</span><small>${isIn ? '' : '약 '}${won(amount)}</small></button>${available.enabled ? '' : `<p class="availability-reason" id="preset-${fraction}-reason">${isIn && amount < MIN_TRADE_AMOUNT ? '최소 매수금액 10만원 미만' : available.reason}</p>`}</div>`;
     }).join('')}</div>
-    <div class="preview-box ${plan.ok?'':'warning'}" aria-live="polite"><strong>${plan.ok?'지시 미리보기':'지시 전 확인'}</strong><p>${plan.message}</p>${plan.ok?`<ul class="order-list">${schedule}</ul><p>${isIn?`접수 후 대기자금 ${won(plan.state.irpCash)}`:`이번 턴 현금 반영 ${won(plan.state.irpCash-state.irpCash)} · 이자 조정 ${won(plan.costs)}`}</p><p>규제 위험비중 ${pct(riskAssetRatio(state))} → ${pct(riskAssetRatio(plan.state))}<br>기초 주식 노출 ${pct(equityExposureRatio(state))} → ${pct(equityExposureRatio(plan.state))}</p>`:''}</div>
-    <p class="hint">${isIn?'지정만으로 매수되지 않습니다. 위 구성비는 신규 매수 비중이며 시장 변동 후에는 달라집니다.':'환매대금은 결제 후 IRP 안에 남습니다. 사전지정 해제나 계좌 밖 인출이 아닙니다.'} 펀드 일정은 실제 영업일이 아닌 게임 시간입니다.${state.turn>=11?' 12턴을 넘는 주문은 추가 시장·급여 없이 종료 시점의 가격으로 최종 정산합니다.':''}</p>
+    ${plan.ok?`<p class="hint">규제 위험비중 ${pct(riskAssetRatio(state))} → ${pct(riskAssetRatio(plan.state))} · 기초 주식 노출 ${pct(equityExposureRatio(state))} → ${pct(equityExposureRatio(plan.state))}</p>`:`<div class="preview-box warning" aria-live="polite"><strong>지시 전 확인</strong><p>${plan.message}</p></div>`}
+    ${renderTradePreview(state,plan,plan.scope)}<p class="hint">${isIn?'지정만으로 매수되지 않습니다. 위 구성비는 신규 매수 비중이며 시장 변동 후에는 달라집니다.':'환매대금은 결제 후 IRP 안에 남습니다. 사전지정 해제나 계좌 밖 인출이 아닙니다.'} 펀드 일정은 실제 영업일이 아닌 게임 시간입니다.${state.turn>=11?' 12턴을 넘는 주문은 추가 시장·급여 없이 종료 시점의 가격으로 최종 정산합니다.':''}</p>
     <div class="button-stack"><button class="primary jumbo" data-action="submit-default-trade" data-command="${nextDefaultCommand(state)}" ${plan.ok?'':'disabled'}>${isIn?`${won(draft.amount)} 매수 지시`:`보유분 ${draft.fraction*100}% 환매 지시`}</button></div>
     ${renderDefaultOrderStatus(state)}<details><summary>가상 상품과 제도 가정</summary><p>${DEFAULT_PORTFOLIO_REVIEW.assumption}</p><p>사전지정·통지·대기에 따른 자동운용은 이 버전에서 실행하지 않습니다.</p><a href="${DEFAULT_PORTFOLIO_REVIEW.source}" target="_blank" rel="noreferrer">제도 근거</a> · 검수 ${DEFAULT_PORTFOLIO_REVIEW.reviewedAt}</details>`;
 }

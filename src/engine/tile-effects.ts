@@ -230,7 +230,7 @@ function profileCheck(state: GameState, tile: BoardTile): Applied {
   const ratio = riskAssetRatio(state);
   const distance = profileDistance(state);
   const aligned = distance <= balanceConfig.profileAlignBand;
-  const detail = `진단 ${diagnosed.name} · 현재 구성 유사 성향 ${actual.name}(규제 위험비중 ${pct(ratio)}, 목표 구성 차이 ${pct(distance)}) → ${aligned ? `${Math.round(balanceConfig.profileAlignBand * 100)}%p 이내 · 이해 +1` : '차이가 큽니다. 리밸런싱으로 맞추거나 설정에서 성향을 다시 진단해 보세요.'}`;
+  const detail = `진단 ${diagnosed.name} · 현재 구성 유사 성향 ${actual.name}(규제 위험비중 ${pct(ratio)}, 목표 구성 차이 ${pct(distance)}) → ${aligned ? `${Math.round(balanceConfig.profileAlignBand * 100)}%p 이내 · 이해 +1` : '차이가 큽니다. 이번 판 성향은 고정입니다. 리밸런싱으로 구성을 점검하고 다른 성향은 다음 새 판 준비에서 확인하세요.'}`;
   return {
     state: understand(unlock(state, 'profile'), aligned ? 1 : 0),
     effect: { kind: 'profile-check', tileIndex: tile.index, title: '성향 점검', detail, understanding: aligned ? 1 : 0 }

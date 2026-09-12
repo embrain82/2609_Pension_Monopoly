@@ -38,6 +38,13 @@ function addHolding(state: GameState, productId: ProductId, amount: number, scop
   return { ...state, holdings: putScopedHolding(state, next, scope) };
 }
 
+/** 표시용 일정. 금융 처리의 턴 번호는 바꾸지 않는다. */
+export function fundTiming(turn: number): string {
+  if (turn >= 12) return '기준가 확정·결제는 최종 정산 (추가 시장·급여 없음)';
+  if (turn === 11) return '기준가 12턴 → 결제 최종 정산 (추가 시장·급여 없음)';
+  return '다음 턴 기준가 확정 → 그다음 턴 결제(게임 시간)';
+}
+
 export function buyProduct(state: GameState, productId: ProductId, requestedAmount = balanceConfig.tradeAmount, internal = false, scope?: DefaultScope): ActionResult {
   const error = invalid(state, requestedAmount, scope ? false : internal);
   if (error) return { ok: false, message: error, state };
@@ -55,7 +62,7 @@ export function buyProduct(state: GameState, productId: ProductId, requestedAmou
     next = { ...next, pendingOrders: [...state.pendingOrders, {...orderFor(state, 'buy', productId, amount), ...(scope ? {defaultScope:scope} : {})}], orderSequence: state.orderSequence + 1 };
   } else next = addHolding(next, productId, amount, scope);
   return { ok: true, state: next, expectedRiskRatio: scope ? riskAssetRatio(next) : check.ratio,
-    message: product.kind === 'fund' ? `${product.shortName} 매수 접수 → 다음 턴 기준가 확정 → 그다음 턴 결제(게임 시간)`
+    message: product.kind === 'fund' ? `${product.shortName} 매수 접수 → ${fundTiming(state.turn)}`
       : `${product.shortName} ${product.kind === 'deposit' ? '신규 약정 가입' : '표시가격 체결(게임 가정)'} · IRP 안에서 운용됩니다.` };
 }
 
@@ -94,7 +101,7 @@ export function sellProduct(state: GameState, productId: ProductId, requestedAmo
   }
   const next = { ...state, holdings: putScopedHolding(state, updated, scope) };
   if (product.kind === 'fund') return { ok: true,
-    message: `${product.shortName} 환매 수량 예약 → 다음 턴 가격 확정 → 그다음 턴 IRP 대기자금 결제`,
+    message: `${product.shortName} 환매 수량 예약 → ${state.turn>=11?fundTiming(state.turn):'다음 턴 가격 확정 → 그다음 턴 IRP 대기자금 결제'}`,
     state: { ...next, pendingOrders: [...state.pendingOrders, {...orderFor(state, 'sell', productId, amount), ...(scope ? {defaultScope:scope} : {})}], orderSequence: state.orderSequence + 1 } };
   return { ok: true, message: `${product.shortName} 매도 대금이 IRP 대기자금에 반영되었습니다.${penalty > 0 ? ` 중도해지 이자 조정 ${Math.round(penalty).toLocaleString('ko-KR')}원.` : ''}`,
     state: { ...next, irpCash: next.irpCash + amount - penalty, understandingPoints: next.understandingPoints + (scope || internal ? 0 : 1) } };

@@ -1,10 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-describe('배포용 매뉴얼', () => {
+describe('이전 버전 아카이브 보존: 배포용 매뉴얼', () => {
   it('사용자·운영자 HTML이 주요 안내를 담는다', () => {
-    const user = readFileSync('public/user-manual.html', 'utf8');
-    const operator = readFileSync('public/operator-manual.html', 'utf8');
+    const user = readFileSync('public/manual-archive/user-v1.6.1.html', 'utf8');
+    const operator = readFileSync('public/manual-archive/operator-v1.6.1.html', 'utf8');
     expect(user).toContain('한 턴의 순서');
     expect(user).toContain('지금 구현된 것');
     expect(user).toContain('첫 판 따라하기');
@@ -90,8 +90,8 @@ describe('배포용 매뉴얼', () => {
   });
 
   it('2026-09-06 현행화: 구현 기준일·운영 태그·모듈 목록·기능 목록이 최신이다', () => {
-    const user = readFileSync('public/user-manual.html', 'utf8');
-    const operator = readFileSync('public/operator-manual.html', 'utf8');
+    const user = readFileSync('public/manual-archive/user-v1.6.1.html', 'utf8');
+    const operator = readFileSync('public/manual-archive/operator-v1.6.1.html', 'utf8');
     expect(operator).toContain('구현 기준 2026-09-10');
     expect(operator).not.toContain('구현 기준 2026-08-17');
     expect(operator).not.toContain('2026-08-17)');
@@ -123,8 +123,8 @@ describe('배포용 매뉴얼', () => {
   });
 
   it('묶음 A 현행화: 시장 먼저 순서·칸 효과·환급·행동 2회·고스트가 두 매뉴얼에 있다', () => {
-    const user = readFileSync('public/user-manual.html', 'utf8');
-    const operator = readFileSync('public/operator-manual.html', 'utf8');
+    const user = readFileSync('public/manual-archive/user-v1.6.1.html', 'utf8');
+    const operator = readFileSync('public/manual-archive/operator-v1.6.1.html', 'utf8');
     // 사용자: 순서·규칙
     expect(user).toContain('시장이 먼저 움직입니다');
     expect(user).toContain('내 IRP에 반영');
@@ -160,8 +160,8 @@ describe('배포용 매뉴얼', () => {
   });
 
   it('매도·교체 선택 보정 핫픽스: 두 매뉴얼이 규칙과 QA 케이스를 담는다', () => {
-    const user = readFileSync('public/user-manual.html', 'utf8');
-    const operator = readFileSync('public/operator-manual.html', 'utf8');
+    const user = readFileSync('public/manual-archive/user-v1.6.1.html', 'utf8');
+    const operator = readFileSync('public/manual-archive/operator-v1.6.1.html', 'utf8');
     expect(user).toContain('10만 원 이상 보유한 상품만');
     expect(user).toContain('첫 보유 상품으로 자동으로 넘어갑니다');
     expect(user).toContain('위험 상품을 안전자산으로 옮기는 가장 빠른 길');
@@ -174,8 +174,8 @@ describe('배포용 매뉴얼', () => {
   });
 
   it('묶음 B 현행화: 디폴트옵션·사건 3지선다·퀴즈·수령 방식·결과 서사·이정표가 두 매뉴얼에 있다', () => {
-    const user = readFileSync('public/user-manual.html', 'utf8');
-    const operator = readFileSync('public/operator-manual.html', 'utf8');
+    const user = readFileSync('public/manual-archive/user-v1.6.1.html', 'utf8');
+    const operator = readFileSync('public/manual-archive/operator-v1.6.1.html', 'utf8');
     // 사용자: 규칙·화면
     expect(user).toContain('디폴트옵션 지정');
     expect(user).toContain('이 옵션으로 시작');
@@ -252,15 +252,15 @@ describe('배포용 매뉴얼', () => {
   });
 
   it('퀴즈 문항은 제도·상품·시장 상식이고 보드 규칙을 묻지 않는다고 매뉴얼이 적는다', () => {
-    const user = readFileSync('public/user-manual.html', 'utf8');
-    const operator = readFileSync('public/operator-manual.html', 'utf8');
+    const user = readFileSync('public/manual-archive/user-v1.6.1.html', 'utf8');
+    const operator = readFileSync('public/manual-archive/operator-v1.6.1.html', 'utf8');
     expect(user).toContain('퇴직연금 제도, 운용 상품, 시장이 흔들릴 때의 태도');
     expect(operator).toContain('퀴즈 질문·선택지에는 턴·속보·게임');
   });
 
   it('묶음 C 현행화: 턴 리듬(그대로 직결·정산 접기/자동 진행·속도 2×·후반 가속)·업적·컬렉션·주간 시드가 두 매뉴얼에 있다', () => {
-    const user = readFileSync('public/user-manual.html', 'utf8');
-    const operator = readFileSync('public/operator-manual.html', 'utf8');
+    const user = readFileSync('public/manual-archive/user-v1.6.1.html', 'utf8');
+    const operator = readFileSync('public/manual-archive/operator-v1.6.1.html', 'utf8');
     // 사용자: 리듬
     expect(user).toContain('턴 리듬');
     expect(user).toContain('확인 창 없음');
@@ -308,7 +308,7 @@ describe('배포용 매뉴얼', () => {
   });
 
   it('운영자 매뉴얼 표는 칸 너비 클래스와 가로 스크롤 그릇을 쓴다', () => {
-    const operator = readFileSync('public/operator-manual.html', 'utf8');
+    const operator = readFileSync('public/manual-archive/operator-v1.6.1.html', 'utf8');
     const css = readFileSync('public/manuals.css', 'utf8');
     expect(operator).toContain('class="wrap wide"');
     expect(operator).toContain('table-scroll');
@@ -320,8 +320,8 @@ describe('배포용 매뉴얼', () => {
 
   it('제출 핸드오프 HTML이 실행 프롬프트·패키지·소스 목록을 담고 두 매뉴얼이 링크한다', () => {
     const page = readFileSync('public/submission-handoff.html', 'utf8');
-    const user = readFileSync('public/user-manual.html', 'utf8');
-    const operator = readFileSync('public/operator-manual.html', 'utf8');
+    const user = readFileSync('public/manual-archive/user-v1.6.1.html', 'utf8');
+    const operator = readFileSync('public/manual-archive/operator-v1.6.1.html', 'utf8');
     expect(page).toContain('실행가능한 상태를 만드는 프롬프트');
     expect(page).toContain('필요한 패키지');
     expect(page).toContain('소스코드 목록');
@@ -336,7 +336,7 @@ describe('배포용 매뉴얼', () => {
   });
 
   it('다이어그램 5장이 배포 폴더에 있고 운영자 매뉴얼이 링크한다', () => {
-    const operator = readFileSync('public/operator-manual.html', 'utf8');
+    const operator = readFileSync('public/manual-archive/operator-v1.6.1.html', 'utf8');
     expect(operator).toContain('href="./diagrams/"');
     const index = readFileSync('public/diagrams/index.html', 'utf8');
     for (const name of ['architecture', 'turn-workflow', 'seed-dataflow', 'game-lifecycle', 'action-sequence']) {
