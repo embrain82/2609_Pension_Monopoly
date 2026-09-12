@@ -1,5 +1,6 @@
+import { missionDisplay } from '../engine/progress-engine';
 import { products } from '../data/content';
-import { SCENARIOS, MISSIONS, tdfEquity, missionResult, type ScenarioId, type MissionId } from '../engine/scenario-engine';
+import { SCENARIOS, MISSIONS, tdfEquity, type ScenarioId, type MissionId } from '../engine/scenario-engine';
 import { calculateScore } from '../engine/scoring-engine';
 import type { GameState } from '../types';
 const won=(n:number)=>Math.round(n).toLocaleString('ko-KR')+'원';
@@ -14,16 +15,16 @@ export function renderCampaignPicker(scenario:ScenarioId,mission:MissionId, open
 }
 export function renderCampaignStatus(g:GameState):string {
   if(!g.campaign) return '';
-  const d=g.campaign;
+  const d=g.campaign, mission=missionDisplay(g);
   return `<aside class="campaign-status"><strong>${SCENARIOS[d.scenario].name} · ${MISSIONS[d.mission].name}</strong>
-    <p>${missionResult(g,calculateScore(g).monthlyPension).progress} · ${Math.min(4,Math.floor(g.turn/3)+1)}장 / 4장</p>
+    <p>${mission.progress} · ${Math.min(4,Math.floor(g.turn/3)+1)}장 / 4장</p>
     <small>누적 물가 ${pct(d.priceIndex-1)} · TDF 2029 주식 비중 ${pct(tdfEquity(g.turn))}</small></aside>`;
 }
 export function renderCampaignResult(g:GameState):string {
   if(!g.campaign) return '';
   const d=g.campaign, score=calculateScore(g);
   return `<section class="campaign-report"><h2>내 판단 복기</h2>
-    <p>오늘 가치의 세후 평균 월 연금 <strong>${won(score.payout.monthlyNet/d.priceIndex)}</strong> · 명목 ${won(score.payout.monthlyNet)}</p>
+    <p>${g.payoutChoice === 'lumpSum' ? '세후 일시금의 비교용 월 환산 · 오늘 가치' : '오늘 가치의 세후 평균 월 연금'} <strong>${won(score.payout.monthlyNet/d.priceIndex)}</strong> · 명목 ${won(score.payout.monthlyNet)}</p>
     <p>운용지수 ${(100*d.index).toFixed(1)} · 실질 운용지수 ${(100*d.index/d.priceIndex).toFixed(1)} · 시작 100</p>
     <p>같은 턴·같은 순입출금의 기준 지수 평가액 ${won(d.benchmark)} / 내 IRP ${won(score.irpValue)} / 차이 ${won(score.irpValue-d.benchmark)}</p>
     <small>기준 지수는 초기 상품 비중을 매 턴 복원하는 가상 비교입니다. 동일 입출금을 턴 말 반영하며 실제 예금 약정·거래비용·결제 대기는 재현하지 않습니다. 고스트는 생활 선택과 납입까지 다른 전체 경로 비교입니다.</small>

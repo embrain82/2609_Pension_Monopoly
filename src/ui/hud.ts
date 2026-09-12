@@ -1,3 +1,4 @@
+import { missionDisplay } from '../engine/progress-engine';
 import { profileLimits } from '../engine/profile-engine';
 import { balanceConfig, policyRules } from '../data/content';
 import type { GameState, ScoreResult } from '../types';
@@ -12,13 +13,17 @@ export function turnsLeft(state: GameState): number {
 }
 
 export function goalStatusLine(state: GameState, score: ScoreResult): string {
+  if (state.campaign) {
+    const mission = missionDisplay(state, score);
+    return `${mission.remaining} · ${mission.stars}`;
+  }
   const remaining = Math.max(0, state.goalMonthly - score.monthlyPension);
   const cashGap = Math.max(0, profileLimits(state).safeCash - state.cash + state.livingDebt);
   if (score.goalRate < balanceConfig.nearGoalRate) {
     return `목표까지 ${formatMan(remaining)} · 남은 턴 ${turnsLeft(state)}`;
   }
   if (!score.goalMet) {
-    return `1별 확보 · 목표까지 ${formatMan(remaining)}`;
+    return `현재 기준 1별 · 목표까지 ${formatMan(remaining)}`;
   }
   if (cashGap > 0) {
     return `목표 달성 · 2별까지 생활자금 ${formatMan(cashGap)} 더`;
@@ -34,16 +39,17 @@ export function ghostMonthlyNow(state: GameState): number | null {
 }
 
 export function renderGoalMeter(state: GameState, score: ScoreResult, ghostMonthly: number | null = null): string {
-  const pct = Math.min(100, score.goalRate * 100);
-  const status = score.goalMet ? 'met' : score.goalRate >= 0.9 ? 'near' : '';
+  const mission = missionDisplay(state, score);
+  const pct = Math.max(0, Math.min(100, mission.ratio * 100));
+  const status = mission.passed ? 'met' : mission.ratio >= 0.9 ? 'near' : '';
   const meterClass = ['goal-meter', status].filter(Boolean).join(' ');
   const statusClass = ['goal-status', status].filter(Boolean).join(' ');
-  const ghostPct = ghostMonthly !== null && state.goalMonthly > 0 ? Math.min(100, (ghostMonthly / state.goalMonthly) * 100) : null;
+  const ghostPct = mission.id === 'pension' && state.payoutChoice !== 'lumpSum' && ghostMonthly !== null && mission.target > 0 ? Math.min(100, (ghostMonthly / mission.target) * 100) : null;
   const ghost = ghostPct !== null
     ? `<i class="ghost-mark ${ghostPct > pct ? 'ahead' : ''}" style="left:${ghostPct.toFixed(1)}%" title="그대로 둔 나 · 월 ${Math.round(ghostMonthly! / 10_000).toLocaleString('ko-KR')}만 원" aria-label="그대로 둔 나 ${Math.round(ghostPct)}%"></i>`
     : '';
-  return `<div class="${meterClass}"><span style="width:${pct.toFixed(1)}%"></span><i class="tick" style="left:${Math.round(balanceConfig.nearGoalRate * 100)}%" aria-hidden="true"></i>${ghost}</div>
-    <div class="goal-caption"><span>목표 ${formatShortWon(state.goalMonthly)}</span><strong>${Math.round(score.goalRate * 100)}%</strong><span>남은 턴 ${turnsLeft(state)}</span></div>
+  return `<div class="${meterClass}"><span style="width:${pct.toFixed(1)}%"></span><i class="tick" style="left:${state.campaign ? 100 : Math.round(balanceConfig.nearGoalRate * 100)}%" aria-hidden="true"></i>${ghost}</div>
+    <div class="goal-caption"><span>${mission.name} · 목표 ${mission.id === 'purchasing' ? mission.targetText : formatShortWon(mission.target)}</span><strong>진행률 ${Math.round(mission.ratio * 100)}%</strong><span>남은 턴 ${turnsLeft(state)}</span></div>
     <p class="${statusClass}">${goalStatusLine(state, score)}</p>`;
 }
 

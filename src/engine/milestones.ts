@@ -1,8 +1,7 @@
 import { profileLimits } from './profile-engine';
 import { balanceConfig } from '../data/content';
 import type { GameState, Milestone, MilestoneId } from '../types';
-import { portfolioValue } from './portfolio-engine';
-import { monthlyPension } from './scoring-engine';
+import { missionDisplay } from './progress-engine';
 
 /** 목표 달성률 이정표. 낮은 것부터 검사해 한 턴에 여러 개를 넘으면 모두 기록하되 배너는 가장 높은 것만 */
 const GOAL_STEPS: Array<{ id: MilestoneId; rate: number }> = [
@@ -15,20 +14,26 @@ const GOAL_STEPS: Array<{ id: MilestoneId; rate: number }> = [
 const won = (value: number) => `${Math.round(value).toLocaleString('ko-KR')}원`;
 
 export function goalRateOf(state: GameState): number {
-  return state.goalMonthly <= 0 ? 0 : monthlyPension(portfolioValue(state), state.payoutChoice ?? 'annuity20') / state.goalMonthly;
+  return missionDisplay(state).ratio;
 }
 
 /** 지금 상태가 이미 넘어선 이정표 전부. `createGame`이 시작값을 기록해 두는 데 쓴다 */
 export function milestonesReached(state: GameState): MilestoneId[] {
   const rate = goalRateOf(state);
-  const hit: MilestoneId[] = GOAL_STEPS.filter((step) => rate >= step.rate).map((step) => step.id);
+  const hit: MilestoneId[] = GOAL_STEPS.filter((step) => rate >= step.rate && (step.rate < 1 || missionDisplay(state).passed)).map((step) => step.id);
   if (state.maxDrawdown > profileLimits(state).maxDrawdown) hit.push('drawdown-12');
   return hit;
 }
 
 function describe(id: MilestoneId, state: GameState): Omit<Milestone, 'turn'> {
-  const pension = monthlyPension(portfolioValue(state), state.payoutChoice ?? 'annuity20');
+  const mission = missionDisplay(state);
+  const pension = mission.value;
   const left = balanceConfig.maxTurns - state.turn;
+  if (state.campaign && id !== 'drawdown-12') {
+    const step = GOAL_STEPS.find(s => s.id === id)!;
+    return { id, tone: 'cheer', title: `${mission.name} · ${id === 'goal-100' ? '현재 목표 조건 달성!' : `진행률 ${Math.round(step.rate * 100)}% 통과`}`,
+      detail: `${mission.progress}. ${id === 'goal-100' ? (left > 0 ? `남은 ${left}턴 동안 지켜야 합니다. ${mission.stars}` : mission.stars) : `${mission.remaining}. 별은 미션을 달성한 뒤 생활자금·낙폭 조건에 따라 정해집니다.`}` };
+  }
   switch (id) {
     case 'goal-100':
       return { id, tone: 'cheer', title: '목표 월 연금 도달!', detail: `월 ${won(pension)} ≥ 목표 ${won(state.goalMonthly)}. ${left > 0 ? `남은 ${left}턴은 지키는 싸움입니다 — 생활자금·낙폭·분산이 별을 가릅니다.` : '마지막 턴까지 지켰습니다.'}` };
@@ -47,7 +52,15 @@ function describe(id: MilestoneId, state: GameState): Omit<Milestone, 'turn'> {
  * 턴 마감에 처음 넘은 이정표를 찍는다. 목표 이정표는 가장 높은 것 하나만 배너로 남기고 낮은 것은
  * 조용히 기록한다(한 턴에 50%→100%를 뚫으면 배너는 100% 하나). 낙폭 경고는 별도.
  */
+/** 이전 저장의 연금 기준 이정표만 현재 미션의 표시 기준으로 맞춘다. 자산·점수·과거 로그는 보존한다. */
+export function normalizeMissionMilestones(state: GameState): GameState {
+  if (!state.campaign || state.campaign.milestonesByMission) return state;
+  return { ...state, campaign: { ...state.campaign, milestonesByMission: true },
+    milestonesHit: milestonesReached(state), turnMilestones: [] };
+}
+
 export function stampMilestones(state: GameState): GameState {
+  state = normalizeMissionMilestones(state);
   const reached = milestonesReached(state).filter((id) => !state.milestonesHit.includes(id));
   if (reached.length === 0) return { ...state, turnMilestones: [] };
   const goalHits = reached.filter((id) => id !== 'drawdown-12');
@@ -64,5 +77,5 @@ export function stampMilestones(state: GameState): GameState {
 
 /** 남은 턴이 3 이하인데 목표 미달이면 턴 트랙이 서두른다 */
 export function isUrgent(state: GameState): boolean {
-  return state.status === 'playing' && balanceConfig.maxTurns - state.turn <= 3 && goalRateOf(state) < 1;
+  return state.status === 'playing' && balanceConfig.maxTurns - state.turn <= 3 && !missionDisplay(state).passed;
 }

@@ -1,3 +1,4 @@
+import { normalizeMissionMilestones } from '../engine/milestones';
 import { SCENARIOS, MISSIONS, type Campaign } from '../engine/scenario-engine';
 import { products } from '../data/content';
 import { emptyMarketStep } from '../engine/market-engine';
@@ -79,6 +80,9 @@ export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
     if (!Array.isArray(data.finalQuizQueue) || typeof data.finishing !== 'boolean' || typeof data.defaultOptionAsk !== 'boolean') return null;
     if (![null,'life','action','portfolio','market','cards','settings','howto','news','tile','settle','quiz','payout','default-option','explore'].includes(data.modal)) return null;
     if (data.modal === 'settle' && (!data.lastSummary || !finite(data.lastSummary.turn) || !Array.isArray(data.lastSummary.milestones) || !finite(data.lastSummary.irpAfter))) return null;
+    const normalized = normalizeMissionMilestones(data.game);
+    if (normalized !== data.game) return { ...data, game: normalized,
+      lastSummary: data.lastSummary ? { ...data.lastSummary, milestones: (data.lastSummary.milestones ?? []).filter(m => m.id === 'drawdown-12') } : null };
     return data;
   } catch { return null; }
 }

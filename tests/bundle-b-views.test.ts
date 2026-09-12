@@ -138,14 +138,14 @@ describe('수령 방식 모달(payout-view)', () => {
     expect(html).toContain('일시금');
     expect(html).toContain('미공제 원금');
     expect(html).toContain('이연세액');
-    expect(html).toContain('목표 판정 기준');
+    expect(html).toContain('목표용 월 환산액');
     expect(html).not.toContain('payout-card annuity current');
     const chosen = renderPayoutModal({ ...state, payoutChoice: 'lumpSum' }, { characters: false, current: 'lumpSum' });
     expect(chosen).toContain('payout-card lump current');
   });
 
   it('결과 줄은 고른 방식과 세율을 말한다', () => {
-    expect(renderPayoutLine(payoutPlan(120_000_000, 'annuity20'))).toContain('연금(20년) 수령 · 세금 5.5%');
+    expect(renderPayoutLine(payoutPlan(120_000_000, 'annuity20'))).toContain('연금(20년) 수령 · 평균 세금 5.5%');
     const lump = renderPayoutLine(payoutPlan(120_000_000, 'lumpSum'));
     expect(lump).toContain('일시금 수령');
     expect(lump).toContain('16.5%');

@@ -1,3 +1,5 @@
+import { normalizeMissionMilestones } from '../engine/milestones';
+import { missionDisplay } from '../engine/progress-engine';
 import { actionAvailability, buyDecision, defaultTabAvailability, type Operation } from '../engine/action-availability';
 import { blockReason, actionTiming, rebalanceConstraint } from '../engine/action-constraints';
 import { previewContribution, contributionRuleLabel } from '../engine/contribution-engine';
@@ -5,7 +7,7 @@ import { normalizeContributionPreset, renderContributionView } from './contribut
 import { defaultScopes, scopedHolding, defaultValue } from '../engine/position-engine';
 import { renderDefaultTrade, renderDefaultHoldings } from './default-trade-view';
 import type { DefaultTradeDraft } from '../engine/default-trade-engine';
-import { SCENARIOS, MISSIONS, inflatedEvent, missionResult, replayChapter, type ScenarioId, type MissionId } from '../engine/scenario-engine';
+import { SCENARIOS, MISSIONS, inflatedEvent, replayChapter, type ScenarioId, type MissionId } from '../engine/scenario-engine';
 import { renderCampaignPicker, renderCampaignStatus, renderCampaignResult } from './campaign-view';
 import { playScene } from './play-scene';
 import { reflectRegion } from '../engine/route-engine';
@@ -836,7 +838,7 @@ export class PensionRoadApp {
     this.newAchievements=[];
     this.clearDiceTimer(); this.clearAutoSettle();
     this.scenarioId=data.game.campaign?.scenario ?? 'classic'; this.missionId=data.game.campaign?.mission ?? 'pension';
-    this.game = data.game; this.save.avatarId = data.game.avatarId; this.profileId = data.game.profileId; this.goalMonthly = data.game.goalMonthly;
+    this.game = normalizeMissionMilestones(data.game); this.save.avatarId = data.game.avatarId; this.profileId = data.game.profileId; this.goalMonthly = data.game.goalMonthly;
     this.screen = 'game'; this.modal = data.modal as Modal;
     this.lastSummary = data.lastSummary; this.quizCardId = data.quizCardId; this.quizPicked = data.quizPicked;
     this.finalQuizQueue = data.finalQuizQueue; this.finalQuizTotal = data.finalQuizTotal;
@@ -1129,6 +1131,7 @@ export class PensionRoadApp {
     const state = this.game;
     const score = calculateScore(state);
     const shown = this.shown?.seed === state.seed ? this.shown : null;
+    const mission = missionDisplay(state, score);
     this.shown = { seed: state.seed, irp: score.irpValue, pension: score.monthlyPension, returnRate: score.returnRate };
     const pending = state.pendingOrders.length;
     const latestCard = getLearningCard(state.unlockedCards.at(-1) ?? '');
@@ -1142,7 +1145,7 @@ export class PensionRoadApp {
         <div class="brand-small"><span>연금로드</span><small>${state.campaign ? SCENARIOS[state.campaign.scenario].name : "금리의 두 얼굴"}</small></div>
         <div class="mobile-stats">
           <div><small>턴</small><strong>${state.turn}/12</strong></div>
-          <div><small>예상 월 연금</small><strong>${animatedNumber('shortWon', shown?.pension ?? null, score.monthlyPension)}</strong></div>
+          <div><small>${mission.name}</small><strong>${mission.id === 'purchasing' ? mission.valueText : formatShortWon(mission.value)}</strong></div>
           <div><small>수익률</small><strong class="${score.returnRate < 0 ? 'neg' : ''}">${animatedNumber('signedPercent', shown?.returnRate ?? null, score.returnRate)}</strong></div>
         </div>
         <div class="topbar-tools">
@@ -1161,9 +1164,9 @@ export class PensionRoadApp {
           ${learningTip}
           ${!waitingForDice && state.lastMarket.shock ? '<p class="shock-banner">충격 턴 · 신호를 보고 비중을 조정하세요</p>' : ''}
           ${renderMarketCard(state, waitingForDice)}
-          <article class="asset-card"><div class="card-label-row"><div class="card-label">나의 은퇴설계</div>${this.save.settings.characters ? renderAvatar(state.avatarId, avatarMood(state, score.goalMet), 44) : ''}</div>
+          <article class="asset-card"><div class="card-label-row"><div class="card-label">나의 은퇴설계</div>${this.save.settings.characters ? renderAvatar(state.avatarId, avatarMood(state, mission.passed), 44) : ''}</div>
             <div class="big-number"><span>IRP 평가액</span><strong>${animatedNumber('shortWon', shown?.irp ?? null, score.irpValue)}</strong></div>
-            <div class="metric-row"><span><abbr title="최종 IRP 평가액을 240개월로 나눈 교육용 값">예상 월 연금</abbr><strong>${animatedNumber('won', shown?.pension ?? null, score.monthlyPension)}</strong></span><span>시작 대비<strong class="${score.returnRate < 0 ? 'neg' : ''}">${animatedNumber('signedPercent', shown?.returnRate ?? null, score.returnRate)}</strong></span></div>
+            <div class="metric-row"><span><abbr title="${mission.basis}">${mission.metric}</abbr><strong>${mission.valueText}</strong></span><span>시작 대비<strong class="${score.returnRate < 0 ? 'neg' : ''}">${animatedNumber('signedPercent', shown?.returnRate ?? null, score.returnRate)}</strong></span></div>
             ${renderGoalMeter(state, score, this.save.settings.ghost ? ghostMonthlyNow(state) : null)}
             <p class="hint">성향 과제 · 생활자금 ${formatShortWon(profileLimits(state).safeCash)} 이상 / 낙폭 ${percent(profileLimits(state).maxDrawdown)} 이내</p>
             <p class="hint">미지급 생활비 ${formatWon(state.livingDebt)} · 다음 급여에서 우선 지급</p><div class="profile-line"><span>투자 성향 <b>${profile?.name ?? ''}</b></span><span>${profile?.minRiskGrade ?? 0}~6등급 매수</span></div>
@@ -1192,9 +1195,10 @@ export class PensionRoadApp {
   private renderResult(): string {
     if (!this.game) return '';
     const score = calculateScore(this.game);
+    const mission = missionDisplay(this.game, score);
     const diagnosed = investorProfiles.find((item) => item.id === this.game!.profileId)!;
     const actual = investorProfiles.find((item) => item.id === score.behaviorProfile)!;
-    const headline = this.game.campaign ? (missionResult(this.game,score.monthlyPension).passed ? '이번 미션을 달성했습니다' : '다음 선택으로 다시 도전') : score.goalMet ? '목표에 도착했습니다' : `목표까지 ${formatWon(Math.max(0, this.game.goalMonthly - score.monthlyPension))}`;
+    const headline = `${mission.name} ${mission.passed ? '달성' : '미달'}`;
     const characters = this.save.settings.characters;
     const shockTurns = this.game.marketPath.filter((step) => step.shock).map((step) => step.turn);
     const ghostOn = this.save.settings.ghost && Boolean(this.game.ghost);
@@ -1214,7 +1218,7 @@ export class PensionRoadApp {
       <div class="eyebrow">${this.game.campaign?.practice ? "분기 연습 · 최고 기록 제외" : "12턴 은퇴설계 리포트"}</div>
       ${renderCampaignStatus(this.game)}${renderRegionProgress(this.game)}<div class="result-headline">${characters ? renderAvatar(this.game.avatarId, resultMood(score.stars), 72) : ''}<h1>${headline}</h1></div>
       <div class="result-hero dual">
-        <div><small>${payout === 'lumpSum' ? '월 연금 환산(일시금 기준)' : '예상 월 연금'}</small><strong>${formatWon(score.monthlyPension)}</strong><span>목표 ${formatWon(this.game.goalMonthly)} · 달성률 ${Math.round(score.goalRate * 100)}%</span></div>
+        <div><small>${mission.metric}</small><strong>${mission.valueText}</strong><span>목표 ${mission.targetText} · 진행률 ${Math.round(mission.ratio * 100)}%</span><small>${mission.basis}</small></div>
         <div><small>시작 대비 수익률</small><strong class="${score.returnRate < 0 ? 'neg' : ''}">${signedPercent(score.returnRate)}</strong><span>운용수익률 ${signedPercent(score.investmentReturnRate)} · 낙폭 ${percent(score.maxDrawdown)}</span></div>
       </div>
       <p class="payout-line ${payout}"><span>${renderPayoutLine(plan)}</span><button class="text-button" data-action="open-payout">수령 방식 바꾸기</button></p>

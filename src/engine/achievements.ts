@@ -1,3 +1,4 @@
+import { missionDisplay } from './progress-engine';
 import { contributionRuleLabel } from './contribution-engine';
 import { balanceConfig, investorProfiles, policyRules } from '../data/content';
 import type { AchievementDef, AchievementId, Collection, GameState, ProfileId, ScoreResult } from '../types';
@@ -14,8 +15,8 @@ export const QUIZ_PERFECT_MIN = 3;
 export const DEFAULT_OPTION_RUNS = 2;
 
 export const ACHIEVEMENTS: AchievementDef[] = [
-  { id: 'goal-reached', title: '목표 도착', detail: '월 연금 목표를 달성했다(연금 수령 기준).', scope: 'game' },
-  { id: 'three-stars', title: '별 셋', detail: '목표·생활자금·낙폭·분산·성향 다섯 조건을 모두 통과했다.', scope: 'game' },
+  { id: 'goal-reached', title: '연금 목표 도착', detail: '이번 미션과 별개로 목표용 월 환산액이 연금 목표에 도달했다. 일시금은 게임의 수령 비교 조정을 반영한다.', scope: 'game' },
+  { id: 'three-stars', title: '별 셋', detail: '해당 판의 3별 조건을 모두 통과했다. 새 판은 미션·생활자금·운용 낙폭, 이전 판은 분산·성향 조건도 포함한다.', scope: 'game' },
   { id: 'calm-seas', title: '잔잔한 항해', detail: `12턴 최대 낙폭을 ${Math.round(CALM_SEAS_DRAWDOWN * 100)}% 안에서 지켰다.`, scope: 'game' },
   { id: 'diversified-12', title: '분산 8턴', detail: `8턴 이상 마감에 5% 이상 보유 상품이 ${balanceConfig.diversificationMin}종 이상이었다.`, scope: 'game' },
   { id: 'pre-shock-rebalance', title: '충격 전 리밸런싱', detail: '충격이 오기 바로 전 턴에 리밸런싱했다. 신호를 읽고 위험을 맞춘 것.', scope: 'game' },
@@ -131,9 +132,10 @@ export function resultShareText(state: GameState, score: ScoreResult, options: S
   const profile = investorProfiles.find((item) => item.id === state.profileId);
   const stars = `${'★'.repeat(score.stars)}${'☆'.repeat(3 - score.stars)}`;
   const gap = ghostPensionGap(state);
+  const mission = missionDisplay(state, score);
   const lines = [
     `연금로드 12턴 결과 · ${profile?.name ?? state.profileId}`,
-    `월 연금 ${won(score.monthlyPension)} / 목표 ${won(state.goalMonthly)} (${Math.round(score.goalRate * 100)}%) · 별 ${stars} · ${score.totalScore}점`,
+    `${mission.name} ${mission.passed ? '달성' : '미달'} · ${mission.progress} · 별 ${stars} · ${score.totalScore}점`,
     `수익률 ${score.returnRate > 0 ? '+' : ''}${(score.returnRate * 100).toFixed(1)}% · 최대 낙폭 ${(score.maxDrawdown * 100).toFixed(1)}%${gap === null ? '' : ` · 그대로 둔 나 대비 월 ${signedWon(gap)}`}`
   ];
   if (options.newAchievements?.length) lines.push(`새 업적: ${options.newAchievements.map((id) => achievementDef(id).title).join(' · ')}`);

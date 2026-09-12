@@ -166,7 +166,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
   if (options.scenario) {
     const weights = Object.fromEntries(state.holdings.map(h => [h.productId, h.amount / balanceConfig.startingIrp]));
     state.unlockedCards = [...new Set([...state.unlockedCards,'db-dc-irp','pricing-vs-settlement','tdf-glide'])];
-    state.campaign = { scenario: options.scenario, mission: options.mission ?? 'pension', weekly: options.weekly ?? false,
+    state.campaign = { scenario: options.scenario, mission: options.mission ?? 'pension', weekly: options.weekly ?? false, milestonesByMission: true,
       startingProfile: profileId, startingGoal: goal, priceIndex: 1, index: 1, peak: 1, drawdown: 0,
       open: balanceConfig.startingIrp, afterMarket: balanceConfig.startingIrp, flowStart: 0,
       benchmark: balanceConfig.startingIrp, benchmarkOpen: balanceConfig.startingIrp,

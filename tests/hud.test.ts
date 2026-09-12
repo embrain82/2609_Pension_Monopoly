@@ -25,9 +25,9 @@ describe('목표 상태 한 줄', () => {
     expect(line).toContain('남은 턴 8');
   });
 
-  it('95~100%면 1별 확보를 알린다', () => {
+  it('이전 판 95~100%는 확정 보상 대신 현재 기준 1별로 표시한다', () => {
     const state = stateWithPension(480_000, 12_000_000);
-    expect(goalStatusLine(state, calculateScore(state))).toContain('1별 확보');
+    expect(goalStatusLine(state, calculateScore(state))).toContain('현재 기준 1별');
   });
 
   it('목표를 넘었는데 생활자금이 모자라면 2별 조건을 말한다', () => {
