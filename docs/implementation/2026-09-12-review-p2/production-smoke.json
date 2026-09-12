@@ -1,0 +1,18 @@
+{
+  "url": "https://2609-pension-monopoly-8l30emmis-nonsleepers-projects.vercel.app/",
+  "turn": 1,
+  "profile": "stable",
+  "route": {
+    "version": "auto-v1",
+    "visits": [
+      9
+    ],
+    "badges": [],
+    "reflections": []
+  },
+  "contribution": 2000000,
+  "modal": "턴 정산 요약",
+  "charts": "1턴 IRP 변화의 구성\n\n← 감소\n0원 기준\n증가 →\n좌우 끝 각각 2,000,000원 · 같은 금액 축\n\n시장 손익\n+558,653원\n외부 입출금\n+2,000,000원\n매매·정산\n0원",
+  "deltaOpacity": "1",
+  "overflow": false
+}
