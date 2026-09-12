@@ -1,0 +1,82 @@
+
+> pension-road@1.8.0 test
+> vitest run
+
+
+ RUN  v3.2.7 /Volumes/WD Data/005.코드스페이스/2609_Pension_Monopoly
+
+ ✓ tests/engine.test.ts (52 tests) 215ms
+ ✓ tests/p2-collection.test.ts (6 tests) 367ms
+   ✓ F09 새 판 자동 도장 > 80가지 시장·미션 경로에서 자동 도장이 자금·주문·별·수익률·RNG를 바꾸지 않는다  335ms
+ ✓ tests/market-regime.test.ts (9 tests) 472ms
+ ✓ tests/start-preparation.test.ts (6 tests) 503ms
+ ✓ tests/stage-d-ui.test.ts (2 tests) 714ms
+   ✓ 시작 선택을 저장하고 정산 퀴즈는 선택적으로 열어 복귀한다  500ms
+ ✓ tests/learning-flow-p1.test.ts (6 tests) 740ms
+   ✓ 시장과 두 운용 행동의 퀴즈를 덮어쓰지 않고 정산에서 선택한다  438ms
+ ✓ tests/quiz.test.ts (16 tests) 474ms
+   ✓ 밸런스 게이트 — 퀴즈는 지식 점수만 움직인다 > quiz none·wrong은 지식 ≥ 4, correct는 ≤ 20이며 none보다 높고, 별·월 연금은 세 모드가 같다  401ms
+ ✓ tests/p2-presentation.test.ts (8 tests) 1048ms
+   ✓ 24칸에서 말과 칸 좌표가 일치하고 잔상은 최대 지정된 칸에만 남는다  645ms
+ ✓ tests/star-distribution.test.ts (2 tests) 864ms
+   ✓ 별 분포 가드 > 혼합 자동플레이에서 1별과 2별이 함께 나온다  589ms
+ ✓ tests/stage-c.test.ts (6 tests) 826ms
+   ✓ 주사위 합 이동과 지역 미션 > 200시드 모두 합계 이동으로 12턴에 종료되고 미결 주문이 없다  763ms
+ ✓ tests/default-option.test.ts (13 tests) 274ms
+ ✓ tests/life-choices.test.ts (29 tests) 556ms
+ ✓ tests/p0-ledger.test.ts (19 tests) 414ms
+ ✓ tests/tile-effects.test.ts (23 tests) 103ms
+ ✓ tests/ghost.test.ts (8 tests) 112ms
+ ✓ tests/default-trading.test.ts (18 tests) 133ms
+ ✓ tests/manuals.test.ts (10 tests) 114ms
+ ✓ tests/playtest-pacing-ui.test.ts (10 tests) 1894ms
+   ✓ 모든 운용 화면의 맨 아래에 포트폴리오 버튼 하나와 X만 남긴다  500ms
+ ✓ tests/dice.test.ts (7 tests) 26ms
+ ✓ tests/board.test.ts (9 tests) 75ms
+ ✓ tests/settlement.test.ts (14 tests) 110ms
+ ✓ tests/market-view.test.ts (14 tests) 87ms
+ ✓ tests/contribution-pacing.test.ts (19 tests) 83ms
+ ✓ tests/narrative.test.ts (13 tests) 175ms
+ ✓ tests/stage-d.test.ts (9 tests) 153ms
+ ✓ tests/hud.test.ts (8 tests) 58ms
+ ✓ tests/tile-briefing.test.ts (5 tests) 51ms
+ ✓ tests/default-trading-ui.test.ts (14 tests) 2288ms
+   ✓ 포트폴리오 왕복·재접속은 탭과 금액 초안을 보존하고 X/Esc는 행동을 쓰지 않는다  573ms
+   ✓ 설정의 명시적 미지정을 과거 저장값으로 대체하지 않고 X는 초안을 저장하지 않는다  402ms
+ ✓ tests/turn-order.test.ts (8 tests) 98ms
+ ✓ tests/scoring.test.ts (7 tests) 74ms
+ ✓ tests/action-form.test.ts (8 tests) 117ms
+ ✓ tests/payout.test.ts (8 tests) 106ms
+ ✓ tests/news-flash.test.ts (9 tests) 175ms
+ ✓ tests/result-chart.test.ts (6 tests) 72ms
+ ✓ tests/performance-display.test.ts (6 tests) 21ms
+ ✓ tests/trade-portfolio-p1.test.ts (5 tests) 22ms
+ ✓ tests/bundle-b-views.test.ts (17 tests) 63ms
+ ✓ tests/market-explanation.test.ts (10 tests) 55ms
+ ✓ tests/progress-display.test.ts (11 tests) 66ms
+ ✓ tests/rhythm.test.ts (16 tests) 33ms
+ ✓ tests/token3d.test.ts (6 tests) 87ms
+ ✓ tests/balance-gate.test.ts (6 tests) 1108ms
+   ✓ 밸런스 게이트 — 운보다 의사결정 > 속보를 보고 ETF를 갈아타는 전략은 같은 시드의 균형 전략을 운 수준 이상으로 이기지 못한다  443ms
+   ✓ 밸런스 게이트 — 운보다 의사결정 > 칸 효과는 판단을 넘지 않는다 — 켬/끔 월 연금 기대치 차이가 작고 무행동 0별 비율은 유지된다  662ms
+ ✓ tests/action-availability.test.ts (14 tests) 25ms
+ ✓ tests/avatars.test.ts (7 tests) 35ms
+ ✓ tests/content.test.ts (7 tests) 4ms
+ ✓ tests/fx.test.ts (4 tests) 31ms
+ ✓ tests/sound.test.ts (3 tests) 3ms
+ ✓ tests/profile-character.test.ts (3 tests) 47ms
+ ✓ tests/bundle-c-views.test.ts (7 tests) 111ms
+ ✓ tests/sound-player.test.ts (5 tests) 4ms
+ ✓ tests/learning-rules.test.ts (3 tests) 17ms
+ ✓ tests/stage-c-ui.test.ts (6 tests) 3218ms
+   ✓ 운용 선택 탐색 > 취소·포트폴리오 확인·재진입은 금액과 행동 횟수를 유지한다  549ms
+   ✓ 운용 선택 탐색 > Esc로 운용 창을 닫아도 턴이 진행되지 않고 거래 뒤 복원해도 중복 실행되지 않는다  301ms
+   ✓ 경로 선택 없이 자동 이동하는 12턴 UI를 완주하고 결과 중복 집계 없이 진행 저장을 지운다  1855ms
+   ✓ 이동 도중 탭 중단·복구에서도 보드/말 노드를 유지하고 시장·급여를 한 번만 처리한다  307ms
+ ✓ tests/achievements.test.ts (19 tests) 43ms
+
+ Test Files  53 passed (53)
+      Tests  556 passed (556)
+   Start at  23:00:54
+   Duration  5.06s (transform 1.45s, setup 0ms, collect 13.87s, tests 18.56s, environment 1.42s, prepare 2.82s)
+

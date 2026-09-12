@@ -70,7 +70,7 @@ describe('결과 스파크라인', () => {
     const mine = [100, 98, 97, 96];
     const ghost = [100, 104, 108, 112];
     const html = renderIrpSparkline(mine, [], ghost);
-    const domain = chartDomain(mine, ghost);
+    const domain = chartDomain([0], mine, ghost);
     expect(domain.max).toBe(112);
     const myEnd = sparklinePoints(mine, CHART_WIDTH, CHART_HEIGHT, domain)[3];
     const ghostEnd = sparklinePoints(ghost, CHART_WIDTH, CHART_HEIGHT, domain)[3];

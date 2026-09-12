@@ -7,6 +7,8 @@ function key(node: Node): string {
 function sync(current: Node, next: Node): void {
   if (current.nodeType === Node.TEXT_NODE) { if (current.textContent !== next.textContent) current.textContent = next.textContent; return; }
   if (!(current instanceof Element) || !(next instanceof Element)) return;
+  // Result review disclosures keep their user-chosen state across reflection/payout renders.
+  if (current instanceof HTMLDetailsElement && next instanceof HTMLDetailsElement && next.hasAttribute("data-preserve-open")) next.open = current.open;
   for (const attr of [...current.attributes]) if (!next.hasAttribute(attr.name)) current.removeAttribute(attr.name);
   for (const attr of [...next.attributes]) if (current.getAttribute(attr.name) !== attr.value) current.setAttribute(attr.name, attr.value);
   syncChildren(current, next);

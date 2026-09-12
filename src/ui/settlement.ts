@@ -1,3 +1,4 @@
+import { renderChangeChart, type ChangeRow } from './mini-chart';
 import { formatWon } from './format';
 import { marketExplanation } from '../engine/market-explanation';
 import { renderMarketImpacts } from './market-impact-view';
@@ -63,21 +64,17 @@ const tone = (delta: number) => (delta < 0 ? 'neg' : delta > 0 ? 'pos' : '');
  * 생활사건이 IRP를 건드렸으면(중도인출·매도 충당) 그 줄도 덧붙인다.
  */
 function irpBars(summary: TurnSummary): string {
-  const max = Math.max(summary.irpOpen, summary.irpAfterMarket, summary.irpAfter, 1);
-  const width = (value: number) => ((value / max) * 100).toFixed(1);
   const total = summary.irpAfter - summary.irpOpen;
   const rate = summary.irpOpen > 0 ? total / summary.irpOpen : 0;
-  const flows = summary.capitalFlow !== undefined && summary.tradingDelta !== undefined
-    ? `<span class="action ${tone(summary.capitalFlow)}">외부 입출금 ${signedWon(summary.capitalFlow)}</span> · <span class="${tone(summary.tradingDelta)}">매매·정산 ${signedWon(summary.tradingDelta)}</span>`
-    : `<span>시장 이후 변화 ${signedWon(summary.irpAfter - summary.irpAfterMarket)} (입출금·거래 포함)</span>`;
-  return `<div class="settle-bars three">
-      <strong>정산 요약</strong>
-      <div class="settle-bar open"><span>턴 시작</span><i style="--w:${width(summary.irpOpen)}%"></i><b>${formatWon(summary.irpOpen)}</b></div>
-      <div class="settle-bar market ${tone(summary.marketDelta)}"><span>시장 반영</span><i style="--w:${width(summary.irpAfterMarket)}%"></i><b>${formatWon(summary.irpAfterMarket)}</b></div>
-      <div class="settle-bar after ${tone(total)}"><span>정산 후</span><i style="--w:${width(summary.irpAfter)}%"></i><b>${formatWon(summary.irpAfter)}</b></div>
-      <p class="settle-delta ${tone(total)}"><small>IRP 잔액 변화</small> ${signedWon(total)} <small>(${signedPercent(rate)})</small></p>
-      <p class="settle-split"><span class="market ${tone(summary.marketDelta)}">시장 손익 ${signedWon(summary.marketDelta)}</span> · ${flows}</p>
-    </div>`;
+  const rows: ChangeRow[] = [{label:'시장 손익',value:summary.marketDelta,kind:'market'}];
+  if (summary.capitalFlow !== undefined && summary.tradingDelta !== undefined) {
+    rows.push({label:'외부 입출금',value:summary.capitalFlow,kind:'flow'}, {label:'매매·정산',value:summary.tradingDelta,kind:'trade'});
+  } else rows.push({label:'시장 이후 변화 (입출금·거래 포함)',value:summary.irpAfter-summary.irpAfterMarket,kind:'flow'});
+  return `<div class="settle-bars three"><strong>정산 요약</strong>
+    <p class="settle-balance">턴 시작 <b>${formatWon(summary.irpOpen)}</b> → 정산 후 <b>${formatWon(summary.irpAfter)}</b></p>
+    ${renderChangeChart(rows, `${summary.turn}턴 IRP 변화의 구성`)}
+    <p class="settle-delta ${tone(total)}"><small>IRP 잔액 변화 · 입출금 포함</small> ${signedWon(total)} <small>(${signedPercent(rate)})</small></p>
+    <p class="hint">시장 반영 잔액 ${formatWon(summary.irpAfterMarket)}. 납입은 외부 입출금이며 운용 수익이 아닙니다. 주문 접수만 된 금액은 확정 수익으로 표시하지 않습니다.</p></div>`;
 }
 
 function returnBars(summary: TurnSummary): string {
@@ -89,7 +86,7 @@ function returnBars(summary: TurnSummary): string {
     const classes = ['settle-return', side, held ? 'held' : ''].filter(Boolean).join(' ');
     return `<li class="${classes}" style="--i:${index}"><span>${product.shortName}</span><div class="track"><i style="--w:${width.toFixed(1)}%"></i></div><b>${signedPercent(value)}</b><small>${held ? percent(summary.holdingShares[product.id]) : '—'}</small></li>`;
   }).join('');
-  return `<ul class="settle-returns">${rows}</ul>`;
+  return `<p class="chart-axis">시장 예시 수익률 · 가운데 0% · 좌우 끝 ±${RETURN_BAR_CAP * 100}% (초과 시 막대는 끝에서 멈춤 · 숫자 참조)</p><ul class="settle-returns">${rows}</ul>`;
 }
 
 function actionBlock(summary: TurnSummary): string {
@@ -134,7 +131,7 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
     <p class="settle-headline">${options.market?.turn === summary.turn ? marketExplanation(options.market).headline : summary.marketHeadline}</p>
     ${milestones}
     ${irpBars(summary)}
-    ${renderMarketImpacts(summary.marketEffects, summary.turn)}
+    ${renderMarketImpacts(summary.marketEffects, summary.turn, false)}
     ${renderBenchmarkSettleLine(summary)}
     ${ghost ? `<details class="settle-comparison"><summary>생활 선택까지 다른 고스트 경로 비교</summary>${ghost}</details>` : ''}
     ${renderLifeSettleBlock(summary.lifeEvent)}

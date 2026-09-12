@@ -39,6 +39,7 @@ export interface GameAction {
 export type AmountPreset = 'default' | 'half' | 'max';
 
 export interface GameOptions {
+  automaticStamps?: boolean;
   settlementLearning?: boolean;
   /** 개인 추가납입 속도 제한. 새 UI 판에서 켜며 기존 저장·시뮬은 명시하지 않으면 유지. */
   contributionPacing?: boolean;
@@ -106,7 +107,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
   const state: GameState = {
     ...(options.settlementLearning?{learningFlow:{version:'settlement-v1' as const,queue:[]}}:{}),
     ...(options.contributionPacing ? { contributionPacing: { version: 'v1' as const, perTurnLimit: balanceConfig.contributionPerTurnLimit } } : {}),
-    route: newRouteProgress(),
+    route: newRouteProgress(options.automaticStamps),
     accountType: 'IRP', rulesetVersion: options.defaultTrading ? '2026-09-10-e' : options.scenario ? '2026-09-10-d' : '2026-09-10-c', avatarId: options.avatarId ?? 'balanced',
     accountBasis: { retirement: 90_000_000, retirementTax: 1_800_000, deducted: 9_000_000, nonDeducted: 9_000_000 },
     cashFlows: [], livingDebt: 0, orderSequence: 0, rebalancePlan: null,

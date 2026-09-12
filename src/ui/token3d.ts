@@ -11,15 +11,15 @@ export interface TokenView {
   mood: Mood;
 }
 
-/** 퍽의 기본 자세. 모든 키프레임은 여기서 출발해 여기로 돌아온다. */
+/** 동물 말의 발 기준 자세. 모든 키프레임은 여기서 출발해 여기로 돌아온다. */
 export const TOKEN_BASE = 'translate(-50%, -64%)';
 /** 한 칸 점프의 총 길이(ms). 이 중 HOP_AIR 비율만 공중에 있고 나머지는 칸 위에 내려앉아 있는 박자. */
 export const HOP_MS = TOKEN_STEP_MS;
 export const HOP_AIR = 0.7;
 /** 마지막 칸 착지(찌그러짐) 길이. 마지막 점프가 칸에 닿은 뒤 이 시간만큼 지나서 속보 카드가 뜬다. */
 export const LAND_MS = 320;
-/** 점프 최고점: 퍽 높이 대비. 125%면 칸 한 변의 약 0.7배 높이라 "옆으로 미끄러짐"이 아니라 점프로 읽힌다. */
-export const HOP_HEIGHT = '125%';
+/** 한 칸 안에서 읽히는 짧은 점프. 보드 경계 밖으로 크게 튀지 않는다. */
+export const HOP_HEIGHT = '45%';
 
 /** DOM `Keyframe`에 그대로 넘길 수 있는 형태. 순수 모듈이라 DOM 타입에는 의존하지 않는다. */
 export interface TokenKeyframe {
