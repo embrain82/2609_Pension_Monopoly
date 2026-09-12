@@ -220,7 +220,7 @@ describe('주간 시드·공유 텍스트', () => {
     expect(text).toContain('/ 500,000원');
     expect(text).toContain('목표용 월 환산액 · 세전');
     expect(text).toContain(`별 ${'★'.repeat(score.stars)}${'☆'.repeat(3 - score.stars)}`);
-    expect(text).toContain('그대로 둔 나 대비 월');
+    expect(text).toContain('납입·생활 선택이 다른 고스트 대비 세전 월 환산');
     expect(text).toContain('새 업적: 일시금 유혹 거절');
     expect(text).toContain('주간 시드 2026-W36');
     expect(text.trim().endsWith('https://example.test/')).toBe(true);

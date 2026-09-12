@@ -12,7 +12,7 @@ export const REACTION_LONG_BOND_DROP = '장기채가 크게 밀렸습니다. 예
 export const REACTION_EQUITY_DROP = '주식이 크게 떨어졌습니다. 급락 뒤 회복도 자주 오니 분산을 지키세요.';
 export const REACTION_EQUITY_RALLY = '주식이 크게 올랐습니다. 위험비중이 한도에 가까워졌는지 확인하세요.';
 export const REACTION_LONG_BOND_RALLY = '금리 인하 기대에 장기채가 뛰었습니다. 채권이 방어 역할을 했습니다.';
-export const REACTION_CONTRIBUTE = '납입은 시장과 무관하게 목표에 가장 확실히 다가가는 방법입니다.';
+export const REACTION_CONTRIBUTE = '납입으로 IRP 자금이 늘었습니다. 투자 수익과 구분하고 생활자금 여유도 확인하세요.';
 export const REACTION_DRAWDOWN = '이번 턴은 평가액이 줄었습니다. 12턴 전체를 보고 판단하세요.';
 export const REACTION_DEFAULT = '큰 변화 없는 턴입니다. 다음 신호를 기다리며 분산을 점검하세요.';
 
@@ -67,6 +67,7 @@ export function summarizeTurn(before: GameState, after: GameState, actionLine: s
     .slice(0, 4);
   const riskAfter = riskAssetRatio(after);
   const irpAfter = portfolioValue(after);
+  const capitalFlow = after.cashFlows.filter(flow => flow.turn === before.turn).reduce((sum, flow) => sum + flow.amount, 0);
   const holdingShares = Object.fromEntries(products.map((product) => [
     product.id,
     irpAfter > 0 ? holdingAmount(after, product.id) / irpAfter : 0
@@ -93,6 +94,9 @@ export function summarizeTurn(before: GameState, after: GameState, actionLine: s
     marketDelta: ledger.afterMarket - ledger.open,
     lifeDelta: snapshot.irp - ledger.afterMarket,
     actionDelta: irpAfter - snapshot.irp,
+    capitalFlow,
+    tradingDelta: irpAfter - ledger.afterMarket - capitalFlow,
+    benchmarkIrp: after.campaign?.benchmark ?? null,
     riskBefore: snapshot.risk,
     riskAfter,
     tileEffects: before.tileEffects ?? [],

@@ -167,7 +167,7 @@ describe('턴 정산 요약', () => {
     expect(html).not.toContain('settle-alert');
   });
 
-  it('정산 막대는 턴 시작 → 시장 반영 → 내 행동 후 세 개이고 시장·행동 금액을 나눠 적는다', () => {
+  it('잔액 변화는 시장 손익·외부 입출금·매매 정산으로 나눈다', () => {
     const html = renderSettlementModal(summaryFixture({
       turn: 4,
       actionLine: '1,000,000원 추가납입.',
@@ -175,6 +175,8 @@ describe('턴 정산 요약', () => {
       irpAfterMarket: 102_000_000,
       irpBefore: 102_000_000,
       irpAfter: 103_000_000,
+      capitalFlow: 1_000_000,
+      tradingDelta: 0,
       riskBefore: 0.2,
       riskAfter: 0.2,
       marketHeadline: '보합',
@@ -187,19 +189,19 @@ describe('턴 정산 요약', () => {
     expect(html).toContain('settle-bars three');
     expect(html).toContain('턴 시작');
     expect(html).toContain('시장 반영');
-    expect(html).toContain('내 행동 후');
+    expect(html).toContain('정산 후');
     expect(html).toContain('100,000,000원');
     expect(html).toContain('102,000,000원');
     expect(html).toContain('103,000,000원');
-    expect(html).toContain('시장 +2,000,000원');
-    expect(html).toContain('내 행동 +1,000,000원');
+    expect(html).toContain('시장 손익 +2,000,000원');
+    expect(html).toContain('외부 입출금 +1,000,000원');
     expect(html).toContain('+3,000,000원');
     expect(html).not.toContain('생활사건');
     expect(html).toContain('시장이 한 일');
     expect(html).toContain('이미 보유분에 반영');
   });
 
-  it('생활사건이 IRP를 건드렸으면 그 줄을 덧붙이고, 행동 2회는 번호 목록으로 보인다', () => {
+  it('분해 원장이 없는 구 요약은 합산 변화로 표시하고 행동 2회는 번호 목록으로 보인다', () => {
     const html = renderSettlementModal(summaryFixture({
       turn: 5,
       actionLine: '1,000,000원 추가납입. · 예금 1,000,000원 매수',
@@ -217,7 +219,7 @@ describe('턴 정산 요약', () => {
       nextHints: [HINT_DEFAULT],
       ...sceneFields
     }));
-    expect(html).toContain('생활사건 -2,000,000원');
+    expect(html).toContain('시장 이후 변화 -1,000,000원 (입출금·거래 포함)');
     expect(html).toContain('settle-actions');
     expect(html).toContain('행동 2회');
     expect(html.match(/<li>/g)!.length).toBeGreaterThanOrEqual(2);
@@ -245,7 +247,7 @@ describe('턴 정산 요약', () => {
     expect(on).toContain('연말정산 통과');
     expect(on).toContain('+132,000원');
     expect(on).toContain('settle-ghost ahead');
-    expect(on).toContain('그대로 뒀다면');
+    expect(on).toContain('고스트 IRP');
     expect(on).toContain('98,500,000원');
     expect(on).toContain('(+1,500,000원)');
     const off = renderSettlementModal(summary, { characters: true, ghost: false });

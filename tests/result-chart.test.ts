@@ -51,7 +51,7 @@ describe('결과 스파크라인', () => {
     expect(html).toContain('irp-chart up with-ghost');
     expect(html).toContain('chart-ghost');
     expect(html).toContain('chart-ghost-end');
-    expect(html).toContain('내 판단');
+    expect(html).toContain('내 IRP');
     expect(html).toContain('그대로 둔 나');
     expect(html).toContain('그대로 둔 나 마지막 103원');
     const domain = chartDomain(mine, ghost);

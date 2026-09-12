@@ -57,14 +57,14 @@ describe('고스트 "그대로 둔 나"', () => {
     expect(ghostVerdict(base)).toBeNull();
   });
 
-  it('결과 값어치 블록은 이기면 격파 배지, 지면 가장 벌어진 턴을 보인다', () => {
+  it('고스트 비교는 경로 차이를 표시하고 투자 판단의 우열로 단정하지 않는다', () => {
     const base = createGame('ghost-block', 'balanced', 500_000);
     const ghost = base.ghost!;
     const win = { ...base, turn: 12, status: 'finished' as const, irpHistory: ghost.irpHistory.map((value, index) => (index ? value + 1_000_000 : value)) };
     const winHtml = renderGhostVerdict(win);
     expect(winHtml).toContain('ghost-badge beat');
-    expect(winHtml).toContain('고스트 격파');
-    expect(winHtml).toContain('판단의 값어치');
+    expect(winHtml).toContain('내 IRP가 더 큽니다');
+    expect(winHtml).toContain('경로 간 차이');
     expect(winHtml).not.toContain('가장 벌어진 턴');
     const lose = { ...base, turn: 12, status: 'finished' as const, irpHistory: ghost.irpHistory.map((value, index) => (index === 7 ? value - 3_000_000 : index ? value - 500_000 : value)) };
     const loseHtml = renderGhostVerdict(lose);

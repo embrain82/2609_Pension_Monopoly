@@ -6,6 +6,7 @@ import { percent, signedPercent } from './market-view';
 import { renderSpeech } from './speech';
 import { renderTileEffects } from './tile-effects-view';
 import type { ScenePace } from './fx';
+import { renderBenchmarkSettleLine } from './performance-view';
 
 export interface SettlementOptions {
   characters: boolean;
@@ -61,16 +62,16 @@ function irpBars(summary: TurnSummary): string {
   const width = (value: number) => ((value / max) * 100).toFixed(1);
   const total = summary.irpAfter - summary.irpOpen;
   const rate = summary.irpOpen > 0 ? total / summary.irpOpen : 0;
-  const life = Math.abs(summary.lifeDelta) >= 1
-    ? ` · <span class="life ${tone(summary.lifeDelta)}">생활사건 ${signedWon(summary.lifeDelta)}</span>`
-    : '';
+  const flows = summary.capitalFlow !== undefined && summary.tradingDelta !== undefined
+    ? `<span class="action ${tone(summary.capitalFlow)}">외부 입출금 ${signedWon(summary.capitalFlow)}</span> · <span class="${tone(summary.tradingDelta)}">매매·정산 ${signedWon(summary.tradingDelta)}</span>`
+    : `<span>시장 이후 변화 ${signedWon(summary.irpAfter - summary.irpAfterMarket)} (입출금·거래 포함)</span>`;
   return `<div class="settle-bars three">
       <strong>정산 요약</strong>
       <div class="settle-bar open"><span>턴 시작</span><i style="--w:${width(summary.irpOpen)}%"></i><b>${formatWon(summary.irpOpen)}</b></div>
       <div class="settle-bar market ${tone(summary.marketDelta)}"><span>시장 반영</span><i style="--w:${width(summary.irpAfterMarket)}%"></i><b>${formatWon(summary.irpAfterMarket)}</b></div>
-      <div class="settle-bar after ${tone(total)}"><span>내 행동 후</span><i style="--w:${width(summary.irpAfter)}%"></i><b>${formatWon(summary.irpAfter)}</b></div>
-      <p class="settle-delta ${tone(total)}">${signedWon(total)} <small>(${signedPercent(rate)})</small></p>
-      <p class="settle-split"><span class="market ${tone(summary.marketDelta)}">시장 ${signedWon(summary.marketDelta)}</span> · <span class="action ${tone(summary.actionDelta)}">내 행동 ${signedWon(summary.actionDelta)}</span>${life}</p>
+      <div class="settle-bar after ${tone(total)}"><span>정산 후</span><i style="--w:${width(summary.irpAfter)}%"></i><b>${formatWon(summary.irpAfter)}</b></div>
+      <p class="settle-delta ${tone(total)}"><small>IRP 잔액 변화</small> ${signedWon(total)} <small>(${signedPercent(rate)})</small></p>
+      <p class="settle-split"><span class="market ${tone(summary.marketDelta)}">시장 손익 ${signedWon(summary.marketDelta)}</span> · ${flows}</p>
     </div>`;
 }
 
@@ -128,7 +129,8 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
     <p class="settle-headline">${summary.marketHeadline}</p>
     ${milestones}
     ${irpBars(summary)}
-    ${ghost}
+    ${renderBenchmarkSettleLine(summary)}
+    ${ghost ? `<details class="settle-comparison"><summary>생활 선택까지 다른 고스트 경로 비교</summary>${ghost}</details>` : ''}
     ${renderLifeSettleBlock(summary.lifeEvent)}
     ${alert}
     <div class="settle-reaction">${renderSpeech('coach', `<p>${summary.reaction}</p>`, { characters: options.characters, title: '한 줄 정리', tone: reactionTone })}</div>

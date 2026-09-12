@@ -546,6 +546,12 @@ export interface TurnSummary {
   lifeDelta: number;
   /** 내가 한 일: irpAfter − irpBefore */
   actionDelta: number;
+  /** 외부 납입·이전·인출. 이전 정산 저장에는 없을 수 있다. */
+  capitalFlow?: number;
+  /** 시장 이후 평가액 변화에서 외부 입출금을 뺀 매매·정산 영향. */
+  tradingDelta?: number;
+  /** 같은 턴·같은 입출금을 반영한 가상 기준 지수. */
+  benchmarkIrp?: number | null;
   riskBefore: number;
   riskAfter: number;
   tileEffects: TileEffect[];
@@ -598,6 +604,7 @@ export interface ScoreResult {
   improvement: string;
   relatedCardIds: string[];
   returnRate: number;
+  /** 위 returnRate는 입출금을 포함한 잔액 증가율. 아래 값이 운용 성과다. */
   investmentReturnRate: number;
   /** 적용된 수령 방식 계산(미선택이면 연금 기준) */
   payout: PayoutPlan;
@@ -656,6 +663,8 @@ export interface SaveData {
   lastSeed: string;
   disclaimerAccepted: boolean;
   bestReturnRate: number;
+  /** 새로 경신한 잔액 증가율의 규칙. 기존 기록은 값이 없으며 임의로 추정하지 않는다. */
+  bestReturnRule?: { ruleset: GameState['rulesetVersion']; perTurnLimit: number | null };
   bestGoalRate: number;
   playCount: number;
   howtoSeen: boolean;

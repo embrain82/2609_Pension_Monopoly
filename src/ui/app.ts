@@ -1,3 +1,4 @@
+import { renderBenchmarkResult } from './performance-view';
 import { normalizeMissionMilestones } from '../engine/milestones';
 import { missionDisplay } from '../engine/progress-engine';
 import { actionAvailability, buyDecision, defaultTabAvailability, type Operation } from '../engine/action-availability';
@@ -189,7 +190,10 @@ export class PensionRoadApp {
     if (!this.game || this.game.status !== 'finished') return;
     const score = calculateScore(this.game);
     this.save.bestScore = Math.max(this.save.bestScore, score.totalScore);
-    this.save.bestReturnRate = Math.max(this.save.bestReturnRate, score.returnRate);
+    if (score.returnRate > this.save.bestReturnRate) {
+      this.save.bestReturnRate = score.returnRate;
+      this.save.bestReturnRule = { ruleset: this.game.rulesetVersion, perTurnLimit: this.game.contributionPacing?.perTurnLimit ?? null };
+    }
     this.save.bestGoalRate = Math.max(this.save.bestGoalRate, score.goalRate);
     if (countPlay) {
       this.save.playCount += 1;
@@ -1032,7 +1036,7 @@ export class PensionRoadApp {
       </div>
       ${this.renderAvatarPicker()}
       <p class="manual-links"><a href="./user-manual.html" target="_blank" rel="noreferrer">사용자 매뉴얼</a> · <a href="./operator-manual.html" target="_blank" rel="noreferrer">운영자 매뉴얼</a></p>
-      <p class="record">최고 달성률 <strong>${Math.round(this.save.bestGoalRate * 100)}%</strong> · 최고 수익률 <strong>${signedPercent(this.save.bestReturnRate)}</strong> · ${this.save.bestScore}점 · ${this.save.playCount}판</p>
+      <p class="record">최고 연금목표 진행률 <strong>${Math.round(this.save.bestGoalRate * 100)}%</strong> · 최고 IRP 잔액 증가율 <strong>${signedPercent(this.save.bestReturnRate)}</strong> · ${this.save.bestScore}점 · ${this.save.playCount}판</p><details class="record-rules"><summary>최고 기록의 비교 조건</summary><p>잔액 증가율은 납입·이전·인출을 포함합니다. ${this.save.bestReturnRule ? `해당 기록 규칙 ${this.save.bestReturnRule.ruleset} · ${this.save.bestReturnRule.perTurnLimit === null ? '턴별 납입 제한 없는 이전 판' : `턴 합계 납입 ${formatWon(this.save.bestReturnRule.perTurnLimit)} 제한`}` : '기존 최고 기록의 개별 규칙 버전은 저장되지 않았습니다.'}</p></details>
     </section>`;
   }
 
@@ -1146,7 +1150,7 @@ export class PensionRoadApp {
         <div class="mobile-stats">
           <div><small>턴</small><strong>${state.turn}/12</strong></div>
           <div><small>${mission.name}</small><strong>${mission.id === 'purchasing' ? mission.valueText : formatShortWon(mission.value)}</strong></div>
-          <div><small>수익률</small><strong class="${score.returnRate < 0 ? 'neg' : ''}">${animatedNumber('signedPercent', shown?.returnRate ?? null, score.returnRate)}</strong></div>
+          <div><small>IRP 잔액 증가율</small><strong class="${score.returnRate < 0 ? 'neg' : ''}">${animatedNumber('signedPercent', shown?.returnRate ?? null, score.returnRate)}</strong></div>
         </div>
         <div class="topbar-tools">
           ${this.renderSoundToggle()}
@@ -1166,7 +1170,7 @@ export class PensionRoadApp {
           ${renderMarketCard(state, waitingForDice)}
           <article class="asset-card"><div class="card-label-row"><div class="card-label">나의 은퇴설계</div>${this.save.settings.characters ? renderAvatar(state.avatarId, avatarMood(state, mission.passed), 44) : ''}</div>
             <div class="big-number"><span>IRP 평가액</span><strong>${animatedNumber('shortWon', shown?.irp ?? null, score.irpValue)}</strong></div>
-            <div class="metric-row"><span><abbr title="${mission.basis}">${mission.metric}</abbr><strong>${mission.valueText}</strong></span><span>시작 대비<strong class="${score.returnRate < 0 ? 'neg' : ''}">${animatedNumber('signedPercent', shown?.returnRate ?? null, score.returnRate)}</strong></span></div>
+            <div class="metric-row"><span><abbr title="${mission.basis}">${mission.metric}</abbr><strong>${mission.valueText}</strong></span><span>IRP 잔액 증가율<strong class="${score.returnRate < 0 ? 'neg' : ''}">${animatedNumber('signedPercent', shown?.returnRate ?? null, score.returnRate)}</strong></span></div>
             ${renderGoalMeter(state, score, this.save.settings.ghost ? ghostMonthlyNow(state) : null)}
             <p class="hint">성향 과제 · 생활자금 ${formatShortWon(profileLimits(state).safeCash)} 이상 / 낙폭 ${percent(profileLimits(state).maxDrawdown)} 이내</p>
             <p class="hint">미지급 생활비 ${formatWon(state.livingDebt)} · 다음 급여에서 우선 지급</p><div class="profile-line"><span>투자 성향 <b>${profile?.name ?? ''}</b></span><span>${profile?.minRiskGrade ?? 0}~6등급 매수</span></div>
@@ -1219,7 +1223,7 @@ export class PensionRoadApp {
       ${renderCampaignStatus(this.game)}${renderRegionProgress(this.game)}<div class="result-headline">${characters ? renderAvatar(this.game.avatarId, resultMood(score.stars), 72) : ''}<h1>${headline}</h1></div>
       <div class="result-hero dual">
         <div><small>${mission.metric}</small><strong>${mission.valueText}</strong><span>목표 ${mission.targetText} · 진행률 ${Math.round(mission.ratio * 100)}%</span><small>${mission.basis}</small></div>
-        <div><small>시작 대비 수익률</small><strong class="${score.returnRate < 0 ? 'neg' : ''}">${signedPercent(score.returnRate)}</strong><span>운용수익률 ${signedPercent(score.investmentReturnRate)} · 낙폭 ${percent(score.maxDrawdown)}</span></div>
+        <div><small>IRP 잔액 증가율 · 입출금 포함</small><strong class="${score.returnRate < 0 ? 'neg' : ''}">${signedPercent(score.returnRate)}</strong><span>납입 제외 운용수익률 ${signedPercent(score.investmentReturnRate)} · 낙폭 ${percent(score.maxDrawdown)}</span></div>
       </div>
       <p class="payout-line ${payout}"><span>${renderPayoutLine(plan)}</span><button class="text-button" data-action="open-payout">수령 방식 바꾸기</button></p>
       <p class="score-title">보조 점수 <strong>${score.totalScore}점</strong> · 별 ${score.stars}개 · ${score.starTitle}</p>
@@ -1227,7 +1231,8 @@ export class PensionRoadApp {
       ${lockLine}
       ${renderNewAchievements(this.newAchievements)}
       ${shortfallBlock}
-      <article class="result-journey"><div class="card-label">12턴 IRP 흐름${ghostOn ? ' · 그대로 둔 나와 비교' : ''}</div>${renderIrpSparkline(this.game.irpHistory, shockTurns, ghostHistory)}<p>${worstTurnLine(this.game.irpHistory)}${shockTurns.length ? ` · 충격 ${shockTurns.map((turn) => `${turn}턴`).join('·')}` : ''}</p>${ghostOn ? renderGhostVerdict(this.game) : ''}</article>
+      ${renderBenchmarkResult(this.game)}
+      <article class="result-journey"><div class="card-label">12턴 IRP 잔액 흐름${ghostOn ? ' · 생활 선택이 다른 고스트' : ''}</div>${renderIrpSparkline(this.game.irpHistory, shockTurns, ghostHistory)}<p>${worstTurnLine(this.game.irpHistory)}${shockTurns.length ? ` · 충격 ${shockTurns.map((turn) => `${turn}턴`).join('·')}` : ''}</p>${ghostOn ? renderGhostVerdict(this.game) : ''}</article>
       <ul class="star-checks">${starChecklist(this.game, score).map((row) =>
         `<li class="${row.passed ? 'ok' : 'miss'}">${row.passed ? '됨' : '아직'} · ${row.label}</li>`
       ).join('')}</ul>
