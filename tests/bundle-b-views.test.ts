@@ -16,7 +16,7 @@ const count = (html: string, needle: string) => html.split(needle).length - 1;
 describe('생활사건 3지선다 모달(life-view)', () => {
   it('비용 사건: 선택지 3개를 data-action="resolve-life"로 그리고, 불가 사유는 잠근 채 이유를 보인다', () => {
     const state = withEvent(createGame('lv-1', 'balanced'), 'repair');
-    const html = renderLifeModal(state, event('repair'), { cash: state.cash });
+    const html = renderLifeModal(state, event('repair'));
     expect(count(html, 'data-action="resolve-life"')).toBe(3);
     expect(html).toContain('data-choice="cash"');
     expect(html).toContain('data-choice="deposit"');
@@ -30,22 +30,24 @@ describe('생활사건 3지선다 모달(life-view)', () => {
     expect(html).toMatch(/data-choice="withdraw"[^>]*disabled/);
   });
 
-  it('생활자금이 모자라면 자동 충당 안내를 덧붙인다', () => {
+  it('생활자금 부족 안내와 선택지가 동일한 미지급 계획을 표시한다', () => {
     const state = withEvent({ ...createGame('lv-2', 'balanced'), cash: 500_000 }, 'repair');
-    const html = renderLifeModal(state, event('repair'), { cash: state.cash });
-    expect(html).toContain('모자랍니다');
-    expect(html).toContain('자동 매도');
+    const html = renderLifeModal(state, event('repair'));
+    expect(html).toContain('생활비 분할 지급');
+    expect(html).toContain('부족 1,700,000원');
+    expect(html).toContain('IRP 대기자금·보유 상품은 그대로');
+    expect(html).not.toContain('자동 매도');
   });
 
   it('보너스 사건은 납입 두 가지와 생활자금, 이전 사건은 IRP 이전과 지금 받기를 보인다', () => {
     const bonus = withEvent(createGame('lv-3', 'balanced'), 'bonus');
-    const bonusHtml = renderLifeModal(bonus, event('bonus'), { cash: bonus.cash });
+    const bonusHtml = renderLifeModal(bonus, event('bonus'));
     expect(bonusHtml).toContain('data-choice="contribute-all"');
     expect(bonusHtml).toContain('data-choice="contribute-half"');
     expect(bonusHtml).toContain('data-choice="cash"');
     expect(bonusHtml).toContain('들어온 금액');
     const transfer = withEvent(createGame('lv-3', 'balanced'), 'severance');
-    const transferHtml = renderLifeModal(transfer, event('severance'), { cash: transfer.cash });
+    const transferHtml = renderLifeModal(transfer, event('severance'));
     expect(count(transferHtml, 'data-action="resolve-life"')).toBe(2);
     expect(transferHtml).toContain('data-choice="transfer-irp"');
     expect(transferHtml).toContain('지금 받기');

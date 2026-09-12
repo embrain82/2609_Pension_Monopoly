@@ -48,7 +48,7 @@
     "id": "education",
     "kind": "cost",
     "title": "직무 교육 기회",
-    "body": "생활자금에서 교육비를 사용하고 다음 급여 여력을 높입니다.",
+    "body": "직무 교육비를 생활자금으로 지급합니다. 부족액은 미지급 생활비로 기록하며, 이번 게임에서 교육 선택이 이후 급여를 늘리지는 않습니다.",
     "cost": 1800000,
     "eligibleWithdrawal": false,
     "learningCardId": "liquidity"

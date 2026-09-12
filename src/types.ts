@@ -138,6 +138,15 @@ export interface LifeEvent {
  */
 export type LifeChoice = 'cash' | 'deposit' | 'withdraw' | 'contribute-all' | 'contribute-half' | 'transfer-irp';
 
+/** 비용 사건의 실행 계획에서 읽는 표시 값. 저장 상태에 추가하지 않는다. */
+export interface LifePaymentPreview {
+  cashPaid: number;
+  unpaid: number;
+  irpDelta: number;
+  tax: number;
+  penalty: number;
+}
+
 export interface LifeChoiceOption {
   id: LifeChoice;
   label: string;
@@ -148,6 +157,7 @@ export interface LifeChoiceOption {
   immediate: string;
   /** 장기 비용·효과 한 줄 */
   longTerm: string;
+  payment?: LifePaymentPreview;
 }
 
 /** 이번 턴 생활사건을 어떻게 해결했는지. 정산 「사건」 블록과 "다른 선택이었다면" 줄의 재료 */

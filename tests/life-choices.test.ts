@@ -73,6 +73,42 @@ describe('선택지 표(lifeChoicesFor)', () => {
 });
 
 describe('선택 실행(resolveLifeChoice)', () => {
+  it.each(lifeEvents.filter(e => e.kind === 'cost'))('$id: 잔액 경계에서도 미리보기와 실제 지급이 일치하고 IRP는 유지된다', event => {
+    for (const cash of [0, event.cost - 1, event.cost]) {
+      const state = { ...withEvent(base(), event.id), cash };
+      const before = structuredClone(state);
+      const preview = lifeChoicesFor(state, event).find(c => c.id === 'cash')!.payment!;
+      const out = resolveLifeChoice(state, 'cash');
+      expect(state).toEqual(before);
+      expect(out.ok).toBe(true);
+      expect(state.cash - out.state.cash).toBe(preview.cashPaid);
+      expect(out.state.livingDebt - state.livingDebt).toBe(preview.unpaid);
+      expect(portfolioValue(out.state) - portfolioValue(state)).toBe(preview.irpDelta);
+      expect(out.state.holdings).toEqual(state.holdings);
+      expect(out.state.pendingOrders).toEqual(state.pendingOrders);
+      expect(out.state.defaultOption).toBe(state.defaultOption);
+      if (!event.eligibleWithdrawal) {
+        for (const choice of ['deposit', 'withdraw'] as const) {
+          expect(lifeChoicesFor(state, event).find(c => c.id === choice)!.enabled).toBe(false);
+          expect(resolveLifeChoice(state, choice).state).toBe(state);
+        }
+      }
+    }
+  });
+
+  it.each(['medical', 'housing'])('%s: 허용 인출의 재원별 세금과 IRP 감소도 미리보기와 일치한다', id => {
+    const state = withEvent(base(), id);
+    for (const choice of ['deposit', 'withdraw'] as const) {
+      const preview = lifeChoicesFor(state, event(id)).find(c => c.id === choice)!;
+      const out = resolveLifeChoice(state, choice);
+      expect(preview.enabled).toBe(true);
+      expect(out.ok).toBe(true);
+      expect(out.state.lifeResolution!.irpDelta).toBeCloseTo(preview.payment!.irpDelta, 4);
+      expect(out.state.lifeResolution!.fee).toBeCloseTo(preview.payment!.tax, 4);
+      expect(out.state.lifeResolution!.penalty).toBeCloseTo(preview.payment!.penalty, 4);
+    }
+  });
+
   it('생활자금 지급: 예전과 같고 기록이 남는다', () => {
     const state = withEvent(base(), 'moving');
     const out = resolveLifeChoice(state, 'cash');

@@ -1320,7 +1320,7 @@ export class PensionRoadApp {
     if (!this.game?.currentEventId) return '';
     const event = getLifeEvent(this.game.currentEventId);
     if (!event) return '';
-    return renderLifeModal(this.game, inflatedEvent(this.game,event), { cash: this.game.cash });
+    return renderLifeModal(this.game, inflatedEvent(this.game,event));
   }
 
   private allowedProductId(preferred: ProductId, avoid?: ProductId): ProductId {

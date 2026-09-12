@@ -4,11 +4,6 @@ import { lifeChoicesFor } from '../engine/life-engine';
 const formatWon = (value: number) => `${Math.round(value).toLocaleString('ko-KR')}원`;
 const signedWon = (value: number) => `${value > 0 ? '+' : ''}${formatWon(value)}`;
 
-export interface LifeModalOptions {
-  /** 지금 생활자금. 부족하면 안내를 덧붙인다 */
-  cash: number;
-}
-
 export function lifeEyebrow(event: LifeEvent): string {
   if (event.kind === 'bonus') return '생활 사건 · 목돈이 들어왔습니다';
   if (event.kind === 'transfer') return '생활 사건 · 퇴직급여를 어디로';
@@ -40,11 +35,11 @@ export function renderLifeChoice(option: LifeChoiceOption, index: number): strin
  * 생활사건 3지선다. 사건 본문 → 금액 → 선택지(즉시/장기 비용표) 순서. 모든 선택지는 엔진(`lifeChoicesFor`)이
  * 계산한 그대로 그리고, 여기서는 문구만 붙인다.
  */
-export function renderLifeModal(state: GameState, event: LifeEvent, options: LifeModalOptions): string {
+export function renderLifeModal(state: GameState, event: LifeEvent): string {
   const choices = lifeChoicesFor(state, event);
-  const shortCash = event.kind === 'cost' && options.cash < event.cost;
-  const coverNote = shortCash
-    ? `<p class="note">생활자금 ${formatWon(options.cash)}으로는 모자랍니다. 「생활자금으로 해결」을 고르면 부족분은 IRP 대기자금 → 예금 → ETF → 펀드 순으로 자동 매도해 냅니다.</p>`
+  const cashChoice = choices.find(choice => choice.id === 'cash');
+  const coverNote = cashChoice?.payment && cashChoice.payment.unpaid > 0
+    ? `<p class="note">「${cashChoice.label}」: ${cashChoice.immediate}. IRP 대기자금·보유 상품은 그대로입니다.</p>`
     : '';
   const icon = event.kind === 'cost' ? '♥' : event.kind === 'bonus' ? '✦' : '⇄';
   return `<div class="modal-icon life ${event.kind}">${icon}</div>
@@ -53,7 +48,7 @@ export function renderLifeModal(state: GameState, event: LifeEvent, options: Lif
     <p class="modal-lead">${event.body}</p>
     <div class="event-cost">${lifeCostLabel(event)} <strong>${formatWon(Math.abs(event.cost))}</strong></div>
     ${coverNote}
-    <p class="life-prompt">어떻게 할까요? 선택마다 지금 드는 돈과 나중 월 연금이 다릅니다.</p>
+    <p class="life-prompt">어떻게 할까요? 선택마다 생활자금과 IRP에 미치는 영향이 다릅니다.</p>
     <div class="life-choices">${choices.map((option, index) => renderLifeChoice(option, index)).join('')}</div>`;
 }
 
@@ -64,7 +59,7 @@ export function renderLifeSettleBlock(resolution: LifeResolution | null): string
   if (Math.abs(resolution.cashDelta) >= 1) rows.push(`생활자금 <b class="${resolution.cashDelta < 0 ? 'neg' : 'pos'}">${signedWon(resolution.cashDelta)}</b>`);
   if (Math.abs(resolution.irpDelta) >= 1) rows.push(`IRP <b class="${resolution.irpDelta < 0 ? 'neg' : 'pos'}">${signedWon(resolution.irpDelta)}</b>`);
   if (resolution.penalty >= 1) rows.push(`불이익 <b class="neg">−${formatWon(resolution.penalty)}</b>`);
-  if (resolution.fee >= 1) rows.push(`${resolution.kind === 'transfer' ? '세금' : '수수료'} <b class="neg">−${formatWon(resolution.fee)}</b>`);
+  if (resolution.fee >= 1) rows.push(`${resolution.kind === 'transfer' ? '세금' : '세금·비용'} <b class="neg">−${formatWon(resolution.fee)}</b>`);
   if (resolution.sales.length) rows.push(`매도 ${resolution.sales.length}건`);
   if (resolution.shortage) rows.push('<b class="neg">생활자금 부족 +1</b>');
   const alternative = resolution.alternative ? `<p class="life-alt">${resolution.alternative}</p>` : '';

@@ -7,7 +7,7 @@ import { lifeEvents, learningCards } from '../../../src/data/content';
 const dir = new URL('./',import.meta.url);
 const state = {...createGame('review-boundary', 'balanced',500000,{ghost:false,scenario:'classic',mission:'pension',defaultTrading:true,contributionPacing:true}),turn:6,cash:1_000_000,currentEventId:'moving',actionsLeft:1};
 const event = lifeEvents.find(e=>e.id==='moving')!;
-const markup = renderLifeModal(state,event,{cash:state.cash});
+const markup = renderLifeModal(state,event);
 const resolution = resolveLifeChoice(state,'cash');
 const evidence = {
   kind:'controlled-boundary-fixture', description:'Natural runs A/B did not encounter cash shortage; this is an isolated renderer/engine boundary check, not a third completed playthrough.',

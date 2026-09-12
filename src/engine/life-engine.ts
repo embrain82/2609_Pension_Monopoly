@@ -3,7 +3,7 @@ import { previewContribution } from './contribution-engine';
 import { inflatedEvent } from './scenario-engine';
 import { addAccountFlow, grossForNet, withdrawalTax, TRANSFER_TAX_NOTICE } from './account-engine';
 import { lifeEvents, policyRules } from '../data/content';
-import type { ActionResult, GameState, DefaultScope, LifeChoice, LifeChoiceOption, LifeEvent, LifeResolution } from '../types';
+import type { ActionResult, GameState, DefaultScope, LifeChoice, LifeChoiceOption, LifeEvent, LifePaymentPreview, LifeResolution } from '../types';
 import { sellProduct, portfolioValue } from './portfolio-engine';
 import { contributionCredit } from './policy-engine';
 
@@ -60,24 +60,47 @@ function withdrawalPlan(state: GameState, event: LifeEvent, depositOnly = false)
   return { ok: true, message: `허용 사유를 확인한 인출 · 생활비 ${won(amount)} + 재원별 세금 ${won(tax.tax)}. 계좌 내 매도와 계좌 밖 인출을 별도 처리했습니다.`, state: next };
 }
 
+/** 미리보기와 확정이 같은 계산을 사용한다. 입력 상태는 변경하지 않는다. */
+function costChoicePlan(state: GameState, event: LifeEvent, choice: 'cash' | 'deposit' | 'withdraw'): { result: ActionResult; payment: LifePaymentPreview } {
+  const amount = Math.abs(event.cost);
+  if (choice === 'cash') {
+    const paid = Math.min(state.cash, amount);
+    const unpaid = amount - paid;
+    const next = { ...state, cash: state.cash - paid, livingDebt: state.livingDebt + unpaid,
+      cashShortages: state.cashShortages + (unpaid > 0 ? 1 : 0), safeActionCount: state.safeActionCount + (unpaid > 0 ? 0 : 1) };
+    return {
+      result: { ok: true, state: next, message: unpaid > 0
+        ? `생활비 ${won(paid)} 지급 · 미지급 ${won(unpaid)}는 다음 급여에서 우선 지급합니다. IRP는 인출하지 않았습니다.`
+        : '생활자금으로 해결해 IRP를 지켰습니다.' },
+      payment: { cashPaid: paid, unpaid, irpDelta: 0, tax: 0, penalty: 0 }
+    };
+  }
+  const result = withdrawalPlan(state, event, choice === 'deposit');
+  const irpDelta = portfolioValue(result.state) - portfolioValue(state);
+  const gross = result.ok ? -result.state.cashFlows.at(-1)!.amount : 0;
+  return { result, payment: { cashPaid: 0, unpaid: 0, irpDelta,
+    tax: result.ok ? gross - amount : 0, penalty: result.ok ? Math.max(0, -irpDelta - gross) : 0 } };
+}
+
 /** 선택지와 비용표. 모달이 그대로 그린다. 비활성 선택지도 이유와 함께 돌려준다 */
 export function lifeChoicesFor(state: GameState, event: LifeEvent): LifeChoiceOption[] {
   const amount = Math.abs(event.cost);
   const monthly = (value: number) => won(value / policyRules.receivingMonths);
   if (event.kind === 'cost') {
-    const shortage = Math.max(0, amount - state.cash);
+    const cash = costChoicePlan(state, event, 'cash');
+    const shortage = cash.payment.unpaid;
     const cashLine = shortage > 0
-      ? `생활자금 ${won(state.cash)} 사용 · 부족 ${won(shortage)}는 미지급 생활비로 기록, 다음 급여에서 우선 지급`
+      ? `생활자금 ${won(cash.payment.cashPaid)} 사용 · 부족 ${won(shortage)}는 미지급 생활비로 기록, 다음 급여에서 우선 지급`
       : `생활자금 −${won(amount)}`;
-    const withdraw = withdrawalPlan(state, event);
-    const deposit = withdrawalPlan(state, event, true);
+    const withdraw = costChoicePlan(state, event, 'withdraw');
+    const deposit = costChoicePlan(state, event, 'deposit');
     return [
       { id: 'cash', label: shortage ? '생활비 분할 지급' : LIFE_CHOICE_LABELS.cash, enabled: true,
-        immediate: cashLine, longTerm: 'IRP는 그대로. 미지급 생활비가 있으면 안정성 평가에 반영됩니다.' },
-      { id: 'deposit', label: 'IRP 예금 현금화 후 중도인출', enabled: deposit.ok, reason: deposit.ok ? undefined : deposit.message,
-        immediate: deposit.message, longTerm: '허용 사유·결제 자금·재원별 세금 확인 후 인출. 중도해지는 발생 이자의 일부만 조정합니다.' },
-      { id: 'withdraw', label: LIFE_CHOICE_LABELS.withdraw, enabled: withdraw.ok, reason: withdraw.ok ? undefined : withdraw.message,
-        immediate: withdraw.message, longTerm: '미공제 원금 → 퇴직급여 → 공제 원금·수익 순서. 의료비 세법상 특별 감면은 별도 요건이므로 이 사례에는 가정하지 않습니다.' }
+        payment: cash.payment, immediate: cashLine, longTerm: 'IRP는 그대로. 미지급 생활비가 있으면 안정성 평가에 반영됩니다.' },
+      { id: 'deposit', label: 'IRP 예금 현금화 후 중도인출', enabled: deposit.result.ok, reason: deposit.result.ok ? undefined : deposit.result.message,
+        payment: deposit.payment, immediate: deposit.result.message, longTerm: '허용 사유·결제 자금·재원별 세금 확인 후 인출. 중도해지는 발생 이자의 일부만 조정합니다.' },
+      { id: 'withdraw', label: LIFE_CHOICE_LABELS.withdraw, enabled: withdraw.result.ok, reason: withdraw.result.ok ? undefined : withdraw.result.message,
+        payment: withdraw.payment, immediate: withdraw.result.message, longTerm: '미공제 원금 → 퇴직급여 → 공제 원금·수익 순서. 의료비 세법상 특별 감면은 별도 요건이므로 이 사례에는 가정하지 않습니다.' }
     ];
   }
   if (event.kind === 'bonus') {
@@ -162,24 +185,13 @@ export function resolveLifeChoice(state: GameState, choice: LifeChoice): ActionR
   if (!option) return { ok: false, message: '이 사건에서 고를 수 없는 선택입니다.', state };
   if (!option.enabled) return { ok: false, message: option.reason ?? '지금은 고를 수 없는 선택입니다.', state };
   const amount = Math.abs(event.cost);
-  const irpBefore = portfolioValue(state);
   const base = resolutionBase(event, choice, options);
 
   if (event.kind === 'cost') {
-    if (choice === 'withdraw' || choice === 'deposit') {
-      const out = withdrawalPlan(state, event, choice === 'deposit');
-      if (!out.ok) return out;
-      const flow = out.state.cashFlows.at(-1)!;
-      const penalty = Math.max(0, irpBefore - portfolioValue(out.state) + flow.amount);
-      return finish(out.state, event, { ...base, cashDelta: 0, irpDelta: portfolioValue(out.state) - irpBefore,
-        penalty, fee: -flow.amount - amount, sales: [], shortage: false, message: out.message });
-    }
-    const paid = Math.min(state.cash, amount);
-    const unpaid = amount - paid;
-    const next = { ...state, cash: state.cash - paid, livingDebt: state.livingDebt + unpaid,
-      cashShortages: state.cashShortages + (unpaid > 0 ? 1 : 0), safeActionCount: state.safeActionCount + (unpaid > 0 ? 0 : 1) };
-    return finish(next, event, { ...base, cashDelta: -paid, irpDelta: 0, penalty: 0, fee: 0, sales: [], shortage: unpaid > 0,
-      message: unpaid > 0 ? `생활비 ${won(paid)} 지급 · 미지급 ${won(unpaid)}는 다음 급여에서 우선 지급합니다. IRP는 인출하지 않았습니다.` : '생활자금으로 해결해 IRP를 지켰습니다.' });
+    const { result, payment } = costChoicePlan(state, event, choice as 'cash' | 'deposit' | 'withdraw');
+    if (!result.ok) return result;
+    return finish(result.state, event, { ...base, cashDelta: -payment.cashPaid, irpDelta: payment.irpDelta,
+      penalty: payment.penalty, fee: payment.tax, sales: [], shortage: payment.unpaid > 0, message: result.message });
   }
 
   if (event.kind === 'bonus') {
