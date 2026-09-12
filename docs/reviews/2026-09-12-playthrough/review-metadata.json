@@ -1,0 +1,40 @@
+{
+  "date": "2026-09-12",
+  "version": "1.6.0",
+  "commit": "28579c6bdcb8837f89655e3732bd838f9fc8214d",
+  "production": "https://2609-pension-monopoly.vercel.app/",
+  "playedAt": "http://127.0.0.1:4197/",
+  "browser": "Ego Browser / TaskSpace 17",
+  "bundle": "./assets/index-DyYIm4z9.js",
+  "remoteSha256": "16cc5c93523f9dc83a8773fa7d334e65d1ea982e8c27a9dd996f9bb06c621935",
+  "localSha256": "16cc5c93523f9dc83a8773fa7d334e65d1ea982e8c27a9dd996f9bb06c621935",
+  "identicalBuild": true,
+  "completedRuns": [
+    {
+      "run": "A",
+      "seed": "1qjf827-k5ghg8",
+      "scenario": "classic",
+      "mission": "pension",
+      "profile": "balanced",
+      "turns": 12,
+      "payout": "annuity20"
+    },
+    {
+      "run": "B",
+      "seed": "kc18vw-1iokpl6",
+      "scenario": "inflation",
+      "mission": "cushion",
+      "profile": "balanced",
+      "turns": 12,
+      "payout": "lumpSum"
+    }
+  ],
+  "testFiles": 44,
+  "testsPassed": 483,
+  "notes": [
+    "Production was inspected read-only; its existing saved game was not altered.",
+    "Normal motion inspected on first roll, reduced motion used for later traversal.",
+    "Boundary fixture is separate from the two completed UI playthroughs.",
+    "iOS Safari device audio, all investor profiles, and statistical game balance are not verified by this review."
+  ]
+}

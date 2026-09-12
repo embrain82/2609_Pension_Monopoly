@@ -28,7 +28,7 @@ it('완주 결과에서 장 끝으로 분기하고 새로고침 복원한다',()
   const g=autoplay('branch-ui','steward','balanced',{scenario:'classic'});
   localStorage.setItem(CHECKPOINT_KEY,JSON.stringify({version:'c2',game:g,modal:'payout',lastSummary:null,quizCardId:null,quizPicked:null,finalQuizQueue:[],finalQuizTotal:0,finishing:true,defaultOptionAsk:false}));
   new PensionRoadApp(root);click('[data-action="resume-game"]');click('[data-action="choose-payout"][data-choice="annuity20"]');
-  expect(root.textContent).toContain('내 판단 복기');
+  expect(root.textContent).toContain('운용과 자금 흐름 복기');
   click('[data-action="replay-chapter"][data-turn="6"]');const branch=saved();
   expect(branch.game.turn).toBe(6);expect(branch.game.campaign!.practice).toBe(true);expect(root.querySelector('[data-action="roll-dice"]')).not.toBeNull();
   document.body.innerHTML='<div id="app2"></div>';root=document.querySelector('#app2')!;new PensionRoadApp(root);click('[data-action="resume-game"]');

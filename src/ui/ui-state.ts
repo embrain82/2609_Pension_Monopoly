@@ -51,6 +51,14 @@ function migrateAchievements(value: unknown): AchievementId[] {
   return [...new Set(value.filter(isAchievementId))];
 }
 
+function migrateReturnRule(value: unknown): SaveData['bestReturnRule'] {
+  if (!value || typeof value !== 'object') return undefined;
+  const rule = value as { ruleset?: unknown; perTurnLimit?: unknown };
+  if (!['2026-09-09-p0', '2026-09-10-b', '2026-09-10-c', '2026-09-10-d', '2026-09-10-e'].includes(String(rule.ruleset))) return undefined;
+  if (rule.perTurnLimit !== null && (!finiteNumber(rule.perTurnLimit) || rule.perTurnLimit <= 0 || rule.perTurnLimit > 18_000_000)) return undefined;
+  return { ruleset: rule.ruleset as NonNullable<SaveData['bestReturnRule']>['ruleset'], perTurnLimit: rule.perTurnLimit };
+}
+
 function migrateSave(value: unknown): SaveData | null {
   if (!value || typeof value !== 'object') return null;
   const data = value as {
@@ -61,6 +69,7 @@ function migrateSave(value: unknown): SaveData | null {
     lastSeed?: unknown;
     disclaimerAccepted?: unknown;
     bestReturnRate?: unknown;
+    bestReturnRule?: unknown;
     bestGoalRate?: unknown;
     playCount?: unknown;
     howtoSeen?: unknown;
@@ -75,6 +84,7 @@ function migrateSave(value: unknown): SaveData | null {
   if (!Array.isArray(data.unlockedCards) || !data.unlockedCards.every((item) => typeof item === 'string')) return null;
   if (!data.settings || typeof data.settings.reducedMotion !== 'boolean' || typeof data.settings.sound !== 'boolean') return null;
   if (![1, 2, 3, 4, 5, 6, 7].includes(data.version ?? 0)) return null;
+  const bestReturnRule = migrateReturnRule(data.bestReturnRule);
   return {
     version: 7,
     settings: {
@@ -94,6 +104,7 @@ function migrateSave(value: unknown): SaveData | null {
     lastSeed: data.lastSeed,
     disclaimerAccepted: Boolean(data.disclaimerAccepted),
     bestReturnRate: finiteNumber(data.bestReturnRate) ? data.bestReturnRate : 0,
+    ...(bestReturnRule ? { bestReturnRule } : {}),
     bestGoalRate: finiteNumber(data.bestGoalRate) ? data.bestGoalRate : 0,
     playCount: finiteNumber(data.playCount) ? data.playCount : 0,
     howtoSeen: data.howtoSeen === true,

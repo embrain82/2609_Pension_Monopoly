@@ -33,7 +33,7 @@ export function renderContributionView(state: GameState, preset: AmountPreset): 
     ${paced ? `<p>턴당 합계 ${short(q.perTurnLimit!)}까지 나누어 납입할 수 있어요.</p><div class="contribution-budget"><div><small>이번 턴 납입</small><strong>${won(q.usedThisTurn)} / ${short(q.perTurnLimit!)}</strong></div><div><small>지금 추가 가능액</small><strong>${won(maximum)}</strong></div></div>` : '<p class="hint">이전 규칙으로 진행 중입니다. 턴당 제한 없이 기존 누적 납입 한도를 적용합니다.</p>'}
     <p class="hint" id="contribution-budget-note">${paced ? '게임 진행용 한도 · 운용지시 2회와 보너스 납입이 함께 사용합니다. ' : ''}이번 판 누적 납입 잔여 ${won(q.annualRemaining)} · 최소 10만원.</p>
     <div class="amount-presets contribution-presets">${buttons}</div>
-    <div class="preview-box" aria-live="polite"><strong>미리보기</strong><p>납입 ${won(q.accepted)} · 납입 후 생활자금 ${won(state.cash - q.accepted)}.<br>예상 월 연금 약 ${won((portfolioValue(state) + q.accepted) / policyRules.receivingMonths)}.</p><p>${creditNote}</p></div>
+    <div class="preview-box contribution-preview" aria-live="polite"><strong>미리보기</strong><p>납입 ${won(q.accepted)} · 납입 후 생활자금 ${won(state.cash - q.accepted)}.<br>목표용 월 환산액 · 세전 약 ${won((portfolioValue(state) + q.accepted) / policyRules.receivingMonths)}.</p><p>${creditNote}</p></div>
     ${blocked ? `<p class="availability-reason" id="contribution-reason">${blocked}</p>` : ''}
     <button class="primary jumbo" data-action="do-contribute" data-amount="${q.accepted}" ${blocked ? 'disabled aria-describedby="contribution-reason"' : ''}>${blocked ? '추가납입 이용 불가' : `${short(q.accepted)} 납입`}</button>`;
 }

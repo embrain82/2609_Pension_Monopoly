@@ -74,7 +74,7 @@ export function renderIrpSparkline(history: number[], shockTurns: number[], ghos
     const meAbove = end.y <= ghostEnd.y;
     const myY = Math.min(CHART_HEIGHT - 2, Math.max(10, end.y + (meAbove ? -8 : 14)));
     const ghostY = Math.min(CHART_HEIGHT - 2, Math.max(10, ghostEnd.y + (meAbove ? 14 : -8)));
-    labels = `<text class="chart-label me" x="${end.x - 8}" y="${myY}" text-anchor="end">내 판단</text><text class="chart-label ghost" x="${ghostEnd.x - 8}" y="${ghostY}" text-anchor="end">그대로 둔 나</text>`;
+    labels = `<text class="chart-label me" x="${end.x - 8}" y="${myY}" text-anchor="end">내 IRP</text><text class="chart-label ghost" x="${ghostEnd.x - 8}" y="${ghostY}" text-anchor="end">그대로 둔 나</text>`;
   }
   const ghostAria = ghost ? `, 그대로 둔 나 마지막 ${Math.round(ghost[ghost.length - 1]).toLocaleString('ko-KR')}원` : '';
   return `<svg class="irp-chart ${rising ? 'up' : 'down'}${ghost ? ' with-ghost' : ''}" viewBox="0 0 ${CHART_WIDTH} ${CHART_HEIGHT}" role="img" aria-label="12턴 IRP 평가액 흐름. 시작 ${Math.round(history[0]).toLocaleString('ko-KR')}원, 마지막 ${Math.round(history[history.length - 1]).toLocaleString('ko-KR')}원${ghostAria}">

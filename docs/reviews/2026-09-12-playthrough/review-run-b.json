@@ -1,0 +1,3239 @@
+{
+  "version": "1.6.0",
+  "ruleset": "2026-09-10-e",
+  "contributionPacing": {
+    "version": "v1",
+    "perTurnLimit": 2000000
+  },
+  "defaultTrading": {
+    "version": "e1",
+    "groups": []
+  },
+  "seed": "kc18vw-1iokpl6",
+  "profile": "balanced",
+  "goal": 500000,
+  "campaign": {
+    "scenario": "inflation",
+    "mission": "cushion",
+    "weekly": false,
+    "startingProfile": "balanced",
+    "startingGoal": 500000,
+    "priceIndex": 1.1853892064044982,
+    "index": 1.049018910783106,
+    "peak": 1.049018910783106,
+    "drawdown": 0.024591066653538718,
+    "open": 130561216.63632247,
+    "afterMarket": 132013634.0823841,
+    "flowStart": 9,
+    "benchmark": 141138666.10433573,
+    "benchmarkOpen": 141138666.10433573,
+    "baselineWeights": {
+      "deposit": 0.6,
+      "shortBond": 0,
+      "longBond": 0,
+      "balanced": 0.4,
+      "equityEtf": 0,
+      "tdf": 0
+    },
+    "reviews": [
+      {
+        "turn": 1,
+        "tile": 9,
+        "headline": "긴축이 길어지며 채권이 눌립니다",
+        "actions": [
+          "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+        ],
+        "irp": 109738974.58866224,
+        "flow": 2000000,
+        "market": -261025.41133776307,
+        "costs": 0,
+        "cash": 11400000,
+        "index": 0.9975830980431689,
+        "realIndex": 0.9857237266545356,
+        "benchmark": 109852656.3819135,
+        "chapter": false,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65156400
+          },
+          {
+            "productId": "balanced",
+            "amount": 42582574.58866224
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      },
+      {
+        "turn": 2,
+        "tile": 20,
+        "headline": "긴축이 길어지며 채권이 눌립니다",
+        "actions": [
+          "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+        ],
+        "irp": 113408730.08568925,
+        "flow": 2000000,
+        "market": 1669755.4970270097,
+        "costs": 0,
+        "cash": 10800000,
+        "index": 1.0127620248368854,
+        "realIndex": 0.9876507176320461,
+        "benchmark": 113748756.81036414,
+        "chapter": false,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65512800
+          },
+          {
+            "productId": "balanced",
+            "amount": 43895930.08568924
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      },
+      {
+        "turn": 3,
+        "tile": 3,
+        "headline": "높아진 금리가 경제를 식힙니다",
+        "actions": [
+          "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+        ],
+        "irp": 115596705.28077623,
+        "flow": 2000000,
+        "market": 187975.19508698583,
+        "costs": 0,
+        "cash": 13728000,
+        "index": 1.014440679902078,
+        "realIndex": 0.9756720969271816,
+        "benchmark": 116220115.61482936,
+        "chapter": true,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65869200
+          },
+          {
+            "productId": "balanced",
+            "amount": 43727505.28077624
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      },
+      {
+        "turn": 4,
+        "tile": 12,
+        "headline": "물가 압력에 금리 인상이 이어집니다",
+        "actions": [
+          "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+        ],
+        "irp": 118195145.14610064,
+        "flow": 2000000,
+        "market": 598439.8653244078,
+        "costs": 0,
+        "cash": 13128000,
+        "index": 1.0196924017602889,
+        "realIndex": 0.966540252288156,
+        "benchmark": 119527298.44416206,
+        "chapter": false,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65869200
+          },
+          {
+            "productId": "balanced",
+            "amount": 44325945.14610065
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      },
+      {
+        "turn": 5,
+        "tile": 20,
+        "headline": "기준금리가 한 번에 크게 오릅니다",
+        "actions": [
+          "2,000,000원 추가납입. 세액공제 132,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+        ],
+        "irp": 117646413.82535732,
+        "flow": 2000000,
+        "market": -2548731.3207433224,
+        "costs": 0,
+        "cash": 12528000,
+        "index": 0.997704003178622,
+        "realIndex": 0.932021671083917,
+        "benchmark": 119638778.48140588,
+        "chapter": false,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65869200
+          },
+          {
+            "productId": "balanced",
+            "amount": 41777213.82535732
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      },
+      {
+        "turn": 6,
+        "tile": 1,
+        "headline": "높아진 금리가 경제를 식힙니다",
+        "actions": [
+          "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+        ],
+        "irp": 119282412.39545391,
+        "flow": 2000000,
+        "market": -364001.4299034029,
+        "costs": 0,
+        "cash": 12588000,
+        "index": 0.9946170779424947,
+        "realIndex": 0.9157011116469944,
+        "benchmark": 122047255.22326712,
+        "chapter": true,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65869200
+          },
+          {
+            "productId": "balanced",
+            "amount": 41413212.395453915
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      },
+      {
+        "turn": 7,
+        "tile": 7,
+        "headline": "주식이 급하게 오릅니다",
+        "actions": [
+          "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+        ],
+        "irp": 123210655.6573605,
+        "flow": 2000000,
+        "market": 1928243.2619065791,
+        "costs": 0,
+        "cash": 9563337,
+        "index": 1.0106954221024163,
+        "realIndex": 0.917047142028518,
+        "benchmark": 127062979.65515038,
+        "chapter": false,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65869200
+          },
+          {
+            "productId": "balanced",
+            "amount": 43341455.6573605
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      },
+      {
+        "turn": 8,
+        "tile": 12,
+        "headline": "긴축이 길어지며 채권이 눌립니다",
+        "actions": [
+          "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+        ],
+        "irp": 124951983.74959031,
+        "flow": 2000000,
+        "market": -258671.90777018666,
+        "costs": 0,
+        "cash": 5608462,
+        "index": 1.0085735397732054,
+        "realIndex": 0.9018877060660411,
+        "benchmark": 129597815.56738362,
+        "chapter": false,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65869200
+          },
+          {
+            "productId": "balanced",
+            "amount": 43082783.7495903
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      },
+      {
+        "turn": 9,
+        "tile": 20,
+        "headline": "긴축의 끝이 보이며 위험자산이 숨을 고릅니다",
+        "actions": [
+          "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+        ],
+        "irp": 128738461.85308331,
+        "flow": 2000000,
+        "market": 1786478.103493005,
+        "costs": 0,
+        "cash": 5008462,
+        "index": 1.022993435244238,
+        "realIndex": 0.9015530298949156,
+        "benchmark": 134564925.50461555,
+        "chapter": true,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65869200
+          },
+          {
+            "productId": "balanced",
+            "amount": 44869261.85308332
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      },
+      {
+        "turn": 10,
+        "tile": 2,
+        "headline": "방향이 뚜렷하지 않은 관망 국면입니다",
+        "actions": [
+          "이번 턴은 행동하지 않고 현재 구성을 유지했습니다."
+        ],
+        "irp": 130025630.55158545,
+        "flow": 0,
+        "market": 1287168.6985021383,
+        "costs": 0,
+        "cash": 6408462,
+        "index": 1.0332216538330405,
+        "realIndex": 0.8973987568007201,
+        "benchmark": 136921601.37622947,
+        "chapter": false,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65869200
+          },
+          {
+            "productId": "balanced",
+            "amount": 46156430.55158545
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      },
+      {
+        "turn": 11,
+        "tile": 6,
+        "headline": "높아진 금리가 경제를 식힙니다",
+        "actions": [
+          "이번 턴은 행동하지 않고 현재 구성을 유지했습니다."
+        ],
+        "irp": 130561216.63632247,
+        "flow": 0,
+        "market": 535586.0847370178,
+        "costs": 0,
+        "cash": 7808462,
+        "index": 1.037477577360536,
+        "realIndex": 0.8880639017518923,
+        "benchmark": 138424862.91841248,
+        "chapter": false,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65869200
+          },
+          {
+            "productId": "balanced",
+            "amount": 46692016.636322476
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      },
+      {
+        "turn": 12,
+        "tile": 13,
+        "headline": "높아진 금리가 경제를 식힙니다",
+        "actions": [
+          "이번 턴은 행동하지 않고 현재 구성을 유지했습니다."
+        ],
+        "irp": 132013634.0823841,
+        "flow": 0,
+        "market": 1452417.446061626,
+        "costs": 0,
+        "cash": 9208462,
+        "index": 1.049018910783106,
+        "realIndex": 0.8849573668423824,
+        "benchmark": 141138666.10433573,
+        "chapter": true,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65869200
+          },
+          {
+            "productId": "balanced",
+            "amount": 48144434.082384095
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      }
+    ],
+    "branches": [
+      {
+        "turn": 3,
+        "state": {
+          "contributionPacing": {
+            "version": "v1",
+            "perTurnLimit": 2000000
+          },
+          "route": {
+            "visits": [
+              9,
+              20,
+              3
+            ],
+            "badges": [],
+            "reflections": []
+          },
+          "accountType": "IRP",
+          "rulesetVersion": "2026-09-10-e",
+          "avatarId": "balanced",
+          "accountBasis": {
+            "retirement": 90000000,
+            "retirementTax": 1800000,
+            "deducted": 15000000,
+            "nonDeducted": 9000000
+          },
+          "cashFlows": [
+            {
+              "turn": 1,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 2,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 3,
+              "kind": "contribution",
+              "amount": 2000000
+            }
+          ],
+          "livingDebt": 0,
+          "orderSequence": 0,
+          "rebalancePlan": null,
+          "prices": {
+            "deposit": 1025.130753079765,
+            "shortBond": 1011.4537060031731,
+            "longBond": 999.1475598477248,
+            "balanced": 1012.2107703883389,
+            "equityEtf": 1020.5357687325154,
+            "tdf": 1013.1442619945688
+          },
+          "seed": "kc18vw-1iokpl6",
+          "rngState": 1705790647,
+          "status": "playing",
+          "turn": 3,
+          "position": 3,
+          "phase": "물가상승·긴축",
+          "goalMonthly": 500000,
+          "profileId": "balanced",
+          "cash": 13728000,
+          "irpCash": 6000000,
+          "holdings": [
+            {
+              "productId": "deposit",
+              "positions": [
+                {
+                  "amount": 65869200,
+                  "principal": 64800000,
+                  "depositTurnsHeld": 3,
+                  "lots": [
+                    {
+                      "principal": 64800000,
+                      "amount": 65869200,
+                      "openedTurn": 0,
+                      "maturityTurn": 3,
+                      "ratePerTurn": 0.0055
+                    }
+                  ],
+                  "id": "manual-deposit",
+                  "source": "manual"
+                }
+              ],
+              "amount": 65869200,
+              "principal": 64800000,
+              "units": 0,
+              "depositTurnsHeld": 3,
+              "lots": [
+                {
+                  "principal": 64800000,
+                  "amount": 65869200,
+                  "openedTurn": 0,
+                  "maturityTurn": 3,
+                  "ratePerTurn": 0.0055
+                }
+              ]
+            },
+            {
+              "productId": "balanced",
+              "positions": [
+                {
+                  "amount": 43727505.28077624,
+                  "principal": 43200000,
+                  "depositTurnsHeld": 0,
+                  "id": "manual-balanced",
+                  "source": "manual",
+                  "units": 43200
+                }
+              ],
+              "amount": 43727505.28077624,
+              "principal": 43200000,
+              "units": 43200,
+              "depositTurnsHeld": 0
+            }
+          ],
+          "pendingOrders": [],
+          "contributionTotal": 6000000,
+          "taxCreditEligible": 6000000,
+          "taxCreditBenefit": 792000,
+          "maxIrpValue": 113596705.28077623,
+          "maxDrawdown": 0.0024169019568310857,
+          "irpHistory": [
+            108000000,
+            109738974.58866224,
+            113408730.08568925,
+            115596705.28077623
+          ],
+          "cashShortages": 0,
+          "ruleBreaches": 0,
+          "marketLimitExceeded": false,
+          "understandingPoints": 3,
+          "rebalanceCount": 0,
+          "riskBuyCount": 0,
+          "safeActionCount": 0,
+          "unlockedCards": [
+            "rate-bond",
+            "db-dc-irp",
+            "pricing-vs-settlement",
+            "tdf-glide",
+            "signal-vs-forecast",
+            "contribution-limit",
+            "profile",
+            "fund-order",
+            "tax-credit"
+          ],
+          "eventHistory": [
+            "yearend-bonus"
+          ],
+          "logs": [
+            {
+              "turn": 0,
+              "type": "start",
+              "message": "위험중립형에 맞는 가상 시작 포트폴리오로 출발했습니다."
+            },
+            {
+              "turn": 0,
+              "type": "default-option",
+              "message": "사전지정 해제 · 보유한 디폴트옵션 자산은 유지됩니다."
+            },
+            {
+              "turn": 1,
+              "type": "market",
+              "message": "긴축이 길어지며 채권이 눌립니다 · 금리 ▲0.25 · 주식 ↘"
+            },
+            {
+              "turn": 1,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 1,
+              "type": "settle",
+              "message": "1턴 마감"
+            },
+            {
+              "turn": 2,
+              "type": "market",
+              "message": "긴축이 길어지며 채권이 눌립니다 · 금리 ▲0.25 · 주식 ↗↗"
+            },
+            {
+              "turn": 2,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 2,
+              "type": "settle",
+              "message": "2턴 마감"
+            },
+            {
+              "turn": 3,
+              "type": "market",
+              "message": "높아진 금리가 경제를 식힙니다 · 금리 ▲0.25 · 주식 →"
+            },
+            {
+              "turn": 3,
+              "type": "refund",
+              "message": "연말정산 통과 · 세액공제 528,000원 환급",
+              "impact": 528000
+            },
+            {
+              "turn": 3,
+              "type": "life",
+              "message": "연말 성과급: 보너스를 생활자금에 반영했습니다.",
+              "impact": 3000000
+            },
+            {
+              "turn": 3,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 3,
+              "type": "settle",
+              "message": "3턴 마감"
+            }
+          ],
+          "lastMarket": {
+            "turn": 3,
+            "phase": "물가상승·긴축",
+            "headline": "높아진 금리가 경제를 식힙니다",
+            "signal": "금리 ▲0.25 · 주식 →",
+            "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+            "rate": 4,
+            "inflation": 5,
+            "stocks": 3,
+            "ratePct": 4.25,
+            "rateDeltaPct": 0.25,
+            "inflationPct": 5.7,
+            "stockIndex": 100.1,
+            "stockReturn": -0.014836406962946058,
+            "regime": "tightening",
+            "returns": {
+              "deposit": 0.009464372681314125,
+              "shortBond": 0.006302025765739381,
+              "longBond": 0.002578569910582154,
+              "balanced": -0.0030393431103555484,
+              "equityEtf": -0.010518984058871864,
+              "tdf": -0.0010391250591298262
+            },
+            "alert": {
+              "level": 1,
+              "text": "시장 경계감이 커집니다 · 방향은 불확실",
+              "hint": "신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요."
+            }
+          },
+          "marketPath": [
+            {
+              "turn": 1,
+              "phase": "물가상승·긴축",
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "signal": "금리 ▲0.25 · 주식 ↘",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 3,
+              "inflation": 4,
+              "stocks": 3,
+              "ratePct": 3.75,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 4.9,
+              "stockIndex": 96.3,
+              "stockReturn": -0.037184197163674985,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.007254348661284894,
+                "shortBond": 0.0030030434452928603,
+                "longBond": -0.00249056122172624,
+                "balanced": -0.013503057337948125,
+                "equityEtf": -0.02726235578767956,
+                "tdf": -0.011077411360549745
+              },
+              "alert": {
+                "level": 1,
+                "text": "시장 경계감이 커집니다 · 방향은 불확실",
+                "hint": "신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요."
+              }
+            },
+            {
+              "turn": 2,
+              "phase": "물가상승·긴축",
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "signal": "금리 ▲0.25 · 주식 ↗↗",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 4,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 5.4,
+              "stockIndex": 101.6,
+              "stockReturn": 0.05476782436575741,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.008205622973432764,
+                "shortBond": 0.0033135322689078744,
+                "longBond": 0.0008665284745395171,
+                "balanced": 0.031667891620215965,
+                "equityEtf": 0.06124575286870823,
+                "tdf": 0.028641515677340024
+              }
+            },
+            {
+              "turn": 3,
+              "phase": "물가상승·긴축",
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "signal": "금리 ▲0.25 · 주식 →",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 4.25,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 5.7,
+              "stockIndex": 100.1,
+              "stockReturn": -0.014836406962946058,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.009464372681314125,
+                "shortBond": 0.006302025765739381,
+                "longBond": 0.002578569910582154,
+                "balanced": -0.0030393431103555484,
+                "equityEtf": -0.010518984058871864,
+                "tdf": -0.0010391250591298262
+              },
+              "alert": {
+                "level": 1,
+                "text": "시장 경계감이 커집니다 · 방향은 불확실",
+                "hint": "신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요."
+              }
+            },
+            {
+              "turn": 4,
+              "phase": "물가상승·긴축",
+              "headline": "물가 압력에 금리 인상이 이어집니다",
+              "signal": "금리 ▲0.50 · 주식 ↗ · 장기채 ↘↘",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 4.75,
+              "rateDeltaPct": 0.5,
+              "inflationPct": 6,
+              "stockIndex": 102.5,
+              "stockReturn": 0.024150058981962506,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.00962201665593311,
+                "shortBond": 0.0023109291875269265,
+                "longBond": -0.011003987519815565,
+                "balanced": 0.01449725998976501,
+                "equityEtf": 0.03334104914567434,
+                "tdf": 0.012823784031894759
+              },
+              "alert": {
+                "level": 2,
+                "text": "다음 턴 금리 결정 · 빅스텝 인상 우려",
+                "hint": "장기채 비중을 점검하세요. 금리가 뛰면 만기 긴 채권이 가장 크게 흔들립니다."
+              }
+            },
+            {
+              "turn": 5,
+              "phase": "기준금리 빅스텝 인상",
+              "headline": "기준금리가 한 번에 크게 오릅니다",
+              "signal": "신규 예금 ↗ · 장기채 ↘↘",
+              "reason": "금리가 급하게 오르면 새로 드는 예금 조건은 좋아지지만, 만기가 긴 채권 가격은 그만큼 크게 떨어집니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 5.5,
+              "rateDeltaPct": 0.75,
+              "inflationPct": 6,
+              "stockIndex": 95.9,
+              "stockReturn": -0.06401678277319298,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.012,
+                "shortBond": -0.02,
+                "longBond": -0.09,
+                "balanced": -0.05674515867780429,
+                "equityEtf": -0.05849031735560857,
+                "tdf": -0.04628795498631662
+              },
+              "shock": true,
+              "shockId": "rate-bigstep"
+            },
+            {
+              "turn": 6,
+              "phase": "물가상승·긴축",
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "signal": "금리 → · 주식 ↘",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 2,
+              "ratePct": 5.5,
+              "rateDeltaPct": 0,
+              "inflationPct": 6,
+              "stockIndex": 92.8,
+              "stockReturn": -0.03182891176920384,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.011499029123317451,
+                "shortBond": 0.007648505021212622,
+                "longBond": 0.01064137405352667,
+                "balanced": -0.007919253200886305,
+                "equityEtf": -0.024983445939142257,
+                "tdf": -0.0030156883661258812
+              },
+              "alert": {
+                "level": 1,
+                "text": "시장 경계감이 커집니다 · 방향은 불확실",
+                "hint": "신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요."
+              }
+            },
+            {
+              "turn": 7,
+              "phase": "위험자산 과열 랠리",
+              "headline": "주식이 급하게 오릅니다",
+              "signal": "주식 ↗↗ · 위험비중 주의",
+              "reason": "큰 상승은 반갑지만 위험자산 비중이 저절로 올라가 70% 한도를 넘길 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 5.5,
+              "rateDeltaPct": 0,
+              "inflationPct": 6,
+              "stockIndex": 100,
+              "stockReturn": 0.0772527388096787,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.010141759867407382,
+                "shortBond": 0.010926817924110217,
+                "longBond": 0.008735713212378322,
+                "balanced": 0.047398983890179075,
+                "equityEtf": 0.08496670221211389,
+                "tdf": 0.0361752425384731
+              },
+              "shock": true,
+              "shockId": "melt-up"
+            },
+            {
+              "turn": 8,
+              "phase": "물가상승·긴축",
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "signal": "금리 ▲0.25 · 주식 →",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 5.75,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 6,
+              "stockIndex": 98,
+              "stockReturn": -0.01956842060107738,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.010994187081838025,
+                "shortBond": 0.005984272250114008,
+                "longBond": -0.0017168566245585695,
+                "balanced": -0.005172370939387475,
+                "equityEtf": -0.012478449691552668,
+                "tdf": -0.0014079394649733638
+              }
+            },
+            {
+              "turn": 9,
+              "phase": "경기둔화·전환 기대",
+              "headline": "긴축의 끝이 보이며 위험자산이 숨을 고릅니다",
+              "signal": "금리 ▼0.50 · 주식 ↗↗ · 장기채 ↗↗",
+              "reason": "앞으로 금리가 낮아질 것이라는 기대는 만기 긴 채권 가격에 더 크게 반영됩니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 5.25,
+              "rateDeltaPct": -0.5,
+              "inflationPct": 6,
+              "stockIndex": 103.5,
+              "stockReturn": 0.05649985434766859,
+              "regime": "pivot",
+              "returns": {
+                "deposit": 0.0105138067657128,
+                "shortBond": 0.015586496317572892,
+                "longBond": 0.026161337332148107,
+                "balanced": 0.04230001159829554,
+                "equityEtf": 0.06372610637173057,
+                "tdf": 0.03288976033916387
+              }
+            },
+            {
+              "turn": 10,
+              "phase": "혼조·관망",
+              "headline": "방향이 뚜렷하지 않은 관망 국면입니다",
+              "signal": "금리 ▼0.25 · 주식 ↗",
+              "reason": "한 방향을 예측하기보다 목표 위험비중과 생활자금을 점검할 시점입니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 4,
+              "ratePct": 5,
+              "rateDeltaPct": -0.25,
+              "inflationPct": 6,
+              "stockIndex": 107.3,
+              "stockReturn": 0.03652280173683539,
+              "regime": "hold",
+              "returns": {
+                "deposit": 0.010064104031538589,
+                "shortBond": 0.012458755237050355,
+                "longBond": 0.014188177292235198,
+                "balanced": 0.02951070180395618,
+                "equityEtf": 0.04569793734326959,
+                "tdf": 0.022546903253265194
+              }
+            },
+            {
+              "turn": 11,
+              "phase": "물가상승·긴축",
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "signal": "금리 ▲0.50 · 주식 ↗ · 장기채 ↘↘",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 4,
+              "ratePct": 5.5,
+              "rateDeltaPct": 0.5,
+              "inflationPct": 6,
+              "stockIndex": 109.6,
+              "stockReturn": 0.021270402512513102,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.010562514300085604,
+                "shortBond": 0.004479415374202653,
+                "longBond": -0.005068475026544186,
+                "balanced": 0.012413646333024372,
+                "equityEtf": 0.02512182249221951,
+                "tdf": 0.0085353266163116
+              }
+            },
+            {
+              "turn": 12,
+              "phase": "물가상승·긴축",
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "signal": "금리 ▲0.25 · 주식 ↗↗",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 4,
+              "ratePct": 5.75,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 6,
+              "stockIndex": 114.8,
+              "stockReturn": 0.04731456372048706,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.011937248592171818,
+                "shortBond": 0.007180709791509435,
+                "longBond": 0.007139078220259397,
+                "balanced": 0.031931879105756525,
+                "equityEtf": 0.05670386420562864,
+                "tdf": 0.021088222580425985
+              }
+            }
+          ],
+          "awaitingAction": false,
+          "currentEventId": null,
+          "lifeEventSchedule": [
+            {
+              "turn": 3,
+              "eventId": "yearend-bonus"
+            },
+            {
+              "turn": 7,
+              "eventId": "repair"
+            },
+            {
+              "turn": 8,
+              "eventId": "family"
+            }
+          ],
+          "ledger": {
+            "open": 113408730.08568925,
+            "afterMarket": 113596705.28077623,
+            "beforeAction": {
+              "irp": 113596705.28077623,
+              "risk": 0.38493638677895853,
+              "holdings": {
+                "deposit": 65869200,
+                "shortBond": 0,
+                "longBond": 0,
+                "balanced": 43727505.28077624,
+                "equityEtf": 0,
+                "tdf": 0
+              }
+            }
+          },
+          "tileEffects": [
+            {
+              "kind": "tax-refund",
+              "tileIndex": 0,
+              "title": "연말정산 통과",
+              "detail": "이번 판 납입 4,000,000원 → 세액공제 528,000원 환급! 생활자금에 들어왔습니다.",
+              "amount": 528000
+            },
+            {
+              "kind": "spotlight",
+              "tileIndex": 3,
+              "productId": "shortBond",
+              "title": "단기채 거리 스포트라이트",
+              "detail": "단기채권형 상품 5등급 · 금리 민감도 1 · 기준가 확정·결제 대기는 일반 주문과 동일 · 매수와 무관한 상품 정보"
+            }
+          ],
+          "actionsLeft": 0,
+          "turnActionLines": [
+            "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+          ],
+          "pendingTaxCredit": 264000,
+          "taxCreditRefunded": 528000,
+          "spotlightProductId": null,
+          "rebalanceBonusTurn": null,
+          "extraLifeEvents": 0,
+          "tileEffectsEnabled": true,
+          "ghost": {
+            "irpHistory": [
+              108000000,
+              107738974.58866224,
+              109408730.08568925,
+              109596705.28077623,
+              110195145.14610064,
+              107646413.82535732,
+              107282412.39545391,
+              109210655.6573605,
+              108951983.74959031,
+              110738461.85308331,
+              112025630.55158545,
+              112561216.63632247,
+              114013634.0823841
+            ],
+            "finalCash": 26020462
+          },
+          "payoutChoice": null,
+          "defaultOption": null,
+          "lifeResolution": {
+            "eventId": "yearend-bonus",
+            "title": "연말 성과급",
+            "kind": "bonus",
+            "choice": "cash",
+            "choiceLabel": "생활자금으로 두기",
+            "cost": -3000000,
+            "alternative": "다른 선택이었다면: 2,000,000원 납입 · 1,000,000원 생활자금 — IRP 대기자금 +2,000,000원 (한도 밖 1,000,000원는 생활자금) · 세액공제 264,000원 환급 대기 / 1,500,000원 납입 · 1,500,000원 생활자금 — IRP +1,500,000원 · 생활자금 +1,500,000원 · 세액공제 198,000원 환급 대기",
+            "cashDelta": 3000000,
+            "irpDelta": 0,
+            "penalty": 0,
+            "fee": 0,
+            "sales": [],
+            "shortage": false,
+            "message": "보너스를 생활자금에 반영했습니다."
+          },
+          "quizLog": [],
+          "quizStreak": 0,
+          "pendingQuizCardId": "contribution-limit",
+          "milestonesHit": [
+            "goal-50",
+            "goal-75",
+            "goal-90"
+          ],
+          "turnMilestones": [],
+          "record": {
+            "rebalanceTurns": [],
+            "diversifiedTurns": 0,
+            "defaultOptionRuns": 0,
+            "lifeChoices": [
+              {
+                "eventId": "yearend-bonus",
+                "choice": "cash"
+              }
+            ]
+          },
+          "defaultTrading": {
+            "version": "e1",
+            "groups": []
+          }
+        },
+        "progress": {
+          "scenario": "inflation",
+          "mission": "cushion",
+          "weekly": false,
+          "startingProfile": "balanced",
+          "startingGoal": 500000,
+          "priceIndex": 1.0397352584920647,
+          "index": 1.014440679902078,
+          "peak": 1.014440679902078,
+          "drawdown": 0.0024169019568310857,
+          "open": 113408730.08568925,
+          "afterMarket": 113596705.28077623,
+          "flowStart": 2,
+          "benchmark": 116220115.61482936,
+          "benchmarkOpen": 114220115.61482936,
+          "baselineWeights": {
+            "deposit": 0.6,
+            "shortBond": 0,
+            "longBond": 0,
+            "balanced": 0.4,
+            "equityEtf": 0,
+            "tdf": 0
+          },
+          "reviews": [
+            {
+              "turn": 1,
+              "tile": 9,
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 109738974.58866224,
+              "flow": 2000000,
+              "market": -261025.41133776307,
+              "costs": 0,
+              "cash": 11400000,
+              "index": 0.9975830980431689,
+              "realIndex": 0.9857237266545356,
+              "benchmark": 109852656.3819135,
+              "chapter": false,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65156400
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 42582574.58866224
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 2,
+              "tile": 20,
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 113408730.08568925,
+              "flow": 2000000,
+              "market": 1669755.4970270097,
+              "costs": 0,
+              "cash": 10800000,
+              "index": 1.0127620248368854,
+              "realIndex": 0.9876507176320461,
+              "benchmark": 113748756.81036414,
+              "chapter": false,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65512800
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 43895930.08568924
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 3,
+              "tile": 3,
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 115596705.28077623,
+              "flow": 2000000,
+              "market": 187975.19508698583,
+              "costs": 0,
+              "cash": 13728000,
+              "index": 1.014440679902078,
+              "realIndex": 0.9756720969271816,
+              "benchmark": 116220115.61482936,
+              "chapter": true,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65869200
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 43727505.28077624
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            }
+          ]
+        }
+      },
+      {
+        "turn": 6,
+        "state": {
+          "contributionPacing": {
+            "version": "v1",
+            "perTurnLimit": 2000000
+          },
+          "route": {
+            "visits": [
+              9,
+              20,
+              3,
+              12,
+              1
+            ],
+            "badges": [],
+            "reflections": []
+          },
+          "accountType": "IRP",
+          "rulesetVersion": "2026-09-10-e",
+          "avatarId": "balanced",
+          "accountBasis": {
+            "retirement": 90000000,
+            "retirementTax": 1800000,
+            "deducted": 18000000,
+            "nonDeducted": 12000000
+          },
+          "cashFlows": [
+            {
+              "turn": 1,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 2,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 3,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 4,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 5,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 6,
+              "kind": "contribution",
+              "amount": 2000000
+            }
+          ],
+          "livingDebt": 0,
+          "orderSequence": 0,
+          "rebalancePlan": null,
+          "prices": {
+            "deposit": 1059.4587631909997,
+            "shortBond": 999.9133318825616,
+            "longBond": 907.1532772494248,
+            "balanced": 958.6391758206923,
+            "equityEtf": 967.2032990802023,
+            "tdf": 972.7634338226835
+          },
+          "seed": "kc18vw-1iokpl6",
+          "rngState": 1705790647,
+          "status": "playing",
+          "turn": 6,
+          "position": 1,
+          "phase": "물가상승·긴축",
+          "goalMonthly": 500000,
+          "profileId": "balanced",
+          "cash": 12588000,
+          "irpCash": 12000000,
+          "holdings": [
+            {
+              "productId": "deposit",
+              "positions": [
+                {
+                  "amount": 65869200,
+                  "principal": 64800000,
+                  "depositTurnsHeld": 6,
+                  "lots": [
+                    {
+                      "principal": 64800000,
+                      "amount": 65869200,
+                      "openedTurn": 0,
+                      "maturityTurn": 3,
+                      "ratePerTurn": 0.0055
+                    }
+                  ],
+                  "id": "manual-deposit",
+                  "source": "manual"
+                }
+              ],
+              "amount": 65869200,
+              "principal": 64800000,
+              "units": 0,
+              "depositTurnsHeld": 6,
+              "lots": [
+                {
+                  "principal": 64800000,
+                  "amount": 65869200,
+                  "openedTurn": 0,
+                  "maturityTurn": 3,
+                  "ratePerTurn": 0.0055
+                }
+              ]
+            },
+            {
+              "productId": "balanced",
+              "positions": [
+                {
+                  "amount": 41413212.395453915,
+                  "principal": 43200000,
+                  "depositTurnsHeld": 0,
+                  "id": "manual-balanced",
+                  "source": "manual",
+                  "units": 43200.00000000001
+                }
+              ],
+              "amount": 41413212.395453915,
+              "principal": 43200000,
+              "units": 43200.00000000001,
+              "depositTurnsHeld": 0
+            }
+          ],
+          "pendingOrders": [],
+          "contributionTotal": 12000000,
+          "taxCreditEligible": 9000000,
+          "taxCreditBenefit": 1188000,
+          "maxIrpValue": 117282412.39545391,
+          "maxDrawdown": 0.024591066653538718,
+          "irpHistory": [
+            108000000,
+            109738974.58866224,
+            113408730.08568925,
+            115596705.28077623,
+            118195145.14610064,
+            117646413.82535732,
+            119282412.39545391
+          ],
+          "cashShortages": 0,
+          "ruleBreaches": 0,
+          "marketLimitExceeded": false,
+          "understandingPoints": 6,
+          "rebalanceCount": 0,
+          "riskBuyCount": 0,
+          "safeActionCount": 0,
+          "unlockedCards": [
+            "rate-bond",
+            "db-dc-irp",
+            "pricing-vs-settlement",
+            "tdf-glide",
+            "signal-vs-forecast",
+            "contribution-limit",
+            "profile",
+            "fund-order",
+            "tax-credit",
+            "pension-assumption",
+            "duration",
+            "deposit-rate"
+          ],
+          "eventHistory": [
+            "yearend-bonus"
+          ],
+          "logs": [
+            {
+              "turn": 0,
+              "type": "start",
+              "message": "위험중립형에 맞는 가상 시작 포트폴리오로 출발했습니다."
+            },
+            {
+              "turn": 0,
+              "type": "default-option",
+              "message": "사전지정 해제 · 보유한 디폴트옵션 자산은 유지됩니다."
+            },
+            {
+              "turn": 1,
+              "type": "market",
+              "message": "긴축이 길어지며 채권이 눌립니다 · 금리 ▲0.25 · 주식 ↘"
+            },
+            {
+              "turn": 1,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 1,
+              "type": "settle",
+              "message": "1턴 마감"
+            },
+            {
+              "turn": 2,
+              "type": "market",
+              "message": "긴축이 길어지며 채권이 눌립니다 · 금리 ▲0.25 · 주식 ↗↗"
+            },
+            {
+              "turn": 2,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 2,
+              "type": "settle",
+              "message": "2턴 마감"
+            },
+            {
+              "turn": 3,
+              "type": "market",
+              "message": "높아진 금리가 경제를 식힙니다 · 금리 ▲0.25 · 주식 →"
+            },
+            {
+              "turn": 3,
+              "type": "refund",
+              "message": "연말정산 통과 · 세액공제 528,000원 환급",
+              "impact": 528000
+            },
+            {
+              "turn": 3,
+              "type": "life",
+              "message": "연말 성과급: 보너스를 생활자금에 반영했습니다.",
+              "impact": 3000000
+            },
+            {
+              "turn": 3,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 3,
+              "type": "settle",
+              "message": "3턴 마감"
+            },
+            {
+              "turn": 4,
+              "type": "market",
+              "message": "물가 압력에 금리 인상이 이어집니다 · 금리 ▲0.50 · 주식 ↗ · 장기채 ↘↘"
+            },
+            {
+              "turn": 4,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 4,
+              "type": "settle",
+              "message": "4턴 마감"
+            },
+            {
+              "turn": 5,
+              "type": "market",
+              "message": "기준금리가 한 번에 크게 오릅니다 · 신규 예금 ↗ · 장기채 ↘↘"
+            },
+            {
+              "turn": 5,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 132,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 5,
+              "type": "settle",
+              "message": "5턴 마감"
+            },
+            {
+              "turn": 6,
+              "type": "market",
+              "message": "높아진 금리가 경제를 식힙니다 · 금리 → · 주식 ↘"
+            },
+            {
+              "turn": 6,
+              "type": "refund",
+              "message": "연말정산 통과 · 세액공제 660,000원 환급",
+              "impact": 660000
+            },
+            {
+              "turn": 6,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+            },
+            {
+              "turn": 6,
+              "type": "settle",
+              "message": "6턴 마감"
+            }
+          ],
+          "lastMarket": {
+            "turn": 6,
+            "phase": "물가상승·긴축",
+            "headline": "높아진 금리가 경제를 식힙니다",
+            "signal": "금리 → · 주식 ↘",
+            "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+            "rate": 5,
+            "inflation": 5,
+            "stocks": 2,
+            "ratePct": 5.5,
+            "rateDeltaPct": 0,
+            "inflationPct": 6,
+            "stockIndex": 92.8,
+            "stockReturn": -0.03182891176920384,
+            "regime": "tightening",
+            "returns": {
+              "deposit": 0.011499029123317451,
+              "shortBond": 0.007648505021212622,
+              "longBond": 0.01064137405352667,
+              "balanced": -0.007919253200886305,
+              "equityEtf": -0.024983445939142257,
+              "tdf": -0.0030156883661258812
+            },
+            "alert": {
+              "level": 1,
+              "text": "시장 경계감이 커집니다 · 방향은 불확실",
+              "hint": "신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요."
+            }
+          },
+          "marketPath": [
+            {
+              "turn": 1,
+              "phase": "물가상승·긴축",
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "signal": "금리 ▲0.25 · 주식 ↘",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 3,
+              "inflation": 4,
+              "stocks": 3,
+              "ratePct": 3.75,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 4.9,
+              "stockIndex": 96.3,
+              "stockReturn": -0.037184197163674985,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.007254348661284894,
+                "shortBond": 0.0030030434452928603,
+                "longBond": -0.00249056122172624,
+                "balanced": -0.013503057337948125,
+                "equityEtf": -0.02726235578767956,
+                "tdf": -0.011077411360549745
+              },
+              "alert": {
+                "level": 1,
+                "text": "시장 경계감이 커집니다 · 방향은 불확실",
+                "hint": "신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요."
+              }
+            },
+            {
+              "turn": 2,
+              "phase": "물가상승·긴축",
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "signal": "금리 ▲0.25 · 주식 ↗↗",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 4,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 5.4,
+              "stockIndex": 101.6,
+              "stockReturn": 0.05476782436575741,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.008205622973432764,
+                "shortBond": 0.0033135322689078744,
+                "longBond": 0.0008665284745395171,
+                "balanced": 0.031667891620215965,
+                "equityEtf": 0.06124575286870823,
+                "tdf": 0.028641515677340024
+              }
+            },
+            {
+              "turn": 3,
+              "phase": "물가상승·긴축",
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "signal": "금리 ▲0.25 · 주식 →",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 4.25,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 5.7,
+              "stockIndex": 100.1,
+              "stockReturn": -0.014836406962946058,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.009464372681314125,
+                "shortBond": 0.006302025765739381,
+                "longBond": 0.002578569910582154,
+                "balanced": -0.0030393431103555484,
+                "equityEtf": -0.010518984058871864,
+                "tdf": -0.0010391250591298262
+              },
+              "alert": {
+                "level": 1,
+                "text": "시장 경계감이 커집니다 · 방향은 불확실",
+                "hint": "신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요."
+              }
+            },
+            {
+              "turn": 4,
+              "phase": "물가상승·긴축",
+              "headline": "물가 압력에 금리 인상이 이어집니다",
+              "signal": "금리 ▲0.50 · 주식 ↗ · 장기채 ↘↘",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 4.75,
+              "rateDeltaPct": 0.5,
+              "inflationPct": 6,
+              "stockIndex": 102.5,
+              "stockReturn": 0.024150058981962506,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.00962201665593311,
+                "shortBond": 0.0023109291875269265,
+                "longBond": -0.011003987519815565,
+                "balanced": 0.01449725998976501,
+                "equityEtf": 0.03334104914567434,
+                "tdf": 0.012823784031894759
+              },
+              "alert": {
+                "level": 2,
+                "text": "다음 턴 금리 결정 · 빅스텝 인상 우려",
+                "hint": "장기채 비중을 점검하세요. 금리가 뛰면 만기 긴 채권이 가장 크게 흔들립니다."
+              }
+            },
+            {
+              "turn": 5,
+              "phase": "기준금리 빅스텝 인상",
+              "headline": "기준금리가 한 번에 크게 오릅니다",
+              "signal": "신규 예금 ↗ · 장기채 ↘↘",
+              "reason": "금리가 급하게 오르면 새로 드는 예금 조건은 좋아지지만, 만기가 긴 채권 가격은 그만큼 크게 떨어집니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 5.5,
+              "rateDeltaPct": 0.75,
+              "inflationPct": 6,
+              "stockIndex": 95.9,
+              "stockReturn": -0.06401678277319298,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.012,
+                "shortBond": -0.02,
+                "longBond": -0.09,
+                "balanced": -0.05674515867780429,
+                "equityEtf": -0.05849031735560857,
+                "tdf": -0.04628795498631662
+              },
+              "shock": true,
+              "shockId": "rate-bigstep"
+            },
+            {
+              "turn": 6,
+              "phase": "물가상승·긴축",
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "signal": "금리 → · 주식 ↘",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 2,
+              "ratePct": 5.5,
+              "rateDeltaPct": 0,
+              "inflationPct": 6,
+              "stockIndex": 92.8,
+              "stockReturn": -0.03182891176920384,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.011499029123317451,
+                "shortBond": 0.007648505021212622,
+                "longBond": 0.01064137405352667,
+                "balanced": -0.007919253200886305,
+                "equityEtf": -0.024983445939142257,
+                "tdf": -0.0030156883661258812
+              },
+              "alert": {
+                "level": 1,
+                "text": "시장 경계감이 커집니다 · 방향은 불확실",
+                "hint": "신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요."
+              }
+            },
+            {
+              "turn": 7,
+              "phase": "위험자산 과열 랠리",
+              "headline": "주식이 급하게 오릅니다",
+              "signal": "주식 ↗↗ · 위험비중 주의",
+              "reason": "큰 상승은 반갑지만 위험자산 비중이 저절로 올라가 70% 한도를 넘길 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 5.5,
+              "rateDeltaPct": 0,
+              "inflationPct": 6,
+              "stockIndex": 100,
+              "stockReturn": 0.0772527388096787,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.010141759867407382,
+                "shortBond": 0.010926817924110217,
+                "longBond": 0.008735713212378322,
+                "balanced": 0.047398983890179075,
+                "equityEtf": 0.08496670221211389,
+                "tdf": 0.0361752425384731
+              },
+              "shock": true,
+              "shockId": "melt-up"
+            },
+            {
+              "turn": 8,
+              "phase": "물가상승·긴축",
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "signal": "금리 ▲0.25 · 주식 →",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 5.75,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 6,
+              "stockIndex": 98,
+              "stockReturn": -0.01956842060107738,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.010994187081838025,
+                "shortBond": 0.005984272250114008,
+                "longBond": -0.0017168566245585695,
+                "balanced": -0.005172370939387475,
+                "equityEtf": -0.012478449691552668,
+                "tdf": -0.0014079394649733638
+              }
+            },
+            {
+              "turn": 9,
+              "phase": "경기둔화·전환 기대",
+              "headline": "긴축의 끝이 보이며 위험자산이 숨을 고릅니다",
+              "signal": "금리 ▼0.50 · 주식 ↗↗ · 장기채 ↗↗",
+              "reason": "앞으로 금리가 낮아질 것이라는 기대는 만기 긴 채권 가격에 더 크게 반영됩니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 5.25,
+              "rateDeltaPct": -0.5,
+              "inflationPct": 6,
+              "stockIndex": 103.5,
+              "stockReturn": 0.05649985434766859,
+              "regime": "pivot",
+              "returns": {
+                "deposit": 0.0105138067657128,
+                "shortBond": 0.015586496317572892,
+                "longBond": 0.026161337332148107,
+                "balanced": 0.04230001159829554,
+                "equityEtf": 0.06372610637173057,
+                "tdf": 0.03288976033916387
+              }
+            },
+            {
+              "turn": 10,
+              "phase": "혼조·관망",
+              "headline": "방향이 뚜렷하지 않은 관망 국면입니다",
+              "signal": "금리 ▼0.25 · 주식 ↗",
+              "reason": "한 방향을 예측하기보다 목표 위험비중과 생활자금을 점검할 시점입니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 4,
+              "ratePct": 5,
+              "rateDeltaPct": -0.25,
+              "inflationPct": 6,
+              "stockIndex": 107.3,
+              "stockReturn": 0.03652280173683539,
+              "regime": "hold",
+              "returns": {
+                "deposit": 0.010064104031538589,
+                "shortBond": 0.012458755237050355,
+                "longBond": 0.014188177292235198,
+                "balanced": 0.02951070180395618,
+                "equityEtf": 0.04569793734326959,
+                "tdf": 0.022546903253265194
+              }
+            },
+            {
+              "turn": 11,
+              "phase": "물가상승·긴축",
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "signal": "금리 ▲0.50 · 주식 ↗ · 장기채 ↘↘",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 4,
+              "ratePct": 5.5,
+              "rateDeltaPct": 0.5,
+              "inflationPct": 6,
+              "stockIndex": 109.6,
+              "stockReturn": 0.021270402512513102,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.010562514300085604,
+                "shortBond": 0.004479415374202653,
+                "longBond": -0.005068475026544186,
+                "balanced": 0.012413646333024372,
+                "equityEtf": 0.02512182249221951,
+                "tdf": 0.0085353266163116
+              }
+            },
+            {
+              "turn": 12,
+              "phase": "물가상승·긴축",
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "signal": "금리 ▲0.25 · 주식 ↗↗",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 4,
+              "ratePct": 5.75,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 6,
+              "stockIndex": 114.8,
+              "stockReturn": 0.04731456372048706,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.011937248592171818,
+                "shortBond": 0.007180709791509435,
+                "longBond": 0.007139078220259397,
+                "balanced": 0.031931879105756525,
+                "equityEtf": 0.05670386420562864,
+                "tdf": 0.021088222580425985
+              }
+            }
+          ],
+          "awaitingAction": false,
+          "currentEventId": null,
+          "lifeEventSchedule": [
+            {
+              "turn": 3,
+              "eventId": "yearend-bonus"
+            },
+            {
+              "turn": 7,
+              "eventId": "repair"
+            },
+            {
+              "turn": 8,
+              "eventId": "family"
+            }
+          ],
+          "ledger": {
+            "open": 117646413.82535732,
+            "afterMarket": 117282412.39545391,
+            "beforeAction": {
+              "irp": 117282412.39545391,
+              "risk": 0.35310675786422663,
+              "holdings": {
+                "deposit": 65869200,
+                "shortBond": 0,
+                "longBond": 0,
+                "balanced": 41413212.395453915,
+                "equityEtf": 0,
+                "tdf": 0
+              }
+            }
+          },
+          "tileEffects": [
+            {
+              "kind": "tax-refund",
+              "tileIndex": 0,
+              "title": "연말정산 통과",
+              "detail": "이번 판 납입 10,000,000원 → 세액공제 660,000원 환급! 생활자금에 들어왔습니다.",
+              "amount": 660000
+            },
+            {
+              "kind": "spotlight",
+              "tileIndex": 1,
+              "productId": "deposit",
+              "title": "예금 거리 스포트라이트",
+              "detail": "원리금보장형 예금 6등급 · 가입 건별 약정 유지 · 중도해지 시 발생 이자 조정 · 매수와 무관한 상품 정보"
+            }
+          ],
+          "actionsLeft": 0,
+          "turnActionLines": [
+            "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+          ],
+          "pendingTaxCredit": 0,
+          "taxCreditRefunded": 1188000,
+          "spotlightProductId": null,
+          "rebalanceBonusTurn": null,
+          "extraLifeEvents": 0,
+          "tileEffectsEnabled": true,
+          "ghost": {
+            "irpHistory": [
+              108000000,
+              107738974.58866224,
+              109408730.08568925,
+              109596705.28077623,
+              110195145.14610064,
+              107646413.82535732,
+              107282412.39545391,
+              109210655.6573605,
+              108951983.74959031,
+              110738461.85308331,
+              112025630.55158545,
+              112561216.63632247,
+              114013634.0823841
+            ],
+            "finalCash": 26020462
+          },
+          "payoutChoice": null,
+          "defaultOption": null,
+          "lifeResolution": null,
+          "quizLog": [],
+          "quizStreak": 0,
+          "pendingQuizCardId": "contribution-limit",
+          "milestonesHit": [
+            "goal-50",
+            "goal-75",
+            "goal-90"
+          ],
+          "turnMilestones": [],
+          "record": {
+            "rebalanceTurns": [],
+            "diversifiedTurns": 0,
+            "defaultOptionRuns": 0,
+            "lifeChoices": [
+              {
+                "eventId": "yearend-bonus",
+                "choice": "cash"
+              }
+            ]
+          },
+          "defaultTrading": {
+            "version": "e1",
+            "groups": []
+          }
+        },
+        "progress": {
+          "scenario": "inflation",
+          "mission": "cushion",
+          "weekly": false,
+          "startingProfile": "balanced",
+          "startingGoal": 500000,
+          "priceIndex": 1.0861809222373453,
+          "index": 0.9946170779424947,
+          "peak": 1.0196924017602889,
+          "drawdown": 0.024591066653538718,
+          "open": 117646413.82535732,
+          "afterMarket": 117282412.39545391,
+          "flowStart": 5,
+          "benchmark": 122047255.22326712,
+          "benchmarkOpen": 120047255.22326712,
+          "baselineWeights": {
+            "deposit": 0.6,
+            "shortBond": 0,
+            "longBond": 0,
+            "balanced": 0.4,
+            "equityEtf": 0,
+            "tdf": 0
+          },
+          "reviews": [
+            {
+              "turn": 1,
+              "tile": 9,
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 109738974.58866224,
+              "flow": 2000000,
+              "market": -261025.41133776307,
+              "costs": 0,
+              "cash": 11400000,
+              "index": 0.9975830980431689,
+              "realIndex": 0.9857237266545356,
+              "benchmark": 109852656.3819135,
+              "chapter": false,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65156400
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 42582574.58866224
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 2,
+              "tile": 20,
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 113408730.08568925,
+              "flow": 2000000,
+              "market": 1669755.4970270097,
+              "costs": 0,
+              "cash": 10800000,
+              "index": 1.0127620248368854,
+              "realIndex": 0.9876507176320461,
+              "benchmark": 113748756.81036414,
+              "chapter": false,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65512800
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 43895930.08568924
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 3,
+              "tile": 3,
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 115596705.28077623,
+              "flow": 2000000,
+              "market": 187975.19508698583,
+              "costs": 0,
+              "cash": 13728000,
+              "index": 1.014440679902078,
+              "realIndex": 0.9756720969271816,
+              "benchmark": 116220115.61482936,
+              "chapter": true,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65869200
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 43727505.28077624
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 4,
+              "tile": 12,
+              "headline": "물가 압력에 금리 인상이 이어집니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 118195145.14610064,
+              "flow": 2000000,
+              "market": 598439.8653244078,
+              "costs": 0,
+              "cash": 13128000,
+              "index": 1.0196924017602889,
+              "realIndex": 0.966540252288156,
+              "benchmark": 119527298.44416206,
+              "chapter": false,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65869200
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 44325945.14610065
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 5,
+              "tile": 20,
+              "headline": "기준금리가 한 번에 크게 오릅니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 132,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 117646413.82535732,
+              "flow": 2000000,
+              "market": -2548731.3207433224,
+              "costs": 0,
+              "cash": 12528000,
+              "index": 0.997704003178622,
+              "realIndex": 0.932021671083917,
+              "benchmark": 119638778.48140588,
+              "chapter": false,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65869200
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 41777213.82535732
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 6,
+              "tile": 1,
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "actions": [
+                "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+              ],
+              "irp": 119282412.39545391,
+              "flow": 2000000,
+              "market": -364001.4299034029,
+              "costs": 0,
+              "cash": 12588000,
+              "index": 0.9946170779424947,
+              "realIndex": 0.9157011116469944,
+              "benchmark": 122047255.22326712,
+              "chapter": true,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65869200
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 41413212.395453915
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            }
+          ]
+        }
+      },
+      {
+        "turn": 9,
+        "state": {
+          "contributionPacing": {
+            "version": "v1",
+            "perTurnLimit": 2000000
+          },
+          "route": {
+            "visits": [
+              9,
+              20,
+              3,
+              12,
+              1,
+              7
+            ],
+            "badges": [],
+            "reflections": []
+          },
+          "accountType": "IRP",
+          "rulesetVersion": "2026-09-10-e",
+          "avatarId": "balanced",
+          "accountBasis": {
+            "retirement": 90000000,
+            "retirementTax": 1800000,
+            "deducted": 18000000,
+            "nonDeducted": 18000000
+          },
+          "cashFlows": [
+            {
+              "turn": 1,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 2,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 3,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 4,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 5,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 6,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 7,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 8,
+              "kind": "contribution",
+              "amount": 2000000
+            },
+            {
+              "turn": 9,
+              "kind": "contribution",
+              "amount": 2000000
+            }
+          ],
+          "livingDebt": 0,
+          "orderSequence": 0,
+          "rebalancePlan": null,
+          "prices": {
+            "deposit": 1093.3451763400287,
+            "shortBond": 1031.4992761228962,
+            "longBond": 935.7190938778891,
+            "balanced": 1038.6403206732248,
+            "equityEtf": 1101.3355428094644,
+            "tdf": 1036.523120982138
+          },
+          "seed": "kc18vw-1iokpl6",
+          "rngState": 1705790647,
+          "status": "playing",
+          "turn": 9,
+          "position": 20,
+          "phase": "경기둔화·전환 기대",
+          "goalMonthly": 500000,
+          "profileId": "balanced",
+          "cash": 5008462,
+          "irpCash": 18000000,
+          "holdings": [
+            {
+              "productId": "deposit",
+              "positions": [
+                {
+                  "amount": 65869200,
+                  "principal": 64800000,
+                  "depositTurnsHeld": 9,
+                  "lots": [
+                    {
+                      "principal": 64800000,
+                      "amount": 65869200,
+                      "openedTurn": 0,
+                      "maturityTurn": 3,
+                      "ratePerTurn": 0.0055
+                    }
+                  ],
+                  "id": "manual-deposit",
+                  "source": "manual"
+                }
+              ],
+              "amount": 65869200,
+              "principal": 64800000,
+              "units": 0,
+              "depositTurnsHeld": 9,
+              "lots": [
+                {
+                  "principal": 64800000,
+                  "amount": 65869200,
+                  "openedTurn": 0,
+                  "maturityTurn": 3,
+                  "ratePerTurn": 0.0055
+                }
+              ]
+            },
+            {
+              "productId": "balanced",
+              "positions": [
+                {
+                  "amount": 44869261.85308332,
+                  "principal": 43200000,
+                  "depositTurnsHeld": 0,
+                  "id": "manual-balanced",
+                  "source": "manual",
+                  "units": 43200.00000000001
+                }
+              ],
+              "amount": 44869261.85308332,
+              "principal": 43200000,
+              "units": 43200.00000000001,
+              "depositTurnsHeld": 0
+            }
+          ],
+          "pendingOrders": [],
+          "contributionTotal": 18000000,
+          "taxCreditEligible": 9000000,
+          "taxCreditBenefit": 1188000,
+          "maxIrpValue": 126738461.85308331,
+          "maxDrawdown": 0.024591066653538718,
+          "irpHistory": [
+            108000000,
+            109738974.58866224,
+            113408730.08568925,
+            115596705.28077623,
+            118195145.14610064,
+            117646413.82535732,
+            119282412.39545391,
+            123210655.6573605,
+            124951983.74959031,
+            128738461.85308331
+          ],
+          "cashShortages": 0,
+          "ruleBreaches": 0,
+          "marketLimitExceeded": false,
+          "understandingPoints": 10,
+          "rebalanceCount": 0,
+          "riskBuyCount": 0,
+          "safeActionCount": 2,
+          "unlockedCards": [
+            "rate-bond",
+            "db-dc-irp",
+            "pricing-vs-settlement",
+            "tdf-glide",
+            "signal-vs-forecast",
+            "contribution-limit",
+            "profile",
+            "fund-order",
+            "tax-credit",
+            "pension-assumption",
+            "duration",
+            "deposit-rate",
+            "etf-order",
+            "tdf-exception",
+            "risk-limit",
+            "irp-withdrawal",
+            "emergency-cash",
+            "rebalance"
+          ],
+          "eventHistory": [
+            "yearend-bonus",
+            "repair",
+            "family"
+          ],
+          "logs": [
+            {
+              "turn": 0,
+              "type": "start",
+              "message": "위험중립형에 맞는 가상 시작 포트폴리오로 출발했습니다."
+            },
+            {
+              "turn": 0,
+              "type": "default-option",
+              "message": "사전지정 해제 · 보유한 디폴트옵션 자산은 유지됩니다."
+            },
+            {
+              "turn": 1,
+              "type": "market",
+              "message": "긴축이 길어지며 채권이 눌립니다 · 금리 ▲0.25 · 주식 ↘"
+            },
+            {
+              "turn": 1,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 1,
+              "type": "settle",
+              "message": "1턴 마감"
+            },
+            {
+              "turn": 2,
+              "type": "market",
+              "message": "긴축이 길어지며 채권이 눌립니다 · 금리 ▲0.25 · 주식 ↗↗"
+            },
+            {
+              "turn": 2,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 2,
+              "type": "settle",
+              "message": "2턴 마감"
+            },
+            {
+              "turn": 3,
+              "type": "market",
+              "message": "높아진 금리가 경제를 식힙니다 · 금리 ▲0.25 · 주식 →"
+            },
+            {
+              "turn": 3,
+              "type": "refund",
+              "message": "연말정산 통과 · 세액공제 528,000원 환급",
+              "impact": 528000
+            },
+            {
+              "turn": 3,
+              "type": "life",
+              "message": "연말 성과급: 보너스를 생활자금에 반영했습니다.",
+              "impact": 3000000
+            },
+            {
+              "turn": 3,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 3,
+              "type": "settle",
+              "message": "3턴 마감"
+            },
+            {
+              "turn": 4,
+              "type": "market",
+              "message": "물가 압력에 금리 인상이 이어집니다 · 금리 ▲0.50 · 주식 ↗ · 장기채 ↘↘"
+            },
+            {
+              "turn": 4,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 4,
+              "type": "settle",
+              "message": "4턴 마감"
+            },
+            {
+              "turn": 5,
+              "type": "market",
+              "message": "기준금리가 한 번에 크게 오릅니다 · 신규 예금 ↗ · 장기채 ↘↘"
+            },
+            {
+              "turn": 5,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 세액공제 132,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+            },
+            {
+              "turn": 5,
+              "type": "settle",
+              "message": "5턴 마감"
+            },
+            {
+              "turn": 6,
+              "type": "market",
+              "message": "높아진 금리가 경제를 식힙니다 · 금리 → · 주식 ↘"
+            },
+            {
+              "turn": 6,
+              "type": "refund",
+              "message": "연말정산 통과 · 세액공제 660,000원 환급",
+              "impact": 660000
+            },
+            {
+              "turn": 6,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+            },
+            {
+              "turn": 6,
+              "type": "settle",
+              "message": "6턴 마감"
+            },
+            {
+              "turn": 7,
+              "type": "market",
+              "message": "주식이 급하게 오릅니다 · 주식 ↗↗ · 위험비중 주의"
+            },
+            {
+              "turn": 7,
+              "type": "life",
+              "message": "집수리 비용: 생활자금으로 해결해 IRP를 지켰습니다.",
+              "impact": -2424663
+            },
+            {
+              "turn": 7,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+            },
+            {
+              "turn": 7,
+              "type": "settle",
+              "message": "7턴 마감"
+            },
+            {
+              "turn": 7,
+              "type": "milestone",
+              "message": "목표 월 연금 도달! · 월 513,378원 ≥ 목표 500,000원. 남은 5턴은 지키는 싸움입니다 — 생활자금·낙폭·분산이 별을 가릅니다."
+            },
+            {
+              "turn": 8,
+              "type": "market",
+              "message": "긴축이 길어지며 채권이 눌립니다 · 금리 ▲0.25 · 주식 →"
+            },
+            {
+              "turn": 8,
+              "type": "life",
+              "message": "가족 돌봄 비용: 생활자금으로 해결해 IRP를 지켰습니다.",
+              "impact": -3354875
+            },
+            {
+              "turn": 8,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+            },
+            {
+              "turn": 8,
+              "type": "settle",
+              "message": "8턴 마감"
+            },
+            {
+              "turn": 9,
+              "type": "market",
+              "message": "긴축의 끝이 보이며 위험자산이 숨을 고릅니다 · 금리 ▼0.50 · 주식 ↗↗ · 장기채 ↗↗"
+            },
+            {
+              "turn": 9,
+              "type": "action",
+              "message": "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+            },
+            {
+              "turn": 9,
+              "type": "settle",
+              "message": "9턴 마감"
+            }
+          ],
+          "lastMarket": {
+            "turn": 9,
+            "phase": "경기둔화·전환 기대",
+            "headline": "긴축의 끝이 보이며 위험자산이 숨을 고릅니다",
+            "signal": "금리 ▼0.50 · 주식 ↗↗ · 장기채 ↗↗",
+            "reason": "앞으로 금리가 낮아질 것이라는 기대는 만기 긴 채권 가격에 더 크게 반영됩니다.",
+            "rate": 4,
+            "inflation": 5,
+            "stocks": 3,
+            "ratePct": 5.25,
+            "rateDeltaPct": -0.5,
+            "inflationPct": 6,
+            "stockIndex": 103.5,
+            "stockReturn": 0.05649985434766859,
+            "regime": "pivot",
+            "returns": {
+              "deposit": 0.0105138067657128,
+              "shortBond": 0.015586496317572892,
+              "longBond": 0.026161337332148107,
+              "balanced": 0.04230001159829554,
+              "equityEtf": 0.06372610637173057,
+              "tdf": 0.03288976033916387
+            }
+          },
+          "marketPath": [
+            {
+              "turn": 1,
+              "phase": "물가상승·긴축",
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "signal": "금리 ▲0.25 · 주식 ↘",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 3,
+              "inflation": 4,
+              "stocks": 3,
+              "ratePct": 3.75,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 4.9,
+              "stockIndex": 96.3,
+              "stockReturn": -0.037184197163674985,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.007254348661284894,
+                "shortBond": 0.0030030434452928603,
+                "longBond": -0.00249056122172624,
+                "balanced": -0.013503057337948125,
+                "equityEtf": -0.02726235578767956,
+                "tdf": -0.011077411360549745
+              },
+              "alert": {
+                "level": 1,
+                "text": "시장 경계감이 커집니다 · 방향은 불확실",
+                "hint": "신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요."
+              }
+            },
+            {
+              "turn": 2,
+              "phase": "물가상승·긴축",
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "signal": "금리 ▲0.25 · 주식 ↗↗",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 4,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 5.4,
+              "stockIndex": 101.6,
+              "stockReturn": 0.05476782436575741,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.008205622973432764,
+                "shortBond": 0.0033135322689078744,
+                "longBond": 0.0008665284745395171,
+                "balanced": 0.031667891620215965,
+                "equityEtf": 0.06124575286870823,
+                "tdf": 0.028641515677340024
+              }
+            },
+            {
+              "turn": 3,
+              "phase": "물가상승·긴축",
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "signal": "금리 ▲0.25 · 주식 →",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 4.25,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 5.7,
+              "stockIndex": 100.1,
+              "stockReturn": -0.014836406962946058,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.009464372681314125,
+                "shortBond": 0.006302025765739381,
+                "longBond": 0.002578569910582154,
+                "balanced": -0.0030393431103555484,
+                "equityEtf": -0.010518984058871864,
+                "tdf": -0.0010391250591298262
+              },
+              "alert": {
+                "level": 1,
+                "text": "시장 경계감이 커집니다 · 방향은 불확실",
+                "hint": "신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요."
+              }
+            },
+            {
+              "turn": 4,
+              "phase": "물가상승·긴축",
+              "headline": "물가 압력에 금리 인상이 이어집니다",
+              "signal": "금리 ▲0.50 · 주식 ↗ · 장기채 ↘↘",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 4.75,
+              "rateDeltaPct": 0.5,
+              "inflationPct": 6,
+              "stockIndex": 102.5,
+              "stockReturn": 0.024150058981962506,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.00962201665593311,
+                "shortBond": 0.0023109291875269265,
+                "longBond": -0.011003987519815565,
+                "balanced": 0.01449725998976501,
+                "equityEtf": 0.03334104914567434,
+                "tdf": 0.012823784031894759
+              },
+              "alert": {
+                "level": 2,
+                "text": "다음 턴 금리 결정 · 빅스텝 인상 우려",
+                "hint": "장기채 비중을 점검하세요. 금리가 뛰면 만기 긴 채권이 가장 크게 흔들립니다."
+              }
+            },
+            {
+              "turn": 5,
+              "phase": "기준금리 빅스텝 인상",
+              "headline": "기준금리가 한 번에 크게 오릅니다",
+              "signal": "신규 예금 ↗ · 장기채 ↘↘",
+              "reason": "금리가 급하게 오르면 새로 드는 예금 조건은 좋아지지만, 만기가 긴 채권 가격은 그만큼 크게 떨어집니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 5.5,
+              "rateDeltaPct": 0.75,
+              "inflationPct": 6,
+              "stockIndex": 95.9,
+              "stockReturn": -0.06401678277319298,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.012,
+                "shortBond": -0.02,
+                "longBond": -0.09,
+                "balanced": -0.05674515867780429,
+                "equityEtf": -0.05849031735560857,
+                "tdf": -0.04628795498631662
+              },
+              "shock": true,
+              "shockId": "rate-bigstep"
+            },
+            {
+              "turn": 6,
+              "phase": "물가상승·긴축",
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "signal": "금리 → · 주식 ↘",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 2,
+              "ratePct": 5.5,
+              "rateDeltaPct": 0,
+              "inflationPct": 6,
+              "stockIndex": 92.8,
+              "stockReturn": -0.03182891176920384,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.011499029123317451,
+                "shortBond": 0.007648505021212622,
+                "longBond": 0.01064137405352667,
+                "balanced": -0.007919253200886305,
+                "equityEtf": -0.024983445939142257,
+                "tdf": -0.0030156883661258812
+              },
+              "alert": {
+                "level": 1,
+                "text": "시장 경계감이 커집니다 · 방향은 불확실",
+                "hint": "신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요."
+              }
+            },
+            {
+              "turn": 7,
+              "phase": "위험자산 과열 랠리",
+              "headline": "주식이 급하게 오릅니다",
+              "signal": "주식 ↗↗ · 위험비중 주의",
+              "reason": "큰 상승은 반갑지만 위험자산 비중이 저절로 올라가 70% 한도를 넘길 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 5.5,
+              "rateDeltaPct": 0,
+              "inflationPct": 6,
+              "stockIndex": 100,
+              "stockReturn": 0.0772527388096787,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.010141759867407382,
+                "shortBond": 0.010926817924110217,
+                "longBond": 0.008735713212378322,
+                "balanced": 0.047398983890179075,
+                "equityEtf": 0.08496670221211389,
+                "tdf": 0.0361752425384731
+              },
+              "shock": true,
+              "shockId": "melt-up"
+            },
+            {
+              "turn": 8,
+              "phase": "물가상승·긴축",
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "signal": "금리 ▲0.25 · 주식 →",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 5.75,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 6,
+              "stockIndex": 98,
+              "stockReturn": -0.01956842060107738,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.010994187081838025,
+                "shortBond": 0.005984272250114008,
+                "longBond": -0.0017168566245585695,
+                "balanced": -0.005172370939387475,
+                "equityEtf": -0.012478449691552668,
+                "tdf": -0.0014079394649733638
+              }
+            },
+            {
+              "turn": 9,
+              "phase": "경기둔화·전환 기대",
+              "headline": "긴축의 끝이 보이며 위험자산이 숨을 고릅니다",
+              "signal": "금리 ▼0.50 · 주식 ↗↗ · 장기채 ↗↗",
+              "reason": "앞으로 금리가 낮아질 것이라는 기대는 만기 긴 채권 가격에 더 크게 반영됩니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 3,
+              "ratePct": 5.25,
+              "rateDeltaPct": -0.5,
+              "inflationPct": 6,
+              "stockIndex": 103.5,
+              "stockReturn": 0.05649985434766859,
+              "regime": "pivot",
+              "returns": {
+                "deposit": 0.0105138067657128,
+                "shortBond": 0.015586496317572892,
+                "longBond": 0.026161337332148107,
+                "balanced": 0.04230001159829554,
+                "equityEtf": 0.06372610637173057,
+                "tdf": 0.03288976033916387
+              }
+            },
+            {
+              "turn": 10,
+              "phase": "혼조·관망",
+              "headline": "방향이 뚜렷하지 않은 관망 국면입니다",
+              "signal": "금리 ▼0.25 · 주식 ↗",
+              "reason": "한 방향을 예측하기보다 목표 위험비중과 생활자금을 점검할 시점입니다.",
+              "rate": 4,
+              "inflation": 5,
+              "stocks": 4,
+              "ratePct": 5,
+              "rateDeltaPct": -0.25,
+              "inflationPct": 6,
+              "stockIndex": 107.3,
+              "stockReturn": 0.03652280173683539,
+              "regime": "hold",
+              "returns": {
+                "deposit": 0.010064104031538589,
+                "shortBond": 0.012458755237050355,
+                "longBond": 0.014188177292235198,
+                "balanced": 0.02951070180395618,
+                "equityEtf": 0.04569793734326959,
+                "tdf": 0.022546903253265194
+              }
+            },
+            {
+              "turn": 11,
+              "phase": "물가상승·긴축",
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "signal": "금리 ▲0.50 · 주식 ↗ · 장기채 ↘↘",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 4,
+              "ratePct": 5.5,
+              "rateDeltaPct": 0.5,
+              "inflationPct": 6,
+              "stockIndex": 109.6,
+              "stockReturn": 0.021270402512513102,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.010562514300085604,
+                "shortBond": 0.004479415374202653,
+                "longBond": -0.005068475026544186,
+                "balanced": 0.012413646333024372,
+                "equityEtf": 0.02512182249221951,
+                "tdf": 0.0085353266163116
+              }
+            },
+            {
+              "turn": 12,
+              "phase": "물가상승·긴축",
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "signal": "금리 ▲0.25 · 주식 ↗↗",
+              "reason": "금리가 오르면 새 예금 조건은 나아지지만, 만기가 긴 채권 가격은 더 크게 떨어질 수 있습니다.",
+              "rate": 5,
+              "inflation": 5,
+              "stocks": 4,
+              "ratePct": 5.75,
+              "rateDeltaPct": 0.25,
+              "inflationPct": 6,
+              "stockIndex": 114.8,
+              "stockReturn": 0.04731456372048706,
+              "regime": "tightening",
+              "returns": {
+                "deposit": 0.011937248592171818,
+                "shortBond": 0.007180709791509435,
+                "longBond": 0.007139078220259397,
+                "balanced": 0.031931879105756525,
+                "equityEtf": 0.05670386420562864,
+                "tdf": 0.021088222580425985
+              }
+            }
+          ],
+          "awaitingAction": false,
+          "currentEventId": null,
+          "lifeEventSchedule": [
+            {
+              "turn": 3,
+              "eventId": "yearend-bonus"
+            },
+            {
+              "turn": 7,
+              "eventId": "repair"
+            },
+            {
+              "turn": 8,
+              "eventId": "family"
+            }
+          ],
+          "ledger": {
+            "open": 124951983.74959031,
+            "afterMarket": 126738461.85308331,
+            "beforeAction": {
+              "irp": 126738461.85308331,
+              "risk": 0.35403034877523043,
+              "holdings": {
+                "deposit": 65869200,
+                "shortBond": 0,
+                "longBond": 0,
+                "balanced": 44869261.85308332,
+                "equityEtf": 0,
+                "tdf": 0
+              }
+            }
+          },
+          "tileEffects": [
+            {
+              "kind": "profile-check",
+              "tileIndex": 20,
+              "title": "성향 점검",
+              "detail": "진단 위험중립형 · 현재 구성 유사 성향 위험중립형(규제 위험비중 35%, 목표 구성 차이 40%) → 차이가 큽니다. 리밸런싱으로 맞추거나 설정에서 성향을 다시 진단해 보세요.",
+              "understanding": 0
+            }
+          ],
+          "actionsLeft": 0,
+          "turnActionLines": [
+            "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+          ],
+          "pendingTaxCredit": 0,
+          "taxCreditRefunded": 1188000,
+          "spotlightProductId": null,
+          "rebalanceBonusTurn": null,
+          "extraLifeEvents": 0,
+          "tileEffectsEnabled": true,
+          "ghost": {
+            "irpHistory": [
+              108000000,
+              107738974.58866224,
+              109408730.08568925,
+              109596705.28077623,
+              110195145.14610064,
+              107646413.82535732,
+              107282412.39545391,
+              109210655.6573605,
+              108951983.74959031,
+              110738461.85308331,
+              112025630.55158545,
+              112561216.63632247,
+              114013634.0823841
+            ],
+            "finalCash": 26020462
+          },
+          "payoutChoice": null,
+          "defaultOption": null,
+          "lifeResolution": null,
+          "quizLog": [],
+          "quizStreak": 0,
+          "pendingQuizCardId": "contribution-limit",
+          "milestonesHit": [
+            "goal-50",
+            "goal-75",
+            "goal-90",
+            "goal-100"
+          ],
+          "turnMilestones": [],
+          "record": {
+            "rebalanceTurns": [],
+            "diversifiedTurns": 0,
+            "defaultOptionRuns": 0,
+            "lifeChoices": [
+              {
+                "eventId": "yearend-bonus",
+                "choice": "cash"
+              },
+              {
+                "eventId": "repair",
+                "choice": "cash"
+              },
+              {
+                "eventId": "family",
+                "choice": "cash"
+              }
+            ]
+          },
+          "defaultTrading": {
+            "version": "e1",
+            "groups": []
+          }
+        },
+        "progress": {
+          "scenario": "inflation",
+          "mission": "cushion",
+          "weekly": false,
+          "startingProfile": "balanced",
+          "startingGoal": 500000,
+          "priceIndex": 1.134701344593648,
+          "index": 1.022993435244238,
+          "peak": 1.022993435244238,
+          "drawdown": 0.024591066653538718,
+          "open": 124951983.74959031,
+          "afterMarket": 126738461.85308331,
+          "flowStart": 8,
+          "benchmark": 134564925.50461555,
+          "benchmarkOpen": 132564925.50461556,
+          "baselineWeights": {
+            "deposit": 0.6,
+            "shortBond": 0,
+            "longBond": 0,
+            "balanced": 0.4,
+            "equityEtf": 0,
+            "tdf": 0
+          },
+          "reviews": [
+            {
+              "turn": 1,
+              "tile": 9,
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 109738974.58866224,
+              "flow": 2000000,
+              "market": -261025.41133776307,
+              "costs": 0,
+              "cash": 11400000,
+              "index": 0.9975830980431689,
+              "realIndex": 0.9857237266545356,
+              "benchmark": 109852656.3819135,
+              "chapter": false,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65156400
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 42582574.58866224
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 2,
+              "tile": 20,
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 113408730.08568925,
+              "flow": 2000000,
+              "market": 1669755.4970270097,
+              "costs": 0,
+              "cash": 10800000,
+              "index": 1.0127620248368854,
+              "realIndex": 0.9876507176320461,
+              "benchmark": 113748756.81036414,
+              "chapter": false,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65512800
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 43895930.08568924
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 3,
+              "tile": 3,
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 115596705.28077623,
+              "flow": 2000000,
+              "market": 187975.19508698583,
+              "costs": 0,
+              "cash": 13728000,
+              "index": 1.014440679902078,
+              "realIndex": 0.9756720969271816,
+              "benchmark": 116220115.61482936,
+              "chapter": true,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65869200
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 43727505.28077624
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 4,
+              "tile": 12,
+              "headline": "물가 압력에 금리 인상이 이어집니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 264,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 118195145.14610064,
+              "flow": 2000000,
+              "market": 598439.8653244078,
+              "costs": 0,
+              "cash": 13128000,
+              "index": 1.0196924017602889,
+              "realIndex": 0.966540252288156,
+              "benchmark": 119527298.44416206,
+              "chapter": false,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65869200
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 44325945.14610065
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 5,
+              "tile": 20,
+              "headline": "기준금리가 한 번에 크게 오릅니다",
+              "actions": [
+                "2,000,000원 추가납입. 세액공제 132,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+              ],
+              "irp": 117646413.82535732,
+              "flow": 2000000,
+              "market": -2548731.3207433224,
+              "costs": 0,
+              "cash": 12528000,
+              "index": 0.997704003178622,
+              "realIndex": 0.932021671083917,
+              "benchmark": 119638778.48140588,
+              "chapter": false,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65869200
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 41777213.82535732
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 6,
+              "tile": 1,
+              "headline": "높아진 금리가 경제를 식힙니다",
+              "actions": [
+                "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+              ],
+              "irp": 119282412.39545391,
+              "flow": 2000000,
+              "market": -364001.4299034029,
+              "costs": 0,
+              "cash": 12588000,
+              "index": 0.9946170779424947,
+              "realIndex": 0.9157011116469944,
+              "benchmark": 122047255.22326712,
+              "chapter": true,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65869200
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 41413212.395453915
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 7,
+              "tile": 7,
+              "headline": "주식이 급하게 오릅니다",
+              "actions": [
+                "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+              ],
+              "irp": 123210655.6573605,
+              "flow": 2000000,
+              "market": 1928243.2619065791,
+              "costs": 0,
+              "cash": 9563337,
+              "index": 1.0106954221024163,
+              "realIndex": 0.917047142028518,
+              "benchmark": 127062979.65515038,
+              "chapter": false,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65869200
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 43341455.6573605
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 8,
+              "tile": 12,
+              "headline": "긴축이 길어지며 채권이 눌립니다",
+              "actions": [
+                "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+              ],
+              "irp": 124951983.74959031,
+              "flow": 2000000,
+              "market": -258671.90777018666,
+              "costs": 0,
+              "cash": 5608462,
+              "index": 1.0085735397732054,
+              "realIndex": 0.9018877060660411,
+              "benchmark": 129597815.56738362,
+              "chapter": false,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65869200
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 43082783.7495903
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            },
+            {
+              "turn": 9,
+              "tile": 20,
+              "headline": "긴축의 끝이 보이며 위험자산이 숨을 고릅니다",
+              "actions": [
+                "2,000,000원 추가납입. 공제 한도를 넘어 이번 납입은 세액공제가 없습니다."
+              ],
+              "irp": 128738461.85308331,
+              "flow": 2000000,
+              "market": 1786478.103493005,
+              "costs": 0,
+              "cash": 5008462,
+              "index": 1.022993435244238,
+              "realIndex": 0.9015530298949156,
+              "benchmark": 134564925.50461555,
+              "chapter": true,
+              "holdings": [
+                {
+                  "productId": "deposit",
+                  "amount": 65869200
+                },
+                {
+                  "productId": "balanced",
+                  "amount": 44869261.85308332
+                }
+              ],
+              "defaultHoldings": [],
+              "defaultOrders": []
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "quiz": []
+}

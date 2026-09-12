@@ -9,7 +9,7 @@ import { initialHoldings } from './profile-engine';
 import { addAccountFlow, accountPayout } from './account-engine';
 import { balanceConfig, boardTiles, defaultOptions, learningCards, lifeEvents, marketScenario, marketShocks, policyRules, investorProfiles } from '../data/content';
 import type { ActionKind, ActionResult, DefaultOptionId, GameState, GhostTrack, LifeChoice, LifeEvent, PayoutChoice, PlayRecord, ProfileId, ProductId } from '../types';
-import { ALERT_CARD_ID, applyMarketStep, emptyMarketStep, generateMarketPath, marketPathOf } from './market-engine';
+import { ALERT_CARD_ID, applyMarketStep, emptyMarketStep, generateMarketPath, marketPathOf, marketHoldingEffects } from './market-engine';
 import { pickTileBriefing } from './tile-briefing';
 import { buyProduct, portfolioValue, rebalancePortfolio, sellProduct, settleOrders, settleAllOrders, switchProduct } from './portfolio-engine';
 import { contributionCredit, riskAssetRatio } from './policy-engine';
@@ -166,7 +166,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
   if (options.scenario) {
     const weights = Object.fromEntries(state.holdings.map(h => [h.productId, h.amount / balanceConfig.startingIrp]));
     state.unlockedCards = [...new Set([...state.unlockedCards,'db-dc-irp','pricing-vs-settlement','tdf-glide'])];
-    state.campaign = { scenario: options.scenario, mission: options.mission ?? 'pension', weekly: options.weekly ?? false,
+    state.campaign = { scenario: options.scenario, mission: options.mission ?? 'pension', weekly: options.weekly ?? false, milestonesByMission: true,
       startingProfile: profileId, startingGoal: goal, priceIndex: 1, index: 1, peak: 1, drawdown: 0,
       open: balanceConfig.startingIrp, afterMarket: balanceConfig.startingIrp, flowStart: 0,
       benchmark: balanceConfig.startingIrp, benchmarkOpen: balanceConfig.startingIrp,
@@ -278,11 +278,12 @@ export function startTurn(state: GameState, steps = 0): ActionResult {
     pendingQuizCardId: null,
     turnMilestones: []
   }, market);
+  const marketEffects = marketHoldingEffects(state, next);
   next = settleOrders(next);
   next = beginPerformance(state, next);
   next = {
     ...next,
-    ledger: { open, afterMarket: portfolioValue(next), beforeAction: null },
+    ledger: { open, afterMarket: portfolioValue(next), beforeAction: null, marketEffects },
     awaitingAction: !scheduled,
     currentEventId: scheduled?.eventId ?? null
   };

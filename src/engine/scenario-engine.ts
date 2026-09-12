@@ -14,6 +14,7 @@ export const MISSIONS = {
   purchasing: { name: '구매력 지키기', description: '물가를 반영한 운용지수 100 이상' }
 } as const;
 export type MissionId = keyof typeof MISSIONS;
+export const CUSHION_TARGET = 18_000_000;
 // 물가/생애주기만 1턴=가상 3개월. 납입 한도는 한 판 합산, 수익률과 비용은 턴당 교육용 값.
 export const SCENARIO_CLOCK = { startYear: 2026, targetYear: 2029, yearsPerTurn: 0.25, turns: 12 } as const;
 export function tdfEquity(turn: number): number { return 0.45 - 0.20 * Math.min(12, Math.max(0, turn)) / 12; }
@@ -57,6 +58,8 @@ export interface TurnReview {
 export interface Campaign {
   scenario: ScenarioId; mission: MissionId; weekly: boolean;
   practice?: boolean;
+  /** 이정표의 표시 기록만 현재 미션 기준으로 관리한다. 구 저장에서는 생략 가능. */
+  milestonesByMission?: boolean;
   startingProfile: GameState['profileId']; startingGoal: number;
   priceIndex: number; index: number; peak: number; drawdown: number;
   open: number; afterMarket: number; flowStart: number;
@@ -67,7 +70,7 @@ export interface Campaign {
 }
 export function missionResult(state: GameState, monthly: number): { passed: boolean; progress: string } {
   const d=state.campaign!;
-  if(d.mission === 'cushion') return { passed: state.cash-state.livingDebt >= 18_000_000 && state.livingDebt === 0, progress: `순생활자금 ${Math.round((state.cash-state.livingDebt)/10000)} / 1,800만원` };
+  if(d.mission === 'cushion') return { passed: state.cash-state.livingDebt >= CUSHION_TARGET && state.livingDebt === 0, progress: `순생활자금 ${Math.round((state.cash-state.livingDebt)/10000)} / 1,800만원` };
   if(d.mission === 'purchasing') return { passed: d.index/d.priceIndex >= 1, progress: `실질 운용지수 ${(100*d.index/d.priceIndex).toFixed(1)} / 100` };
   return { passed: monthly >= d.startingGoal, progress: `월 연금 ${Math.round(monthly/10000)} / ${Math.round(d.startingGoal/10000)}만원` };
 }

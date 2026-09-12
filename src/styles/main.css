@@ -948,3 +948,9 @@ html[data-reduce-motion="true"] *, html[data-reduce-motion="true"] *::before, ht
   .contribution-presets button { font-size:14px; }
   .contribution-presets small { font-size:12px; }
 }
+
+/* P0: actual market attribution remains separate from model examples. */
+.actual-market-impact ul { list-style: none; padding: 0; margin: 10px 0; display: grid; gap: 10px; }
+.actual-market-impact li > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 14px; }
+.actual-market-impact small { line-height: 1.5; }
+.actual-market-impact b { font-variant-numeric: tabular-nums; }

@@ -1,0 +1,402 @@
+[
+  {
+    "scenario": "classic",
+    "seed": "p0-market-0",
+    "hash": "5f4c97b696686c4a96abceece825f745b4f2d428dc4400857380516f849e704a"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-1",
+    "hash": "96a1c2cba4e4dfbb2b955b85ac7342e97e43110dd526b473e3052b042c68e7dd"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-2",
+    "hash": "8f88638d153ba40891ef2b1d5a236d7fa264ef6c4988797b6f5f95f91a29c9a0"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-3",
+    "hash": "ce35d3f6ae691b893a0fdc751328928e396b1fc1dc4b48815c08ca26f2874bce"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-4",
+    "hash": "7f1793aecc41bc5d9c9fb6a37e912662494ba9b4668f93fac6d1f6f4321395a7"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-5",
+    "hash": "75c10c76bb16ee786d5c55dbfb61a404018f46ffa5cc0a017e60f6684004d7e3"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-6",
+    "hash": "f639d7dc88b7f042e05e48c80fb1ada8fbef4a35a21786c11dbb81f01824cd95"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-7",
+    "hash": "b8efb2b4bda15ac3ff05d8624cf7d1b05537e05520dcf122ec77dea40ee1065f"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-8",
+    "hash": "f8072181212d78e004b12fc5ef1ad6afc232b779b889e04e2aadd898978cd4f0"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-9",
+    "hash": "17d2dc48002761b494d935f1748c59793bc695e8f85c46f803b50985234d6f67"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-10",
+    "hash": "6e5a6c98c7ef5eea990485037be0381a425a07cba21c17921208aca37dc72b85"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-11",
+    "hash": "11137732531508a8820c9223ee0acf22882eac4d93cecc40ce4cbc5f346a0ee3"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-12",
+    "hash": "8e7fb7a34f648c99d4993cd86dd157a3989dd7630771a741efe25bc739737cb7"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-13",
+    "hash": "6c14524199c95c7d13483ae3befc047f5700ad861b294db2ae33659b6746e2e3"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-14",
+    "hash": "85b28befd66b375ab27e09260cdf1040d84ac0ef2794504d06ef992c86925fd7"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-15",
+    "hash": "f8e15cb1089ac684bee23a1df4e0c9edc74b3bf51bb790120a66d80d3960a007"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-16",
+    "hash": "087074c150f103a2e0e3f6d93dc5f55bc8d37d6b6fa23a84d48fbf11b3f778de"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-17",
+    "hash": "5a6976e8cc5d1105f38a396a1bcbbf606b9bd3ad9647ae66fb787fc64786f2ae"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-18",
+    "hash": "c0ae9c2dd462802ab2f794c445bd9627468d45374dfed319faeb320f09e26f58"
+  },
+  {
+    "scenario": "classic",
+    "seed": "p0-market-19",
+    "hash": "e6de5f777e0a53dc5aa3ed052d4079bd3e9e5c151035e5d3cf13f3ce2931d4e0"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-0",
+    "hash": "9595b5b62b00790ebfd71ca3538972a0f584b4ec814690a23be48239a01524e0"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-1",
+    "hash": "ff5a83ab6940adbeb75e53f556db4824611df574b49619382966b91eb77396a2"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-2",
+    "hash": "6e7000afe6ced633947bafea4e1779b6fa56dd912b45f3b1e946d0f3ffa1428b"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-3",
+    "hash": "8e1a1cbfba3908c90fa9723fd404caee6934ccd92122217e5fa061319faa3845"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-4",
+    "hash": "326a5b5087c6def1bc45f1d653a424538941751f0761b28ac44794f1b3c8b629"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-5",
+    "hash": "b0977d1623b29a495ff3b40aeff29dc146918770187a9db9c4ecff85f15a3e8d"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-6",
+    "hash": "2dc6234a1a46e71723aceb65e88ac3746c2c7fd2efe246224b8cb2164637fb3c"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-7",
+    "hash": "89175e3d2cd293fe556392f85a03d6066b819066c1e87f8820e47e29db53baed"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-8",
+    "hash": "a68f2d3092b03eb0f65725e1acef68eb98ee1a663a1731b5cc03c7bafd67cdcc"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-9",
+    "hash": "499ad29865aebf6a5894e814e7e52e9e5a24c26447918764dc0bf2ae0fe8312a"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-10",
+    "hash": "169b5f97e32230f698ec6b7dc43a96441efbe9939ca3e90a63fd90ca0d683cae"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-11",
+    "hash": "e6463a0b3ded048bc34c3cf86d9d34441f68c11b367e855355ae7c476bcec958"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-12",
+    "hash": "e59c2005dca3d1a4e0f1f58ae31ebfe3bfa5b930a1dcf6e7f0a54fcf296f053b"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-13",
+    "hash": "9f6dd8fe74645e3527b7e0670f0999fd3b63f989916b1e5340409e8c5aeda780"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-14",
+    "hash": "8144b8c5f84745fce37ea1bf2b337a2c09defef59cd4e3b95ce46c248ba3b52b"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-15",
+    "hash": "c0263743eb9153774ecba7d874b0558a29e8f6bcfcd1dcfd1b767fd1a667adbd"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-16",
+    "hash": "82516230ebde39a5f790dfcc9d1bdd695b1c0f086ee5cd2a168aa79089e80133"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-17",
+    "hash": "9321a6f6f0c3ab59fa029bba9844564bb3329e5868a93dd4bed465e4c7e068bd"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-18",
+    "hash": "94b1267d40d8ada34d2e4cb76fa1aaec2d10e1d84ef5bfa622d69d5e9315e677"
+  },
+  {
+    "scenario": "inflation",
+    "seed": "p0-market-19",
+    "hash": "09e6ba8b0f4700d3f3b809d43d2fdeacd02aa341af95e89d189d65694f542fa0"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-0",
+    "hash": "a0d939b5e7cd34c9f8a00feae47e3f91e1ed26d34343f106d30ea039614e5e55"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-1",
+    "hash": "8102b160badd09a4234f05e17330195f1d668280098b3f1e02b16807fdc0f911"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-2",
+    "hash": "af15b6f35e93fd788d6423451c4989b696dd9a46d26ed599a7bd893e954c8c42"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-3",
+    "hash": "7d5114d988a36ddcac714017aabd68e0ac35931ccf0dd6e87540c4a620e8c10d"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-4",
+    "hash": "99376fcab04931bc5a4d1834d12038864e42b0001b1270250271f05750bb3cc8"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-5",
+    "hash": "85c58f1e4ce2292b4dea4b2038b2ae350ba746659a9d42c1d8b9353b73733677"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-6",
+    "hash": "e59afae8320a88234d9b6ddf9a1cc4949ea30dc427c5914509e30cbe1b73fc6f"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-7",
+    "hash": "e74ce0409ef69a4184f007e8756f66e54455a9908a758b1d6b5da5cad70d8d48"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-8",
+    "hash": "bd34141e267af08982e6e15052c9b367abb46426e6e72e9baba6f84e0b049d24"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-9",
+    "hash": "1e83671c4282dcf4b0bfe2508bb15796a74faf8133297686abb364de25b0c97a"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-10",
+    "hash": "45a7801685756dc52401fd4dc84774fbea9a840651dd83820bfe170f8a0310c5"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-11",
+    "hash": "be92f9ea5019dd3708a4a250b4e7cbc55e67e142b86c9c1ada2c1abc619902c9"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-12",
+    "hash": "5c5b5f2ac8be50d7a43c82e7fe5f95004126098a56a01b148e05ad2c0485c34e"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-13",
+    "hash": "fa06af3e56deeff63e9d4c9b186df20c9728c17258da27164ebe5ba811705fca"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-14",
+    "hash": "746006c42cba538928527bcc8517ed9ef3cf08940118450a44cc4a8dda1c91dd"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-15",
+    "hash": "a8e7db85f974b92c01dde9621ca34d6324bf92f6c906d6cdb9bd3500165bf9d6"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-16",
+    "hash": "bcae8cf763313d7fb88bd56d1f333f215a01f59e860f3849e5ead63169cf3645"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-17",
+    "hash": "16dae17654e231f3346da43ccfd3284536358274214efc772693ca63ccacb8d3"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-18",
+    "hash": "091f71fe50d6d1f3e4dc6a24eca2c4282a89337459bc2ba9906f8b804358ea22"
+  },
+  {
+    "scenario": "recession",
+    "seed": "p0-market-19",
+    "hash": "025b11e1a46d0b911f88be9b4590c5ed8bbc7f36484124a648d3b9f6e0cc4bdc"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-0",
+    "hash": "3d6446493422c0a7d9888e28d2fd4ef9d4b6f67c1a6f0ed07bdda4da58b3ff35"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-1",
+    "hash": "bd9820ff1606fc9e72412320df69bb02023dd07c26664b06e5fa3b11d055cbaa"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-2",
+    "hash": "1b65053de044db5b336ffe82880d3a78090aa8e3dc1e0635e1ab52fb0ebba31e"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-3",
+    "hash": "1b3c1755c8d94a75c65564a24e074b887abc42c366f05028d800a7e70a98789d"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-4",
+    "hash": "6a8dc125d2fe2578de899a077b3c3051498a9097c7805419afcf47cc7bbeb325"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-5",
+    "hash": "106c241da1368aca76a6d9477d350d19fc10994b3a04ca9c81ebdc1d1cef9cd4"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-6",
+    "hash": "7f8d35d8f725f77213f160e6b0f94e714bdeaec704863819071d1e2c6afce3a9"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-7",
+    "hash": "6423df0931895e2532cbb1b7a395df36ac9ca9d6038ab7e022dd57fb0c0164cc"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-8",
+    "hash": "109e802202026f349cb4e39604af9fd2254cd365708eabc677005f38714b943e"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-9",
+    "hash": "0f3b4af11512651d46a7afc7a28fea79c8fabc181bfa10b2887f56e16b7abd23"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-10",
+    "hash": "96fa238653392d2854e11f966e52b1bff2f212f7556fb0dc5e2e78eca04eb512"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-11",
+    "hash": "16734abc55009e517fc94bdd0cb5d6e21379f2bd4c54600b18d2df89d084575f"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-12",
+    "hash": "f16fb301ab257473617ec9497e1ccf0aa9377a1bbc7d8b75831c321da98991d8"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-13",
+    "hash": "6ac7aa0993bc3c2e66414c9ee84e2f0585ce06910d4f901b0d1c32c3fbfdb9d4"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-14",
+    "hash": "23661e3fbca159ffcfe9708c9158e05df01cc66d951e892049cfbce70e30c4ac"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-15",
+    "hash": "67739c88c60c82ce4edfbf4adb1208a172f3de17150aafec6c30ed37f2cc4357"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-16",
+    "hash": "fa234d605a4d90fa867b04c421ae94628715ef4e952178a569877ba05623e95c"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-17",
+    "hash": "31a7d59bb55d51d029af2ddab10044e56ad632cc2ab342b878ccab7a4e98373c"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-18",
+    "hash": "ceee08518452b0e6e9a5ef441287fa0bac7029ea50ac7e39af08703147780d62"
+  },
+  {
+    "scenario": "recovery",
+    "seed": "p0-market-19",
+    "hash": "a58a5c753ff49fb44d5336a0d9c9fbf10e2c7d332de6128c0113509e5ba51e8c"
+  }
+]

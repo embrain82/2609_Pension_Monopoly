@@ -138,6 +138,15 @@ export interface LifeEvent {
  */
 export type LifeChoice = 'cash' | 'deposit' | 'withdraw' | 'contribute-all' | 'contribute-half' | 'transfer-irp';
 
+/** 비용 사건의 실행 계획에서 읽는 표시 값. 저장 상태에 추가하지 않는다. */
+export interface LifePaymentPreview {
+  cashPaid: number;
+  unpaid: number;
+  irpDelta: number;
+  tax: number;
+  penalty: number;
+}
+
 export interface LifeChoiceOption {
   id: LifeChoice;
   label: string;
@@ -148,6 +157,7 @@ export interface LifeChoiceOption {
   immediate: string;
   /** 장기 비용·효과 한 줄 */
   longTerm: string;
+  payment?: LifePaymentPreview;
 }
 
 /** 이번 턴 생활사건을 어떻게 해결했는지. 정산 「사건」 블록과 "다른 선택이었다면" 줄의 재료 */
@@ -326,11 +336,20 @@ export interface TileEffect {
 }
 
 /** 이번 턴 장부. 정산 장면이 "시장이 한 일"과 "내가 한 일"을 나눠 보이기 위한 세 지점. */
+export interface MarketHoldingEffect {
+  productId: ProductId;
+  opening: number;
+  delta: number;
+  returnRate: number;
+}
+
 export interface TurnLedger {
   /** 턴 시작(시장 반영 전) IRP */
   open: number;
   /** 시장 반영·주문 체결 직후 IRP */
   afterMarket: number;
+  /** 주문 결제 전, 실제 시장 노출분의 변화. 구 저장에는 없을 수 있다. */
+  marketEffects?: MarketHoldingEffect[];
   /** 첫 행동 직전(생활사건 뒤) 스냅샷. 아직 행동 전이면 null */
   beforeAction: { irp: number; risk: number; holdings: Record<ProductId, number> } | null;
 }
@@ -536,6 +555,13 @@ export interface TurnSummary {
   lifeDelta: number;
   /** 내가 한 일: irpAfter − irpBefore */
   actionDelta: number;
+  /** 외부 납입·이전·인출. 이전 정산 저장에는 없을 수 있다. */
+  capitalFlow?: number;
+  /** 시장 이후 평가액 변화에서 외부 입출금을 뺀 매매·정산 영향. */
+  tradingDelta?: number;
+  /** 같은 턴·같은 입출금을 반영한 가상 기준 지수. */
+  benchmarkIrp?: number | null;
+  marketEffects?: MarketHoldingEffect[];
   riskBefore: number;
   riskAfter: number;
   tileEffects: TileEffect[];
@@ -554,7 +580,7 @@ export interface TurnSummary {
   productReturns: Record<ProductId, number>;
   /** 정산 후 IRP 평가액 대비 보유 비중. */
   holdingShares: Record<ProductId, number>;
-  /** 보유 중 |수익률 × 비중|이 가장 큰 상품. 보유가 없으면 null. */
+  /** 턴 시작 시장 구간에서 실제 원화 영향이 가장 큰 상품. 구 저장·보유 없음은 null. */
   biggestMover: ProductId | null;
   reaction: string;
 }
@@ -588,6 +614,7 @@ export interface ScoreResult {
   improvement: string;
   relatedCardIds: string[];
   returnRate: number;
+  /** 위 returnRate는 입출금을 포함한 잔액 증가율. 아래 값이 운용 성과다. */
   investmentReturnRate: number;
   /** 적용된 수령 방식 계산(미선택이면 연금 기준) */
   payout: PayoutPlan;
@@ -646,6 +673,8 @@ export interface SaveData {
   lastSeed: string;
   disclaimerAccepted: boolean;
   bestReturnRate: number;
+  /** 새로 경신한 잔액 증가율의 규칙. 기존 기록은 값이 없으며 임의로 추정하지 않는다. */
+  bestReturnRule?: { ruleset: GameState['rulesetVersion']; perTurnLimit: number | null };
   bestGoalRate: number;
   playCount: number;
   howtoSeen: boolean;

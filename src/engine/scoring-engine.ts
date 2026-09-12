@@ -86,9 +86,9 @@ export function starTitle(stars: 0 | 1 | 2 | 3): string {
 export function starChecklist(state: GameState, score: ScoreResult): { label: string; passed: boolean }[] {
   const need = diversificationNeeded(state.profileId);
   if (state.campaign) return [
-    { label: missionResult(state,score.monthlyPension).progress, passed: missionResult(state,score.monthlyPension).passed },
+    { label: state.campaign.mission === 'pension' ? `목표용 월 환산액 ${won(score.monthlyPension)} / ${won(state.campaign.startingGoal)}` : missionResult(state,score.monthlyPension).progress, passed: missionResult(state,score.monthlyPension).passed },
     { label: '생활자금과 미지급 생활비 관리', passed: state.cash-state.livingDebt >= profileLimits(state).safeCash && state.livingDebt === 0 },
-    { label: '시작 성향의 운용 낙폭 예산', passed: state.campaign.drawdown <= profileLimits(state).maxDrawdown }
+    { label: '시작 성향의 운용 낙폭 예산', passed: score.maxDrawdown <= profileLimits(state).maxDrawdown }
   ];
   return [
     { label: `월 연금이 목표의 ${Math.round(balanceConfig.nearGoalRate * 100)}%에 닿음`, passed: score.goalRate >= balanceConfig.nearGoalRate },

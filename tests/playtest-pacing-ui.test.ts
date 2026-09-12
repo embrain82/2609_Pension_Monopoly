@@ -37,8 +37,8 @@ it('구 저장에는 200만원 제한을 표시하거나 적용하지 않는다'
 });
 it('최대 납입액·미리보기·실행액이 같고 첫 최대 납입 뒤 메뉴의 제한 사유를 표시한다', () => {
   mount(); click('[data-view="contribute"]'); click('[data-action="amount-preset"][data-preset="max"]');
-  expect(root.querySelector('.preview-box')!.textContent).toContain('납입 2,000,000원');
-  expect(root.querySelector('.preview-box')!.textContent).toContain('생활자금 11,400,000원');
+  expect(root.querySelector('.contribution-preview')!.textContent).toContain('납입 2,000,000원');
+  expect(root.querySelector('.contribution-preview')!.textContent).toContain('생활자금 11,400,000원');
   expect(root.querySelector('[data-action="do-contribute"]')!.textContent).toBe('200만원 납입');
   click('[data-action="do-contribute"]');
   expect(saved().game.contributionTotal).toBe(2_000_000); expect(saved().game.actionsLeft).toBe(1);
