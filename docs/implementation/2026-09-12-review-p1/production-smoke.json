@@ -1,0 +1,71 @@
+{
+  "url": "https://2609-pension-monopoly-rik8u1lfs-nonsleepers-projects.vercel.app/",
+  "firstProfile": "×\n시작 준비\n1 · 성향 확인\n내 투자자성향부터 확인해요\n\n금리의 두 얼굴 · 연금 목표 · 목표 월 50만원\n\n기본 설정 · 아직 진단하지 않았습니다\n위험중립형\n\n손실 가능성과 성장 가능성의 균형을 추구합니다.\n\n게임 내 매수 가능 범위 가상 3~6등급\n\n시작 구성 예금 60% · 혼합형 40%\n\n성향은 캐릭터 외형과 다릅니다. 미션·성향·목표는 게임 시작 후 고정됩니다.\n\n5문항으로 성향 진단\n이 성향 확인 · 옵션 선택으로\n\n기본값을 진단 결과로 사용하지 않도록 먼저 5문항을 확인하세요.\n\n최종 시작을 눌러야 새 판이 만들어집니다. 이전 진행이 있다면 그때 대체됩니다.",
+  "option": "×\n시작 준비\n2 · 옵션 선택\n이 성향으로 옵션을 골라요\n\n금리의 두 얼굴 · 연금 목표 · 목표 월 50만원\n\n확인한 성향 · 공격투자형\n\n지정만으로 매수되지 않습니다. 게임에서 운용지시 → 디폴트옵션 옵트인/아웃으로 직접 거래합니다.\n\n원리금보장형\n예금 100%\n예금 100%. 약정 만기까지 원금과 이자 보장 가정. 물가 위험은 남습니다.\n저위험\n예금 70% · TDF 30%\n예금 70% · TDF 30%. 일부 손실 가능성이 있는 가상 5등급 포트폴리오.\n중위험\n예금 30% · 혼합형 70%\n예금 30% · 혼합형(BF 가정) 70%. 가상 4등급, 성장과 완충을 함께 고려합니다.\n고위험\n✓ 현재 선택됨\n성향 추천\n혼합형 70% · TDF 30%\n혼합형(BF 가정) 70% · TDF 30%. 가상 3등급, 주식·금리 변동과 원금 손실 가능.\n\n현재 선택: 고위험 · 추천 표시는 선택을 바꾸지 않습니다.\n\n게임 시작 전에 알아둘 세 가지\n고위험 확인 · 게임 시작\n지정 안 함으로 선택\n성향 확인으로 돌아가기\n\n최종 시작을 눌러야 새 판이 만들어집니다. 이전 진행이 있다면 그때 대체됩니다.",
+  "turn": 1,
+  "contribution": 2000000,
+  "quizFlow": {
+    "version": "settlement-v1",
+    "queue": [
+      "contribution-limit"
+    ]
+  },
+  "buttons": [
+    {
+      "action": "toggle-sound",
+      "disabled": false,
+      "text": "♪끔"
+    },
+    {
+      "action": "open-settings",
+      "disabled": false,
+      "text": "공격투자형 · 설정"
+    },
+    {
+      "action": "open-explore",
+      "disabled": false,
+      "text": "칸 살펴보기"
+    },
+    {
+      "action": "open-explore",
+      "disabled": false,
+      "text": "○ 안정 1/6"
+    },
+    {
+      "action": "open-explore",
+      "disabled": false,
+      "text": "○ 성장 0/6"
+    },
+    {
+      "action": "open-explore",
+      "disabled": false,
+      "text": "○ 생활 0/6"
+    },
+    {
+      "action": "open-explore",
+      "disabled": false,
+      "text": "○ 은퇴 0/6"
+    },
+    {
+      "action": "open-explore",
+      "disabled": false,
+      "text": "지도·지역 미션 확인"
+    },
+    {
+      "action": "open-portfolio",
+      "disabled": false,
+      "text": "◫포트폴리오"
+    },
+    {
+      "action": "roll-dice",
+      "disabled": false,
+      "text": "⚄주사위 굴리기"
+    },
+    {
+      "action": "open-market",
+      "disabled": false,
+      "text": "☰타임라인"
+    }
+  ],
+  "overflow": false
+}

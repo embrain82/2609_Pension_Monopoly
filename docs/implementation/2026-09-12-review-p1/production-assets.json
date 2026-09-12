@@ -1,0 +1,35 @@
+{
+  "url": "https://2609-pension-monopoly.vercel.app/",
+  "status": 200,
+  "assets": [
+    {
+      "path": "/assets/index-noqaLiqV.js",
+      "status": 200,
+      "sha256": "c5fd132c2698c19720338c75fc1c4c248f6b281dcfd0a34fe9fae625ab28ae9c",
+      "localMatch": true
+    },
+    {
+      "path": "/assets/index-DBqXUtpK.css",
+      "status": 200,
+      "sha256": "2f4e8ebbb0788671263529c27462f7991e848bd2e06bf98c2211c945c6c165df",
+      "localMatch": true
+    }
+  ],
+  "manuals": [
+    {
+      "path": "user-manual.html",
+      "status": 200,
+      "localMatch": true
+    },
+    {
+      "path": "operator-manual.html",
+      "status": 200,
+      "localMatch": true
+    },
+    {
+      "path": "learning-guide.html",
+      "status": 200,
+      "localMatch": true
+    }
+  ]
+}
