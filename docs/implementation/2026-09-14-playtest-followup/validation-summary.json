@@ -318,5 +318,19 @@
     "Mobile tested in Chromium device emulation, not physical iOS Safari.",
     "720x500 reflow approximates a 1440x1000 viewport at 200% zoom; no physical browser zoom or screen reader session performed."
   ],
-  "deployment": "pending"
+  "deployment": {
+    "url": "https://2609-pension-monopoly.vercel.app/",
+    "asset": "https://2609-pension-monopoly.vercel.app/assets/index-DgR515Am.js",
+    "sha256": "8f23a6f9cab4c06407d03a5ab9e8d7449b08fa5aa255fddb2d0bb5d1bdfd1276",
+    "status": 200,
+    "version": "연금로드 v1.9.0 · 게임판 자동 이동·통합 정산·퀴즈 및 위험비중 안내 · 저장 데이터는 이 브라우저에만 보관됩니다.",
+    "userManualUpdated": true,
+    "errors": [],
+    "existingCheckpointPreserved": true,
+    "verifiedAt": "2026-09-14T06:34:18.655Z",
+    "mergeCommit": "babf6333114bf6f615c95c51888b63e6daadbf2d",
+    "deployment": "dpl_6q4mucv3j5BF6PWnMRPugZd2VE1i",
+    "state": "READY",
+    "localAssetMatches": true
+  }
 }

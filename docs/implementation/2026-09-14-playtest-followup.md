@@ -53,4 +53,6 @@
 
 ## 버전 관리·배포
 
-구현 커밋: `3bb0e14` 안내, `c4171f0` 게임판 이동, `55aa728` 정산 통합, `85dd31f` 모바일·매뉴얼, `9be88ae` 작은 가로 화면 수정. 배포 완료 여부는 검증 집계의 deployment 필드와 별도 운영 확인 기록으로 갱신합니다.
+구현 커밋: `3bb0e14` 안내, `c4171f0` 게임판 이동, `55aa728` 정산 통합, `85dd31f` 모바일·매뉴얼, `9be88ae` 작은 가로 화면 수정. [PR #13](https://github.com/embrain82/2609_Pension_Monopoly/pull/13)을 `babf633`으로 main에 병합했습니다. Vercel 운영 배포 `dpl_6q4mucv3j5BF6PWnMRPugZd2VE1i`의 READY와 정식 도메인 연결을 확인했습니다.
+
+[운영 게임](https://2609-pension-monopoly.vercel.app/) · [배포 확인 JSON](2026-09-14-playtest-followup/production-smoke.json) · [운영 버전 화면](2026-09-14-playtest-followup/production-version.png). 운영 JavaScript의 SHA-256이 로컬 검증 빌드와 같고 HTTP 200·v1.9.0·갱신된 매뉴얼을 확인했습니다. 운영 브라우저의 기존 진행은 변경하지 않았습니다.
