@@ -1,0 +1,71 @@
+{
+  "sourceCommits": [
+    "46a6d01",
+    "6b0fdda"
+  ],
+  "tests": {
+    "files": 59,
+    "passed": 617,
+    "command": "npm test -- --maxWorkers=2",
+    "typecheck": "passed",
+    "lint": "passed",
+    "build": "passed"
+  },
+  "viewportChecks": 45,
+  "viewportChecksPass": true,
+  "browserTransactions": [
+    {
+      "case": "optionIn",
+      "resumeUnchanged": true,
+      "matchesEngine": true,
+      "actionsLeft": 1,
+      "pending": 1
+    },
+    {
+      "case": "optionOut",
+      "matchesEngine": true,
+      "actionsLeft": 1,
+      "pending": 1
+    },
+    {
+      "case": "cap",
+      "confirmDidNotTrade": true,
+      "matchesEngine": true,
+      "actionsLeft": 1,
+      "pending": 0
+    },
+    {
+      "case": "last",
+      "finalSettlementLabel": true,
+      "matchesEngine": true,
+      "actionsLeft": 1,
+      "pending": 1
+    }
+  ],
+  "preview": {
+    "url": "https://2609-pension-monopoly-qv4beybex-nonsleepers-projects.vercel.app/",
+    "id": "dpl_HuLdkCJo6vUfNpeqHFb1cRXANuay",
+    "state": "READY",
+    "source": "6b0fdda",
+    "smoke": {
+      "file": "preview-smoke.json",
+      "passed": true,
+      "httpStatus": 200,
+      "width": 390,
+      "gameUnchanged": true
+    }
+  },
+  "scopeNote": "12-turn browser play completed before numeric wheel focus guard; related browser transactions and all tests repeated after guard.",
+  "desktop": {
+    "complete": true,
+    "turns": 12,
+    "everyStepWidth": true,
+    "width": 1440
+  },
+  "mobile": {
+    "complete": true,
+    "turns": 12,
+    "everyStepWidth": true,
+    "width": 390
+  }
+}

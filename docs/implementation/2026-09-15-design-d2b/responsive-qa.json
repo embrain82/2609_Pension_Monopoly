@@ -1,0 +1,1037 @@
+[
+  {
+    "case": "buy",
+    "requested": 320,
+    "width": 320,
+    "height": 740,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 426.984375,
+        "width": 232
+      },
+      {
+        "x": 29,
+        "y": 1008.34375,
+        "width": 232
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "buy",
+    "requested": 390,
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 354.5859375,
+        "width": 332
+      },
+      {
+        "x": 29,
+        "y": 869.5546875,
+        "width": 332
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "buy",
+    "requested": 430,
+    "width": 430,
+    "height": 932,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 354.5859375,
+        "width": 372
+      },
+      {
+        "x": 29,
+        "y": 869.5546875,
+        "width": 372
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "buy",
+    "requested": 844,
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 41,
+        "y": 375.0859375,
+        "width": 352
+      },
+      {
+        "x": 421,
+        "y": 375.0859375,
+        "width": 352
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "buy",
+    "requested": 1440,
+    "width": 1440,
+    "height": 1000,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 181.5,
+        "y": 375.0859375,
+        "width": 509.5
+      },
+      {
+        "x": 719,
+        "y": 375.0859375,
+        "width": 509.5
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "contribute",
+    "requested": 320,
+    "width": 320,
+    "height": 740,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 426.984375,
+        "width": 232
+      },
+      {
+        "x": 29,
+        "y": 1219.625,
+        "width": 232
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "contribute",
+    "requested": 390,
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 354.5859375,
+        "width": 332
+      },
+      {
+        "x": 29,
+        "y": 980.6484375,
+        "width": 332
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "contribute",
+    "requested": 430,
+    "width": 430,
+    "height": 932,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 354.5859375,
+        "width": 372
+      },
+      {
+        "x": 29,
+        "y": 956.1484375,
+        "width": 372
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "contribute",
+    "requested": 844,
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 41,
+        "y": 375.0859375,
+        "width": 352
+      },
+      {
+        "x": 421,
+        "y": 375.0859375,
+        "width": 352
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "contribute",
+    "requested": 1440,
+    "width": 1440,
+    "height": 1000,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 181.5,
+        "y": 375.0859375,
+        "width": 509.5
+      },
+      {
+        "x": 719,
+        "y": 375.0859375,
+        "width": 509.5
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "sell",
+    "requested": 320,
+    "width": 320,
+    "height": 740,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 426.984375,
+        "width": 232
+      },
+      {
+        "x": 29,
+        "y": 1008.34375,
+        "width": 232
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "sell",
+    "requested": 390,
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 354.5859375,
+        "width": 332
+      },
+      {
+        "x": 29,
+        "y": 869.5546875,
+        "width": 332
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "sell",
+    "requested": 430,
+    "width": 430,
+    "height": 932,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 354.5859375,
+        "width": 372
+      },
+      {
+        "x": 29,
+        "y": 869.5546875,
+        "width": 372
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "sell",
+    "requested": 844,
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 41,
+        "y": 375.0859375,
+        "width": 352
+      },
+      {
+        "x": 421,
+        "y": 375.0859375,
+        "width": 352
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "sell",
+    "requested": 1440,
+    "width": 1440,
+    "height": 1000,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 181.5,
+        "y": 375.0859375,
+        "width": 509.5
+      },
+      {
+        "x": 719,
+        "y": 375.0859375,
+        "width": 509.5
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "switch",
+    "requested": 320,
+    "width": 320,
+    "height": 740,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 426.984375,
+        "width": 232
+      },
+      {
+        "x": 29,
+        "y": 1136.328125,
+        "width": 232
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "switch",
+    "requested": 390,
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 354.5859375,
+        "width": 332
+      },
+      {
+        "x": 29,
+        "y": 975.9453125,
+        "width": 332
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "switch",
+    "requested": 430,
+    "width": 430,
+    "height": 932,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 354.5859375,
+        "width": 372
+      },
+      {
+        "x": 29,
+        "y": 975.9453125,
+        "width": 372
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "switch",
+    "requested": 844,
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 41,
+        "y": 375.0859375,
+        "width": 352
+      },
+      {
+        "x": 421,
+        "y": 375.0859375,
+        "width": 352
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "switch",
+    "requested": 1440,
+    "width": 1440,
+    "height": 1000,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 181.5,
+        "y": 375.0859375,
+        "width": 509.5
+      },
+      {
+        "x": 719,
+        "y": 375.0859375,
+        "width": 509.5
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "rebalance",
+    "requested": 320,
+    "width": 320,
+    "height": 740,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 462.984375,
+        "width": 232
+      },
+      {
+        "x": 29,
+        "y": 1270.234375,
+        "width": 232
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "rebalance",
+    "requested": 390,
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 354.5859375,
+        "width": 332
+      },
+      {
+        "x": 29,
+        "y": 1000.75,
+        "width": 332
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "rebalance",
+    "requested": 430,
+    "width": 430,
+    "height": 932,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 354.5859375,
+        "width": 372
+      },
+      {
+        "x": 29,
+        "y": 953.953125,
+        "width": 372
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "rebalance",
+    "requested": 844,
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 41,
+        "y": 375.0859375,
+        "width": 352
+      },
+      {
+        "x": 421,
+        "y": 375.0859375,
+        "width": 352
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "rebalance",
+    "requested": 1440,
+    "width": 1440,
+    "height": 1000,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 181.5,
+        "y": 375.0859375,
+        "width": 509.5
+      },
+      {
+        "x": 719,
+        "y": 375.0859375,
+        "width": 509.5
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "optionIn",
+    "requested": 320,
+    "width": 320,
+    "height": 740,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 839.328125,
+        "width": 232
+      },
+      {
+        "x": 29,
+        "y": 1327.0859375,
+        "width": 232
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "optionIn",
+    "requested": 390,
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 645.75,
+        "width": 332
+      },
+      {
+        "x": 29,
+        "y": 1133.5078125,
+        "width": 332
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "optionIn",
+    "requested": 430,
+    "width": 430,
+    "height": 932,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 645.75,
+        "width": 372
+      },
+      {
+        "x": 29,
+        "y": 1133.5078125,
+        "width": 372
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "optionIn",
+    "requested": 844,
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 41,
+        "y": 549.265625,
+        "width": 352
+      },
+      {
+        "x": 421,
+        "y": 549.265625,
+        "width": 352
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "optionIn",
+    "requested": 1440,
+    "width": 1440,
+    "height": 1000,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 181.5,
+        "y": 549.265625,
+        "width": 509.5
+      },
+      {
+        "x": 719,
+        "y": 549.265625,
+        "width": 509.5
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "optionOut",
+    "requested": 320,
+    "width": 320,
+    "height": 740,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 788.5390625,
+        "width": 232
+      },
+      {
+        "x": 29,
+        "y": 1055.421875,
+        "width": 232
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "optionOut",
+    "requested": 390,
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 594.9609375,
+        "width": 332
+      },
+      {
+        "x": 29,
+        "y": 861.84375,
+        "width": 332
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "optionOut",
+    "requested": 430,
+    "width": 430,
+    "height": 932,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 594.9609375,
+        "width": 372
+      },
+      {
+        "x": 29,
+        "y": 861.84375,
+        "width": 372
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "optionOut",
+    "requested": 844,
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 41,
+        "y": 518.2734375,
+        "width": 352
+      },
+      {
+        "x": 421,
+        "y": 518.2734375,
+        "width": 352
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "optionOut",
+    "requested": 1440,
+    "width": 1440,
+    "height": 1000,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 181.5,
+        "y": 518.2734375,
+        "width": 509.5
+      },
+      {
+        "x": 719,
+        "y": 518.2734375,
+        "width": 509.5
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "pending",
+    "requested": 320,
+    "width": 320,
+    "height": 740,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 254.9921875,
+        "width": 232
+      },
+      {
+        "x": 29,
+        "y": 1187.828125,
+        "width": 232
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "pending",
+    "requested": 390,
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 218.9921875,
+        "width": 332
+      },
+      {
+        "x": 29,
+        "y": 1116.140625,
+        "width": 332
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "pending",
+    "requested": 430,
+    "width": 430,
+    "height": 932,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 218.9921875,
+        "width": 372
+      },
+      {
+        "x": 29,
+        "y": 1116.140625,
+        "width": 372
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "pending",
+    "requested": 844,
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 41,
+        "y": 235.4921875,
+        "width": 299.1953125
+      },
+      {
+        "x": 368.1953125,
+        "y": 235.4921875,
+        "width": 404.8046875
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "pending",
+    "requested": 1440,
+    "width": 1440,
+    "height": 1000,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 181.5,
+        "y": 235.4921875,
+        "width": 433.0703125
+      },
+      {
+        "x": 642.5703125,
+        "y": 235.4921875,
+        "width": 585.9296875
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "settled",
+    "requested": 320,
+    "width": 320,
+    "height": 740,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 254.9921875,
+        "width": 232
+      },
+      {
+        "x": 29,
+        "y": 1187.828125,
+        "width": 232
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "settled",
+    "requested": 390,
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 218.9921875,
+        "width": 332
+      },
+      {
+        "x": 29,
+        "y": 1116.140625,
+        "width": 332
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "settled",
+    "requested": 430,
+    "width": 430,
+    "height": 932,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 29,
+        "y": 218.9921875,
+        "width": 372
+      },
+      {
+        "x": 29,
+        "y": 1116.140625,
+        "width": 372
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": false,
+    "vertical": true
+  },
+  {
+    "case": "settled",
+    "requested": 844,
+    "width": 844,
+    "height": 390,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 41,
+        "y": 235.4921875,
+        "width": 299.1953125
+      },
+      {
+        "x": 368.1953125,
+        "y": 235.4921875,
+        "width": 404.8046875
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  },
+  {
+    "case": "settled",
+    "requested": 1440,
+    "width": 1440,
+    "height": 1000,
+    "overflow": false,
+    "panels": [
+      {
+        "x": 181.5,
+        "y": 235.4921875,
+        "width": 433.0703125
+      },
+      {
+        "x": 642.5703125,
+        "y": 235.4921875,
+        "width": 585.9296875
+      }
+    ],
+    "missingReasons": [],
+    "unchanged": true,
+    "horizontal": true,
+    "vertical": false
+  }
+]

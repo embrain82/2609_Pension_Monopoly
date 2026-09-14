@@ -1,0 +1,29 @@
+[
+  {
+    "case": "optionIn",
+    "resumeUnchanged": true,
+    "matchesEngine": true,
+    "actionsLeft": 1,
+    "pending": 1
+  },
+  {
+    "case": "optionOut",
+    "matchesEngine": true,
+    "actionsLeft": 1,
+    "pending": 1
+  },
+  {
+    "case": "cap",
+    "confirmDidNotTrade": true,
+    "matchesEngine": true,
+    "actionsLeft": 1,
+    "pending": 0
+  },
+  {
+    "case": "last",
+    "finalSettlementLabel": true,
+    "matchesEngine": true,
+    "actionsLeft": 1,
+    "pending": 1
+  }
+]

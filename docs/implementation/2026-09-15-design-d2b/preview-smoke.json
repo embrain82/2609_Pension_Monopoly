@@ -1,0 +1,55 @@
+{
+  "source": "6b0fdda",
+  "url": "https://2609-pension-monopoly-qv4beybex-nonsleepers-projects.vercel.app/",
+  "width": 390,
+  "height": 844,
+  "orderSplit": true,
+  "panels": [
+    {
+      "class": "order-input",
+      "rect": {
+        "x": 29,
+        "y": 485.78125,
+        "width": 302,
+        "height": 600.0625,
+        "top": 485.78125,
+        "right": 331,
+        "bottom": 1085.84375,
+        "left": 29
+      }
+    },
+    {
+      "class": "order-review",
+      "rect": {
+        "x": 29,
+        "y": 1111.84375,
+        "width": 302,
+        "height": 334.5859375,
+        "top": 1111.84375,
+        "right": 331,
+        "bottom": 1446.4296875,
+        "left": 29
+      }
+    }
+  ],
+  "scripts": [
+    "https://2609-pension-monopoly-qv4beybex-nonsleepers-projects.vercel.app/assets/index-u95i_NyJ.js",
+    "https://vercel.live/_next-live/feedback/feedback.js"
+  ],
+  "css": [
+    "https://2609-pension-monopoly-qv4beybex-nonsleepers-projects.vercel.app/assets/index-CGTQjxU_.css"
+  ],
+  "dice": "직전 주사위 5과 6, 합계 11칸 이동",
+  "overflow": false,
+  "turn": 1,
+  "position": 11,
+  "portfolio": {
+    "split": true,
+    "labels": "IRP 평가액\n108,704,942원\n\n생활자금 13,400,000원 · IRP 밖 자금\n\nIRP 구성\n100%\n직접 운용 보유분\n108,704,942원\nIRP의 100.0%\n디폴트옵션 보유분\n0원\nIRP의 0.0%\n미결제 주문 · 사용 불가\n0원\nIRP의 0.0%\n주문 가능 IRP 대기자금\n0원\nIRP의 0.0%\n합계 계산 확인\n전체 IRP의 규제 위험자산 70.0%\n\n기초 주식 노출 60.0%\n\n위험자산 한도와 실제 주식 노출은 다른 기준입니다. 적격 TDF 한도 예외는 무위험을 뜻하지 않습니다."
+  },
+  "returnTitle": "IRP에 얼마나 넣을까요?",
+  "gameUnchanged": true,
+  "httpStatus": 200,
+  "dialogOverflow": false,
+  "notes": "Fresh profile diagnosis and default-option selection, actual dice roll, risk notice, contribution input/review and portfolio return on deployed preview."
+}
