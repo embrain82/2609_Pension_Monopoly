@@ -20,11 +20,11 @@
 .settle-rate-strip span,.settle-rate-strip small { font-size:.8125rem;color:#4f6760; }
 .settle-rate-strip strong { font-size:1.1rem;line-height:1.5;white-space:nowrap;font-variant-numeric:tabular-nums; }
 .settle-rate-strip strong span { font-size:1rem; }
-.settle-overview .settle-bars { margin:12px 0 0;padding:0;background:transparent;border-radius:0; }
+.settle-overview .settle-bars { display:block;gap:0;margin:12px 0 0;padding:0;background:transparent;border-radius:0; }
 .settle-overview .settle-balance { margin:8px 0;line-height:1.6;font-size:.875rem; }
 .settle-overview .settle-delta { display:flex;align-items:baseline;justify-content:flex-end;gap:4px 8px;flex-wrap:wrap;font-size:1.3rem;line-height:1.4; }
 .settle-overview .settle-delta > small:first-child { margin-right:auto; }
-.settle-overview .hint { font-size:.8125rem;text-align:left;margin:8px 0;line-height:1.6; }
+.modal-settle .settle-overview .settle-bars > .hint { font-size:.8125rem;text-align:left;margin:8px 0;line-height:1.6; }
 .change-chart.compact { padding:10px;margin:10px 0; }
 .change-chart.compact figcaption { font-size:.8125rem; }
 .change-chart.compact .chart-axis { font-size:.75rem;margin:6px 0; }

@@ -378,7 +378,7 @@ export class PensionRoadApp {
     } else if (action === 'prepare-no-option' && this.preparation) {
       this.preparation.option = null; this.preparation.optionSource='chosen';
     } else if (action === 'export-run'  && this.game) {
-      const blob=new Blob([JSON.stringify({version:'1.8.0',route:this.game.route,ruleset:this.game.rulesetVersion,contributionPacing:this.game.contributionPacing??null,defaultTrading:this.game.defaultTrading,seed:this.game.seed,profile:this.game.profileId,goal:this.game.goalMonthly,campaign:this.game.campaign,quiz:this.game.quizLog},null,2)],{type:'application/json'});
+      const blob=new Blob([JSON.stringify({version:'1.9.0',route:this.game.route,ruleset:this.game.rulesetVersion,contributionPacing:this.game.contributionPacing??null,defaultTrading:this.game.defaultTrading,seed:this.game.seed,profile:this.game.profileId,goal:this.game.goalMonthly,campaign:this.game.campaign,quiz:this.game.quizLog},null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob),link=document.createElement('a'); link.href=url; link.download='pension-road-replay.json'; link.click(); window.setTimeout(()=>URL.revokeObjectURL(url),1000);
     } else if (action === 'replay-chapter' && this.game) {
       const replay=replayChapter(this.game,Number(button.dataset.turn));
@@ -1786,6 +1786,6 @@ export class PensionRoadApp {
       <div class="disclaimer-box"><strong>중요 면책</strong><p>모든 금융 수치는 교육용으로 단순화했습니다. 특정 금융회사·상품을 추천하지 않으며, 수익·원금·세제 혜택을 보장하지 않습니다. 실제 규정과 세무 결과는 개인 상황과 기준일에 따라 달라질 수 있습니다. 은행 계좌·잔고와 연동되지 않는 가상 포트폴리오입니다.</p></div>
       ${this.game?.campaign ? "<p>이번 판의 미션·성향·월 연금 목표는 시작 조건으로 고정되어 있습니다. 캐릭터 외형은 자유롭게 변경할 수 있습니다.</p>" : ""}<h3>정책 데이터</h3><p>기준일 ${policyRules.reviewed_at} · 교육용 단순화 ${policyRules.simplified ? '예' : '아니오'}</p>
       <ul class="source-list"><li><a href="${policyRules.source_urls[0]}" target="_blank" rel="noreferrer">국가법령정보센터 · 위험자산 투자한도</a></li><li><a href="${policyRules.source_urls[1]}" target="_blank" rel="noreferrer">소득세법 · 연금계좌 세액공제</a></li><li><a href="https://pension.kebhana.com/files/POR/Notice/PSNL_IRP_PRD_INVTM.pdf" target="_blank" rel="noreferrer">하나은행 · 개인형 IRP 핵심설명서</a></li></ul>
-      <p class="hint">${this.game ? contributionRuleLabel(this.game) : `새 게임 추가납입 턴당 ${formatShortWon(balanceConfig.contributionPerTurnLimit)}`} · 게임 진행용 한도</p><p class="version">연금로드 v1.8.0 · 지역 수집·캐릭터 이동·차트·표지·결과 개선 · 저장 데이터는 이 브라우저에만 보관됩니다.</p>`;
+      <p class="hint">${this.game ? contributionRuleLabel(this.game) : `새 게임 추가납입 턴당 ${formatShortWon(balanceConfig.contributionPerTurnLimit)}`} · 게임 진행용 한도</p><p class="version">연금로드 v1.9.0 · 게임판 자동 이동·통합 정산·퀴즈 및 위험비중 안내 · 저장 데이터는 이 브라우저에만 보관됩니다.</p>`;
   }
 }

@@ -77,7 +77,7 @@ function irpBars(summary: TurnSummary): string {
     <p class="settle-balance">턴 시작 <b>${formatWon(summary.irpOpen)}</b> → 정산 후 <b>${formatWon(summary.irpAfter)}</b></p>
     ${renderChangeChart(rows, `${summary.turn}턴 IRP 변화의 구성`, true)}
     <p class="settle-delta ${tone(total)}"><small>IRP 잔액 변화 · 입출금 포함</small> ${signedWon(total)} <small>(${signedPercent(rate)})</small></p>
-    <p class="hint">시장 반영 잔액 ${formatWon(summary.irpAfterMarket)} · 납입은 운용 수익이 아닙니다.</p></div>`;
+    </div>`;
 }
 
 function returnBars(summary: TurnSummary): string {
@@ -128,6 +128,7 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
       <summary><span>자세히</span><small>상품별 수익률 · 내가 한 일${summary.tileEffects.length ? ' · 칸 효과' : ''}${options.final ? '' : ' · 다음 판단'}</small></summary>
       <div class="preview-box settle-market"><strong>시장 예시와 내 보유분 · 상품별 이번 턴</strong><p class="settle-note">상품별 시장 예시(보수 전)입니다. 오른쪽은 정산 후 비중이며 위의 실제 영향과 기준이 다릅니다.</p>${returnBars(summary)}</div>
       ${actionBlock(summary)}
+      <p class="hint">시장 반영 잔액 ${formatWon(summary.irpAfterMarket)} · 납입은 운용 수익이 아닙니다.</p>
       <p class="hint">주문 접수만 된 금액은 확정 수익으로 표시하지 않습니다. 주요 보유분 손익은 시장 구간 기준이고, 외부 입출금·매매·정산은 장부 기준입니다.</p>
       ${renderTileEffects(summary.tileEffects, { heading: '칸 효과' })}
       ${renderBenchmarkSettleLine(summary)}
@@ -143,7 +144,7 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
     <section class="settle-overview" aria-label="이번 턴 시장과 내 자산 요약">
       ${marketStrip}
       ${irpBars(summary)}
-      ${renderMarketImpacts(summary.marketEffects, summary.turn, false)}
+      ${renderMarketImpacts(summary.marketEffects, summary.turn, false, true)}
       <p class="settle-cause">${context.explanation}</p>
     </section>
     ${renderLifeSettleBlock(summary.lifeEvent)}
