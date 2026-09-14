@@ -1168,7 +1168,16 @@ export class PensionRoadApp {
         const primary = this.pendingPrompt ? dialog.querySelector<HTMLElement>('[data-action="notice-quiz"], [data-action="notice-continue"]') : null;
         (primary ?? dialog.querySelector<HTMLElement>('button:not([disabled]):not([tabindex="-1"]), select:not([disabled]), input:not([disabled]), a[href]'))?.focus({ preventScroll: true });
       }
-      if (previousModal !== this.modal) dialog.scrollTop = 0;
+      if (previousModal !== this.modal) {
+        dialog.scrollTop = 0;
+        // 작은 가로 화면에서도 안내의 선택 버튼이 화면 밖에 포커스되지 않게 한다.
+        if (this.pendingPrompt) {
+          const actions = dialog.querySelector<HTMLElement>('.button-stack')?.getBoundingClientRect();
+          const bounds = dialog.getBoundingClientRect();
+          if (actions && bounds.height > 0 && actions.bottom > bounds.bottom - 16)
+            dialog.scrollTop += actions.bottom - bounds.bottom + 16;
+        }
+      }
     } else if (previousModal && this.returnFocus) {
       const target = [...this.root.querySelectorAll<HTMLElement>('[data-action]')].find(el => el.dataset.action === this.returnFocus?.action && el.dataset.view === this.returnFocus?.view && el.dataset.tile === this.returnFocus?.tile);
       (target ?? this.root.querySelector<HTMLElement>('[data-action="open-action"]'))?.focus({ preventScroll: this.boardFocusing || this.tokenHopping || this.diceRolling });

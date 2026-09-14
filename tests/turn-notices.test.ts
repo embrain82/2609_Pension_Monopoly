@@ -105,3 +105,11 @@ it('추가 점수 기회가 있으면 자동 정산을 예약하지 않는다',a
   vi.useFakeTimers();const save={...defaultSave,disclaimerAccepted:true,settings:{...defaultSave.settings,reducedMotion:true,autoSettle:true}};localStorage.setItem(STORAGE_KEY,JSON.stringify(save));
   mount({...game(),actionsLeft:1});if(root.querySelector('.modal-risk-notice'))click('notice-continue');click('do-hold');expect(root.querySelector('.modal-settle')).not.toBeNull();expect(root.querySelector('.settle-cta.auto')).toBeNull();await vi.advanceTimersByTimeAsync(5000);expect(root.querySelector('.modal-settle')).not.toBeNull();
 });
+it('높이가 작은 안내창에서는 두 선택 버튼을 내부 스크롤로 보이게 한다',()=>{
+  const bounds=vi.spyOn(HTMLElement.prototype,'getBoundingClientRect').mockImplementation(function(this:HTMLElement){
+    if(this.classList.contains('modal-quiz-confirm')||this.classList.contains('modal-risk-notice'))return {top:10,bottom:400,height:390} as DOMRect;
+    if(this.classList.contains('button-stack'))return {top:450,bottom:580,height:130} as DOMRect;
+    return {top:0,bottom:0,height:0} as DOMRect;
+  });
+  mount(riskGame());expect(root.querySelector<HTMLElement>('.modal-risk-notice')!.scrollTop).toBe(196);bounds.mockRestore();
+});
