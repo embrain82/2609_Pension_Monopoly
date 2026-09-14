@@ -3,7 +3,8 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist', 'coverage', '.vercel'] },
+  // Standalone design-review prototypes are not shipped application scripts.
+  { ignores: ['dist', 'coverage', '.vercel', 'docs/design/**'] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {

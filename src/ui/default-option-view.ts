@@ -12,6 +12,8 @@ export interface DefaultOptionViewOptions {
   /** 선택 상품명을 포함한 시작 또는 저장 버튼 */
   mode: 'start' | 'settings';
   modern?: boolean;
+  /** 시작 화면에서는 상세 설명을 선택 요약 패널에서 보여 준다. */
+  compact?: boolean;
   notice?: string;
 }
 
@@ -38,7 +40,7 @@ export function renderDefaultOptionCards(view: DefaultOptionViewOptions): string
     return `<button type="button" role="radio" aria-checked="${picked === option.id}" tabindex="${picked === option.id || (picked === null && option.id === suggested) ? 0 : -1}" class="default-option-card ${picked === option.id ? 'picked' : ''} ${ok ? '' : 'locked'}" data-action="pick-default-option" data-option="${option.id}" ${ok ? '' : 'disabled'}>
         <span class="default-option-name">${option.name}${tags}</span>
         <strong>${defaultOptionProducts(option.id,view.modern)}</strong>
-        <small>${option.blurb}</small>
+        <small>${view.compact ? `가상 ${grade}등급 · ${ok ? '선택 가능' : '현재 성향에서 선택 불가'}` : option.blurb}</small>
       </button>`;
   }).join('')}</div>`;
 }

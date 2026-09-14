@@ -1,4 +1,5 @@
 import { renderTitleCover } from './title-cover';
+import { brandWordmark, renderBrandArt } from './design-system';
 import { renderResultHero, renderResultOverview, renderResultCollection } from './result-summary';
 import { renderRetrySuggestion } from './retry-view';
 import { renderPortfolio, renderMaturityNotice } from './portfolio-view';
@@ -46,7 +47,7 @@ import { applyProfileToGame, profileFromScore, isProfileId, PROFILE_IDS, profile
 import { pickTileBriefing } from '../engine/tile-briefing';
 import { KNOWLEDGE_CAPS, calculateScore, knowledgeBreakdown, shortfallPlan, starChecklist, starLockReason } from '../engine/scoring-engine';
 import type { AchievementId, ActionKind, DefaultOptionId, GameState, LifeChoice, PayoutChoice, ProfileId, ProductId, SaveData, TurnSummary } from '../types';
-import { DICE_LAND_HOLD_MS, DICE_ROLL_DURATION_MS, canRevealNextTurn, dicePairForTurn, renderDiceMarkup, shouldSkipDiceAnimation } from './dice';
+import { renderDiceOutcome, DICE_LAND_HOLD_MS, DICE_ROLL_DURATION_MS, canRevealNextTurn, dicePairForTurn, renderDiceMarkup, shouldSkipDiceAnimation } from './dice';
 import { TOKEN_STEP_MS, boardViewFor, movePath, renderBoardMarkup } from './board';
 import { hopPlan, renderTokenLayer, slideKeyframes } from './token3d';
 import { buyNeedsContribution, renderHowToModal, renderSettingsHowToButton, shouldShowLearningTip } from './howto';
@@ -167,7 +168,15 @@ export class PensionRoadApp {
   /** 클립보드 복사가 막혔을 때 직접 복사할 수 있게 보이는 결과 텍스트 */
   private shareFallback = '';
 
+  private readonly failedBrandArt = new Set<string>();
+
   constructor(private readonly root: HTMLElement) {
+    this.root.addEventListener('error', event => {
+      const image = event.target;
+      if (image instanceof HTMLImageElement && image.hasAttribute('data-brand-art')) {
+        this.failedBrandArt.add(image.dataset.brandArt!); image.hidden = true;
+      }
+    }, true);
     this.root.addEventListener('click', (event) => this.onClick(event));
     this.root.addEventListener('change', (event) => this.onChange(event));
     this.root.addEventListener('input', event => {if((event.target as HTMLElement).id==='default-trade-amount') this.onChange(event);});
@@ -1222,27 +1231,20 @@ export class PensionRoadApp {
 
   private renderTitle(): string {
     const needsDisclaimer = !this.save.disclaimerAccepted;
-    return `<section class="title-screen">
-      <div class="eyebrow">시장을 보고 움직이는 12턴</div>
-      <h1>연금로드</h1><p class="subtitle">12턴의 은퇴설계</p>
-      <p class="lead">주사위로 여행하고, 시장을 읽고, 내 은퇴를 설계하세요.</p>
-      ${renderTitleCover(this.save.avatarId,this.save.settings.characters)}
-      ${this.renderAvatarPicker()}
-      ${renderCampaignPicker(this.scenarioId,this.missionId,Boolean(this.root.querySelector<HTMLDetailsElement>(".campaign-picker")?.open))}
-      ${needsDisclaimer ? `<div class="disclaimer-check">
-        <input id="disclaimer" type="checkbox" ${this.disclaimerChecked ? 'checked' : ''}>
-        <label for="disclaimer"><strong>교육용 단순화에 동의합니다.</strong><br>실제 투자 권유가 아니며 수익·원금을 보장하지 않습니다.</label>
-      </div>` : ''}
-      ${this.resumeData ? '<button class="primary jumbo" data-action="resume-game">이어서 플레이</button><p class="hint">새 게임을 시작하면 저장된 판을 대체합니다.</p>' : ''}
-      <button class="${this.resumeData ? 'secondary' : 'primary'} jumbo" data-action="begin" ${this.canStart() ? '' : 'disabled'}>새 판 시작 준비</button>
-      <p class="hint">새 게임은 개인 추가납입을 턴당 합계 ${formatShortWon(balanceConfig.contributionPerTurnLimit)}까지 할 수 있습니다. 게임 진행용 한도입니다.</p>
-      ${this.canStart() ? renderWeeklyButton() : ''}
-      <div class="utility-row">
-        <button class="text-button" data-action="open-cards" data-tab="cards">학습 카드 <span class="badge">${this.save.unlockedCards.length}</span></button>
-        <button class="text-button" data-action="open-cards" data-tab="achievements">업적 <span class="badge">${this.save.achievements.length}/${ACHIEVEMENT_COUNT}</span></button>
-        <button class="text-button" data-action="open-settings">면책 · 출처 · 설정</button>
+    return `<section class="title-screen road-title">
+      <header class="road-header">${brandWordmark()}<button class="text-button" data-action="open-settings">설정</button></header>
+      <div class="road-hero">
+        <div class="road-intro"><p class="eyebrow">12턴의 은퇴설계</p><h1>주사위로 시작하는<br><strong>나의 은퇴설계</strong></h1><p class="lead">시장을 읽고, 나에게 맞는 선택을 해보세요.<br>퇴직연금을 쉽고 재미있게 배우는 연금로드.</p><ul class="road-benefits"><li>12턴 플레이</li><li>주사위 보드게임</li><li>퇴직연금 학습</li></ul></div>
+        <div class="road-hero-art">${renderBrandArt('board',this.save.settings.characters && !this.failedBrandArt.has('board'))}<p>한 칸씩 움직이며, 한 걸음씩 알아가요.</p></div>
+        <div class="road-launch">
+          ${needsDisclaimer ? `<div class="disclaimer-check"><input id="disclaimer" type="checkbox" ${this.disclaimerChecked ? 'checked' : ''}><label for="disclaimer"><strong>교육용 단순화에 동의합니다.</strong><br>실제 투자 권유가 아니며 수익·원금을 보장하지 않습니다.</label></div>` : ''}
+          ${this.resumeData ? `<p class="road-resume">진행 중인 판 · ${this.resumeData.game.turn}/12턴</p><button class="primary jumbo" data-action="resume-game">이어서 플레이</button>` : ''}
+          <button class="${this.resumeData ? 'secondary' : 'primary'} jumbo" data-action="begin" ${this.canStart() ? '' : 'disabled'}>새 판 시작 준비</button>
+          <p class="hint">성향 확인 · 디폴트옵션 선택 후 게임을 시작해요.${this.resumeData ? '<br>새 게임의 최종 시작을 누르면 저장된 판을 대체합니다.' : ''}</p>
+        </div>
       </div>
-      <p class="manual-links"><a href="./user-manual.html" target="_blank" rel="noreferrer">사용자 매뉴얼</a> · <a href="./operator-manual.html" target="_blank" rel="noreferrer">운영자 매뉴얼</a></p>
+      <details class="road-personalize" data-preserve-open><summary>캐릭터 · 이번 판 설정 <span>살펴보기 ＋</span></summary><div class="road-personalize-grid"><div>${this.renderAvatarPicker()}${renderTitleCover(this.save.avatarId,this.save.settings.characters)}</div><div>${renderCampaignPicker(this.scenarioId,this.missionId,Boolean(this.root.querySelector<HTMLDetailsElement>(".campaign-picker")?.open))}<p class="hint">개인 추가납입은 턴당 합계 ${formatShortWon(balanceConfig.contributionPerTurnLimit)}까지 가능합니다. 게임 진행용 한도입니다.</p>${this.canStart() ? renderWeeklyButton() : ''}</div></div></details>
+      <footer class="road-title-footer"><div class="utility-row"><button class="text-button" data-action="open-cards" data-tab="cards">학습 카드 <span class="badge">${this.save.unlockedCards.length}</span></button><button class="text-button" data-action="open-cards" data-tab="achievements">업적 <span class="badge">${this.save.achievements.length}/${ACHIEVEMENT_COUNT}</span></button><a href="./user-manual.html" target="_blank" rel="noreferrer">사용자 매뉴얼</a><a href="./operator-manual.html" target="_blank" rel="noreferrer">운영자 매뉴얼</a></div><p>가상 상품·시장 상황으로 배우는 교육용 게임입니다.</p></footer>
       <p class="record">최고 연금목표 진행률 <strong>${Math.round(this.save.bestGoalRate * 100)}%</strong> · 최고 IRP 잔액 증가율 <strong>${signedPercent(this.save.bestReturnRate)}</strong> · ${this.save.bestScore}점 · ${this.save.playCount}판</p><details class="record-rules"><summary>최고 기록의 비교 조건</summary><p>잔액 증가율은 납입·이전·인출을 포함합니다. ${this.save.bestReturnRule ? `해당 기록 규칙 ${this.save.bestReturnRule.ruleset} · ${this.save.bestReturnRule.perTurnLimit === null ? '턴별 납입 제한 없는 이전 판' : `턴 합계 납입 ${formatWon(this.save.bestReturnRule.perTurnLimit)} 제한`}` : '기존 최고 기록의 개별 규칙 버전은 저장되지 않았습니다.'}</p></details>
     </section>`;
   }
@@ -1253,11 +1255,11 @@ export class PensionRoadApp {
 
   private renderDiagnosis(): string {
     const question = questions[this.questionIndex];
-    return `<section class="setup-screen narrow">
+    return `<section class="setup-screen narrow road-diagnosis">
       <header class="step-header"><span>투자자성향 진단</span><strong>${this.questionIndex + 1} / 5</strong></header>
       <div class="progress" aria-label="진행률 ${this.questionIndex + 1}/5"><i style="width:${(this.questionIndex + 1) * 20}%"></i></div>
-      <p class="eyebrow">정답은 없습니다 · ${this.preparation ? '최종 시작 전까지 저장하지 않습니다' : '다음 새 판의 성향으로 저장합니다'}</p><h1>${question.text}</h1>
-      <div class="choice-stack">${question.options.map(([label, score], index) => `<button data-action="answer" data-score="${score}"><span class="choice-index">${String.fromCharCode(65 + index)}</span>${label}<span aria-hidden="true">→</span></button>`).join('')}</div>
+      <div class="road-split diagnosis-split"><div class="diagnosis-prompt"><p class="eyebrow">정답은 없습니다 · ${this.preparation ? '최종 시작 전까지 저장하지 않습니다' : '다음 새 판의 성향으로 저장합니다'}</p><h1>${question.text}</h1><p class="lead">나에게 가까운 답을 골라주세요.</p></div>
+      <div class="choice-stack">${question.options.map(([label, score], index) => `<button data-action="answer" data-score="${score}"><span class="choice-index">${String.fromCharCode(65 + index)}</span>${label}<span aria-hidden="true">→</span></button>`).join('')}</div></div>
       <p class="hint">교육용 5문항이며 실제 금융회사의 성향 진단을 대체하지 않습니다.</p>
       ${this.preparation ? '<button class="secondary" data-action="prepare-back">성향 확인으로 돌아가기</button><button class="icon-button preparation-close" data-action="cancel-preparation" aria-label="시작 준비 닫기">×</button>' : ''}
     </section>`;
@@ -1353,7 +1355,7 @@ export class PensionRoadApp {
     const learningTip = shouldShowLearningTip(state, this.tipDismissed, waitingForDice) && latestCard
       ? `<p class="card-tip"><strong>${latestCard.title}</strong>${latestCard.key}<button class="text-button" data-action="dismiss-tip">닫기</button></p>`
       : '';
-    return `<section class="game-screen">
+    return `<section class="game-screen road-game">
       <header class="game-topbar">
         <div class="brand-small"><span>연금로드</span><small>${state.campaign ? SCENARIOS[state.campaign.scenario].name : "금리의 두 얼굴"}</small></div>
         <div class="mobile-stats">
@@ -1367,11 +1369,12 @@ export class PensionRoadApp {
         </div>
       </header>
       <div class="game-layout">
-        <div class="board-wrap">
-          ${renderBoardHud(state)}${renderTurnTrack(state, waitingForDice)}
+        <div class="board-wrap"><header class="road-board-heading"><p class="eyebrow">TURN ${Math.min(state.turn + (canRevealNextTurn(state) ? 1 : 0),12)} / 12</p><h1>한 칸씩, 내 은퇴를 향해</h1></header>
           ${this.renderBoard(state, waitingForDice)}
+          ${state.turn > 0 && !this.boardFocusing && !this.diceRolling && !this.tokenHopping ? renderDiceOutcome(dicePairForTurn(state.seed,state.turn-1)) : ''}
           <div class="board-location"><span>${this.tokenHopping?'이동 중':`현재 ${state.position+1}번 칸`} · <strong>${boardTiles[this.tokenHopping?this.tokenFocus:state.position].label}</strong></span><button class="text-button" data-action="open-explore" ${this.boardFocusing||this.tokenHopping||this.diceRolling?'disabled':''}>칸 살펴보기</button></div>
           <p class="board-step">${this.boardFocusing?'게임판을 보여드릴게요':this.diceRolling||this.tokenHopping?'주사위와 이동을 확인하세요':state.currentEventId?'지금은 생활사건 해결 단계':state.awaitingAction?`시장 반영 완료 · 운용 행동 ${state.actionsLeft}회 남음`:state.status==='finished'?'12턴 완료 · 최종 정산과 수령 방식 확인':'다음 순서 · 주사위 굴리기'}</p>
+          ${renderBoardHud(state)}${renderTurnTrack(state, waitingForDice)}
         </div>
         <aside class="dashboard" tabindex="0" aria-label="시장과 자산 상세">
           ${renderCampaignStatus(state)}${renderRegionProgress(state)}
