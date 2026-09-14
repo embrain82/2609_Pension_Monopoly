@@ -182,6 +182,11 @@ export class PensionRoadApp {
     this.root.addEventListener('click', (event) => this.onClick(event));
     this.root.addEventListener('change', (event) => this.onChange(event));
     this.root.addEventListener('input', event => {if((event.target as HTMLElement).id==='default-trade-amount') this.onChange(event);});
+    // Scrolling a long order sheet must not increment the focused numeric input.
+    this.root.addEventListener('wheel', () => {
+      const field = document.activeElement;
+      if (field instanceof HTMLInputElement && field.type === 'number' && this.root.contains(field)) field.blur();
+    }, { capture: true, passive: true });
     this.root.addEventListener('toggle', event => {
       const details = event.target;
       if (!(details instanceof HTMLDetailsElement) || !details.matches('.market-impact-details') || !this.root.contains(details) || Number(details.dataset.turn) !== this.game?.turn) return;

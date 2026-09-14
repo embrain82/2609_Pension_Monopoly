@@ -99,3 +99,12 @@ it('직접·옵션·미결제·대기자금 분류는 예약/부분결제/환매
   expect(state).toEqual(snapshot);
  }
 });
+
+
+it('주문 입력 후 스크롤은 숫자 입력 초점을 해제하고 금액·초안을 유지한다', () => {
+ const g=game();mount(g);click('[data-view="default"]');change('#default-trade-amount','123456');
+ const field=root.querySelector<HTMLInputElement>('#default-trade-amount')!;field.focus();
+ field.dispatchEvent(new WheelEvent('wheel',{deltaY:400,bubbles:true,cancelable:true}));
+ expect(document.activeElement).not.toBe(field);expect(field.value).toBe('123456');
+ expect(saved().actionContext!.draft!.amount).toBe(123456);expect(saved().game).toEqual(g);
+});
