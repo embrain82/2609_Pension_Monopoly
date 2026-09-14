@@ -1,0 +1,69 @@
+{"turn":1,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":2,"action":{"action":"notice-continue"},"text":"확인하고 운용하기","modal":"modal-sheet modal-risk-notice"}
+{"turn":2,"action":{"action":"action-view","view":"default"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":2,"action":{"action":"submit-default-trade","command":"default-2-1-0"},"text":"500,000원 매수 지시","modal":"modal-sheet modal-action"}
+{"turn":2,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":2,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":2,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":3,"action":{"action":"notice-continue"},"text":"확인하고 운용하기","modal":"modal-sheet modal-risk-notice"}
+{"turn":3,"action":{"action":"action-view","view":"contribute"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":3,"action":{"action":"do-contribute","amount":"1000000"},"text":"100만원 납입","modal":"modal-sheet modal-action"}
+{"turn":3,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":3,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":3,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":4,"action":{"action":"resolve-life","choice":"transfer-irp"},"text":"A\nIRP로 이전\n지금: IRP 대기자금 +6,000,000원 · 세금 없음(과세 이연)\n나중: 월 연금 +25,000원. 대기자금은 매수나 디폴트옵션으로 운용됩니다. 납입 한도와 무관.","modal":"modal-sheet modal-life"}
+{"turn":4,"action":{"action":"action-view","view":"buy"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":4,"action":{"action":"do-buy"},"text":"매수 실행","modal":"modal-sheet modal-action"}
+{"turn":4,"action":{"action":"action-view","view":"contribute"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":4,"action":{"action":"do-contribute","amount":"1000000"},"text":"100만원 납입","modal":"modal-sheet modal-action"}
+{"turn":4,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":4,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":4,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":5,"action":{"action":"dismiss-news"},"text":"계속","modal":"modal-sheet modal-news"}
+{"turn":5,"action":{"action":"action-view","view":"sell"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":5,"action":{"action":"do-sell"},"text":"매도 실행","modal":"modal-sheet modal-action"}
+{"turn":5,"action":{"action":"action-view","view":"sell"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":5,"action":{"action":"do-sell"},"text":"매도 실행","modal":"modal-sheet modal-action"}
+{"turn":5,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":5,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":5,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":6,"action":{"action":"action-view","view":"switch"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":6,"action":{"action":"do-switch"},"text":"교체 실행","modal":"modal-sheet modal-action"}
+{"turn":6,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":6,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":6,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":7,"action":{"action":"action-view","view":"contribute"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":7,"action":{"action":"do-contribute","amount":"1000000"},"text":"100만원 납입","modal":"modal-sheet modal-action"}
+{"turn":7,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":7,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":7,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":8,"action":{"action":"dismiss-news"},"text":"계속","modal":"modal-sheet modal-news"}
+{"turn":8,"action":{"action":"action-view","view":"default"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":8,"action":{"action":"submit-default-trade","command":"default-8-2-1"},"text":"9,000,000원 매수 지시","modal":"modal-sheet modal-action"}
+{"turn":8,"action":{"action":"action-view","view":"contribute"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":8,"action":{"action":"do-contribute","amount":"1000000"},"text":"100만원 납입","modal":"modal-sheet modal-action"}
+{"turn":8,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":8,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":8,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":9,"action":{"action":"action-view","view":"contribute"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":9,"action":{"action":"do-contribute","amount":"1000000"},"text":"100만원 납입","modal":"modal-sheet modal-action"}
+{"turn":9,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":9,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":9,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":10,"action":{"action":"resolve-life","choice":"cash"},"text":"A\n생활자금으로 해결\n지금: 생활자금 −2,259,286원\n나중: IRP는 그대로. 미지급 생활비가 있으면 안정성 평가에 반영됩니다.","modal":"modal-sheet modal-life"}
+{"turn":10,"action":{"action":"action-view","view":"buy"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":10,"action":{"action":"do-buy"},"text":"매수 실행","modal":"modal-sheet modal-action"}
+{"turn":10,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":10,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":10,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":11,"action":{"action":"resolve-life","choice":"cash"},"text":"A\n생활자금으로 해결\n지금: 생활자금 −3,085,456원\n나중: IRP는 그대로. 미지급 생활비가 있으면 안정성 평가에 반영됩니다.","modal":"modal-sheet modal-life"}
+{"turn":11,"action":{"action":"action-view","view":"contribute"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":11,"action":{"action":"do-contribute","amount":"1000000"},"text":"100만원 납입","modal":"modal-sheet modal-action"}
+{"turn":11,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":11,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":11,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":12,"action":{"action":"action-view","view":"buy"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":12,"action":{"action":"do-buy"},"text":"매수 실행","modal":"modal-sheet modal-action"}
+{"turn":12,"action":{"action":"dismiss-settle"},"text":"수령 방식 비교로","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":12,"action":{"action":"choose-payout","choice":"annuity20"},"text":"연금(20년)\n세후 평균 월 520,801원\n평균 세금 1.7% · 240개월 · 목표용 월 환산액 · 세전 529,960원\n연금 목표 달성","modal":"modal-sheet modal-payout"}

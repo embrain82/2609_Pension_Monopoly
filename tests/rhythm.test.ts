@@ -114,7 +114,7 @@ describe('정산 창 접기와 자동 진행', () => {
     // 첫 화면에는 막대 3개와 한 줄 정리가 남는다
     const head = html.slice(0, details);
     expect(head).toContain('settle-bars');
-    expect(head).toContain('한 줄 정리');
+    expect(head).toContain('settle-cause');
   });
 
   it('expanded면 details가 열린 채 그려진다', () => {

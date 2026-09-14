@@ -2,6 +2,8 @@
 
 금리와 퇴직연금 운용 원리를 12번의 선택으로 체험하는 서버리스 HTML5 교육 게임입니다. 생활자금과 IRP를 분리하고, 시장 변화에 따라 납입·매매·리밸런싱하면서 목표 월 연금에 도전합니다.
 
+[v1.9.0 구현·검증 기록](docs/implementation/2026-09-14-playtest-followup.md): 게임판 자동 이동, 통합 정산, 퀴즈 건너뛰기 확인, 시장 변화에 따른 위험비중 안내(FB-008~011).
+
 [플레이테스트 개선사항 목록](docs/backlog/playtest-improvements.md): 사용자 제보를 누적하고, 별도 요청 시 모아서 구현 플랜을 작성합니다.
 
 [FB-004~006 구현 계획·화면 시안 (2026-09-12)](docs/backlog/playtest-improvements-plan-2026-09-12.html): 포트폴리오 버튼 위치, 시장 상세 메뉴 강조, 턴당 추가납입 제한. v1.6.0 구현·검증 완료. [구현 기록](docs/implementation/2026-09-12-playtest-pacing.md).

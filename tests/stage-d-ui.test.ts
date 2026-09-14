@@ -20,7 +20,7 @@ it('시작 선택을 저장하고 정산 퀴즈는 선택적으로 열어 복귀
   expect(saved().game.campaign!.scenario).toBe('inflation');expect(saved().game.campaign!.mission).toBe('cushion');
   click('[data-action="action-view"][data-view="contribute"]');click('[data-action="do-contribute"]');
   if(saved().game.awaitingAction) click('[data-action="do-hold"]');
-  const before=structuredClone(saved().game);click('[data-action="action-quiz"]');click('[data-action="quiz-skip"]');
+  const before=structuredClone(saved().game);click('[data-action="action-quiz"]');click('[data-action="quiz-skip"]');click('[data-action="notice-continue"]');
   expect(root.querySelector('.modal-settle')).not.toBeNull();
   expect(saved().game.cash).toBe(before.cash);expect(saved().game.campaign!.reviews).toEqual(before.campaign!.reviews);
 });

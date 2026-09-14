@@ -1,6 +1,6 @@
 import { renderChangeChart, type ChangeRow } from './mini-chart';
 import { formatWon } from './format';
-import { marketExplanation } from '../engine/market-explanation';
+import { settlementMarketContext } from './settlement-view-model';
 import { renderMarketImpacts } from './market-impact-view';
 import { products } from '../data/content';
 import type { MarketStep, Milestone, TurnSummary } from '../types';
@@ -29,6 +29,9 @@ export interface SettlementOptions {
   autoSettleMs?: number | null;
   /** 후반 가속. fast면 막대·상품별 연출이 절반 길이 */
   pace?: ScenePace;
+  /** 앱이 생성한 선택 학습과 필수 정산 안내. 다음 진행 버튼보다 먼저 보여준다. */
+  learningHtml?: string;
+  importantHtml?: string;
 }
 
 /** 정산 자동 진행 대기 시간 */
@@ -72,9 +75,9 @@ function irpBars(summary: TurnSummary): string {
   } else rows.push({label:'시장 이후 변화 (입출금·거래 포함)',value:summary.irpAfter-summary.irpAfterMarket,kind:'flow'});
   return `<div class="settle-bars three"><strong>정산 요약</strong>
     <p class="settle-balance">턴 시작 <b>${formatWon(summary.irpOpen)}</b> → 정산 후 <b>${formatWon(summary.irpAfter)}</b></p>
-    ${renderChangeChart(rows, `${summary.turn}턴 IRP 변화의 구성`)}
+    ${renderChangeChart(rows, `${summary.turn}턴 IRP 변화의 구성`, true)}
     <p class="settle-delta ${tone(total)}"><small>IRP 잔액 변화 · 입출금 포함</small> ${signedWon(total)} <small>(${signedPercent(rate)})</small></p>
-    <p class="hint">시장 반영 잔액 ${formatWon(summary.irpAfterMarket)}. 납입은 외부 입출금이며 운용 수익이 아닙니다. 주문 접수만 된 금액은 확정 수익으로 표시하지 않습니다.</p></div>`;
+    </div>`;
 }
 
 function returnBars(summary: TurnSummary): string {
@@ -118,26 +121,37 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
     ? [options.optionalLearning ? '12턴이 끝났습니다. 이 화면의 관련 문제는 선택 학습입니다. 수령 방식 비교로 넘어가 연금 또는 일시금을 고르면 결과가 열립니다.' : '12턴이 끝났습니다. 배운 카드에서 마무리 퀴즈(최대 3문항)를 풀고, 연금과 일시금 중 수령 방식을 정하면 결과 리포트가 열립니다.']
     : summary.nextHints;
   const hintsBlock = renderSpeech('coach', `<ul class="settle-hints">${hints.map((hint) => `<li>${hint}</li>`).join('')}</ul>`, { characters: options.characters, title: options.final ? '남은 일' : '다음 판단' });
+  const context = settlementMarketContext(summary, options.market);
+  const rate = context.rate;
+  const marketStrip = rate ? `<div class="settle-rate-strip"><div><span>가상 시장금리</span><strong>${rate.before.toFixed(2)}% <span aria-label="에서">→</span> ${rate.after.toFixed(2)}%</strong><small>${Math.abs(rate.delta) < 1e-9 ? '동결 · 0.00%p' : `${rate.delta > 0 ? '+' : ''}${rate.delta.toFixed(2)}%p`}</small></div><div><span>이번 턴 주가</span><strong>${signedPercent(rate.stock)}</strong><small>시장 지수 변화</small></div></div>` : '';
   const details = `<details class="settle-more"${options.expanded ? ' open' : ''}>
       <summary><span>자세히</span><small>상품별 수익률 · 내가 한 일${summary.tileEffects.length ? ' · 칸 효과' : ''}${options.final ? '' : ' · 다음 판단'}</small></summary>
       <div class="preview-box settle-market"><strong>시장 예시와 내 보유분 · 상품별 이번 턴</strong><p class="settle-note">상품별 시장 예시(보수 전)입니다. 오른쪽은 정산 후 비중이며 위의 실제 영향과 기준이 다릅니다.</p>${returnBars(summary)}</div>
       ${actionBlock(summary)}
+      <p class="hint">시장 반영 잔액 ${formatWon(summary.irpAfterMarket)} · 납입은 운용 수익이 아닙니다.</p>
+      <p class="hint">주문 접수만 된 금액은 확정 수익으로 표시하지 않습니다. 주요 보유분 손익은 시장 구간 기준이고, 외부 입출금·매매·정산은 장부 기준입니다.</p>
       ${renderTileEffects(summary.tileEffects, { heading: '칸 효과' })}
+      ${renderBenchmarkSettleLine(summary)}
+      ${ghost ? `<details class="settle-comparison"><summary>생활 선택까지 다른 고스트 경로 비교</summary>${ghost}</details>` : ''}
+      <div class="settle-reaction">${renderSpeech('coach', `<p>${options.final ? '마지막 시장과 주문 정산이 끝났습니다. 최종 자금과 수령 방식의 차이를 비교해 보세요.' : summary.marketEffects !== undefined ? summary.reaction : '이번 시장의 변화와 내 보유분 수익을 구분해 확인하세요. 다음 턴 방향은 확정되지 않았습니다.'}</p>`, { characters: options.characters, title: '한 줄 정리', tone: reactionTone })}</div>
       ${options.final ? '' : hintsBlock}
     </details>`;
   return `<div class="settle-scene${options.pace === 'fast' ? ' fast' : ''}">
     <p class="eyebrow">${summary.turn}턴 정산${shock}${options.final ? '<span class="settle-final">마지막 턴</span>' : ''}</p>
     <h2>무엇이 바뀌었나요?</h2>
-    <p class="settle-headline">${options.market?.turn === summary.turn ? marketExplanation(options.market).headline : summary.marketHeadline}</p>
+    <p class="settle-headline">${context.headline}</p>
     ${milestones}
-    ${irpBars(summary)}
-    ${renderMarketImpacts(summary.marketEffects, summary.turn, false)}
-    ${renderBenchmarkSettleLine(summary)}
-    ${ghost ? `<details class="settle-comparison"><summary>생활 선택까지 다른 고스트 경로 비교</summary>${ghost}</details>` : ''}
+    <section class="settle-overview" aria-label="이번 턴 시장과 내 자산 요약">
+      ${marketStrip}
+      ${irpBars(summary)}
+      ${renderMarketImpacts(summary.marketEffects, summary.turn, false, true)}
+      <p class="settle-cause">${context.explanation}</p>
+    </section>
     ${renderLifeSettleBlock(summary.lifeEvent)}
+    ${options.importantHtml ?? ''}
     ${alert}
-    <div class="settle-reaction">${renderSpeech('coach', `<p>${options.final ? '마지막 시장과 주문 정산이 끝났습니다. 최종 자금과 수령 방식의 차이를 비교해 보세요.' : summary.marketEffects !== undefined ? summary.reaction : '이번 시장의 변화와 내 보유분 수익을 구분해 확인하세요. 다음 턴 방향은 확정되지 않았습니다.'}</p>`, { characters: options.characters, title: '한 줄 정리', tone: reactionTone })}</div>
     ${options.final ? hintsBlock : ''}
+    ${options.learningHtml ?? ''}
     <div class="settle-cta${auto ? ' auto' : ''}"><button class="primary jumbo" data-action="dismiss-settle">${cta}</button>${autoBar}</div>
     ${details}
   </div>`;

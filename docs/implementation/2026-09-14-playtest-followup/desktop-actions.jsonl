@@ -1,0 +1,121 @@
+{"turn":0,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":1,"action":{"action":"action-view","view":"contribute"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":1,"action":{"action":"do-contribute","amount":"1000000"},"text":"100만원 납입","modal":"modal-sheet modal-action"}
+{"turn":1,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":1,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":1,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":2,"action":{"action":"action-view","view":"default"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":2,"action":{"action":"submit-default-trade","command":"default-2-1-0"},"text":"500,000원 매수 지시","modal":"modal-sheet modal-action"}
+{"turn":2,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":2,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":2,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":3,"action":{"action":"action-view","view":"contribute"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":3,"action":{"action":"do-contribute","amount":"1000000"},"text":"100만원 납입","modal":"modal-sheet modal-action"}
+{"turn":3,"action":{"action":"action-view","view":"contribute"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":3,"action":{"action":"do-contribute","amount":"1000000"},"text":"100만원 납입","modal":"modal-sheet modal-action"}
+{"turn":3,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":3,"action":{"action":"quiz-pick","option":"0"},"text":"A\n다른 개념이라 따로 센다","modal":"modal-sheet modal-quiz"}
+{"turn":3,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":3,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":3,"action":{"action":"quiz-pick","option":"0"},"text":"A\n대기자금이 영원히 그대로 남는다","modal":"modal-sheet modal-quiz"}
+{"turn":3,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":3,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":3,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":4,"action":{"action":"dismiss-news"},"text":"계속","modal":"modal-sheet modal-news"}
+{"turn":4,"action":{"action":"resolve-life","choice":"cash"},"text":"A\n생활자금으로 해결\n지금: 생활자금 −3,885,444원\n나중: IRP는 그대로. 미지급 생활비가 있으면 안정성 평가에 반영됩니다.","modal":"modal-sheet modal-life"}
+{"turn":4,"action":{"action":"action-view","view":"buy"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":4,"action":{"action":"do-buy"},"text":"매수 실행","modal":"modal-sheet modal-action"}
+{"turn":4,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":4,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":4,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":5,"action":{"action":"resolve-life","choice":"cash"},"text":"A\n생활자금으로 해결\n지금: 생활자금 −2,576,422원\n나중: IRP는 그대로. 미지급 생활비가 있으면 안정성 평가에 반영됩니다.","modal":"modal-sheet modal-life"}
+{"turn":5,"action":{"action":"action-view","view":"sell"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":5,"action":{"action":"do-sell"},"text":"매도 실행","modal":"modal-sheet modal-action"}
+{"turn":5,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":5,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":5,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":6,"action":{"action":"resolve-life","choice":"cash"},"text":"A\n생활자금으로 해결\n지금: 생활자금 −3,638,146원\n나중: IRP는 그대로. 미지급 생활비가 있으면 안정성 평가에 반영됩니다.","modal":"modal-sheet modal-life"}
+{"turn":6,"action":{"action":"action-view","view":"switch"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":6,"action":{"action":"do-switch"},"text":"교체 실행","modal":"modal-sheet modal-action"}
+{"turn":6,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":6,"action":{"action":"quiz-pick","option":"0"},"text":"A\n주문 순간 화면의 가격으로 즉시","modal":"modal-sheet modal-quiz"}
+{"turn":6,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":6,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":6,"action":{"action":"quiz-pick","option":"0"},"text":"A\n자동으로 생활비 계좌에 입금된다","modal":"modal-sheet modal-quiz"}
+{"turn":6,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":6,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":6,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":7,"action":{"action":"dismiss-news"},"text":"계속","modal":"modal-sheet modal-news"}
+{"turn":7,"action":{"action":"action-view","view":"contribute"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":7,"action":{"action":"do-contribute","amount":"1000000"},"text":"100만원 납입","modal":"modal-sheet modal-action"}
+{"turn":7,"action":{"action":"action-view","view":"contribute"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":7,"action":{"action":"do-contribute","amount":"1000000"},"text":"100만원 납입","modal":"modal-sheet modal-action"}
+{"turn":7,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":7,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":8,"action":{"action":"action-view","view":"default"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":8,"action":{"action":"submit-default-trade","command":"default-8-1-1"},"text":"5,000,000원 매수 지시","modal":"modal-sheet modal-action"}
+{"turn":8,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":8,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":9,"action":{"action":"action-view","view":"contribute"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":9,"action":{"action":"do-contribute","amount":"1000000"},"text":"100만원 납입","modal":"modal-sheet modal-action"}
+{"turn":9,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":9,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":10,"action":{"action":"action-view","view":"buy"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":10,"action":{"action":"do-buy"},"text":"매수 실행","modal":"modal-sheet modal-action"}
+{"turn":10,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":10,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":10,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":11,"action":{"action":"resolve-life","choice":"contribute-all"},"text":"A\n2,000,000원 납입 · 500,000원 생활자금\n지금: IRP 대기자금 +2,000,000원 (한도 밖 500,000원는 생활자금) · 세액공제 264,000원 환급 대기\n나중: 월 연금 +8,333원. 나머지 500,000원는 생활자금으로 남습니다. 같은 턴의 추가납입 한도를 함께 사용합니다.","modal":"modal-sheet modal-life"}
+{"turn":11,"action":{"action":"do-hold"},"text":"그대로 두고 마감","modal":"modal-sheet modal-action"}
+{"turn":11,"action":{"action":"dismiss-settle"},"text":"다음 턴 준비","modal":"modal-sheet modal-settle"}
+{"turn":11,"action":{"action":"notice-continue"},"text":"그냥 넘어가기","modal":"modal-sheet modal-quiz-confirm"}
+{"turn":11,"action":{"action":"roll-dice"},"text":"⚄\n주사위 굴리기"}
+{"turn":12,"action":{"action":"action-view","view":"buy"},"text":"선택","modal":"modal-sheet modal-action"}
+{"turn":12,"action":{"action":"do-buy"},"text":"매수 실행","modal":"modal-sheet modal-action"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n실질 구매력은 줄어든다","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n단기채","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n구성과 위험도 항상 같다","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n매달 그날의 시장 수익률","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n전망대로 될 게 확실하니 위험자산을 전부 판다","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n모든 상품에서 바로 출금할 수 있다","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n아무 대가가 없다","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n자동으로 새 금리가 적용된다","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n예상 밖 지출을 버텨 장기계좌를 지킨다","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\nDB는 사용자(회사), DC는 근로자가 운용한다","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n생활비 통장처럼 언제든 꺼낸다","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n이미 오른 가격으로 사는 것이라, 오늘의 +4%는 받지 못한다","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n내려갈 수 있다","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n손실을 완전히 없앤다","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"action-quiz"},"text":"관련 한 문제 풀기 · 선택","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"quiz-pick","option":"0"},"text":"A\n오른 자산을 더 사는 것","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"quiz-next"},"text":"정산으로 돌아가기","modal":"modal-sheet modal-quiz"}
+{"turn":12,"action":{"action":"dismiss-settle"},"text":"수령 방식 비교로","modal":"modal-sheet modal-settle"}
+{"turn":12,"action":{"action":"choose-payout","choice":"lumpSum"},"text":"일시금\n세후 98,828,906원\n일시 수령액 · 평균 세금 4% (4,085,525원) · 목표용 월 환산액 · 일시금 조정 418,740원\n연금 목표 미달 · 목표까지 81,260원","modal":"modal-sheet modal-payout"}
