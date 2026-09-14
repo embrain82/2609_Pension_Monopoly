@@ -11,6 +11,8 @@ export interface QuizViewState {
   characters: boolean;
   /** 연속 정답 수(답한 뒤) */
   streak: number;
+  /** 실제 이해 점수 증분. 상한에 닿은 정답도 무조건 +2로 표시하지 않는다. */
+  pointsEarned?: number;
 }
 
 export function quizEyebrow(progress: QuizViewState['progress']): string {
@@ -31,7 +33,7 @@ export function renderQuizModal(card: LearningCard, view: QuizViewState): string
   const verdict = !answered
     ? ''
     : view.picked === card.quiz.answer
-      ? renderSpeech('coach', `<p><strong>정답!</strong> 제도·운용 이해 +2${view.streak >= 3 ? ` · ${view.streak}연속` : ''}. ${card.quiz.why}</p>`, { characters: view.characters, tone: 'positive' })
+      ? renderSpeech('coach', `<p><strong>정답!</strong> ${view.pointsEarned === 0 ? '추가 점수 없이 복습 완료' : `제도·운용 이해 +${view.pointsEarned ?? 2}`}${view.streak >= 3 ? ` · ${view.streak}연속` : ''}. ${card.quiz.why}</p>`, { characters: view.characters, tone: 'positive' })
       : renderSpeech('coach', `<p><strong>아쉬워요.</strong> 정답은 「${card.quiz.options[card.quiz.answer]}」. ${card.quiz.why} 오답은 벌점이 없습니다.</p>`, { characters: view.characters });
   const skip = !answered
     ? `<button class="text-button" data-action="quiz-skip">이번엔 건너뛰기</button>`

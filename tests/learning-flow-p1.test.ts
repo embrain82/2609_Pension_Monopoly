@@ -21,7 +21,7 @@ it('시장과 두 운용 행동의 퀴즈를 덮어쓰지 않고 정산에서 �
  click('action-view'); // first card is contribution
  click('do-contribute');click('do-hold');
  expect(saved().game.learningFlow!.queue).toEqual(expect.arrayContaining(['risk-limit','contribution-limit','inflation-value']));expect(root.querySelector('.modal-settle')).not.toBeNull();
- const cash=saved().game.cash,actions=saved().game.actionsLeft;click('action-quiz');const id=saved().quizCardId!;click('quiz-skip');expect(root.querySelector('.modal-settle')).not.toBeNull();
+ const cash=saved().game.cash,actions=saved().game.actionsLeft;click('action-quiz');const id=saved().quizCardId!;click('quiz-skip');expect(root.querySelector('.modal-quiz-confirm')).not.toBeNull();click('notice-continue');expect(root.querySelector('.modal-settle')).not.toBeNull();
  expect(optionalQuizCards(saved().game)).not.toContain(id);expect(saved().game.cash).toBe(cash);expect(saved().game.actionsLeft).toBe(actions);
 });
 it('선택 퀴즈 정답·복원은 점수를 중복 추가하지 않고 기존 대기는 그대로 유지한다',()=>{
@@ -32,11 +32,11 @@ it('선택 퀴즈 정답·복원은 점수를 중복 추가하지 않고 기존 
  expect(saved().game.quizLog).toHaveLength(1);
  const legacy=createGame('old','balanced',500000,{defaultTrading:true,scenario:'classic'});const queued=queueQuiz(legacy,'db-dc-irp');expect(queued.learningFlow).toBeUndefined();expect(queued.pendingQuizCardId).toBe('db-dc-irp');
 });
-it('새 판의 12턴은 선택 학습을 생략하고 정산에서 수령으로 바로 이어진다',()=>{
+it('새 판의 12턴은 선택 학습 건너뛰기를 확인하고 수령으로 이어진다',()=>{
  const base=autoplay('final-optional','steward','balanced',{defaultTrading:true,scenario:'classic'});
  const active={...base,status:'playing' as const,awaitingAction:true,actionsLeft:1,learningFlow:{version:'settlement-v1' as const,queue:[]},payoutChoice:null,turnActionLines:[]};
  const result=performAction(active,{kind:'hold'});expect(result.state.status).toBe('finished');mount(result.state,'settle',result.summary);
- expect(root.textContent).toContain('주문 최종 정산 완료');expect(root.textContent).toContain('수령 방식 비교로');expect(root.textContent).not.toContain('마무리 퀴즈(최대 3문항)');click('dismiss-settle');expect(root.querySelector('.modal-payout')).not.toBeNull();expect(root.querySelector('.modal-quiz')).toBeNull();
+ expect(root.textContent).toContain('주문 최종 정산 완료');expect(root.textContent).toContain('수령 방식 비교로');expect(root.textContent).not.toContain('마무리 퀴즈(최대 3문항)');click('dismiss-settle');expect(root.querySelector('.modal-quiz-confirm')).not.toBeNull();click('notice-continue');expect(root.querySelector('.modal-payout')).not.toBeNull();expect(root.querySelector('.modal-quiz')).toBeNull();
 });
 it('손상된 자율 학습 데이터는 복원하지 않는다',()=>{
  const g=createGame('invalid','balanced',500000,{defaultTrading:true,scenario:'classic',settlementLearning:true});mount(g);const data=saved();

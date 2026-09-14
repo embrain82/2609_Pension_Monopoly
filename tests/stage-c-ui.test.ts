@@ -67,7 +67,7 @@ it('경로 선택 없이 자동 이동하는 12턴 UI를 완주하고 결과 중
   new PensionRoadApp(root); click('[data-action="begin"]');click('[data-action="prepare-continue"]'); click('[data-action="prepare-no-option"]');click('[data-action="confirm-default-option"]');
   for(let i=0;i<120 && !root.querySelector('.result-screen');i++) {
     const dialog = root.querySelector('[role="dialog"]');
-    const actions = dialog ? ['dismiss-howto','dismiss-news','quiz-skip','quiz-next','resolve-life','do-hold','dismiss-settle','choose-payout'] : ['roll-dice','open-action'];
+    const actions = dialog ? ['notice-continue','dismiss-howto','dismiss-news','quiz-skip','quiz-next','resolve-life','do-hold','dismiss-settle','choose-payout'] : ['roll-dice','open-action'];
     const action = actions.find(a => (dialog ?? root).querySelector(`[data-action="${a}"]`));
     expect(action, (dialog ?? root).textContent ?? '').toBeTruthy();
     if(action === 'resolve-life') click('[data-action="resolve-life"][data-choice="cash"]');

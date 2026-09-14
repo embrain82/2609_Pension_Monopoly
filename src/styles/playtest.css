@@ -1,0 +1,12 @@
+/* v1.9: FB-008~011 · 진행 안내와 한 턴 요약 */
+.modal-risk-notice,.modal-quiz-confirm { max-width:540px; }
+.modal-risk-notice h2,.modal-quiz-confirm h2 { padding-right:0; font-size:clamp(1.55rem,5vw,2rem); }
+.risk-notice-value { background:var(--warning-bg);border:1px solid #c79a44;border-radius:16px;padding:18px;margin:18px 0; }
+.risk-notice-value > small { display:block;color:var(--warning-ink); }
+.risk-notice-value > strong { display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:2.1rem;line-height:1.4; }
+.risk-notice-value strong small { font-weight:500;color:var(--muted); }
+.quiz-notice-value { background:#edf4e5;border:1px solid #b1c7a1;border-radius:16px;padding:18px;font-weight:750; }
+.modal-risk-notice .button-stack,.modal-quiz-confirm .button-stack { margin-top:24px; }
+.optional-learning { background:#edf4e5;border:1px solid #b1c7a1;border-radius:14px;padding:16px;margin:16px 0; }
+.optional-learning button { width:100%;min-height:48px; }
+.optional-learning .hint { margin:8px 0 12px; }

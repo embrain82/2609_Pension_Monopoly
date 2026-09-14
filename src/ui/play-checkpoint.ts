@@ -11,9 +11,11 @@ import type { DefaultTradeDraft } from '../engine/default-trade-engine';
 import { isDefaultOptionId } from '../engine/default-option';
 import { DEFAULT_PORTFOLIOS } from '../data/default-portfolios';
 import { validContributionPacing } from '../engine/contribution-engine';
+import { normalizeUiProgress, type UiProgress } from './turn-notices';
 export const CHECKPOINT_KEY = 'pension-road-play-c1';
 export interface PlayCheckpoint {
   version: 'c2' | 'c3';
+  uiProgress?: UiProgress;
   actionContext?: { view: 'menu' | 'default'; draft: DefaultTradeDraft | null; portfolioReturn: boolean };
   game: GameState;
   modal: string | null;
@@ -91,6 +93,7 @@ export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
     if (!Array.isArray(data.finalQuizQueue) || typeof data.finishing !== 'boolean' || typeof data.defaultOptionAsk !== 'boolean') return null;
     if (![null,'life','action','portfolio','market','cards','settings','howto','news','tile','settle','quiz','payout','default-option','explore'].includes(data.modal)) return null;
     if (data.modal === 'settle' && (!data.lastSummary || !finite(data.lastSummary.turn) || !Array.isArray(data.lastSummary.milestones) || !finite(data.lastSummary.irpAfter))) return null;
+    data.uiProgress = normalizeUiProgress(data.uiProgress, g);
     const normalized = normalizeMissionMilestones(data.game);
     if (normalized !== data.game) return { ...data, game: normalized,
       lastSummary: data.lastSummary ? { ...data.lastSummary, milestones: (data.lastSummary.milestones ?? []).filter(m => m.id === 'drawdown-12') } : null };

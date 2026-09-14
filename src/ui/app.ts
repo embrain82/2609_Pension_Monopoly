@@ -64,9 +64,19 @@ import { renderSpeech } from './speech';
 import { settlementSound } from './sound';
 import { SoundPlayer } from './sound-dom';
 import { renderIrpSparkline, worstTurnLine } from './result-chart';
+import { marketRiskNotice, riskRatioLabel, quizOpportunity, quizOpportunityAcknowledged, quizPointsCopy,
+  normalizeUiProgress, renderRiskNotice, renderQuizNotice, type UiProgress, type ProgressIntent } from './turn-notices';
+import { knowledgeScoreOf } from '../engine/scoring-engine';
 
 type Screen = 'prepare' | 'title' | 'diagnosis' | 'goal' | 'game' | 'result';
-type Modal = 'life' | 'action' | 'portfolio' | 'market' | 'cards' | 'settings' | 'howto' | 'news' | 'tile' | 'settle' | 'quiz' | 'payout' | 'default-option' | 'explore' | null;
+type Modal = 'risk-notice' | 'quiz-confirm' | 'life' | 'action' | 'portfolio' | 'market' | 'cards' | 'settings' | 'howto' | 'news' | 'tile' | 'settle' | 'quiz' | 'payout' | 'default-option' | 'explore' | null;
+interface PendingPrompt {
+  kind: 'risk-notice' | 'quiz-confirm';
+  intent: ProgressIntent;
+  returnModal: Modal;
+  scroll: number;
+  focusAction?: string;
+}
 /** 「그대로」는 확인 화면 없이 목록에서 바로 실행되므로 보기가 없다 */
 type ActionView = 'menu' | 'default' | Exclude<ActionKind, 'hold' | 'default-opt-in' | 'default-opt-out'>;
 type CardsTab = 'cards' | 'achievements' | 'collection';
@@ -86,6 +96,9 @@ export class PensionRoadApp {
   private renderedScreenMark = '';
   private renderedActionView: ActionView = 'menu';
   private modal: Modal = null;
+  private pendingPrompt: PendingPrompt | null = null;
+  private uiProgress: UiProgress = {};
+  private restorePromptPosition: { scroll: number; focusAction?: string } | null = null;
   private game: GameState | null = null;
   private save: SaveData = loadSave();
   private disclaimerChecked = this.save.disclaimerAccepted;
@@ -242,10 +255,11 @@ export class PensionRoadApp {
   private scheduleAutoSettle(summary: TurnSummary): void {
     this.clearAutoSettle();
     if (!this.save.settings.autoSettle || !this.game) return;
-    if (!canAutoSettle(summary, this.game.status === 'finished')) return;
+    if (!canAutoSettle(summary, this.game.status === 'finished') || quizOpportunity(this.game).maxPoints > 0) return;
     this.autoSettleTimer = window.setTimeout(() => {
       this.autoSettleTimer = 0;
       if (this.modal !== 'settle') return;
+      if (this.game && quizOpportunity(this.game).maxPoints > 0) { this.render(); return; }
       this.afterSettlement();
       this.render();
     }, AUTO_SETTLE_MS);
@@ -329,6 +343,7 @@ export class PensionRoadApp {
     if (!button || button.matches(':disabled')) return;
     const action = button.dataset.action;
     if (!action) return;
+    if (this.pendingPrompt && !['notice-continue', 'notice-quiz', 'close-modal'].includes(action)) return;
     void this.sound.unlock();
     if (action === 'test-sound') { this.setSound(true); this.render(); return; }
     if (action === 'resume-game' && this.resumeData) { this.resumeGame(this.resumeData); this.render(); return; }
@@ -341,7 +356,11 @@ export class PensionRoadApp {
     // 정산 창 안을 누르면(자세히 펼치기 포함) 자동 진행을 멈추고 읽을 시간을 준다.
     if (this.modal === 'settle') this.clearAutoSettle();
 
-    if (action === 'begin' && this.canStart()) {
+    if (action === 'notice-continue') {
+      this.continueNotice();
+    } else if (action === 'notice-quiz') {
+      this.returnToNoticeQuiz();
+    } else if (action === 'begin' && this.canStart()) {
       this.beginPreparation(randomSeed());
     } else if (action === 'weekly-seed' && this.canStart()) {
       this.beginPreparation(button.dataset.seed || randomSeed());
@@ -402,12 +421,13 @@ export class PensionRoadApp {
       this.screen = this.setupReturn === 'game' && this.game ? 'game' : 'title';
       this.announce(`월 연금 목표 ${formatWon(this.goalMonthly)}이 지금 판에 반영되었습니다.`);
     } else if (action === 'roll-dice') {
-      this.beginDiceRoll();
+      this.requestProgress({ kind: 'roll-next-turn' });
+      this.render();
       return;
     } else if (action === 'open-action' && this.game?.awaitingAction) {
       this.actionView = 'menu';
       this.amountPreset = 'default';
-      this.modal = 'action';
+      this.requestActionEntry();
     } else if (action === 'action-view') {
       const view = (button.dataset.view as ActionView) || 'menu';
       if (this.game && view !== 'menu' && !actionAvailability(this.game, view as Operation).enabled) return;
@@ -495,9 +515,9 @@ export class PensionRoadApp {
       if(view==='default' && defaultTabAvailability(this.game).out.enabled) { this.initializeDefaultTrade(); if(this.defaultTradeDraft)this.defaultTradeDraft.tab='out'; this.actionView='default'; }
       else if((view==='sell'||view==='switch') && actionAvailability(this.game,view).enabled) { this.selectedSell='deposit'; this.switchFrom='deposit'; this.actionView=view; }
       else return;
-      this.portfolioReturn=false; this.modal='action'; this.amountPreset='max'; this.actionScrollTop=null;
+      this.portfolioReturn=false; this.amountPreset='max'; this.actionScrollTop=null; this.requestActionEntry();
     } else if (action === 'return-action') {
-      this.portfolioReturn = false; this.modal = 'action';
+      this.portfolioReturn = false; this.requestActionEntry();
     } else if (action === 'open-explore' && this.game) {
       this.exploreIndex = button.dataset.tile ? Number(button.dataset.tile) : this.game.position;
       this.modal = 'explore';
@@ -562,6 +582,82 @@ export class PensionRoadApp {
     this.render();
   }
 
+  private requestActionEntry(): void {
+    this.requestProgress({ kind: 'enter-action' });
+  }
+
+  private progressQuizOpportunity(intent: ProgressIntent) {
+    if (!this.game) return { cardIds: [], nextPoints: 0, maxPoints: 0 };
+    if (intent.kind === 'skip-quiz') return quizOpportunity(this.game, [intent.cardId]);
+    return quizOpportunity(this.game, this.game.learningFlow && this.game.turn > 0 ? optionalQuizCards(this.game) : []);
+  }
+
+  private canProgress(intent: ProgressIntent): boolean {
+    if (!this.game || this.screen !== 'game') return false;
+    if (intent.kind === 'enter-action') return this.game.awaitingAction && !this.game.currentEventId;
+    if (intent.kind === 'roll-next-turn') return canRevealNextTurn(this.game);
+    if (intent.kind === 'skip-quiz') return this.quizCardId === intent.cardId && this.quizPicked === null &&
+      !this.game.quizLog.some(q => q.cardId === intent.cardId);
+    return this.lastSummary?.turn === this.game.turn && !this.game.awaitingAction && !this.game.currentEventId;
+  }
+
+  /** 확인만으로 금융 상태를 바꾸지 않고 원래 진행 의도를 한 번만 실행한다. */
+  private requestProgress(intent: ProgressIntent): void {
+    if (this.pendingPrompt || !this.game || !this.canProgress(intent)) return;
+    this.clearAutoSettle();
+    const risk = intent.kind === 'enter-action' && marketRiskNotice(this.game).exceeded && this.uiProgress.riskNoticeAckTurn !== this.game.turn;
+    const opportunity = intent.kind === 'enter-action' ? null : this.progressQuizOpportunity(intent);
+    const quiz = opportunity && opportunity.maxPoints > 0 && !quizOpportunityAcknowledged(this.uiProgress, this.game.turn, opportunity.cardIds);
+    if (risk || quiz) {
+      const active = document.activeElement as HTMLElement | null;
+      this.pendingPrompt = { kind: risk ? 'risk-notice' : 'quiz-confirm', intent,
+        returnModal: risk ? null : this.modal,
+        scroll: this.root.querySelector<HTMLElement>('.modal-sheet')?.scrollTop ?? 0,
+        focusAction: active?.dataset.action };
+      this.modal = this.pendingPrompt.kind;
+      return;
+    }
+    this.executeProgress(intent);
+  }
+
+  private executeProgress(intent: ProgressIntent): void {
+    if (!this.canProgress(intent)) return;
+    if (intent.kind === 'enter-action') this.modal = 'action';
+    else if (intent.kind === 'skip-quiz') this.applyQuizSkip();
+    else if (intent.kind === 'leave-settlement') this.applySettlementExit();
+    else void this.beginDiceRoll();
+  }
+
+  private continueNotice(): void {
+    const prompt = this.pendingPrompt;
+    if (!prompt || !this.game) return;
+    if (prompt.kind === 'risk-notice') this.uiProgress.riskNoticeAckTurn = this.game.turn;
+    else {
+      const ids = this.progressQuizOpportunity(prompt.intent).cardIds;
+      const previous = this.uiProgress.quizSkipAck?.turn === this.game.turn ? this.uiProgress.quizSkipAck.cardIds : [];
+      this.uiProgress.quizSkipAck = { turn: this.game.turn, cardIds: [...new Set([...previous, ...ids])] };
+    }
+    this.pendingPrompt = null; this.modal = prompt.returnModal;
+    this.executeProgress(prompt.intent);
+  }
+
+  private returnToNoticeQuiz(): void {
+    const prompt = this.pendingPrompt;
+    if (!prompt || prompt.kind !== 'quiz-confirm') return;
+    const card = this.progressQuizOpportunity(prompt.intent).cardIds[0];
+    this.pendingPrompt = null;
+    if (card) this.openQuiz(card);
+    else { this.modal = prompt.returnModal; this.executeProgress(prompt.intent); }
+  }
+
+  private cancelNotice(): void {
+    const prompt = this.pendingPrompt;
+    if (!prompt) return;
+    this.pendingPrompt = null; this.modal = prompt.returnModal;
+    this.restorePromptPosition = prompt.returnModal ? { scroll: prompt.scroll, focusAction: prompt.focusAction } : null;
+    this.announce(prompt.kind === 'risk-notice' ? '보드로 돌아왔습니다. 운용 횟수는 그대로입니다.' : '원래 화면으로 돌아왔습니다. 턴과 점수는 그대로입니다.');
+  }
+
   /** 필수 결정 창. 시작 시 사전지정에는 미지정 경로가 있고, 설정의 사전지정은 X/Esc로 취소한다. */
   private static readonly STICKY_MODALS: Modal[] = ['life', 'quiz', 'payout', 'default-option'];
 
@@ -571,12 +667,13 @@ export class PensionRoadApp {
   }
 
   private closeModal(): void {
+    if (this.pendingPrompt) { this.cancelNotice(); return; }
     if (this.modalIsSticky()) return;
     this.regionNotice = "";
     if (this.modal === 'default-option') { this.modal = 'settings'; return; }
-    if(this.modal==='quiz' && this.game?.learningFlow) { this.skipQuiz(); return; }
+    if(this.modal==='quiz' && this.game?.learningFlow) { if (this.quizPicked === null) this.skipQuiz(); else this.nextQuiz(); return; }
     if (this.modal === 'action') { this.buyLimitConfirm = null; this.modal = null; this.announce('운용 선택을 취소했습니다. 턴과 남은 행동은 그대로입니다.'); }
-    else if (this.modal === 'portfolio' && this.portfolioReturn) { this.portfolioReturn = false; this.modal = 'action'; }
+    else if (this.modal === 'portfolio' && this.portfolioReturn) { this.portfolioReturn = false; this.requestActionEntry(); }
     else if (this.modal === 'howto') this.afterHowTo();
     else if (this.modal === 'tile') this.afterTileBriefing();
     else if (this.modal === 'news') this.afterNews();
@@ -629,7 +726,7 @@ export class PensionRoadApp {
     if (!result.ok) return;
     if (choice === 'withdraw' || choice === 'deposit') this.sound.play('down');
     else if (choice === 'transfer-irp' || choice.startsWith('contribute')) this.sound.play('up');
-    this.modal = this.game.awaitingAction ? 'action' : null;
+    if (this.game.awaitingAction) this.requestActionEntry(); else this.modal = null;
     this.persist(true);
   }
 
@@ -640,7 +737,9 @@ export class PensionRoadApp {
       this.openQuiz(this.game.pendingQuizCardId);
       return;
     }
-    this.modal = this.game.currentEventId ? 'life' : this.game.awaitingAction ? 'action' : null;
+    if (this.game.currentEventId) this.modal = 'life';
+    else if (this.game.awaitingAction) this.requestActionEntry();
+    else this.modal = null;
   }
 
   private openQuiz(cardId: string): void {
@@ -652,10 +751,12 @@ export class PensionRoadApp {
 
   private pickQuiz(option: number): void {
     if (!this.game || !this.quizCardId || this.quizPicked !== null || !Number.isInteger(option)) return;
+    const beforePoints = knowledgeScoreOf(this.game);
     const result = submitQuiz(this.game, this.quizCardId, option);
     this.game = result.state;
     this.announce(result.message);
     if (!result.ok) return;
+    if (result.correct) this.announce(`정답! 제도·운용 이해 +${knowledgeScoreOf(this.game) - beforePoints}${this.game.quizStreak >= 3 ? ` · ${this.game.quizStreak}연속 정답` : ''}`);
     this.quizPicked = option;
     this.sound.play(result.correct ? 'up' : 'down');
     this.persist(true);
@@ -663,6 +764,12 @@ export class PensionRoadApp {
 
   /** 건너뛰기: 새 판은 해당 문항을 이번 판에서 제외하고, 구 판은 기존 마무리 후보 규칙을 유지한다. */
   private skipQuiz(): void {
+    if (!this.game || !this.quizCardId) return;
+    if (this.quizPicked !== null || this.game.quizLog.some(q => q.cardId === this.quizCardId)) { this.nextQuiz(); return; }
+    this.requestProgress({ kind: 'skip-quiz', cardId: this.quizCardId });
+  }
+
+  private applyQuizSkip(): void {
     if (!this.game) return;
     if (this.game.pendingQuizCardId === this.quizCardId) this.game = { ...this.game, pendingQuizCardId: null };
     if(this.game.learningFlow)this.game={...this.game,learningFlow:{...this.game.learningFlow,queue:this.game.learningFlow.queue.filter(id=>id!==this.quizCardId),dismissed:[...new Set([...(this.game.learningFlow.dismissed??[]),...(this.quizCardId?[this.quizCardId]:[])])]}};
@@ -681,11 +788,17 @@ export class PensionRoadApp {
       this.announce('마지막 결정입니다. 연금(20년)과 일시금 중 수령 방식을 고르세요. 결과 화면에서 다시 바꿀 수 있습니다.');
       return;
     }
-    this.modal = this.game?.currentEventId ? 'life' : this.game?.awaitingAction ? 'action' : this.lastSummary ? 'settle' : null;
+    if (this.game?.currentEventId) this.modal = 'life';
+    else if (this.game?.awaitingAction) this.requestActionEntry();
+    else this.modal = this.lastSummary ? 'settle' : null;
   }
 
   /** 정산 창 닫기. 새 판은 수령으로, 구 판은 기존 마무리 퀴즈를 이어간다. */
   private afterSettlement(): void {
+    this.requestProgress({ kind: 'leave-settlement' });
+  }
+
+  private applySettlementExit(): void {
     this.clearAutoSettle();
     if (!this.game || this.game.status !== 'finished') { this.modal = null; return; }
     this.finishing = true;
@@ -770,7 +883,7 @@ export class PensionRoadApp {
     this.tipDismissed = false;
     if (this.game.awaitingAction && !result.summary) {
       // 운용지시 칸: 행동이 남아 있어 턴이 열려 있다. 시트를 메뉴로 되돌리고 남은 횟수를 알린다.
-      this.modal = 'action';
+      this.requestActionEntry();
       this.persist(true);
       return;
     }
@@ -849,13 +962,14 @@ export class PensionRoadApp {
 
   private checkpoint(): void {
     if (!this.game || this.screen !== 'game' || this.diceRolling || this.tokenHopping) return;
-    const data: PlayCheckpoint = { version: this.game.defaultTrading?'c3':'c2', ...(this.game.defaultTrading?{actionContext:{view:this.actionView==='default'?'default' as const:'menu' as const,draft:this.defaultTradeDraft,portfolioReturn:this.portfolioReturn}}:{}), game: this.game, modal: this.modal, lastSummary: this.lastSummary,
+    const data: PlayCheckpoint = { version: this.game.defaultTrading?'c3':'c2', uiProgress: normalizeUiProgress(this.uiProgress, this.game), ...(this.game.defaultTrading?{actionContext:{view:this.actionView==='default'?'default' as const:'menu' as const,draft:this.defaultTradeDraft,portfolioReturn:this.portfolioReturn}}:{}), game: this.game, modal: this.pendingPrompt ? this.pendingPrompt.returnModal : this.modal, lastSummary: this.lastSummary,
       quizCardId: this.quizCardId, quizPicked: this.quizPicked, finalQuizQueue: this.finalQuizQueue,
       finalQuizTotal: this.finalQuizTotal, finishing: this.finishing, defaultOptionAsk: this.defaultOptionAsk };
     this.resumeData = data; this.checkpointFailed = !writeCheckpoint(data);
   }
 
   private resumeGame(data: PlayCheckpoint): void {
+    this.pendingPrompt = null; this.restorePromptPosition = null; this.uiProgress = normalizeUiProgress(data.uiProgress, data.game);
     this.marketDetailsContext = null; this.actionScrollTop = null;
     this.newAchievements=[]; this.regionNotice = ""; this.tokenTrail = [];
     this.clearDiceTimer(); this.clearAutoSettle();
@@ -874,6 +988,7 @@ export class PensionRoadApp {
     this.defaultTradeDraft=data.actionContext?.draft??null;
     this.actionView=data.actionContext?.view??'menu';
     this.portfolioReturn=data.actionContext?.portfolioReturn??false;
+    if (this.modal === 'action') this.requestActionEntry();
     this.announce('저장된 결정 시점에서 이어갑니다. 시장·급여·거래를 다시 처리하지 않습니다.');
   }
 
@@ -912,6 +1027,7 @@ export class PensionRoadApp {
   }
 
   private startGame(seed: string): void {
+    this.pendingPrompt = null; this.restorePromptPosition = null; this.uiProgress = {};
     this.marketDetailsContext = null; this.actionScrollTop = null;
     this.clearDiceTimer();
     this.defaultTradeDraft = null; this.portfolioReturn = false; this.tokenShown = null; this.lastSummary = null;
@@ -1032,7 +1148,10 @@ export class PensionRoadApp {
     const dialog = this.root.querySelector<HTMLElement>('[role="dialog"]');
     if (dialog) {
       this.root.querySelector('#main')?.setAttribute('inert', '');
-      if (previousModal !== this.modal || !dialog.contains(document.activeElement)) dialog.querySelector<HTMLElement>('button:not([disabled]):not([tabindex="-1"]), select:not([disabled]), input:not([disabled]), a[href]')?.focus({ preventScroll: true });
+      if (previousModal !== this.modal || !dialog.contains(document.activeElement)) {
+        const primary = this.pendingPrompt ? dialog.querySelector<HTMLElement>('[data-action="notice-quiz"], [data-action="notice-continue"]') : null;
+        (primary ?? dialog.querySelector<HTMLElement>('button:not([disabled]):not([tabindex="-1"]), select:not([disabled]), input:not([disabled]), a[href]'))?.focus({ preventScroll: true });
+      }
       if (previousModal !== this.modal) dialog.scrollTop = 0;
     } else if (previousModal && this.returnFocus) {
       const target = [...this.root.querySelectorAll<HTMLElement>('[data-action]')].find(el => el.dataset.action === this.returnFocus?.action && el.dataset.view === this.returnFocus?.view && el.dataset.tile === this.returnFocus?.tile);
@@ -1045,6 +1164,11 @@ export class PensionRoadApp {
     }
     if(dialog && this.modal==='action' && previousModal==='action' && this.renderedActionView!==this.actionView) {
       dialog.scrollTop=0;const heading=dialog.querySelector<HTMLElement>('h2');heading?.setAttribute('tabindex','-1');heading?.focus({preventScroll:true});
+    }
+    if (dialog && this.restorePromptPosition) {
+      const restore = this.restorePromptPosition;
+      [...dialog.querySelectorAll<HTMLElement>('[data-action]')].find(el => el.dataset.action === restore.focusAction)?.focus({ preventScroll: true });
+      dialog.scrollTop = restore.scroll; this.restorePromptPosition = null;
     }
     const screenMark=`${this.screen}:${this.preparation?.stage??''}:${this.questionIndex}`;
     if(screenMark!==this.renderedScreenMark && (this.screen==='prepare'||this.screen==='diagnosis')) {
@@ -1235,9 +1359,9 @@ export class PensionRoadApp {
             ${renderGoalMeter(state, score, this.save.settings.ghost ? ghostMonthlyNow(state) : null)}
             <p class="hint">성향 과제 · 생활자금 ${formatShortWon(profileLimits(state).safeCash)} 이상 / 낙폭 ${percent(profileLimits(state).maxDrawdown)} 이내</p>
             <p class="hint">미지급 생활비 ${formatWon(state.livingDebt)} · 다음 급여에서 우선 지급</p><div class="profile-line"><span>투자 성향 <b>${profile?.name ?? ''}</b></span><span>${profile?.minRiskGrade ?? 0}~6등급 매수</span></div>
-            <div class="risk-line"><span>위험자산 비중 <b>${percent(score.riskRatio)}</b></span><span>생활자금 ${formatShortWon(state.cash)}</span></div>
+            <div class="risk-line"><span>위험자산 비중 <b>${riskRatioLabel(score.riskRatio)}</b></span><span>생활자금 ${formatShortWon(state.cash)}</span></div>
             ${renderRiskMeter(score.riskRatio, policyRules.riskAssetLimit)}
-            ${state.marketLimitExceeded ? '<p class="warning">시장 상승으로 한도 초과 · 위험자산 추가매수 제한, 예금·채권 매수나 리밸런싱은 가능</p>' : ''}
+            ${marketRiskNotice(state).exceeded ? '<p class="warning risk-limit-warning">시장 가격 변화로 한도 초과 · 위험자산 추가매수 제한. 가능한 행동은 운용 메뉴에서 확인하세요.</p>' : ''}
             ${pending ? `<p class="order-note">주문 ${pending}건이 다음 턴 기준가·결제를 기다리는 중</p>` : ''}
             ${state.pendingTaxCredit >= 1 ? `<p class="order-note refund-note">세액공제 ${formatWon(state.pendingTaxCredit)} 환급 대기 · 연말정산 칸을 지나면 생활자금으로</p>` : ''}
           </article>
@@ -1321,6 +1445,8 @@ export class PensionRoadApp {
     let content = '';
     const characters = this.save.settings.characters;
     const reducedMotion = shouldSkipDiceAnimation(this.save.settings.reducedMotion, window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    if (this.modal === 'risk-notice' && this.game) content = renderRiskNotice(this.game);
+    if (this.modal === 'quiz-confirm' && this.game && this.pendingPrompt) content = renderQuizNotice(this.progressQuizOpportunity(this.pendingPrompt.intent), this.game.status === 'finished');
     if (this.modal === 'life') content = this.renderLifeModal();
     if (this.modal === 'explore' && this.game) content = renderExplore(this.game, this.exploreIndex);
     if (this.modal === 'action') content = `${this.game && this.actionView!=='default' ? `<p class="decision-market">${marketExplanation(this.game.lastMarket).headline} · 도착 ${boardTiles[this.game.position].label}</p><details class="market-impact-details" data-turn="${this.game.turn}" ${this.marketDetailsOpen ? 'open' : ''}><summary><span><strong>시장·보유자산 영향 자세히</strong><small>금리 변화와 내 상품의 영향을 확인하세요</small></span><span class="market-impact-toggle"><span data-market-toggle-label>${this.marketDetailsOpen ? '접기' : '상세 보기'}</span><span class="market-impact-chevron" aria-hidden="true">⌄</span></span></summary><div class="market-impact-content">${renderMarketCard(this.game, false)}</div></details>${this.game.turn <= 2 ? `<p class="hint">${this.game.turn === 1 ? '1턴 실습 · 납입은 생활자금을 IRP 대기자금으로 옮깁니다. 기존 상품을 매도·교체하는 방법도 있습니다.' : '2턴 실습 · 납입만으로 상품이 매수되지는 않습니다. 대기자금과 결제 중인 주문을 확인한 뒤 운용하세요.'}</p>` : ''}` : ''}` + this.renderActionModal();
@@ -1353,7 +1479,8 @@ export class PensionRoadApp {
           progress: this.finishing ? { index: this.finalQuizTotal - this.finalQuizQueue.length - 1, total: this.finalQuizTotal } : null,
           characters,
           optional:!!this.game.learningFlow,
-          streak: this.game.quizStreak
+          streak: this.game.quizStreak,
+          pointsEarned: this.quizPicked === null ? undefined : knowledgeScoreOf(this.game) - knowledgeScoreOf({ ...this.game, quizLog: this.game.quizLog.filter(q => q.cardId !== this.quizCardId) })
         });
       }
     }
@@ -1385,15 +1512,23 @@ export class PensionRoadApp {
       if(this.game.status==='finished') content += '<aside class="closing-settlement"><strong>✓ 주문 최종 정산 완료</strong><p>연결 매수를 포함한 미결 주문을 종료 가격으로 정산했습니다. 추가 턴·시장 수익·급여는 없으며, 위 IRP 평가액으로 수령 방식을 비교합니다.</p></aside>';
       content += renderMaturityNotice(this.game);
     }
-    if(this.modal==='settle' && this.game?.campaign) {
-      const cards=this.game.learningFlow?optionalQuizCards(this.game):this.game.pendingQuizCardId&&!this.game.quizLog.some(q=>q.cardId===this.game!.pendingQuizCardId)?[this.game.pendingQuizCardId]:[];
-      if(cards.length) content+=`<aside class="optional-learning"><button class="secondary" data-action="action-quiz">${this.game.learningFlow?'관련 한 문제 풀기 · 선택':'방금 선택과 연결된 한 문제'}</button>${this.game.learningFlow?`<p class="hint">${getLearningCard(cards[0])?.title??''} · 정답당 2점, 퀴즈 영역 최대 ${this.game.campaign?16:8}점. 오답 벌점 없이 건너뛸 수 있습니다.</p>`:''}</aside>`;
-    }
+    if(this.modal==='settle') content += this.renderSettlementLearning();
     const labels: Record<NonNullable<Modal>, string> = {
+      'risk-notice': '위험자산 비중 확인', 'quiz-confirm': '퀴즈 건너뛰기 확인',
       action: '운용 행동 선택', life: '생활사건', howto: '게임 방법', tile: '도착 칸 설명', news: '시장 속보', settle: '턴 정산 요약',
       explore: '지도·지역 미션', quiz: '퀴즈', payout: '수령 방식 선택', 'default-option': '디폴트옵션 지정', portfolio: '포트폴리오', market: '시장 타임라인', cards: '도감', settings: '설정'
     };
-    return `<div class="modal-backdrop"><section class="modal-sheet modal-${this.modal}" role="dialog" aria-modal="true" aria-label="${labels[this.modal]}">${close ? `<div class="modal-close-bar">${close}</div>` : close}${content}<p class="modal-feedback" aria-live="polite">${this.feedback}</p>${this.modal === 'action' ? '<footer class="action-footer"><button class="secondary" data-action="action-portfolio">포트폴리오 확인</button><small>확인만으로 행동 횟수가 줄지 않아요.</small></footer>' : ''}</section></div>`;
+    return `<div class="modal-backdrop"><section class="modal-sheet modal-${this.modal}" role="dialog" aria-modal="true" aria-label="${labels[this.modal]}"${this.pendingPrompt ? ' aria-labelledby="turn-notice-title" aria-describedby="turn-notice-description"' : ''}>${close ? `<div class="modal-close-bar">${close}</div>` : close}${content}<p class="modal-feedback" aria-live="polite">${this.pendingPrompt ? '' : this.feedback}</p>${this.modal === 'action' ? '<footer class="action-footer"><button class="secondary" data-action="action-portfolio">포트폴리오 확인</button><small>확인만으로 행동 횟수가 줄지 않아요.</small></footer>' : ''}</section></div>`;
+  }
+
+  private renderSettlementLearning(): string {
+    if (!this.game || (!this.game.campaign && !this.game.learningFlow)) return '';
+    const cards = this.game.learningFlow ? optionalQuizCards(this.game) : this.game.pendingQuizCardId ? [this.game.pendingQuizCardId] : [];
+    const opportunity = quizOpportunity(this.game, cards);
+    if (!opportunity.cardIds.length) return '';
+    return `<aside class="optional-learning"><strong>${getLearningCard(opportunity.cardIds[0])?.title ?? '이번 판단과 연결된 한 문제'}</strong>
+      <p class="hint">${quizPointsCopy(opportunity)} 오답 벌점 없이 건너뛸 수 있습니다.</p>
+      <button class="secondary" data-action="action-quiz">${this.game.learningFlow ? '관련 한 문제 풀기 · 선택' : '방금 선택과 연결된 한 문제'}</button></aside>`;
   }
 
   private renderLifeModal(): string {
