@@ -1,0 +1,150 @@
+/* D2b · 07-5 input/review, 08-5 tabs/preview, 09-5 classification/detail. */
+.modal-sheet.road-order,.modal-sheet.road-portfolio { width:min(100%,1120px); padding:28px; border-radius:22px; color:var(--ink); }
+.road-order h2,.road-portfolio h2 { font-family:inherit; font-size:27px; letter-spacing:-.7px; line-height:1.5; padding-right:0; }
+.road-order h3,.road-portfolio h3 { font-family:inherit; font-size:16px; letter-spacing:-.25px; margin:0 0 18px; }
+.road-order p,.road-portfolio p { line-height:1.8; font-size:14px; }
+.road-order .eyebrow,.road-portfolio .eyebrow { font-size:12px; color:var(--green); letter-spacing:.2px; }
+.order-heading { margin:12px 0 24px; }
+.order-heading>p:last-child { font-size:13px; color:var(--muted); }
+.order-tabs { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; background:#f1f6f2; padding:6px; border-radius:12px; margin:0 0 24px; align-items:start; }
+.order-tabs>div { min-width:0; }
+.order-tabs button { border:1px solid transparent; width:100%; min-height:46px; border-radius:9px; background:transparent; color:#546e5d; font-size:13px; padding:8px 4px; }
+.order-tabs button[aria-pressed=true] { border-color:#cbded0; background:#fff; color:var(--green); box-shadow:0 2px 7px #17492212; font-weight:700; }
+.order-tabs button:disabled { background:#e4ebe5; color:#6e7b71; opacity:1; }
+.order-tabs .availability-reason { display:block; font-size:11px; line-height:1.6; padding:7px 5px; }
+.order-split { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:28px; align-items:start; }
+.order-input,.order-review { min-width:0; }
+.order-review { border-left:1px solid var(--line); padding-left:28px; }
+.order-split>section>h3 { display:flex; gap:8px; align-items:center; }
+.order-split>section>h3>span { display:grid; place-items:center; width:25px; height:25px; background:#edf5ef; color:var(--green); border-radius:50%; font-size:11px; }
+.order-balances,.default-designation { display:grid; grid-template-columns:1fr 1fr; gap:18px; background:#f3f8f4; border:1px solid var(--line); border-radius:14px; padding:18px; margin-bottom:20px; }
+.order-balances>div,.default-designation>div { min-width:0; }
+.order-balances small,.default-designation small { display:block; font-size:12px; color:var(--muted); line-height:1.6; }
+.order-balances b,.default-designation strong { display:block; margin-top:8px; font-size:19px; overflow-wrap:anywhere; font-variant-numeric:tabular-nums; }
+.road-order .order-subtitle { font-size:12px; color:var(--muted); }
+.road-order label { font-size:13px; font-weight:600; color:var(--muted); margin-top:20px; }
+.road-order select,.road-order input[type=number] { min-height:52px; font-size:16px; border-color:#ccdbd0; padding:12px; border-radius:11px; }
+.road-order .order-amount { padding:16px; background:#f6f9f6; border-radius:12px; margin-bottom:12px; }
+.order-amount>small { display:block; font-size:12px; color:var(--muted); }
+.order-amount>strong { display:block; margin-top:6px; font-size:25px; font-variant-numeric:tabular-nums; }
+.road-order .amount-presets button { font-size:14px; font-weight:600; min-height:66px; padding:10px 6px; align-content:center; }
+.road-order .amount-presets small { font-size:12px; font-weight:500; }
+.road-order .amount-presets button.active { background:#eef8f0; border-color:#66ab7c; color:var(--green); }
+.road-order .preview-box { border:1px solid #dce6dd; background:#f6f9f6; padding:18px; border-radius:13px; margin:0 0 16px; }
+.road-order .preview-box.warning { background:#fff5e9; border-color:#ead3b3; }
+.road-order .preview-box p { margin-bottom:0; font-size:13px; }
+.road-order .hint,.road-portfolio .hint { font-size:12px; line-height:1.75; }
+.road-order .trade-preview { background:#f3f8f4; border-color:#cfdfd2; border-radius:14px; padding:18px; margin:0 0 18px; }
+.road-order .trade-preview h3 { font-size:15px; margin:0 0 10px; }
+.road-order .trade-timeline { padding-left:0; list-style:none; margin:16px 0; }
+.road-order .trade-timeline>li { background:#fff; border:1px solid #dce6df; border-left:3px solid #87b59a; border-radius:9px; padding:13px; margin-bottom:10px; font-size:13px; }
+.road-order .trade-timeline small { display:block; font-size:12px; line-height:1.7; margin-top:6px; }
+.road-order .trade-preview dl { grid-template-columns:1fr; font-size:12px; }
+.road-order .trade-preview dd { text-align:left; margin:0 0 12px; font-size:16px; font-weight:650; }
+.road-order .trade-preview .preview-disclaimer { font-size:11px; }
+.road-order .primary.jumbo { min-height:54px; font-size:16px; border-radius:10px; width:100%; }
+.order-confirm { display:grid; gap:12px; margin-top:20px; }
+.road-order .button-stack { gap:10px; }
+.road-order .availability-reason { font-size:12px; }
+.road-order .action-footer { margin-top:24px; }
+.road-order .action-footer .secondary { min-height:48px; font-size:14px; }
+.road-order .action-footer small { font-size:11px; }
+.road-order .modal-feedback:empty,.road-portfolio .modal-feedback:empty { display:none; }
+.road-order .default-trade-stats { margin:16px 0; }
+.road-order .default-account-summary { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.road-order .default-account-summary>div { background:#f3f8f4; }
+.portfolio-fund-breakdown { padding:12px; border:1px solid var(--line); border-radius:12px; }
+.portfolio-fund-breakdown[open] summary { margin-bottom:14px; }
+.road-order .default-trade-stats>div { padding:15px 18px; }
+.road-order .default-trade-stats small { font-size:12px; }
+.road-order .default-trade-stats strong { font-size:20px; margin-top:6px; }
+.road-order .default-trade-tabs { background:#f1f6f2; padding:6px; gap:8px; border-radius:12px; margin:20px 0 24px; }
+.road-order .default-trade-tabs button { border:0; background:transparent; color:#526f5c; font-size:15px; min-height:66px; border-radius:9px; }
+.road-order .default-trade-tabs button.active:not(:disabled) { background:#fff; color:var(--green); box-shadow:0 2px 7px #17492212; }
+.road-order .default-trade-tabs button:disabled { background:#e3eae4; color:#6e7b71; }
+.road-order .default-trade-tabs small { font-size:12px; }
+.road-order .default-trade-tabs .availability-reason { padding:2px 8px; font-size:11px; }
+.road-order>.default-order-history,.road-order>details { margin-top:22px; padding:16px; border:1px solid var(--line); border-radius:12px; }
+.road-order summary,.road-portfolio summary { cursor:pointer; color:var(--green); font-size:13px; font-weight:650; min-height:28px; line-height:1.7; }
+.road-order .decision-context { margin-top:28px; border-top:1px solid var(--line); padding-top:18px; }
+.road-order .decision-market { font-size:12px; }
+.road-order .market-impact-details>summary strong { font-size:14px; }
+.road-order .market-impact-details>summary small { font-size:11px; }
+.road-order .market-impact-toggle { font-size:12px; }
+.road-order .contribution-budget { grid-template-columns:1fr; gap:12px; padding:16px; }
+.road-order .contribution-budget strong { font-size:18px; }
+
+/* Disjoint account categories on the left; complete details on the right. */
+.portfolio-split { display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); gap:28px; align-items:start; }
+.portfolio-overview,.portfolio-detail { min-width:0; }
+.portfolio-detail { border-left:1px solid var(--line); padding-left:28px; }
+.portfolio-total-card { border:1px solid var(--line); border-radius:14px; padding:20px; background:#f2f8f3; }
+.portfolio-total-card>small { font-size:12px; color:var(--muted); }
+.road-portfolio .portfolio-total { font-size:28px; margin:10px 0 18px; font-weight:700; font-variant-numeric:tabular-nums; }
+.road-portfolio .outside-cash { border-top:1px solid #d9e6dc; padding:14px 0 0; background:none; font-size:13px; margin:0; }
+.portfolio-composition { display:grid; gap:20px; padding:26px 0 20px; }
+.portfolio-donut { width:152px; height:152px; border-radius:50%; display:grid; place-items:center; margin:auto; }
+.portfolio-donut>span { display:flex; align-items:center; justify-content:center; flex-direction:column; width:110px; height:110px; border-radius:50%; background:#fff; font-size:12px; color:var(--muted); }
+.portfolio-donut b { font-size:24px; color:var(--green); margin-top:5px; }
+.portfolio-category { display:grid; grid-template-columns:9px 1fr auto; align-items:center; gap:9px; padding:12px 0; border-bottom:1px solid var(--line); font-size:12px; }
+.category-dot { width:9px; height:9px; border-radius:50%; }
+.portfolio-category>strong { text-align:right; font-size:14px; font-variant-numeric:tabular-nums; }
+.portfolio-category small { display:block; font-size:11px; color:var(--muted); margin-top:4px; font-weight:400; }
+.road-portfolio .portfolio-funds { grid-template-columns:1fr; gap:8px; }
+.road-portfolio .portfolio-funds>div { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px; border-radius:10px; }
+.road-portfolio .portfolio-funds small { font-size:11px; }
+.road-portfolio .portfolio-funds strong { font-size:14px; margin:0; text-align:right; }
+.portfolio-risk { background:#f6f8f4; border-radius:12px; padding:16px; margin-top:20px; }
+.portfolio-risk strong { font-size:14px; }
+.portfolio-risk p { font-size:12px; margin:8px 0; }
+.portfolio-risk small { font-size:11px; line-height:1.7; display:block; color:var(--muted); }
+.portfolio-detail>section,.portfolio-detail>.account-sources { border:1px solid var(--line); border-radius:14px; padding:18px; margin-bottom:18px; background:#fff; }
+.road-portfolio .portfolio-desktop td,.road-portfolio .portfolio-desktop th { padding:12px 6px; font-size:12px; vertical-align:top; }
+.road-portfolio .portfolio-desktop small { font-size:11px; margin-top:5px; }
+.road-portfolio .portfolio-mobile .holding-card { padding:15px; border-radius:11px; }
+.road-portfolio .holding-card header { font-size:14px; }
+.road-portfolio .holding-card p { font-size:12px; }
+.road-portfolio .holding-card .holding-value { font-size:23px; }
+.road-portfolio .holding-card dl { font-size:12px; }
+.road-portfolio .trade-timeline { list-style:none; padding-left:0; }
+.road-portfolio .trade-timeline>li { border-left:3px solid #c6dcca; padding:12px; background:#f6f9f6; border-radius:8px; margin-bottom:10px; font-size:13px; }
+.road-portfolio .trade-timeline small { display:block; font-size:12px; line-height:1.8; }
+.road-portfolio .default-positions .preview-box { padding:15px; margin:12px 0; background:#f1f6fb; border-radius:12px; }
+.road-portfolio .default-positions strong { font-size:14px; }
+.road-portfolio .default-positions small { font-size:12px; display:block; line-height:1.7; }
+.road-portfolio .empty-holdings { margin-top:18px; }
+.road-portfolio .deposit-actions button { font-size:13px; }
+.road-portfolio .deposit-actions p,.road-portfolio .account-sources p { font-size:12px; }
+
+@media(max-width:800px) {
+ .modal-sheet.road-order,.modal-sheet.road-portfolio { padding:18px 16px; border-radius:20px; }
+ .road-order .modal-close-bar,.road-portfolio .modal-close-bar { top:-18px; margin:-18px -16px 12px; }
+ .road-order h2,.road-portfolio h2 { font-size:24px; }
+ .order-split,.portfolio-split { grid-template-columns:1fr; gap:26px; }
+ .order-review,.portfolio-detail { padding:24px 0 0; border-left:0; border-top:1px solid var(--line); }
+ .order-tabs { gap:3px; padding:4px; }
+ .order-tabs button { font-size:12px; }
+ .order-tabs .availability-reason { font-size:10px; padding:6px 2px; }
+ .order-balances,.default-designation { gap:12px; padding:16px; }
+ .order-balances b,.default-designation strong { font-size:17px; }
+ .road-order .default-account-summary { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .road-order .default-trade-stats strong { font-size:18px; }
+ .road-order .default-trade-stats>div { padding:14px; }
+ .road-order .market-impact-details>summary { flex-wrap:wrap; gap:10px; }
+ .road-order .market-impact-toggle { margin-left:auto; }
+ .road-portfolio .portfolio-total { font-size:27px; }
+ .road-portfolio .portfolio-desktop { display:none; }
+ .road-portfolio .portfolio-mobile { display:block; }
+}
+@media(max-width:359px) {
+ .order-balances,.default-designation { grid-template-columns:1fr; }
+ .order-tabs { grid-template-columns:repeat(3,minmax(0,1fr)); }
+ .road-order .default-trade-tabs button { font-size:13px; }
+ .road-order .default-trade-stats { grid-template-columns:1fr; }
+ .portfolio-category>strong { font-size:13px; }
+}
+@media print {
+ .portfolio-split { display:block; }
+ .portfolio-detail { border:0; padding:0; }
+ .portfolio-donut { print-color-adjust:exact; }
+}

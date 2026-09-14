@@ -7,13 +7,16 @@ function key(node: Node): string {
 function sync(current: Node, next: Node): void {
   if (current.nodeType === Node.TEXT_NODE) { if (current.textContent !== next.textContent) current.textContent = next.textContent; return; }
   if (!(current instanceof Element) || !(next instanceof Element)) return;
+  // Capture the declared selection before child synchronization changes live option state.
+  const selectedValue = next instanceof HTMLSelectElement
+    ? next.querySelector<HTMLOptionElement>('option[selected]')?.value ?? next.value : null;
   // Result review disclosures keep their user-chosen state across reflection/payout renders.
   if (current instanceof HTMLDetailsElement && next instanceof HTMLDetailsElement && next.hasAttribute("data-preserve-open")) next.open = current.open;
   for (const attr of [...current.attributes]) if (!next.hasAttribute(attr.name)) current.removeAttribute(attr.name);
   for (const attr of [...next.attributes]) if (current.getAttribute(attr.name) !== attr.value) current.setAttribute(attr.name, attr.value);
   syncChildren(current, next);
   if (current instanceof HTMLInputElement && next instanceof HTMLInputElement) { current.checked = next.checked; if (current.value !== next.value) current.value = next.value; }
-  if (current instanceof HTMLSelectElement && next instanceof HTMLSelectElement && current.value !== next.value) current.value = next.value;
+  if (current instanceof HTMLSelectElement && selectedValue !== null && current.value !== selectedValue) current.value = selectedValue;
 }
 function syncChildren(current: Node, next: Node): void {
   const unused = [...current.childNodes];
