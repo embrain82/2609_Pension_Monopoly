@@ -1,0 +1,31 @@
+{
+  "main": {
+    "url": "https://2609-pension-monopoly-4y46gicx2-nonsleepers-projects.vercel.app/",
+    "http": 200,
+    "js": [
+      "https://2609-pension-monopoly-4y46gicx2-nonsleepers-projects.vercel.app/assets/index-uCkCRI_G.js",
+      "https://vercel.live/_next-live/feedback/feedback.js"
+    ],
+    "css": [
+      "https://2609-pension-monopoly-4y46gicx2-nonsleepers-projects.vercel.app/assets/index-f-zvz5an.css"
+    ],
+    "image": {
+      "loaded": true,
+      "width": 1536
+    },
+    "startDisabled": true
+  },
+  "newProfileContinueDisabled": true,
+  "option": {
+    "selected": "원리금보장형",
+    "suggested": "lowRisk",
+    "checkpoint": false
+  },
+  "game": {
+    "turn": 1,
+    "position": 6,
+    "outcome": "직전 주사위 3과 3, 합계 6칸 이동",
+    "board": true,
+    "modal": "운용 행동 선택"
+  }
+}

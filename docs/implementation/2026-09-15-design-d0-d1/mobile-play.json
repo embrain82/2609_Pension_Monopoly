@@ -1,0 +1,602 @@
+[
+  {
+    "check": "resume after development reload",
+    "turn": 4,
+    "serializationEqual": false,
+    "validation": "Raw JSON string comparison is not a structural equality check. See resume-qa.json for the separately verified 11-turn deep comparison."
+  },
+  {
+    "done": false,
+    "turn": 4,
+    "pos": 2,
+    "actions": [
+      "toggle-sound",
+      "open-settings",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-portfolio",
+      "roll-dice",
+      "open-market"
+    ],
+    "dice": "직전 주사위 1과 5, 합계 6칸 이동",
+    "action": "roll-dice"
+  },
+  {
+    "done": false,
+    "turn": 5,
+    "pos": 11,
+    "dialog": "시장 속보",
+    "actions": [
+      "close-modal",
+      "dismiss-news",
+      "open-tile"
+    ],
+    "dice": "직전 주사위 3과 6, 합계 9칸 이동",
+    "action": "dismiss-news"
+  },
+  {
+    "done": false,
+    "turn": 5,
+    "pos": 11,
+    "dialog": "운용 행동 선택",
+    "actions": [
+      "close-modal",
+      "action-view",
+      "action-view",
+      "action-view",
+      "action-view",
+      "do-hold",
+      "action-portfolio"
+    ],
+    "dice": "직전 주사위 3과 6, 합계 9칸 이동",
+    "action": "do-hold"
+  },
+  {
+    "done": false,
+    "turn": 5,
+    "pos": 11,
+    "dialog": "턴 정산 요약",
+    "actions": [
+      "close-modal",
+      "action-quiz",
+      "dismiss-settle"
+    ],
+    "dice": "직전 주사위 3과 6, 합계 9칸 이동",
+    "action": "dismiss-settle"
+  },
+  {
+    "done": false,
+    "turn": 5,
+    "pos": 11,
+    "dialog": "퀴즈 건너뛰기 확인",
+    "actions": [
+      "close-modal",
+      "notice-quiz",
+      "notice-continue"
+    ],
+    "dice": "직전 주사위 3과 6, 합계 9칸 이동",
+    "action": "notice-continue"
+  },
+  {
+    "done": false,
+    "turn": 5,
+    "pos": 11,
+    "actions": [
+      "toggle-sound",
+      "open-settings",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-portfolio",
+      "roll-dice",
+      "open-market"
+    ],
+    "dice": "직전 주사위 3과 6, 합계 9칸 이동",
+    "action": "roll-dice"
+  },
+  {
+    "done": false,
+    "turn": 6,
+    "pos": 19,
+    "dialog": "생활사건",
+    "actions": [
+      "resolve-life",
+      "resolve-life",
+      "resolve-life"
+    ],
+    "dice": "직전 주사위 3과 5, 합계 8칸 이동",
+    "action": "resolve-life"
+  },
+  {
+    "done": false,
+    "turn": 6,
+    "pos": 19,
+    "dialog": "운용 행동 선택",
+    "actions": [
+      "close-modal",
+      "action-view",
+      "action-view",
+      "action-view",
+      "action-view",
+      "do-hold",
+      "action-portfolio"
+    ],
+    "dice": "직전 주사위 3과 5, 합계 8칸 이동",
+    "action": "do-hold"
+  },
+  {
+    "done": false,
+    "turn": 6,
+    "pos": 19,
+    "dialog": "턴 정산 요약",
+    "actions": [
+      "close-modal",
+      "action-quiz",
+      "dismiss-settle"
+    ],
+    "dice": "직전 주사위 3과 5, 합계 8칸 이동",
+    "action": "dismiss-settle"
+  },
+  {
+    "done": false,
+    "turn": 6,
+    "pos": 19,
+    "dialog": "퀴즈 건너뛰기 확인",
+    "actions": [
+      "close-modal",
+      "notice-quiz",
+      "notice-continue"
+    ],
+    "dice": "직전 주사위 3과 5, 합계 8칸 이동",
+    "action": "notice-continue"
+  },
+  {
+    "done": false,
+    "turn": 6,
+    "pos": 19,
+    "actions": [
+      "toggle-sound",
+      "open-settings",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-portfolio",
+      "roll-dice",
+      "open-market"
+    ],
+    "dice": "직전 주사위 3과 5, 합계 8칸 이동",
+    "action": "roll-dice"
+  },
+  {
+    "done": false,
+    "turn": 7,
+    "pos": 1,
+    "dialog": "운용 행동 선택",
+    "actions": [
+      "close-modal",
+      "action-view",
+      "action-view",
+      "action-view",
+      "action-view",
+      "do-hold",
+      "action-portfolio"
+    ],
+    "dice": "직전 주사위 3과 3, 합계 6칸 이동",
+    "action": "do-hold"
+  },
+  {
+    "done": false,
+    "turn": 7,
+    "pos": 1,
+    "dialog": "턴 정산 요약",
+    "actions": [
+      "close-modal",
+      "action-quiz",
+      "dismiss-settle"
+    ],
+    "dice": "직전 주사위 3과 3, 합계 6칸 이동",
+    "action": "dismiss-settle"
+  },
+  {
+    "done": false,
+    "turn": 7,
+    "pos": 1,
+    "dialog": "퀴즈 건너뛰기 확인",
+    "actions": [
+      "close-modal",
+      "notice-quiz",
+      "notice-continue"
+    ],
+    "dice": "직전 주사위 3과 3, 합계 6칸 이동",
+    "action": "notice-continue"
+  },
+  {
+    "done": false,
+    "turn": 7,
+    "pos": 1,
+    "actions": [
+      "toggle-sound",
+      "open-settings",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-portfolio",
+      "roll-dice",
+      "open-market"
+    ],
+    "dice": "직전 주사위 3과 3, 합계 6칸 이동",
+    "action": "roll-dice"
+  },
+  {
+    "done": false,
+    "turn": 8,
+    "pos": 3,
+    "dialog": "생활사건",
+    "actions": [
+      "resolve-life",
+      "resolve-life",
+      "resolve-life"
+    ],
+    "dice": "직전 주사위 1과 1, 합계 2칸 이동",
+    "action": "resolve-life"
+  },
+  {
+    "done": false,
+    "turn": 8,
+    "pos": 3,
+    "dialog": "운용 행동 선택",
+    "actions": [
+      "close-modal",
+      "action-view",
+      "action-view",
+      "action-view",
+      "action-view",
+      "do-hold",
+      "action-portfolio"
+    ],
+    "dice": "직전 주사위 1과 1, 합계 2칸 이동",
+    "action": "do-hold"
+  },
+  {
+    "done": false,
+    "turn": 8,
+    "pos": 3,
+    "dialog": "턴 정산 요약",
+    "actions": [
+      "close-modal",
+      "action-quiz",
+      "dismiss-settle"
+    ],
+    "dice": "직전 주사위 1과 1, 합계 2칸 이동",
+    "action": "dismiss-settle"
+  },
+  {
+    "done": false,
+    "turn": 8,
+    "pos": 3,
+    "dialog": "퀴즈 건너뛰기 확인",
+    "actions": [
+      "close-modal",
+      "notice-quiz",
+      "notice-continue"
+    ],
+    "dice": "직전 주사위 1과 1, 합계 2칸 이동",
+    "action": "notice-continue"
+  },
+  {
+    "done": false,
+    "turn": 8,
+    "pos": 3,
+    "actions": [
+      "toggle-sound",
+      "open-settings",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-portfolio",
+      "roll-dice",
+      "open-market"
+    ],
+    "dice": "직전 주사위 1과 1, 합계 2칸 이동",
+    "action": "roll-dice"
+  },
+  {
+    "done": false,
+    "turn": 9,
+    "pos": 13,
+    "dialog": "시장 속보",
+    "actions": [
+      "close-modal",
+      "dismiss-news",
+      "open-tile"
+    ],
+    "dice": "직전 주사위 6과 4, 합계 10칸 이동",
+    "action": "dismiss-news"
+  },
+  {
+    "done": false,
+    "turn": 9,
+    "pos": 13,
+    "dialog": "운용 행동 선택",
+    "actions": [
+      "close-modal",
+      "action-view",
+      "action-view",
+      "action-view",
+      "action-view",
+      "do-hold",
+      "action-portfolio"
+    ],
+    "dice": "직전 주사위 6과 4, 합계 10칸 이동",
+    "action": "do-hold"
+  },
+  {
+    "done": false,
+    "turn": 9,
+    "pos": 13,
+    "dialog": "턴 정산 요약",
+    "actions": [
+      "close-modal",
+      "action-quiz",
+      "dismiss-settle"
+    ],
+    "dice": "직전 주사위 6과 4, 합계 10칸 이동",
+    "action": "dismiss-settle"
+  },
+  {
+    "done": false,
+    "turn": 9,
+    "pos": 13,
+    "dialog": "퀴즈 건너뛰기 확인",
+    "actions": [
+      "close-modal",
+      "notice-quiz",
+      "notice-continue"
+    ],
+    "dice": "직전 주사위 6과 4, 합계 10칸 이동",
+    "action": "notice-continue"
+  },
+  {
+    "done": false,
+    "turn": 9,
+    "pos": 13,
+    "actions": [
+      "toggle-sound",
+      "open-settings",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-portfolio",
+      "roll-dice",
+      "open-market"
+    ],
+    "dice": "직전 주사위 6과 4, 합계 10칸 이동",
+    "action": "roll-dice"
+  },
+  {
+    "done": false,
+    "turn": 10,
+    "pos": 16,
+    "dialog": "운용 행동 선택",
+    "actions": [
+      "close-modal",
+      "action-view",
+      "action-view",
+      "action-view",
+      "action-view",
+      "do-hold",
+      "action-portfolio"
+    ],
+    "dice": "직전 주사위 2과 1, 합계 3칸 이동",
+    "action": "do-hold"
+  },
+  {
+    "done": false,
+    "turn": 10,
+    "pos": 16,
+    "dialog": "턴 정산 요약",
+    "actions": [
+      "close-modal",
+      "action-quiz",
+      "dismiss-settle"
+    ],
+    "dice": "직전 주사위 2과 1, 합계 3칸 이동",
+    "action": "dismiss-settle"
+  },
+  {
+    "done": false,
+    "turn": 10,
+    "pos": 16,
+    "dialog": "퀴즈 건너뛰기 확인",
+    "actions": [
+      "close-modal",
+      "notice-quiz",
+      "notice-continue"
+    ],
+    "dice": "직전 주사위 2과 1, 합계 3칸 이동",
+    "action": "notice-continue"
+  },
+  {
+    "done": false,
+    "turn": 10,
+    "pos": 16,
+    "actions": [
+      "toggle-sound",
+      "open-settings",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-portfolio",
+      "roll-dice",
+      "open-market"
+    ],
+    "dice": "직전 주사위 2과 1, 합계 3칸 이동",
+    "action": "roll-dice"
+  },
+  {
+    "done": false,
+    "turn": 11,
+    "pos": 1,
+    "dialog": "운용 행동 선택",
+    "actions": [
+      "close-modal",
+      "action-view",
+      "action-view",
+      "action-view",
+      "action-view",
+      "do-hold",
+      "action-portfolio"
+    ],
+    "dice": "직전 주사위 3과 6, 합계 9칸 이동",
+    "action": "do-hold"
+  },
+  {
+    "done": false,
+    "turn": 11,
+    "pos": 1,
+    "dialog": "턴 정산 요약",
+    "actions": [
+      "close-modal",
+      "action-quiz",
+      "dismiss-settle"
+    ],
+    "action": "dismiss-settle"
+  },
+  {
+    "done": false,
+    "turn": 11,
+    "pos": 1,
+    "dialog": "퀴즈 건너뛰기 확인",
+    "actions": [
+      "close-modal",
+      "notice-quiz",
+      "notice-continue"
+    ],
+    "action": "notice-continue"
+  },
+  {
+    "done": false,
+    "turn": 11,
+    "pos": 1,
+    "actions": [
+      "toggle-sound",
+      "open-settings",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-explore",
+      "open-portfolio",
+      "roll-dice",
+      "open-market"
+    ],
+    "action": "roll-dice"
+  },
+  {
+    "done": false,
+    "turn": 12,
+    "pos": 6,
+    "dialog": "운용 행동 선택",
+    "actions": [
+      "close-modal",
+      "action-view",
+      "action-view",
+      "action-view",
+      "action-view",
+      "do-hold",
+      "action-portfolio"
+    ],
+    "action": "do-hold"
+  },
+  {
+    "done": false,
+    "turn": 12,
+    "pos": 6,
+    "dialog": "턴 정산 요약",
+    "actions": [
+      "close-modal",
+      "action-quiz",
+      "dismiss-settle"
+    ],
+    "action": "dismiss-settle"
+  },
+  {
+    "done": false,
+    "turn": 12,
+    "pos": 6,
+    "dialog": "퀴즈 건너뛰기 확인",
+    "actions": [
+      "close-modal",
+      "notice-quiz",
+      "notice-continue"
+    ],
+    "action": "notice-continue"
+  },
+  {
+    "done": false,
+    "turn": 12,
+    "pos": 6,
+    "dialog": "수령 방식 선택",
+    "actions": [
+      "choose-payout",
+      "choose-payout"
+    ],
+    "action": "choose-payout"
+  },
+  {
+    "done": true,
+    "actions": [
+      "replay-chapter",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "reflect-region",
+      "open-cards",
+      "open-payout",
+      "replay-chapter",
+      "replay-chapter",
+      "replay-chapter",
+      "export-run",
+      "copy-result",
+      "same-seed",
+      "new-seed",
+      "open-cards",
+      "to-title"
+    ]
+  }
+]
