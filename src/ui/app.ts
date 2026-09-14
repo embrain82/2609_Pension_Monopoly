@@ -67,6 +67,7 @@ import { renderIrpSparkline, worstTurnLine } from './result-chart';
 import { marketRiskNotice, riskRatioLabel, quizOpportunity, quizOpportunityAcknowledged, quizPointsCopy,
   normalizeUiProgress, renderRiskNotice, renderQuizNotice, type UiProgress, type ProgressIntent } from './turn-notices';
 import { knowledgeScoreOf } from '../engine/scoring-engine';
+import { revealBoard } from './board-viewport';
 
 type Screen = 'prepare' | 'title' | 'diagnosis' | 'goal' | 'game' | 'result';
 type Modal = 'risk-notice' | 'quiz-confirm' | 'life' | 'action' | 'portfolio' | 'market' | 'cards' | 'settings' | 'howto' | 'news' | 'tile' | 'settle' | 'quiz' | 'payout' | 'default-option' | 'explore' | null;
@@ -125,6 +126,8 @@ export class PensionRoadApp {
   private tipDismissed = false;
   private feedback = '';
   private diceRolling = false;
+  private boardFocusing = false;
+  private focusBoardAfterDice = false;
   private tokenHopping = false;
   private tokenFocus = 0;
   private tokenTrail: number[] = [];
@@ -180,8 +183,8 @@ export class PensionRoadApp {
       if (!this.root.isConnected) return;
       if (document.hidden) {
         this.sound.stop();
-        if (this.diceRolling || this.tokenHopping) {
-          this.motion.cancel(); this.diceRolling = false; this.tokenHopping = false; this.landed = false; this.tokenTrail = [];
+        if (this.boardFocusing || this.diceRolling || this.tokenHopping) {
+          this.clearDiceTimer(); this.diceRolling = false; this.tokenHopping = false; this.landed = false; this.tokenTrail = [];
           this.modal = null; this.render();
         }
       }
@@ -352,7 +355,7 @@ export class PensionRoadApp {
       this.render();
       return;
     }
-    if ((this.diceRolling || this.tokenHopping) && action !== 'to-title') return;
+    if ((this.boardFocusing || this.diceRolling || this.tokenHopping) && action !== 'to-title') return;
     // 정산 창 안을 누르면(자세히 펼치기 포함) 자동 진행을 멈추고 읽을 시간을 준다.
     if (this.modal === 'settle') this.clearAutoSettle();
 
@@ -909,14 +912,23 @@ export class PensionRoadApp {
     }
   }
 
-  private clearDiceTimer(): void { this.motion.cancel(); }
+  private clearDiceTimer(): void { this.motion.cancel(); this.boardFocusing = false; this.focusBoardAfterDice = false; }
 
   private async beginDiceRoll(): Promise<void> {
-    if (!this.game || this.diceRolling || this.tokenHopping || !canRevealNextTurn(this.game)) return;
+    if (!this.game || this.boardFocusing || this.diceRolling || this.tokenHopping || !canRevealNextTurn(this.game)) return;
     this.diceFaces = dicePairForTurn(this.game.seed, this.game.turn);
     this.modal = null; this.checkpoint();
     const id = this.motion.begin();
     const instant = shouldSkipDiceAnimation(this.save.settings.reducedMotion, window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    this.boardFocusing = true; this.focusBoardAfterDice = true; this.render();
+    const reveal = revealBoard(this.root.querySelector<HTMLElement>('.board-stage'), this.root.querySelector<HTMLElement>('.game-actions'), this.motion, id, instant);
+    if (reveal) {
+      const result = await reveal;
+      if (result === 'cancelled' || !this.motion.valid(id)) return;
+      this.focusBoardAfterDice = result !== 'interrupted';
+    }
+    if (!this.motion.valid(id)) return;
+    this.boardFocusing = false;
     if (!instant) {
       this.diceRolling = true; this.sound.play('dice'); this.render();
       if (!await this.motion.wait(scaleMs(DICE_ROLL_DURATION_MS + DICE_LAND_HOLD_MS, this.save.settings.speed), id)) return;
@@ -932,6 +944,10 @@ export class PensionRoadApp {
     const instant = shouldSkipDiceAnimation(this.save.settings.reducedMotion, window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     this.regionNotice = ""; this.tokenTrail = [];
     this.modal = null; this.tokenHopping = true; this.tokenFocus = this.game.position;
+    // 주사위 오버레이를 걷은 뒤 한 번만 포커스한다. 이동 프레임에는 스크롤하지 않는다.
+    this.render();
+    if (this.focusBoardAfterDice) this.root.querySelector<HTMLElement>('.board-stage')?.focus({ preventScroll: true });
+    this.focusBoardAfterDice = false;
     const path = movePath(this.game.position, steps);
     for (const [i, position] of path.entries()) {
       if (!this.motion.valid(id)) return;
@@ -961,7 +977,7 @@ export class PensionRoadApp {
   }
 
   private checkpoint(): void {
-    if (!this.game || this.screen !== 'game' || this.diceRolling || this.tokenHopping) return;
+    if (!this.game || this.screen !== 'game' || this.boardFocusing || this.diceRolling || this.tokenHopping) return;
     const data: PlayCheckpoint = { version: this.game.defaultTrading?'c3':'c2', uiProgress: normalizeUiProgress(this.uiProgress, this.game), ...(this.game.defaultTrading?{actionContext:{view:this.actionView==='default'?'default' as const:'menu' as const,draft:this.defaultTradeDraft,portfolioReturn:this.portfolioReturn}}:{}), game: this.game, modal: this.pendingPrompt ? this.pendingPrompt.returnModal : this.modal, lastSummary: this.lastSummary,
       quizCardId: this.quizCardId, quizPicked: this.quizPicked, finalQuizQueue: this.finalQuizQueue,
       finalQuizTotal: this.finalQuizTotal, finishing: this.finishing, defaultOptionAsk: this.defaultOptionAsk };
@@ -1082,7 +1098,7 @@ export class PensionRoadApp {
       return;
     }
     const tile = event.target instanceof Element ? event.target.closest('[data-tile]') : null;
-    if (tile && !this.modal && !this.diceRolling && !this.tokenHopping) {
+    if (tile && !this.modal && !this.boardFocusing && !this.diceRolling && !this.tokenHopping) {
       const index = Number(tile.getAttribute('data-tile'));
       if (['ArrowRight','ArrowDown','ArrowLeft','ArrowUp','Home','End'].includes(event.key)) {
         event.preventDefault();
@@ -1155,7 +1171,7 @@ export class PensionRoadApp {
       if (previousModal !== this.modal) dialog.scrollTop = 0;
     } else if (previousModal && this.returnFocus) {
       const target = [...this.root.querySelectorAll<HTMLElement>('[data-action]')].find(el => el.dataset.action === this.returnFocus?.action && el.dataset.view === this.returnFocus?.view && el.dataset.tile === this.returnFocus?.tile);
-      (target ?? this.root.querySelector<HTMLElement>('[data-action="open-action"]'))?.focus();
+      (target ?? this.root.querySelector<HTMLElement>('[data-action="open-action"]'))?.focus({ preventScroll: this.boardFocusing || this.tokenHopping || this.diceRolling });
     }
     if (previousModal === 'portfolio' && this.modal === 'action' && dialog) {
       const returnButton = dialog.querySelector<HTMLButtonElement>('[data-action="action-portfolio"]');
@@ -1257,7 +1273,7 @@ export class PensionRoadApp {
     const view = boardViewFor(state, { tokenHopping: this.tokenHopping, tokenFocus: this.tokenFocus, landed: this.landed });
     const characters = this.save.settings.characters;
     const mood = avatarMood(state, calculateScore(state).goalMet);
-    return `<div class="board-stage">
+    return `<div class="board-stage" tabindex="-1" aria-label="게임판 · 말의 이동과 도착 칸">
       ${renderBoardMarkup(state, waiting, { ...view, trail: this.tokenTrail, characters, mood, tokenInSvg: false })}
       ${renderTokenLayer(state, { index: view.focusIndex ?? state.position, characters, mood })}
     </div>`;
@@ -1289,6 +1305,7 @@ export class PensionRoadApp {
   }
 
   private renderGameCta(state: GameState): string {
+    if (this.boardFocusing) return '<button class="dice-button" disabled><span>↗</span>게임판으로 이동 중</button>';
     if (this.diceRolling) {
       return `<button class="dice-button" disabled><span>⚄</span>주사위 굴리는 중</button>`;
     }
@@ -1322,7 +1339,7 @@ export class PensionRoadApp {
     this.shown = { seed: state.seed, irp: score.irpValue, pension: score.monthlyPension, returnRate: score.returnRate };
     const pending = state.pendingOrders.length;
     const latestCard = getLearningCard(state.unlockedCards.at(-1) ?? '');
-    const waitingForDice = canRevealNextTurn(state) || this.diceRolling || this.tokenHopping;
+    const waitingForDice = canRevealNextTurn(state) || this.boardFocusing || this.diceRolling || this.tokenHopping;
     const profile = investorProfiles.find((item) => item.id === state.profileId);
     const learningTip = shouldShowLearningTip(state, this.tipDismissed, waitingForDice) && latestCard
       ? `<p class="card-tip"><strong>${latestCard.title}</strong>${latestCard.key}<button class="text-button" data-action="dismiss-tip">닫기</button></p>`
@@ -1344,8 +1361,8 @@ export class PensionRoadApp {
         <div class="board-wrap">
           ${renderBoardHud(state)}${renderTurnTrack(state, waitingForDice)}
           ${this.renderBoard(state, waitingForDice)}
-          <div class="board-location"><span>${this.tokenHopping?'이동 중':`현재 ${state.position+1}번 칸`} · <strong>${boardTiles[this.tokenHopping?this.tokenFocus:state.position].label}</strong></span><button class="text-button" data-action="open-explore" ${this.tokenHopping||this.diceRolling?'disabled':''}>칸 살펴보기</button></div>
-          <p class="board-step">${this.diceRolling||this.tokenHopping?'주사위와 이동을 확인하세요':state.currentEventId?'지금은 생활사건 해결 단계':state.awaitingAction?`시장 반영 완료 · 운용 행동 ${state.actionsLeft}회 남음`:state.status==='finished'?'12턴 완료 · 최종 정산과 수령 방식 확인':'다음 순서 · 주사위 굴리기'}</p>
+          <div class="board-location"><span>${this.tokenHopping?'이동 중':`현재 ${state.position+1}번 칸`} · <strong>${boardTiles[this.tokenHopping?this.tokenFocus:state.position].label}</strong></span><button class="text-button" data-action="open-explore" ${this.boardFocusing||this.tokenHopping||this.diceRolling?'disabled':''}>칸 살펴보기</button></div>
+          <p class="board-step">${this.boardFocusing?'게임판을 보여드릴게요':this.diceRolling||this.tokenHopping?'주사위와 이동을 확인하세요':state.currentEventId?'지금은 생활사건 해결 단계':state.awaitingAction?`시장 반영 완료 · 운용 행동 ${state.actionsLeft}회 남음`:state.status==='finished'?'12턴 완료 · 최종 정산과 수령 방식 확인':'다음 순서 · 주사위 굴리기'}</p>
         </div>
         <aside class="dashboard" tabindex="0" aria-label="시장과 자산 상세">
           ${renderCampaignStatus(state)}${renderRegionProgress(state)}
