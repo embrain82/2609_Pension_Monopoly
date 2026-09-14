@@ -1,6 +1,7 @@
 import { formatWon } from './format';
 import type { GameState, LifeChoiceOption, LifeEvent, LifeResolution } from '../types';
 import { lifeChoicesFor } from '../engine/life-engine';
+import { operationIcon } from './design-system';
 
 const signedWon = (value: number) => `${value > 0 ? '+' : ''}${formatWon(value)}`;
 
@@ -19,16 +20,16 @@ export function lifeCostLabel(event: LifeEvent): string {
 /** 선택지 한 장. 비활성이면 이유를 보이고 버튼을 잠근다 */
 export function renderLifeChoice(option: LifeChoiceOption, index: number): string {
   const classes = ['life-choice', option.enabled ? '' : 'disabled'].filter(Boolean).join(' ');
-  const reason = option.enabled ? '' : `<p class="life-reason">${option.reason ?? '지금은 고를 수 없습니다.'}</p>`;
-  return `<button type="button" class="${classes}" data-action="resolve-life" data-choice="${option.id}" ${option.enabled ? '' : 'disabled'} aria-describedby="life-choice-${index}">
-      <span class="choice-index">${String.fromCharCode(65 + index)}</span>
+  const reason = option.enabled ? '' : `<p class="life-reason" id="life-reason-${index}">${option.reason ?? '지금은 고를 수 없습니다.'}</p>`;
+  return `<div class="life-choice-wrap${option.enabled?'':' unavailable'}"><button type="button" class="${classes}" data-action="resolve-life" data-choice="${option.id}" ${option.enabled ? '' : 'disabled'} aria-describedby="life-choice-${index}${option.enabled?'':` life-reason-${index}`}">
+      <span class="choice-index">${operationIcon(option.id==='cash'?'cash':option.id.startsWith('contribute')?'contribute':'default')}</span>
       <span class="life-choice-body" id="life-choice-${index}">
         <strong>${option.label}</strong>
-        <small class="now">지금: ${option.immediate}</small>
+        ${!option.enabled && option.immediate === option.reason ? '' : `<small class="now">지금: ${option.immediate}</small>`}
         <small class="later">나중: ${option.longTerm}</small>
-        ${reason}
       </span>
-    </button>`;
+      <span class="life-choice-arrow" aria-hidden="true">${option.enabled?'›':'—'}</span>
+    </button>${reason}</div>`;
 }
 
 /**
@@ -41,15 +42,14 @@ export function renderLifeModal(state: GameState, event: LifeEvent): string {
   const coverNote = cashChoice?.payment && cashChoice.payment.unpaid > 0
     ? `<p class="note">「${cashChoice.label}」: ${cashChoice.immediate}. IRP 대기자금·보유 상품은 그대로입니다.</p>`
     : '';
-  const icon = event.kind === 'cost' ? '♥' : event.kind === 'bonus' ? '✦' : '⇄';
-  return `<div class="modal-icon life ${event.kind}">${icon}</div>
-    <p class="eyebrow">${lifeEyebrow(event)}</p>
+  return `<div class="life-scene kind-${event.kind}"><p class="eyebrow">TURN ${state.turn} · ${lifeEyebrow(event)}</p>
     <h2>${event.title}</h2>
     <p class="modal-lead">${event.body}</p>
-    <div class="event-cost">${lifeCostLabel(event)} <strong>${formatWon(Math.abs(event.cost))}</strong></div>
+    <div class="event-cost"><div><span>${lifeCostLabel(event)}</span><strong>${formatWon(Math.abs(event.cost))}</strong></div><div class="event-cash"><span>현재 생활자금</span><b>${formatWon(state.cash)}</b></div></div>
     ${coverNote}
     <p class="life-prompt">어떻게 할까요? 선택마다 생활자금과 IRP에 미치는 영향이 다릅니다.</p>
-    <div class="life-choices">${choices.map((option, index) => renderLifeChoice(option, index)).join('')}</div>`;
+    <div class="life-choices">${choices.map((option, index) => renderLifeChoice(option, index)).join('')}</div>
+    <p class="life-account-note">${event.kind==='cost'?'IRP 안의 상품 매도와 계좌 밖 중도인출·해지는 다른 절차입니다. 선택 가능 여부는 이번 사건의 조건을 반영합니다.':event.kind==='bonus'?'생활자금과 IRP 대기자금은 별개입니다. 납입만으로 상품을 매수하지 않습니다.':'IRP 이전과 현금 수령은 세금·생활자금에 미치는 영향이 다릅니다. 위의 지금·나중 안내를 함께 확인하세요.'}</p></div>`;
 }
 
 /** 정산 「사건」 블록. 무엇을 골랐고 무엇이 움직였는지, 다른 선택이었다면 한 줄 */
