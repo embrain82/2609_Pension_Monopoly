@@ -1,0 +1,75 @@
+{
+  "date": "2026-09-14",
+  "scope": "HTML plan mockups only; game implementation not changed or verified",
+  "browser": "Ego Browser",
+  "checks": [
+    {
+      "check": "risk acknowledged reentry skips notice",
+      "pass": true
+    },
+    {
+      "check": "risk resolved skips notice",
+      "pass": true
+    },
+    {
+      "check": "quiz prompt cancel restores summary",
+      "pass": true
+    },
+    {
+      "check": "quiz skip acknowledgement suppresses repeat",
+      "pass": true
+    },
+    {
+      "check": "quiz none skips points prompt",
+      "pass": true
+    },
+    {
+      "check": "quiz answered skips points prompt",
+      "pass": true
+    },
+    {
+      "check": "quiz cap skips points prompt",
+      "pass": true
+    },
+    {
+      "check": "final turn explicitly describes last chance",
+      "pass": true
+    },
+    {
+      "check": "quiz prompt cancel restores original question",
+      "pass": true
+    },
+    {
+      "check": "answered quiz does not re-prompt",
+      "pass": true
+    },
+    {
+      "check": "board scrolled out before roll",
+      "pass": true
+    },
+    {
+      "check": "board scroll completes and pawn moves 5 spaces",
+      "pass": true
+    },
+    {
+      "check": "reduced motion reaches board and arrival",
+      "pass": true
+    },
+    {
+      "check": "390px document has no horizontal overflow",
+      "pass": true
+    },
+    {
+      "check": "settlement details expand",
+      "pass": true
+    },
+    {
+      "check": "320px document has no horizontal overflow",
+      "pass": true
+    },
+    {
+      "check": "1440px document has no horizontal overflow",
+      "pass": true
+    }
+  ]
+}
