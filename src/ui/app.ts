@@ -336,7 +336,7 @@ export class PensionRoadApp {
     if (target.id === 'auto-settle' && target instanceof HTMLInputElement) {
       this.save.settings.autoSettle = target.checked;
       this.persist();
-      this.announce(target.checked ? '정산 자동 진행 켬 · 평범한 턴은 2.5초 뒤 다음 턴으로 넘어갑니다. 충격·이정표·사건·마지막 턴은 직접 넘깁니다.' : '정산 자동 진행 끔.');
+      this.announce(target.checked ? '정산 자동 진행 켬 · 평범한 턴은 2.5초 뒤 다음 턴으로 넘어갑니다. 점수를 얻을 수 있는 미응답 퀴즈·충격·이정표·사건·마지막 턴은 직접 넘깁니다.' : '정산 자동 진행 끔.');
     }
     this.render();
   }
@@ -601,7 +601,7 @@ export class PensionRoadApp {
     if (intent.kind === 'roll-next-turn') return canRevealNextTurn(this.game);
     if (intent.kind === 'skip-quiz') return this.quizCardId === intent.cardId && this.quizPicked === null &&
       !this.game.quizLog.some(q => q.cardId === intent.cardId);
-    return this.lastSummary?.turn === this.game.turn && !this.game.awaitingAction && !this.game.currentEventId;
+    return (this.lastSummary?.turn === this.game.turn || this.game.status === 'finished') && !this.game.awaitingAction && !this.game.currentEventId;
   }
 
   /** 확인만으로 금융 상태를 바꾸지 않고 원래 진행 의도를 한 번만 실행한다. */
@@ -1478,6 +1478,8 @@ export class PensionRoadApp {
       const summary = this.lastSummary;
       content = renderSettlementModal(summary, {
         market: this.game?.lastMarket,
+        learningHtml: this.renderSettlementLearning(),
+        importantHtml: this.renderSettlementNotices(),
         characters,
         ghost: this.save.settings.ghost,
         reducedMotion,
@@ -1525,17 +1527,17 @@ export class PensionRoadApp {
         tile.index + 1
       );
     }
-    if(this.modal==='settle' && this.game) {
-      if(this.game.status==='finished') content += '<aside class="closing-settlement"><strong>✓ 주문 최종 정산 완료</strong><p>연결 매수를 포함한 미결 주문을 종료 가격으로 정산했습니다. 추가 턴·시장 수익·급여는 없으며, 위 IRP 평가액으로 수령 방식을 비교합니다.</p></aside>';
-      content += renderMaturityNotice(this.game);
-    }
-    if(this.modal==='settle') content += this.renderSettlementLearning();
     const labels: Record<NonNullable<Modal>, string> = {
       'risk-notice': '위험자산 비중 확인', 'quiz-confirm': '퀴즈 건너뛰기 확인',
       action: '운용 행동 선택', life: '생활사건', howto: '게임 방법', tile: '도착 칸 설명', news: '시장 속보', settle: '턴 정산 요약',
       explore: '지도·지역 미션', quiz: '퀴즈', payout: '수령 방식 선택', 'default-option': '디폴트옵션 지정', portfolio: '포트폴리오', market: '시장 타임라인', cards: '도감', settings: '설정'
     };
     return `<div class="modal-backdrop"><section class="modal-sheet modal-${this.modal}" role="dialog" aria-modal="true" aria-label="${labels[this.modal]}"${this.pendingPrompt ? ' aria-labelledby="turn-notice-title" aria-describedby="turn-notice-description"' : ''}>${close ? `<div class="modal-close-bar">${close}</div>` : close}${content}<p class="modal-feedback" aria-live="polite">${this.pendingPrompt ? '' : this.feedback}</p>${this.modal === 'action' ? '<footer class="action-footer"><button class="secondary" data-action="action-portfolio">포트폴리오 확인</button><small>확인만으로 행동 횟수가 줄지 않아요.</small></footer>' : ''}</section></div>`;
+  }
+
+  private renderSettlementNotices(): string {
+    if (!this.game) return '';
+    return (this.game.status === 'finished' ? '<aside class="closing-settlement"><strong>✓ 주문 최종 정산 완료</strong><p>연결 매수를 포함한 미결 주문을 종료 가격으로 정산했습니다. 추가 턴·시장 수익·급여는 없으며, 위 IRP 평가액으로 수령 방식을 비교합니다.</p></aside>' : '') + renderMaturityNotice(this.game);
   }
 
   private renderSettlementLearning(): string {
@@ -1773,7 +1775,7 @@ export class PensionRoadApp {
       <button class="secondary" data-action="test-sound">효과음 테스트</button><p id="sound-status" role="status">${this.soundMessage}</p>
       <label class="setting-row" for="ghost"><span><strong>"그대로 둔 나" 비교</strong><small>같은 시드·같은 주사위로 아무 행동도 하지 않은 경로를 정산·결과·목표 게이지에 나란히 보입니다.</small></span><input id="ghost" type="checkbox" ${this.save.settings.ghost ? 'checked' : ''}></label>
       <label class="setting-row" for="speed"><span><strong>애니메이션 2× 빠르게</strong><small>주사위·말 이동·숫자·속보·정산 연출을 절반 길이로. 7턴부터는 충격·이정표 턴을 빼고 저절로 빨라집니다.</small></span><input id="speed" type="checkbox" ${this.save.settings.speed === 2 ? 'checked' : ''}></label>
-      <label class="setting-row" for="auto-settle"><span><strong>정산 자동 진행</strong><small>평범한 턴의 정산 창을 2.5초 뒤 저절로 넘깁니다. 충격·이정표·생활사건·마지막 턴은 직접 넘기고, 창 안을 누르면 멈춥니다. 기본 끔.</small></span><input id="auto-settle" type="checkbox" ${this.save.settings.autoSettle ? 'checked' : ''}></label>
+      <label class="setting-row" for="auto-settle"><span><strong>정산 자동 진행</strong><small>평범한 턴의 정산 창을 2.5초 뒤 저절로 넘깁니다. 점수를 얻을 수 있는 미응답 퀴즈·충격·이정표·생활사건·마지막 턴은 직접 넘기고, 창 안을 누르면 멈춥니다. 기본 끔.</small></span><input id="auto-settle" type="checkbox" ${this.save.settings.autoSettle ? 'checked' : ''}></label>
       <div class="setting-row default-option-row"><span><strong>디폴트옵션(사전지정운용)</strong><small>${this.defaultOptionSettingNote()}</small></span><button class="secondary compact" data-action="open-default-option">${(this.game ? this.game.defaultOption : this.save.defaultOption) ? '바꾸기' : '지정'}</button></div>
       <div class="button-stack compact">
         ${renderSettingsHowToButton()}

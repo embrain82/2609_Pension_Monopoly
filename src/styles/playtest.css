@@ -10,3 +10,48 @@
 .optional-learning { background:#edf4e5;border:1px solid #b1c7a1;border-radius:14px;padding:16px;margin:16px 0; }
 .optional-learning button { width:100%;min-height:48px; }
 .optional-learning .hint { margin:8px 0 12px; }
+/* One continuous market-to-balance summary; all monetary bars keep the same zero axis. */
+.board-stage:focus-visible { outline:3px solid #b78a26; outline-offset:4px; }
+.modal-settle .settle-scene > h2 { font-size:clamp(1.6rem,5vw,2.1rem);margin:4px 0 8px; }
+.modal-settle .settle-headline { margin:0 0 12px;font-size:1rem; }
+.settle-overview { border:1px solid #abc3b9;border-radius:18px;background:#f6f8f1;padding:16px; }
+.settle-rate-strip { display:grid;grid-template-columns:1.6fr 1fr;gap:10px;padding-bottom:12px;border-bottom:1px solid #cbd8d0; }
+.settle-rate-strip > div { display:grid;align-content:start;gap:3px; }
+.settle-rate-strip span,.settle-rate-strip small { font-size:.8125rem;color:#4f6760; }
+.settle-rate-strip strong { font-size:1.1rem;line-height:1.5;white-space:nowrap;font-variant-numeric:tabular-nums; }
+.settle-rate-strip strong span { font-size:1rem; }
+.settle-overview .settle-bars { margin:12px 0 0;padding:0;background:transparent;border-radius:0; }
+.settle-overview .settle-balance { margin:8px 0;line-height:1.6;font-size:.875rem; }
+.settle-overview .settle-delta { display:flex;align-items:baseline;justify-content:flex-end;gap:4px 8px;flex-wrap:wrap;font-size:1.3rem;line-height:1.4; }
+.settle-overview .settle-delta > small:first-child { margin-right:auto; }
+.settle-overview .hint { font-size:.8125rem;text-align:left;margin:8px 0;line-height:1.6; }
+.change-chart.compact { padding:10px;margin:10px 0; }
+.change-chart.compact figcaption { font-size:.8125rem; }
+.change-chart.compact .chart-axis { font-size:.75rem;margin:6px 0; }
+.change-chart.compact .chart-axis small { font-size:.75rem; }
+.change-chart.compact ul { gap:5px; }
+.change-chart.compact .change-row { display:grid;grid-template-columns:minmax(80px,1fr) minmax(30px,1fr) minmax(90px,1.15fr);align-items:center;gap:4px; }
+.change-chart.compact .change-row > div { display:contents; }
+.change-chart.compact .change-row > div > span { grid-column:1;grid-row:1;font-size:.8125rem; }
+.change-chart.compact .change-row b { grid-column:3;grid-row:1;text-align:right;font-size:.8125rem;overflow-wrap:anywhere; }
+.change-chart.compact .change-row svg { grid-column:2;grid-row:1;height:24px; }
+.settle-overview .actual-market-impact { margin:12px 0 0;padding:12px 0 0;border:0;border-top:1px solid #cbd8d0;border-radius:0;background:transparent; }
+.settle-overview .actual-market-impact > strong { font-size:.875rem; }
+.settle-overview .actual-market-impact ul { margin:8px 0;gap:8px; }
+.settle-overview .actual-market-impact li > div { gap:4px 8px; }
+.settle-overview .actual-market-impact li strong,.settle-overview .actual-market-impact li b { font-size:.875rem; }
+.settle-overview .actual-market-impact small { font-size:.75rem;line-height:1.5; }
+.modal-settle .settle-cause { margin:12px 0 0;padding:10px 12px;background:#e9efe5;border-radius:10px;font-size:.8125rem;line-height:1.6; }
+.modal-settle .settle-alert { padding:12px 16px;margin:12px 0; }
+.modal-settle .settle-alert p { font-size:.875rem;margin:4px 0 0; }
+.modal-settle .optional-learning { margin:12px 0 0;padding:12px; }
+.modal-settle .optional-learning strong { font-size:.875rem; }
+.modal-settle .optional-learning .hint { font-size:.8125rem; }
+@media (max-width:380px) {
+ .settle-overview { padding:12px; }
+ .settle-rate-strip { grid-template-columns:1fr;gap:8px; }
+ .settle-rate-strip > div:last-child { display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px; }
+ .change-chart.compact .change-row { grid-template-columns:1fr 1.25fr; }
+ .change-chart.compact .change-row b { grid-column:2; }
+ .change-chart.compact .change-row svg { grid-column:1/-1;grid-row:2;height:18px; }
+}

@@ -11,9 +11,9 @@ export function changeGeometry(value: number, domain: number): {x:number; width:
   return { x: value < 0 ? 160 - width : 160, width };
 }
 const escape = (s:string) => s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
-export function renderChangeChart(rows: ChangeRow[], label: string): string {
+export function renderChangeChart(rows: ChangeRow[], label: string, compact = false): string {
   const domain = changeDomain(rows.map(r=>r.value));
-  return `<figure class="change-chart"><figcaption>${escape(label)}</figcaption><p class="chart-axis">← 감소 <span>0원 기준</span> 증가 →<small>좌우 끝 각각 ${exactWon(domain)} · 같은 금액 축</small></p><ul>${rows.map(row=>{
+  return `<figure class="change-chart${compact ? ' compact' : ''}"><figcaption>${escape(label)}</figcaption><p class="chart-axis">← 감소 <span>0원 기준</span> 증가 →<small>좌우 끝 각각 ${exactWon(domain)} · 같은 금액 축</small></p><ul>${rows.map(row=>{
     const g=changeGeometry(row.value,domain);
     return `<li class="change-row ${row.kind}"><div><span>${escape(row.label)}</span><b>${signedWon(row.value)}</b></div><svg viewBox="0 0 320 24" preserveAspectRatio="none" aria-hidden="true"><path class="chart-track" d="M20 12H300"/><rect x="${g.x}" y="6" width="${g.width}" height="12" rx="2"/><path class="zero-line" d="M160 1V23"/>${row.value===0?'<circle cx="160" cy="12" r="3"/>':''}</svg></li>`;
   }).join('')}</ul></figure>`;

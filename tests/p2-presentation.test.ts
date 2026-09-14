@@ -67,6 +67,7 @@ it('결과의 주 동작은 하나이며 상세 복기·공유·재도전·수�
  new PensionRoadApp(root);root.querySelector<HTMLButtonElement>('[data-action="resume-game"]')!.click();
  // A completed save first resumes the final payout if still missing.
  root.querySelector<HTMLButtonElement>('[data-action="resume-finish"]')?.click();
+ root.querySelector<HTMLButtonElement>('[data-action="notice-continue"]')?.click();
  root.querySelector<HTMLButtonElement>('[data-action="choose-payout"]')?.click();
  const result=root.querySelector('.result-screen');expect(result).not.toBeNull();
  expect(result!.querySelectorAll('button.primary')).toHaveLength(1);expect(result!.querySelector('.result-details')!.hasAttribute('open')).toBe(false);
