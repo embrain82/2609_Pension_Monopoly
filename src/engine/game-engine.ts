@@ -1,3 +1,4 @@
+import { FINANCE_RULESET, newFinanceRules } from './finance-rules';
 import { acceptedContribution, contributionConstraint, actionTiming, blockReason } from './action-constraints';
 import { previewContribution } from './contribution-engine';
 import { initializePositions, scopedHolding } from './position-engine';
@@ -39,6 +40,8 @@ export interface GameAction {
 export type AmountPreset = 'default' | 'half' | 'max';
 
 export interface GameOptions {
+  /** f1: a buffered starting allocation and 0.1% per-turn waiting cash interest. */
+  updatedFinance?: boolean;
   automaticStamps?: boolean;
   settlementLearning?: boolean;
   /** 개인 추가납입 속도 제한. 새 UI 판에서 켜며 기존 저장·시뮬은 명시하지 않으면 유지. */
@@ -98,6 +101,7 @@ export function ghostTrackFor(seed: string, profileId: ProfileId, goalMonthly: n
 }
 
 export function createGame(seed: string, profileId: ProfileId = 'balanced', goalMonthly = balanceConfig.defaultGoal, options: GameOptions = {}): GameState {
+  if(options.updatedFinance) options={...options,defaultTrading:true};
   if(options.weekly) { profileId='balanced'; goalMonthly=500000; options={...options,scenario:'classic',mission:'pension'}; }
   const scheduled = scheduleLifeEvents(hashSeed(seed));
   const marketPath = options.scenario ? withGlidePath(generateMarketPath(seed, scenarioConfig(options.scenario))) : generateMarketPath(seed);
@@ -105,10 +109,11 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
   const tileEffectsEnabled = options.tileEffects !== false;
   const goal = clampGoalMonthly(goalMonthly);
   const state: GameState = {
+    ...(options.updatedFinance ? { financeRules: newFinanceRules(profileId) } : {}),
     ...(options.settlementLearning?{learningFlow:{version:'settlement-v1' as const,queue:[]}}:{}),
     ...(options.contributionPacing ? { contributionPacing: { version: 'v1' as const, perTurnLimit: balanceConfig.contributionPerTurnLimit } } : {}),
     route: newRouteProgress(options.automaticStamps),
-    accountType: 'IRP', rulesetVersion: options.defaultTrading ? '2026-09-10-e' : options.scenario ? '2026-09-10-d' : '2026-09-10-c', avatarId: options.avatarId ?? 'balanced',
+    accountType: 'IRP', rulesetVersion: options.updatedFinance ? FINANCE_RULESET : options.defaultTrading ? '2026-09-10-e' : options.scenario ? '2026-09-10-d' : '2026-09-10-c', avatarId: options.avatarId ?? 'balanced',
     accountBasis: { retirement: 90_000_000, retirementTax: 1_800_000, deducted: 9_000_000, nonDeducted: 9_000_000 },
     cashFlows: [], livingDebt: 0, orderSequence: 0, rebalancePlan: null,
     prices: { deposit: 1000, shortBond: 1000, longBond: 1000, balanced: 1000, equityEtf: 1000, tdf: 1000 },
@@ -122,7 +127,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
     profileId,
     cash: balanceConfig.startingCash,
     irpCash: 0,
-    holdings: initialHoldings(profileId),
+    holdings: initialHoldings(profileId, options.updatedFinance),
     pendingOrders: [],
     contributionTotal: 0,
     taxCreditEligible: 0,
@@ -286,7 +291,7 @@ export function startTurn(state: GameState, steps = 0): ActionResult {
   next = beginPerformance(state, next);
   next = {
     ...next,
-    ledger: { open, afterMarket: portfolioValue(next), beforeAction: null, marketEffects },
+    ledger: { open, afterMarket: portfolioValue(next), beforeAction: null, marketEffects, ...(next.ledger.cashInterest ? {cashInterest:next.ledger.cashInterest} : {}) },
     awaitingAction: !scheduled,
     currentEventId: scheduled?.eventId ?? null
   };

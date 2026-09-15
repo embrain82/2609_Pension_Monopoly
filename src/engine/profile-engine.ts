@@ -1,3 +1,4 @@
+import { startingAllocation, newFinanceRules } from './finance-rules';
 import { balanceConfig, investorProfiles, products } from '../data/content';
 import type { GameState, ProfileId } from '../types';
 
@@ -16,7 +17,7 @@ export function applyProfileToGame(game: GameState, profileId: ProfileId): GameS
   if (game.profileId === profileId) return game;
   const unlocked = game.unlockedCards.includes('profile') ? game.unlockedCards : [...game.unlockedCards, 'profile'];
   return { ...game, profileId, unlockedCards: unlocked,
-    ...(game.turn === 0 && game.holdings.length ? { holdings: initialHoldings(profileId) } : {}),
+    ...(game.turn === 0 && game.holdings.length ? { holdings: initialHoldings(profileId,Boolean(game.financeRules)), ...(game.financeRules?{financeRules:newFinanceRules(profileId)}:{}) } : {}),
     logs: [...game.logs, { turn: game.turn, type: 'profile', message: '투자성향 변경 · 캐릭터는 유지. 진행 중 보유 상품은 자동 매도하지 않습니다.' }] };
 }
 
@@ -37,8 +38,8 @@ export function profileLimits(state: GameState) {
   return investorProfiles.find(p => p.id === state.profileId)!;
 }
 
-export function initialHoldings(profileId: ProfileId) {
-  const allocation = investorProfiles.find(p => p.id === profileId)!.startingAllocation;
+export function initialHoldings(profileId: ProfileId, updated = false) {
+  const allocation = startingAllocation(profileId, updated);
   return products
     .filter((product) => allocation[product.id] > 0)
     .map((product) => ({

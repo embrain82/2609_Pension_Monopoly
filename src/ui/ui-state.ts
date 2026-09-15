@@ -54,7 +54,7 @@ function migrateAchievements(value: unknown): AchievementId[] {
 function migrateReturnRule(value: unknown): SaveData['bestReturnRule'] {
   if (!value || typeof value !== 'object') return undefined;
   const rule = value as { ruleset?: unknown; perTurnLimit?: unknown };
-  if (!['2026-09-09-p0', '2026-09-10-b', '2026-09-10-c', '2026-09-10-d', '2026-09-10-e'].includes(String(rule.ruleset))) return undefined;
+  if (!['2026-09-09-p0', '2026-09-10-b', '2026-09-10-c', '2026-09-10-d', '2026-09-10-e', '2026-09-15-f'].includes(String(rule.ruleset))) return undefined;
   if (rule.perTurnLimit !== null && (!finiteNumber(rule.perTurnLimit) || rule.perTurnLimit <= 0 || rule.perTurnLimit > 18_000_000)) return undefined;
   return { ruleset: rule.ruleset as NonNullable<SaveData['bestReturnRule']>['ruleset'], perTurnLimit: rule.perTurnLimit };
 }
@@ -111,8 +111,8 @@ function migrateSave(value: unknown): SaveData | null {
     howtoSeen: data.howtoSeen === true,
     avatarId: isProfileId(data.avatarId) ? data.avatarId : isProfileId(data.profileId) ? data.profileId : 'balanced',
     profileId: isProfileId(data.profileId) ? data.profileId : 'balanced',
-    profileAssessment: { profileId: isProfileId(data.profileId) ? data.profileId : 'balanced',
-      origin: data.profileAssessment?.profileId === data.profileId && ['diagnosed','confirmed'].includes(String(data.profileAssessment?.origin)) ? data.profileAssessment!.origin as 'diagnosed'|'confirmed' : 'legacy' },
+    ...(isProfileId(data.profileId) && data.profileAssessment?.profileId === data.profileId && ['diagnosed','confirmed'].includes(String(data.profileAssessment?.origin))
+      ? { profileAssessment: { profileId: data.profileId, origin: data.profileAssessment!.origin as 'diagnosed'|'confirmed' } } : {}),
     goalMonthly: clampGoalMonthly(finiteNumber(data.goalMonthly) ? data.goalMonthly : 500_000),
     // v1~v4 저장에는 없던 값. null이면 다음 판 시작에 고른다.
     defaultOption: isDefaultOptionId(data.defaultOption) ? data.defaultOption : null,

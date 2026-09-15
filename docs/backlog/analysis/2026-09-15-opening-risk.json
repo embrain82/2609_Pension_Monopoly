@@ -1,0 +1,256 @@
+{
+  "purpose": "Implementation-plan comparison; not implementation QA",
+  "date": "2026-09-15",
+  "trialsPerCell": 1000,
+  "seedPattern": "opening-risk-plan-0..999",
+  "scope": "First market step only. Same seeds across profiles/candidates; no dice arrival, trades, contributions, or later turns.",
+  "proposal": {
+    "aggressive": {
+      "deposit": 0.35,
+      "balanced": 0.2,
+      "equityEtf": 0.45
+    }
+  },
+  "rows": [
+    {
+      "scenario": "classic",
+      "profile": "stable",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 0,
+      "maxRiskPercent": 0
+    },
+    {
+      "scenario": "classic",
+      "profile": "stableGrowth",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 0,
+      "maxRiskPercent": 0
+    },
+    {
+      "scenario": "classic",
+      "profile": "balanced",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 39.0602876267499,
+      "maxRiskPercent": 41.1202183176903
+    },
+    {
+      "scenario": "classic",
+      "profile": "growth",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 58.698150732419684,
+      "maxRiskPercent": 61.524363536617635
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "candidate": "current70",
+      "trials": 1000,
+      "exceeded": 593,
+      "exceededPercent": 59.3,
+      "minRiskPercent": 68.69140131974407,
+      "maxRiskPercent": 71.48955462375926
+    },
+    {
+      "scenario": "classic",
+      "profile": "aggressive",
+      "candidate": "proposed65",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 63.604868542818075,
+      "maxRiskPercent": 66.60046780172163
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stable",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 0,
+      "maxRiskPercent": 0
+    },
+    {
+      "scenario": "inflation",
+      "profile": "stableGrowth",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 0,
+      "maxRiskPercent": 0
+    },
+    {
+      "scenario": "inflation",
+      "profile": "balanced",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 39.08242186752632,
+      "maxRiskPercent": 41.14088170632589
+    },
+    {
+      "scenario": "inflation",
+      "profile": "growth",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 58.70958985772816,
+      "maxRiskPercent": 61.53429089450797
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "candidate": "current70",
+      "trials": 1000,
+      "exceeded": 596,
+      "exceededPercent": 59.599999999999994,
+      "minRiskPercent": 68.69724474907524,
+      "maxRiskPercent": 71.49440031551568
+    },
+    {
+      "scenario": "inflation",
+      "profile": "aggressive",
+      "candidate": "proposed65",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 63.611636858768165,
+      "maxRiskPercent": 66.60616788833171
+    },
+    {
+      "scenario": "recession",
+      "profile": "stable",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 0,
+      "maxRiskPercent": 0
+    },
+    {
+      "scenario": "recession",
+      "profile": "stableGrowth",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 0,
+      "maxRiskPercent": 0
+    },
+    {
+      "scenario": "recession",
+      "profile": "balanced",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 38.728820448666504,
+      "maxRiskPercent": 40.81083829291514
+    },
+    {
+      "scenario": "recession",
+      "profile": "growth",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 58.20394349024676,
+      "maxRiskPercent": 61.09582855115191
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "candidate": "current70",
+      "trials": 1000,
+      "exceeded": 307,
+      "exceededPercent": 30.7,
+      "minRiskPercent": 68.19042021556146,
+      "maxRiskPercent": 71.07471383647811
+    },
+    {
+      "scenario": "recession",
+      "profile": "aggressive",
+      "candidate": "proposed65",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 63.07310944464388,
+      "maxRiskPercent": 66.15317989662195
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stable",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 0,
+      "maxRiskPercent": 0
+    },
+    {
+      "scenario": "recovery",
+      "profile": "stableGrowth",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 0,
+      "maxRiskPercent": 0
+    },
+    {
+      "scenario": "recovery",
+      "profile": "balanced",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 38.990904989563155,
+      "maxRiskPercent": 41.46350296417367
+    },
+    {
+      "scenario": "recovery",
+      "profile": "growth",
+      "candidate": "current",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 58.56676378827874,
+      "maxRiskPercent": 62.027516572107324
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "candidate": "current70",
+      "trials": 1000,
+      "exceeded": 692,
+      "exceededPercent": 69.19999999999999,
+      "minRiskPercent": 68.55702125371485,
+      "maxRiskPercent": 71.98546827842688
+    },
+    {
+      "scenario": "recovery",
+      "profile": "aggressive",
+      "candidate": "proposed65",
+      "trials": 1000,
+      "exceeded": 0,
+      "exceededPercent": 0,
+      "minRiskPercent": 63.46224406770631,
+      "maxRiskPercent": 67.13594573500909
+    }
+  ]
+}

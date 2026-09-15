@@ -221,3 +221,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   .preparation-facts dd { text-align:left; }
 }
 @media(prefers-reduced-motion:reduce) { .road-art,.road-header { animation:none; transition:none; } }
+
+/* FB-012/013: an unassessed profile is not a result; touch hover is not a selection. */
+.preparation-unassessed { width:min(100%,620px); margin:24px auto; }
+.preparation-unassessed .primary { margin:24px 0; }
+.road-diagnosis .choice-stack button:hover { border-color:var(--line); transform:none; }
+.road-diagnosis .choice-stack button:active { background:var(--road-mint,#eff8f1); }
+@media (hover:hover) and (pointer:fine) {
+  .road-diagnosis .choice-stack button:hover { border-color:var(--green-2); transform:translateY(-1px); }
+}

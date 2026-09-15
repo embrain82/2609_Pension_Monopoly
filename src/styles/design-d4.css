@@ -1,0 +1,54 @@
+/* A-1 support screens: the same hierarchy as preparation, orders and settlement. */
+.road-support { background:#fff; color:var(--ink); font-size:15px; line-height:1.7; }
+.road-support h2,.road-goal h1 { font-family:inherit; font-weight:800; font-size:clamp(23px,3vw,32px); letter-spacing:-.035em; line-height:1.4; }
+.road-support h3 { font-family:inherit; font-size:18px; margin:22px 0 12px; }
+.support-brand { margin:0 0 24px; padding:4px 0 18px; border-bottom:1px solid var(--line); }
+.support-brand .road-wordmark { font-size:20px; }
+.road-support .eyebrow { color:var(--green); margin-top:0; }
+.road-support .hint { text-align:left; font-size:13px; margin:14px 0; line-height:1.7; }
+.road-support .setting-row { border-top:0; min-height:76px; gap:24px; padding:18px 4px; }
+.road-support .setting-row strong { font-size:15px; }
+.road-support .setting-row small { font-size:13px; line-height:1.6; }
+.road-support .setting-row input { flex:0 0 24px; }
+.support-group { border:1px solid var(--line); border-radius:18px; padding:16px 20px; margin:20px 0; }
+.support-group>h3 { margin:0; color:var(--green); font-size:14px; }
+.support-group .setting-row:last-child { border-bottom:0; }
+.road-support .button-stack.compact { margin:20px 0; }
+.road-support .profile-note { background:var(--road-mint); border-radius:16px; padding:18px; }
+.road-support :is(button,select) { min-height:44px; }
+.road-support select { width:100%; max-width:100%; padding:12px; background:#fff; border:1px solid var(--line); border-radius:12px; }
+.road-support .setting-row select { width:auto; }
+.road-support :is(details,.disclaimer-box) { padding:18px; border:1px solid var(--line); border-radius:16px; background:#f7faf7; }
+.road-support summary { min-height:30px; cursor:pointer; font-weight:750; }
+.road-support summary::marker { color:var(--green); }
+.road-support .tab-row { display:flex; gap:8px; background:#f1f6f2; padding:6px; border:1px solid var(--line); border-radius:14px; margin:20px 0; }
+.road-support .tab-row button { flex:1; padding:12px 8px; border:1px solid transparent; border-radius:10px; background:transparent; color:#536b5a; box-shadow:none; font-size:14px; }
+.road-support .tab-row button[aria-selected=true] { color:var(--green); border-color:#8db99b; background:#fff; font-weight:800; box-shadow:0 2px 6px #12342108; }
+.road-support .card-library { gap:16px; }
+.road-support .card-library article { padding:22px; border-radius:18px; }
+.road-support .card-library p { font-size:14px; line-height:1.7; }
+.road-support .card-library article>span { font-size:12px; color:var(--green); }
+.road-support .card-library .locked { opacity:1; color:#607567; background:#f4f7f4; border-style:dashed; }
+.road-support .card-library .locked h3 { color:#9aafa0; }
+.road-support .source-list a { overflow-wrap:anywhere; }
+.road-support .howto-steps { padding-left:24px; }
+.road-support .howto-steps li { padding:16px; margin:12px 0; border-radius:14px; background:var(--road-mint); }
+.road-support .region-progress { border:1px solid var(--line); border-radius:16px; padding:20px; margin-top:24px; }
+.road-goal { width:min(100% - 40px,640px); margin:auto; }
+.road-goal .goal-display strong { font-family:inherit; font-variant-numeric:tabular-nums; }
+.cash-rule { font-size:12px; color:#536d5e; line-height:1.65; padding:12px 14px; background:#f1f7f2; border-radius:12px; }
+.cash-interest { padding:14px 16px; margin:14px 0; border:1px solid #d8e6dc; border-radius:14px; background:#f1f8f2; }
+.cash-interest strong { display:flex; gap:12px; flex-wrap:wrap; justify-content:space-between; font-size:14px; }
+.cash-interest small { display:block; margin-top:6px; color:#5a7060; font-size:12px; line-height:1.65; }
+.action-money small { font-size:11px; color:#5a7060; line-height:1.5; margin-top:6px; }
+@media(max-width:600px) {
+ .road-support { font-size:14px; }
+ .support-group { padding:14px; }
+ .road-support .setting-row { gap:14px; }
+ .road-support .setting-row select { width:100%; }
+ .road-support .tab-row { gap:3px; }
+ .road-support .tab-row button { font-size:12px; padding:10px 4px; }
+ .road-support .card-library { grid-template-columns:1fr; }
+ .road-support .card-library article { padding:18px; }
+ .support-brand { margin-bottom:18px; }
+}

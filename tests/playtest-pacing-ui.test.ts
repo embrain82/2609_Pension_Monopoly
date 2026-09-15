@@ -21,7 +21,7 @@ function mount(game = open()) {
 }
 beforeEach(() => {
   localStorage.clear(); document.body.innerHTML = '<div id="app"></div>'; root = document.querySelector('#app')!;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...defaultSave, disclaimerAccepted: true, howtoSeen: true, settings: { ...defaultSave.settings, reducedMotion: true } }));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'}, disclaimerAccepted: true, howtoSeen: true, settings: { ...defaultSave.settings, reducedMotion: true } }));
 });
 
 it('실제 새 판에만 턴 한도를 넣고 구 판의 이어하기는 보존한다', () => {

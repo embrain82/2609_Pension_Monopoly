@@ -1,3 +1,4 @@
+import { cashInterestRule } from './cash-interest-view';
 import { products } from '../data/content';
 import { sourceBalances } from '../engine/account-engine';
 import { actionAvailability, defaultTabAvailability } from '../engine/action-availability';
@@ -62,6 +63,7 @@ export function renderPortfolio(state:GameState):string {
  return `<header class="order-heading"><p class="eyebrow">포트폴리오 · 조회는 행동 횟수 차감 없음</p><h2>내 자산은 어디에 있을까요?</h2><p>IRP와 생활자금은 서로 다른 주머니예요.</p></header>
  <div class="portfolio-split"><section class="portfolio-overview" aria-label="계좌 합계와 분류"><div class="portfolio-total-card"><small>IRP 평가액</small><h3 class="portfolio-total">${formatWon(total)}</h3><p class="outside-cash">생활자금 ${formatWon(state.cash)} · IRP 밖 자금</p></div>
  <div class="portfolio-composition"><div class="portfolio-donut" style="background:${total>0?`conic-gradient(${gradient})`:'#e3ebe5'}" aria-hidden="true"><span>IRP 구성<b>${total>0?'100%':'0원'}</b></span></div><div class="portfolio-categories">${summary}</div></div>
+ <p class="cash-rule">${cashInterestRule(state)}. 예약된 매수금·미결제 매도대금은 제외합니다.</p>
  <details class="portfolio-fund-breakdown" data-preserve-open><summary>합계 계산 확인</summary><section class="portfolio-funds" aria-label="IRP 합계 구성"><div><small>보유 상품</small><strong>${formatWon(held)}</strong></div><div><small>미결제 주문 · 사용 불가</small><strong>${formatWon(pending)}</strong></div><div class="available-cash"><small>주문 가능 IRP 대기자금</small><strong>${formatWon(state.irpCash)}</strong></div></section>
  <p class="hint">보유 + 미결제 + 대기자금 = 위 IRP 총액. 상품·옵션 내역은 이 합계의 세부 내역입니다.</p></details>
  <div class="portfolio-risk"><strong>전체 IRP의 규제 위험자산 ${pct(riskAssetRatio(state))}</strong><p>기초 주식 노출 ${pct(equityExposureRatio(state))}</p><small>위험자산 한도와 실제 주식 노출은 다른 기준입니다. 적격 TDF 한도 예외는 무위험을 뜻하지 않습니다.</small></div>

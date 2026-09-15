@@ -27,7 +27,7 @@ export function reactionLine(before: GameState, after: GameState, actionLine: st
   if (actionLine.includes('추가납입')) return REACTION_CONTRIBUTE;
   // 인출·납입으로 생긴 잔액 변화가 아닌, 시장 구간의 실제 영향만 읽는다.
   const effects = after.ledger.marketEffects;
-  const marketDelta = effects ? effects.reduce((sum, e) => sum + e.delta, 0) : before.ledger.afterMarket - before.ledger.open;
+  const marketDelta = effects ? effects.reduce((sum, e) => sum + e.delta, 0) + (after.ledger.cashInterest?.amount ?? 0) : before.ledger.afterMarket - before.ledger.open;
   const irpOpen = before.ledger?.open ?? portfolioValue(before);
   if (irpOpen > 0 && marketDelta / irpOpen <= -0.02) return REACTION_DRAWDOWN;
   return REACTION_DEFAULT;
@@ -95,6 +95,7 @@ export function summarizeTurn(before: GameState, after: GameState, actionLine: s
     tradingDelta: irpAfter - ledger.afterMarket - capitalFlow,
     benchmarkIrp: after.campaign?.benchmark ?? null,
     ...(marketEffects ? { marketEffects } : {}),
+    ...(ledger.cashInterest ? {cashInterest:ledger.cashInterest} : {}),
     riskBefore: snapshot.risk,
     riskAfter,
     tileEffects: before.tileEffects ?? [],

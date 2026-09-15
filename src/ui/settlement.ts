@@ -1,3 +1,4 @@
+import { renderCashInterest } from './cash-interest-view';
 import { renderChangeChart, type ChangeRow } from './mini-chart';
 import { formatWon } from './format';
 import { settlementMarketContext } from './settlement-view-model';
@@ -73,7 +74,7 @@ function irpBars(summary: TurnSummary): string {
 }
 
 function changeComposition(summary: TurnSummary): string {
-  const rows: ChangeRow[] = [{label:'시장 손익',value:summary.marketDelta,kind:'market'}];
+  const rows: ChangeRow[] = [{label:summary.cashInterest?'시장 손익·대기 이자':'시장 손익',value:summary.marketDelta,kind:'market'}];
   if (summary.capitalFlow !== undefined && summary.tradingDelta !== undefined) {
     rows.push({label:'외부 입출금',value:summary.capitalFlow,kind:'flow'}, {label:'매매·정산',value:summary.tradingDelta,kind:'trade'});
   } else rows.push({label:'시장 이후 변화 (입출금·거래 포함)',value:summary.irpAfter-summary.irpAfterMarket,kind:'flow'});
@@ -144,7 +145,7 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
       <div class="settle-split"><section class="settle-market-panel" aria-labelledby="settle-market-title">
         <h3 id="settle-market-title">금리와 보유 영향</h3>${marketStrip}
         <p class="settle-cause">${context.explanation}</p>
-        ${renderMarketImpacts(summary.marketEffects, summary.turn, false, true)}
+        ${renderMarketImpacts(summary.marketEffects, summary.turn, false, true)}${renderCashInterest(summary.cashInterest)}
         <p class="settle-note">시장 반영 잔액 ${formatWon(summary.irpAfterMarket)} · 매매·납입 전 기준</p>
         ${alert}
       </section><section class="settle-action-panel" aria-label="내 행동과 다음 순서">

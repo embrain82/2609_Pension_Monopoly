@@ -8,7 +8,7 @@ const won = (value: number) => `${value > 0 ? '+' : ''}${Math.round(value).toLoc
 export function renderMarketImpacts(effects: MarketHoldingEffect[] | undefined, turn: number, chart = true, compact = false): string {
   if (turn === 0) return '';
   if (!effects) return '<p class="hint market-impact-unavailable">이전 저장에는 상품별 시장 반영 내역이 없습니다. 아래 숫자는 시장 예시이며 내 보유분 수익과 다릅니다.</p>';
-  if (!effects.length) return '<div class="preview-box actual-market-impact"><strong>이번 시장에 노출된 보유분·주문 없음</strong><p>IRP 대기자금과 가격 확정 전 매수 대기금에는 시장 수익이 붙지 않습니다.</p></div>';
+  if (!effects.length) return '<div class="preview-box actual-market-impact"><strong>이번 시장에 노출된 보유분·주문 없음</strong><p>상품 가격 변동에 따른 손익이 없습니다. 대기자금 이자는 해당 판의 별도 규칙을 따릅니다.</p></div>';
   const main = [...effects].sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).slice(0, 2);
   const bars = chart ? renderChangeChart(main.map(e => ({label: products.find(p=>p.id===e.productId)!.shortName, value:e.delta, kind:'market'})), '실제 보유 손익 · 이번 턴 주요 영향') : '';
   const rows = main.map(effect => {

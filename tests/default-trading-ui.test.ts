@@ -16,7 +16,7 @@ function mount(game?:GameState) {
   localStorage.setItem(CHECKPOINT_KEY,JSON.stringify({version:g.defaultTrading?'c3':'c2',game:g,modal:'action',lastSummary:null,quizCardId:null,quizPicked:null,finalQuizQueue:[],finalQuizTotal:0,finishing:false,defaultOptionAsk:false}));
   new PensionRoadApp(root);click('[data-action="resume-game"]');return g;
 }
-beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));});
+beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));});
 it('기존 6개 카드와 같은 디자인의 새 카드 한 개, 상세 탭은 하위 화면에만 표시',()=>{
   mount();expect(root.querySelectorAll('.action-list > article')).toHaveLength(7);
   expect([...root.querySelectorAll('.action-list strong')].map(e=>e.textContent)).toEqual(['추가납입','매수','매도','바꾸기','리밸런싱','디폴트옵션 옵트인/아웃','이번엔 그대로']);
@@ -59,7 +59,7 @@ it('마지막 턴 주문은 가상의 13·14턴 대신 최종 정산으로 안�
 });
 
 it('추천과 선택을 각각 표시하고 CTA와 실제 저장이 같은 상품을 가리킨다',()=>{
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileId:'growth',defaultOption:'principal',disclaimerAccepted:true,howtoSeen:true}));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'growth',origin:'confirmed'},profileId:'growth',defaultOption:'principal',disclaimerAccepted:true,howtoSeen:true}));
   new PensionRoadApp(root);click('[data-action="begin"]');click('[data-action="prepare-continue"]');
   expect(root.querySelector('[data-option="highRisk"] .suggest')).not.toBeNull();
   expect(root.querySelector('[data-option="principal"] .selected')?.textContent).toContain('현재 선택됨');
@@ -72,7 +72,7 @@ it('추천과 선택을 각각 표시하고 CTA와 실제 저장이 같은 상�
   click('[data-action="confirm-default-option"]');expect(saved().game.defaultOption).toBe('highRisk');
 });
 it('설정의 명시적 미지정을 과거 저장값으로 대체하지 않고 X는 초안을 저장하지 않는다',()=>{
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,defaultOption:'highRisk',disclaimerAccepted:true,howtoSeen:true}));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},defaultOption:'highRisk',disclaimerAccepted:true,howtoSeen:true}));
   mount({...startTurn(createGame('none','balanced',500000,{defaultTrading:true,ghost:false}),5).state,defaultOption:null});
   click('[data-action="close-modal"]');click('[data-action="open-settings"]');click('[data-action="open-default-option"]');
   expect(root.querySelectorAll('[aria-checked="true"]')).toHaveLength(0);
@@ -81,7 +81,7 @@ it('설정의 명시적 미지정을 과거 저장값으로 대체하지 않고 
   click('[data-action="open-default-option"]');expect(root.querySelectorAll('[aria-checked="true"]')).toHaveLength(0);
 });
 it('키보드로 허용 카드만 이동하고 선택·초점·확정 문구가 함께 갱신된다',()=>{
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileId:'stable',disclaimerAccepted:true,howtoSeen:true}));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'stable',origin:'confirmed'},profileId:'stable',disclaimerAccepted:true,howtoSeen:true}));
   new PensionRoadApp(root);click('[data-action="begin"]');click('[data-action="prepare-continue"]');
   const principal=root.querySelector<HTMLButtonElement>('[data-option="principal"]')!;principal.focus();
   principal.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}));
@@ -122,7 +122,7 @@ it('이전 저장 판은 기존 6개 메뉴와 기존 운용 규칙을 유지한
   expect(root.querySelector<HTMLButtonElement>('[data-view="buy"]')?.disabled).toBe(true);
 });
 it('성향 밖 저장 옵션은 창을 열 때 이유와 추천 초안을 표시하고 그 초안을 확정한다',()=>{
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileId:'stable',defaultOption:'highRisk',disclaimerAccepted:true,howtoSeen:true}));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'stable',origin:'confirmed'},profileId:'stable',defaultOption:'highRisk',disclaimerAccepted:true,howtoSeen:true}));
   new PensionRoadApp(root);click('[data-action="begin"]');click('[data-action="prepare-continue"]');
   expect(root.textContent).toContain('이전에 저장한 옵션이 현재 투자성향 범위 밖');
   expect(root.querySelector('[aria-checked="true"]')?.getAttribute('data-option')).toBe('principal');

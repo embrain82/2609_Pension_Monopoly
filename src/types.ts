@@ -352,6 +352,7 @@ export interface TurnLedger {
   afterMarket: number;
   /** 주문 결제 전, 실제 시장 노출분의 변화. 구 저장에는 없을 수 있다. */
   marketEffects?: MarketHoldingEffect[];
+  cashInterest?: CashInterest;
   /** 첫 행동 직전(생활사건 뒤) 스냅샷. 아직 행동 전이면 null */
   beforeAction: { irp: number; risk: number; holdings: Record<ProductId, number> } | null;
 }
@@ -445,13 +446,17 @@ export interface CashFlow {
   amount: number;
 }
 
+export interface CashInterest { turn: number; opening: number; rate: number; amount: number; }
+
 export interface GameState {
+  /** New-game financial rules; absent on historical games. */
+  financeRules?: { version: 'f1'; startingAllocation: Record<ProductId, number>; cashRatePerTurn: number; lastInterestTurn: number };
   /** 새 판에서만 정산 자율 학습. 기존 판의 진행·점수 규칙은 보존한다. */
   learningFlow?: { version: 'settlement-v1'; queue: string[]; dismissed?:string[] };
   campaign?: Campaign;
   route: RouteProgress;
   accountType: 'IRP';
-  rulesetVersion: '2026-09-09-p0' | '2026-09-10-b' | '2026-09-10-c' | '2026-09-10-d' | '2026-09-10-e';
+  rulesetVersion: '2026-09-09-p0' | '2026-09-10-b' | '2026-09-10-c' | '2026-09-10-d' | '2026-09-10-e' | '2026-09-15-f';
   defaultTrading?: DefaultTrading;
   /** 개인 납입 속도 규칙. 생략된 저장은 기존 한 판 합산 한도만 적용. */
   contributionPacing?: { version: 'v1'; perTurnLimit: number };
@@ -566,6 +571,7 @@ export interface TurnSummary {
   /** 같은 턴·같은 입출금을 반영한 가상 기준 지수. */
   benchmarkIrp?: number | null;
   marketEffects?: MarketHoldingEffect[];
+  cashInterest?: CashInterest;
   riskBefore: number;
   riskAfter: number;
   tileEffects: TileEffect[];

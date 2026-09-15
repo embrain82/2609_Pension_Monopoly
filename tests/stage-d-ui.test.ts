@@ -7,7 +7,7 @@ import {autoplay} from '../src/engine/game-engine';
 let root:HTMLElement;
 const click=(s:string)=>{const el=root.querySelector<HTMLElement>(s);expect(el,s).not.toBeNull();el!.click();};
 const saved=()=>parseCheckpoint(localStorage.getItem(CHECKPOINT_KEY))!;
-beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));});
+beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));});
 it('시작 선택을 저장하고 정산 퀴즈는 선택적으로 열어 복귀한다',()=>{
   new PensionRoadApp(root);
   root.querySelector<HTMLDetailsElement>('.campaign-picker')!.open=true;
