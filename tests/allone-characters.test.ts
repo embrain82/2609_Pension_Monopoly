@@ -23,7 +23,7 @@ it('다섯 이름을 그림 카드로 고르고 선택 표시·새로고침 저�
     pick(id);
     expect(root.querySelectorAll('.character-choice[aria-pressed="true"]')).toHaveLength(1);
     expect(root.querySelector('.character-choice[aria-pressed="true"]')!.getAttribute('data-avatar')).toBe(id);
-    expect(root.querySelector('.title-cover [data-character]')!.getAttribute('data-character')).toBe(CHARACTERS[id].asset);
+    expect(root.querySelector('.character-choice[aria-pressed="true"] [data-character]')!.getAttribute('data-character')).toBe(CHARACTERS[id].asset);
     expect(loadSave(localStorage).avatarId).toBe(id);
   }
   mount();
@@ -64,13 +64,12 @@ it('이미지 오류가 나면 같은 캐릭터의 모든 표시와 재렌더에
   expect(root.querySelector('[data-character="dalli"] .avatar-frame')!.getAttribute('visibility')).not.toBe('hidden');
 });
 
-it('캐릭터 표시를 끄면 그림 없이 이름으로 고르고 보드의 나 말로 진행할 수 있다', () => {
+it('캐릭터 표시를 끄면 그림 없이 이름으로 고르고 선택을 저장한다', () => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...defaultSave, settings: { ...defaultSave.settings, characters: false } }));
   mount();
   expect(root.querySelectorAll('.character-choice')).toHaveLength(5);
   expect(root.querySelector('.character-choice svg')).toBeNull();
   pick('stable');
   expect(loadSave(localStorage).avatarId).toBe('stable');
-  expect(root.querySelector('.title-cover')!.getAttribute('aria-label')).toBeNull();
-  expect(root.querySelector('.title-cover svg')!.getAttribute('aria-label')).toContain('나 말');
+  expect(root.querySelector('.title-cover')).toBeNull();
 });

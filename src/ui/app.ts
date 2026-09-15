@@ -1,5 +1,4 @@
 import { cashInterestRule } from './cash-interest-view';
-import { renderTitleCover } from './title-cover';
 import { brandWordmark, operationIcon, renderBrandArt } from './design-system';
 import { renderMarketStory } from './market-story';
 import { renderResultHero, renderResultOverview, renderResultCollection } from './result-summary';
@@ -1280,7 +1279,7 @@ export class PensionRoadApp {
           <p class="hint">성향 확인 · 디폴트옵션 선택 후 게임을 시작해요.${this.resumeData ? '<br>새 게임의 최종 시작을 누르면 저장된 판을 대체합니다.' : ''}</p>
         </div>
       </div>
-      <details class="road-personalize" data-preserve-open><summary>캐릭터 · 이번 판 설정 <span>살펴보기 ＋</span></summary><div class="road-personalize-grid"><div>${this.renderAvatarPicker()}${renderTitleCover(this.save.avatarId,this.save.settings.characters)}</div><div>${renderCampaignPicker(this.scenarioId,this.missionId,Boolean(this.root.querySelector<HTMLDetailsElement>(".campaign-picker")?.open))}<p class="hint">개인 추가납입은 턴당 합계 ${formatShortWon(balanceConfig.contributionPerTurnLimit)}까지 가능합니다. 게임 진행용 한도입니다.</p>${this.canStart() ? renderWeeklyButton() : ''}</div></div></details>
+      <details class="road-personalize" data-preserve-open><summary>캐릭터 · 이번 판 설정 <span>살펴보기 ＋</span></summary><div class="road-personalize-grid"><div>${this.renderAvatarPicker()}</div><div>${renderCampaignPicker(this.scenarioId,this.missionId,Boolean(this.root.querySelector<HTMLDetailsElement>(".campaign-picker")?.open))}<p class="hint">개인 추가납입은 턴당 합계 ${formatShortWon(balanceConfig.contributionPerTurnLimit)}까지 가능합니다. 게임 진행용 한도입니다.</p>${this.canStart() ? renderWeeklyButton() : ''}</div></div></details>
       <footer class="road-title-footer"><div class="utility-row"><button class="text-button" data-action="open-cards" data-tab="cards">학습 카드 <span class="badge">${this.save.unlockedCards.length}</span></button><button class="text-button" data-action="open-cards" data-tab="achievements">업적 <span class="badge">${this.save.achievements.length}/${ACHIEVEMENT_COUNT}</span></button><a href="./user-manual.html" target="_blank" rel="noreferrer">사용자 매뉴얼</a><a href="./operator-manual.html" target="_blank" rel="noreferrer">운영자 매뉴얼</a></div><p>가상 상품·시장 상황으로 배우는 교육용 게임입니다.</p></footer>
       <p class="record">최고 연금목표 진행률 <strong>${Math.round(this.save.bestGoalRate * 100)}%</strong> · 최고 IRP 잔액 증가율 <strong>${signedPercent(this.save.bestReturnRate)}</strong> · ${this.save.bestScore}점 · ${this.save.playCount}판</p><details class="record-rules"><summary>최고 기록의 비교 조건</summary><p>잔액 증가율은 납입·이전·인출을 포함합니다. ${this.save.bestReturnRule ? `해당 기록 규칙 ${this.save.bestReturnRule.ruleset} · ${this.save.bestReturnRule.perTurnLimit === null ? '턴별 납입 제한 없는 이전 판' : `턴 합계 납입 ${formatWon(this.save.bestReturnRule.perTurnLimit)} 제한`}` : '기존 최고 기록의 개별 규칙 버전은 저장되지 않았습니다.'}</p></details>
     </section>`;
