@@ -1,0 +1,6 @@
+{
+  "reason": "수령 방식 선택 전에 실제 새로고침 후 이어하기",
+  "turn": 12,
+  "strictEqual": true,
+  "changed": []
+}

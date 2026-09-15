@@ -1,0 +1,21 @@
+{
+  "preview": "https://2609-pension-monopoly-5ymvuta7z-nonsleepers-projects.vercel.app/",
+  "sourceCommit": "a1fd9fc",
+  "remoteAssets": [
+    "./assets/index-aVLdbctQ.js",
+    "./assets/index-BO1LnN05.css"
+  ],
+  "localAssets": [
+    "./assets/index-aVLdbctQ.js",
+    "./assets/index-BO1LnN05.css"
+  ],
+  "assetsMatch": true,
+  "browserSmoke": "passed",
+  "deploymentId": "dpl_HD2WSLeRzEi4dGh3STv9Po1d7QEh",
+  "status": "Ready",
+  "httpStatus": 200,
+  "title": "연금로드: 12턴의 은퇴설계",
+  "url": "https://2609-pension-monopoly-5ymvuta7z-nonsleepers-projects.vercel.app/",
+  "journey": true,
+  "interactionReport": "interaction-qa.json"
+}

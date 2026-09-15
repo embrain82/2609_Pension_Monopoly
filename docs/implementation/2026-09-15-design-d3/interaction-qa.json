@@ -1,0 +1,28 @@
+[
+  {
+    "case": "quiz answer",
+    "hiddenBefore": true,
+    "focus": "quiz-answer",
+    "sourceAfter": true,
+    "disabled": 3,
+    "engineMatch": true,
+    "answer": "\n    \n    \n    \n    \n    정답! 제도·운용 이해 +2. 새 채권이 더 높은 이자를 주면 기존 채권의 매력이 떨어져 가격이 내려갈 수 있습니다."
+  },
+  {
+    "case": "answered quiz reload",
+    "unchanged": true
+  },
+  {
+    "case": "quiz return",
+    "settlement": true
+  },
+  {
+    "case": "payout draft reload",
+    "draftSelected": "lumpSum",
+    "draftUnchanged": true,
+    "reloadUnchanged": true,
+    "selectionReset": true,
+    "confirmDisabled": true,
+    "playCount": 0
+  }
+]
