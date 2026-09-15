@@ -25,6 +25,6 @@ export function renderTileBriefing(briefing: TileBriefing, tileLabel: string, ti
     <h2>${briefing.title}</h2>
     <p class="tile-briefing-body">${lead}</p>
     ${more}
-    <p class="hint">이 칸은 설명만 보여 줍니다. 운용은 시장을 본 뒤 한 번만 고르면 됩니다.</p>
+    <p class="hint">이 화면은 설명만 보여 줍니다. 확인만으로 행동 횟수가 줄지 않아요. 남은 운용 횟수는 운용 메뉴에서 확인하세요.</p>
     <button class="primary jumbo" data-action="dismiss-tile">확인</button>`;
 }

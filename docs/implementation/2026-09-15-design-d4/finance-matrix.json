@@ -1,0 +1,178 @@
+{
+  "version": "1.10.0",
+  "opening": [
+    {
+      "scenario": "classic",
+      "n": 1000,
+      "over70": 0,
+      "maxRiskPct": 66.60046780172163
+    },
+    {
+      "scenario": "inflation",
+      "n": 1000,
+      "over70": 0,
+      "maxRiskPct": 66.60616788833171
+    },
+    {
+      "scenario": "recession",
+      "n": 1000,
+      "over70": 0,
+      "maxRiskPct": 66.15317989662195
+    },
+    {
+      "scenario": "recovery",
+      "n": 1000,
+      "over70": 0,
+      "maxRiskPct": 67.13594573500909
+    }
+  ],
+  "strategies": [
+    {
+      "scenario": "classic",
+      "strategy": "passive",
+      "n": 100,
+      "meanIrp": 112482849.18037257,
+      "meanCash": 22592783.4,
+      "meanContributed": 0,
+      "meanInvestmentIndex": 1.0415078627812269
+    },
+    {
+      "scenario": "classic",
+      "strategy": "contributor",
+      "n": 100,
+      "meanIrp": 125414177.91895519,
+      "meanCash": 10920783.4,
+      "meanContributed": 12860000,
+      "meanInvestmentIndex": 1.0397924969332608
+    },
+    {
+      "scenario": "classic",
+      "strategy": "growth",
+      "n": 100,
+      "meanIrp": 119160962.14779016,
+      "meanCash": 16976823.4,
+      "meanContributed": 6470000,
+      "meanInvestmentIndex": 1.0420042929610247
+    },
+    {
+      "scenario": "classic",
+      "strategy": "balanced",
+      "n": 100,
+      "meanIrp": 121882869.53662491,
+      "meanCash": 15485383.4,
+      "meanContributed": 8170000,
+      "meanInvestmentIndex": 1.0504823332541369
+    },
+    {
+      "scenario": "inflation",
+      "strategy": "passive",
+      "n": 100,
+      "meanIrp": 111124084.93640894,
+      "meanCash": 22155561.88,
+      "meanContributed": 0,
+      "meanInvestmentIndex": 1.0289267123741566
+    },
+    {
+      "scenario": "inflation",
+      "strategy": "contributor",
+      "n": 100,
+      "meanIrp": 124035393.66499163,
+      "meanCash": 10503561.88,
+      "meanContributed": 12840000,
+      "meanInvestmentIndex": 1.0280718881031072
+    },
+    {
+      "scenario": "inflation",
+      "strategy": "growth",
+      "n": 100,
+      "meanIrp": 117722569.54616901,
+      "meanCash": 16539601.88,
+      "meanContributed": 6470000,
+      "meanInvestmentIndex": 1.0292068326454233
+    },
+    {
+      "scenario": "inflation",
+      "strategy": "balanced",
+      "n": 100,
+      "meanIrp": 120355344.79662617,
+      "meanCash": 15127601.88,
+      "meanContributed": 8080000,
+      "meanInvestmentIndex": 1.0379009911405392
+    },
+    {
+      "scenario": "recession",
+      "strategy": "passive",
+      "n": 100,
+      "meanIrp": 96699100.36866365,
+      "meanCash": 22732898.17,
+      "meanContributed": 0,
+      "meanInvestmentIndex": 0.8953620404505892
+    },
+    {
+      "scenario": "recession",
+      "strategy": "contributor",
+      "n": 100,
+      "meanIrp": 109630429.10724631,
+      "meanCash": 11060898.17,
+      "meanContributed": 12860000,
+      "meanInvestmentIndex": 0.9010092915693251
+    },
+    {
+      "scenario": "recession",
+      "strategy": "growth",
+      "n": 100,
+      "meanIrp": 102721919.10232748,
+      "meanCash": 17116938.17,
+      "meanContributed": 6470000,
+      "meanInvestmentIndex": 0.8942105254045524
+    },
+    {
+      "scenario": "recession",
+      "strategy": "balanced",
+      "n": 100,
+      "meanIrp": 103877863.27695018,
+      "meanCash": 15599458.17,
+      "meanContributed": 8200000,
+      "meanInvestmentIndex": 0.8906175943606509
+    },
+    {
+      "scenario": "recovery",
+      "strategy": "passive",
+      "n": 100,
+      "meanIrp": 121236581.90522827,
+      "meanCash": 22592783.4,
+      "meanContributed": 0,
+      "meanInvestmentIndex": 1.1225609435669275
+    },
+    {
+      "scenario": "recovery",
+      "strategy": "contributor",
+      "n": 100,
+      "meanIrp": 134167910.6438108,
+      "meanCash": 10920783.4,
+      "meanContributed": 12860000,
+      "meanInvestmentIndex": 1.116711004054615
+    },
+    {
+      "scenario": "recovery",
+      "strategy": "growth",
+      "n": 100,
+      "meanIrp": 128244330.70823371,
+      "meanCash": 16976823.4,
+      "meanContributed": 6470000,
+      "meanInvestmentIndex": 1.1236655473468222
+    },
+    {
+      "scenario": "recovery",
+      "strategy": "balanced",
+      "n": 100,
+      "meanIrp": 131471974.3007824,
+      "meanCash": 15485383.4,
+      "meanContributed": 8170000,
+      "meanInvestmentIndex": 1.1355656818656135
+    }
+  ],
+  "completedGames": 1600,
+  "method": "100 paired seeds per strategy and scenario; same life-cash choice. Deterministic engine checks, not browser plays or representative win rates. contributor leaves contributions in cash; passive retains starting products, growth alternates contribution/ETF purchases, balanced contributes/rebalances. IRP totals include external contributions; investment index is separated.",
+  "limitations": "Risk buffer reduces sampled first-turn breaches; it does not guarantee all later markets remain below 70%. Cash can legitimately perform better in falling markets; no universal strategy superiority is asserted."
+}

@@ -1,0 +1,64 @@
+{
+  "url": "https://2609-pension-monopoly-f0ycldoej-nonsleepers-projects.vercel.app/",
+  "commit": "6533d8f",
+  "assets": [
+    {
+      "url": "https://2609-pension-monopoly-f0ycldoej-nonsleepers-projects.vercel.app/assets/index-CFzMPV2g.js",
+      "status": 200,
+      "sha256": "6623dc538401fbd7742501c7145dbd953a2d8dd5f553d9cbdbed6339bb89661b",
+      "matchesLocalBuild": true
+    },
+    {
+      "url": "https://2609-pension-monopoly-f0ycldoej-nonsleepers-projects.vercel.app/assets/index-ujWk1hHz.css",
+      "status": 200,
+      "sha256": "22c158183f14d93391c8c43951561a3d3fbfb396db553455850d9369753517c4",
+      "matchesLocalBuild": true
+    }
+  ],
+  "first": {
+    "unassessed": true,
+    "fallbackProfileShown": false
+  },
+  "version": "c4",
+  "financeRules": {
+    "version": "f1",
+    "startingAllocation": {
+      "deposit": 0.35,
+      "shortBond": 0,
+      "longBond": 0,
+      "balanced": 0.2,
+      "equityEtf": 0.45,
+      "tdf": 0
+    },
+    "cashRatePerTurn": 0.001,
+    "lastInterestTurn": 0
+  },
+  "openingHoldings": [
+    {
+      "product": "deposit",
+      "amount": 37800000
+    },
+    {
+      "product": "balanced",
+      "amount": 21600000
+    },
+    {
+      "product": "equityEtf",
+      "amount": 48600000
+    }
+  ],
+  "goalDisabled": true,
+  "goalReason": "게임 시작 후 성향·목표 고정 · 다음 새 판의 시작 준비에서 변경할 수 있습니다.",
+  "minimum": "44px",
+  "agentTestKeysCleared": true,
+  "deploymentId": "dpl_2s6dKwGGqcHqcVknyLYG7rZN3E2V",
+  "status": "Ready",
+  "productionUpdated": false,
+  "lockedLearningLabel": {
+    "color": "rgb(96, 117, 103)",
+    "background": "rgb(244, 247, 244)",
+    "text": "?"
+  },
+  "visualMacLockedConfirmed": true,
+  "iOSSafariVerified": false
+}

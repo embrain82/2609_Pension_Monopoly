@@ -1,0 +1,2413 @@
+{
+  "method": "Chromium DOM geometry at 320/390/430/844-landscape/1440 CSS widths; not screenshots, physical iPhone, or actual 200% zoom. Early settings compact button measured below 44px, then fixed and rerun as settings-unassessed-final/settings-locked-final.",
+  "checks": 85,
+  "documentOrPanelOverflow": 0,
+  "missingReferences": 0,
+  "rows": [
+    {
+      "name": "settings-unassessed",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 43.12000274658203,
+          "w": 43.1199951171875
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 50.760986328125,
+          "w": 115.97688293457031
+        },
+        {
+          "text": "지정",
+          "h": 40.9609375,
+          "w": 53.14204406738281
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 50.7607421875,
+          "w": 197.9600067138672
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 50.760986328125,
+          "w": 197.9600067138672
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 50.760986328125,
+          "w": 197.9600067138672
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "settings-unassessed",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 43.12000274658203,
+          "w": 43.1199951171875
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 50.760986328125,
+          "w": 115.97688293457031
+        },
+        {
+          "text": "지정",
+          "h": 40.9609375,
+          "w": 53.14202880859375
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 50.7607421875,
+          "w": 266.55999755859375
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 50.760986328125,
+          "w": 266.55999755859375
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 50.760986328125,
+          "w": 266.55999755859375
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "settings-unassessed",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 43.12000274658203,
+          "w": 43.120025634765625
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 50.760986328125,
+          "w": 115.97688293457031
+        },
+        {
+          "text": "지정",
+          "h": 40.9609375,
+          "w": 53.14202880859375
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 50.760986328125,
+          "w": 305.760009765625
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 50.760986328125,
+          "w": 305.760009765625
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 50.760986328125,
+          "w": 305.760009765625
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "settings-unassessed",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 43.12000274658203,
+          "w": 43.1199951171875
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 52.429931640625,
+          "w": 121.32093811035156
+        },
+        {
+          "text": "지정",
+          "h": 42.6300048828125,
+          "w": 54.83404541015625
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 52.429931640625,
+          "w": 532.1400146484375
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 52.4300537109375,
+          "w": 532.1400146484375
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 52.4300537109375,
+          "w": 532.1400146484375
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "settings-unassessed",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 43.12000274658203,
+          "w": 43.1199951171875
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 52.429931640625,
+          "w": 121.3209228515625
+        },
+        {
+          "text": "지정",
+          "h": 42.6298828125,
+          "w": 54.83404541015625
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 52.429931640625,
+          "w": 532.1400146484375
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 52.429931640625,
+          "w": 532.1400146484375
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 52.43017578125,
+          "w": 532.1400146484375
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "howto",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "알겠어요",
+          "h": 53.1953125,
+          "w": 232
+        }
+      ],
+      "title": "한 턴은 이렇게 진행됩니다"
+    },
+    {
+      "name": "howto",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "알겠어요",
+          "h": 53.1953125,
+          "w": 302
+        }
+      ],
+      "title": "한 턴은 이렇게 진행됩니다"
+    },
+    {
+      "name": "howto",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "알겠어요",
+          "h": 53.1953125,
+          "w": 342
+        }
+      ],
+      "title": "한 턴은 이렇게 진행됩니다"
+    },
+    {
+      "name": "howto",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "알겠어요",
+          "h": 53.1953125,
+          "w": 585
+        }
+      ],
+      "title": "한 턴은 이렇게 진행됩니다"
+    },
+    {
+      "name": "howto",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "알겠어요",
+          "h": 53.1953125,
+          "w": 585
+        }
+      ],
+      "title": "한 턴은 이렇게 진행됩니다"
+    },
+    {
+      "name": "learning-cards",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 62.796875,
+          "w": 70.6640625
+        },
+        {
+          "text": "업적 0/12",
+          "h": 62.796875,
+          "w": 70.671875
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 62.796875,
+          "w": 70.6640625
+        }
+      ],
+      "title": "학습 카드 0 / 25 발견"
+    },
+    {
+      "name": "learning-cards",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 44,
+          "w": 94
+        },
+        {
+          "text": "업적 0/12",
+          "h": 44,
+          "w": 94
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 44,
+          "w": 94
+        }
+      ],
+      "title": "학습 카드 0 / 25 발견"
+    },
+    {
+      "name": "learning-cards",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 44,
+          "w": 107.328125
+        },
+        {
+          "text": "업적 0/12",
+          "h": 44,
+          "w": 107.3359375
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 44,
+          "w": 107.3359375
+        }
+      ],
+      "title": "학습 카드 0 / 25 발견"
+    },
+    {
+      "name": "learning-cards",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 49.796875,
+          "w": 185
+        },
+        {
+          "text": "업적 0/12",
+          "h": 49.796875,
+          "w": 185
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 49.796875,
+          "w": 185
+        }
+      ],
+      "title": "학습 카드 0 / 25 발견"
+    },
+    {
+      "name": "learning-cards",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 49.796875,
+          "w": 185
+        },
+        {
+          "text": "업적 0/12",
+          "h": 49.796875,
+          "w": 185
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 49.796875,
+          "w": 185
+        }
+      ],
+      "title": "학습 카드 0 / 25 발견"
+    },
+    {
+      "name": "achievements",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 62.796875,
+          "w": 70.6640625
+        },
+        {
+          "text": "업적 0/12",
+          "h": 62.796875,
+          "w": 70.671875
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 62.796875,
+          "w": 70.6640625
+        }
+      ],
+      "title": "업적 0 / 12"
+    },
+    {
+      "name": "achievements",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 44,
+          "w": 94
+        },
+        {
+          "text": "업적 0/12",
+          "h": 44,
+          "w": 94
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 44,
+          "w": 94
+        }
+      ],
+      "title": "업적 0 / 12"
+    },
+    {
+      "name": "achievements",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 44,
+          "w": 107.328125
+        },
+        {
+          "text": "업적 0/12",
+          "h": 44,
+          "w": 107.3359375
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 44,
+          "w": 107.3359375
+        }
+      ],
+      "title": "업적 0 / 12"
+    },
+    {
+      "name": "achievements",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 49.796875,
+          "w": 185
+        },
+        {
+          "text": "업적 0/12",
+          "h": 49.796875,
+          "w": 185
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 49.796875,
+          "w": 185
+        }
+      ],
+      "title": "업적 0 / 12"
+    },
+    {
+      "name": "achievements",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 49.796875,
+          "w": 185
+        },
+        {
+          "text": "업적 0/12",
+          "h": 49.796875,
+          "w": 185
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 49.796875,
+          "w": 185
+        }
+      ],
+      "title": "업적 0 / 12"
+    },
+    {
+      "name": "collection",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 62.796875,
+          "w": 70.6640625
+        },
+        {
+          "text": "업적 0/12",
+          "h": 62.796875,
+          "w": 70.671875
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 62.796875,
+          "w": 70.6640625
+        }
+      ],
+      "title": "캐릭터 컬렉션"
+    },
+    {
+      "name": "collection",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 44,
+          "w": 94
+        },
+        {
+          "text": "업적 0/12",
+          "h": 44,
+          "w": 94
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 44,
+          "w": 94
+        }
+      ],
+      "title": "캐릭터 컬렉션"
+    },
+    {
+      "name": "collection",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 44,
+          "w": 107.328125
+        },
+        {
+          "text": "업적 0/12",
+          "h": 44,
+          "w": 107.3359375
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 44,
+          "w": 107.3359375
+        }
+      ],
+      "title": "캐릭터 컬렉션"
+    },
+    {
+      "name": "collection",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 49.796875,
+          "w": 185
+        },
+        {
+          "text": "업적 0/12",
+          "h": 49.796875,
+          "w": 185
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 49.796875,
+          "w": 185
+        }
+      ],
+      "title": "캐릭터 컬렉션"
+    },
+    {
+      "name": "collection",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "학습 카드 0/25",
+          "h": 49.796875,
+          "w": 185
+        },
+        {
+          "text": "업적 0/12",
+          "h": 49.796875,
+          "w": 185
+        },
+        {
+          "text": "캐릭터 0/5",
+          "h": 49.796875,
+          "w": 185
+        }
+      ],
+      "title": "캐릭터 컬렉션"
+    },
+    {
+      "name": "goal-unassessed",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "이 목표 저장",
+          "h": 56,
+          "w": 280
+        }
+      ],
+      "title": "월 연금 목표를 정하세요"
+    },
+    {
+      "name": "goal-unassessed",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "이 목표 저장",
+          "h": 56,
+          "w": 350
+        }
+      ],
+      "title": "월 연금 목표를 정하세요"
+    },
+    {
+      "name": "goal-unassessed",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "이 목표 저장",
+          "h": 56,
+          "w": 390
+        }
+      ],
+      "title": "월 연금 목표를 정하세요"
+    },
+    {
+      "name": "goal-unassessed",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "이 목표 저장",
+          "h": 56,
+          "w": 640
+        }
+      ],
+      "title": "월 연금 목표를 정하세요"
+    },
+    {
+      "name": "goal-unassessed",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "이 목표 저장",
+          "h": 56,
+          "w": 640
+        }
+      ],
+      "title": "월 연금 목표를 정하세요"
+    },
+    {
+      "name": "preparation-unassessed",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "5문항으로 성향 알아보기",
+          "h": 56,
+          "w": 246
+        }
+      ],
+      "title": "내 투자자성향부터 확인해요"
+    },
+    {
+      "name": "preparation-unassessed",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "5문항으로 성향 알아보기",
+          "h": 56,
+          "w": 308
+        }
+      ],
+      "title": "내 투자자성향부터 확인해요"
+    },
+    {
+      "name": "preparation-unassessed",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "5문항으로 성향 알아보기",
+          "h": 56,
+          "w": 348
+        }
+      ],
+      "title": "내 투자자성향부터 확인해요"
+    },
+    {
+      "name": "preparation-unassessed",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "5문항으로 성향 알아보기",
+          "h": 56,
+          "w": 570
+        }
+      ],
+      "title": "내 투자자성향부터 확인해요"
+    },
+    {
+      "name": "preparation-unassessed",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "5문항으로 성향 알아보기",
+          "h": 56,
+          "w": 570
+        }
+      ],
+      "title": "내 투자자성향부터 확인해요"
+    },
+    {
+      "name": "preparation-result",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 52.796875,
+          "w": 288
+        },
+        {
+          "text": "이 성향 확인 · 옵션 선택으로",
+          "h": 56,
+          "w": 288
+        }
+      ],
+      "title": "내 투자자성향부터 확인해요"
+    },
+    {
+      "name": "preparation-result",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 52.796875,
+          "w": 335
+        },
+        {
+          "text": "이 성향 확인 · 옵션 선택으로",
+          "h": 56,
+          "w": 335
+        }
+      ],
+      "title": "내 투자자성향부터 확인해요"
+    },
+    {
+      "name": "preparation-result",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 52.796875,
+          "w": 375
+        },
+        {
+          "text": "이 성향 확인 · 옵션 선택으로",
+          "h": 56,
+          "w": 375
+        }
+      ],
+      "title": "내 투자자성향부터 확인해요"
+    },
+    {
+      "name": "preparation-result",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 52.796875,
+          "w": 354.5
+        },
+        {
+          "text": "이 성향 확인 · 옵션 선택으로",
+          "h": 56,
+          "w": 354.5
+        }
+      ],
+      "title": "내 투자자성향부터 확인해요"
+    },
+    {
+      "name": "preparation-result",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 52.796875,
+          "w": 500
+        },
+        {
+          "text": "이 성향 확인 · 옵션 선택으로",
+          "h": 56,
+          "w": 500
+        }
+      ],
+      "title": "내 투자자성향부터 확인해요"
+    },
+    {
+      "name": "preparation-option",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "원리금보장형\n        예금 100%\n        가상 6등급 · ",
+          "h": 132.7890625,
+          "w": 288
+        },
+        {
+          "text": "저위험\n        예금 70% · TDF 30%\n        가상 ",
+          "h": 132.7890625,
+          "w": 288
+        },
+        {
+          "text": "중위험\n        예금 30% · 혼합형 70%\n        가상 ",
+          "h": 132.7890625,
+          "w": 288
+        },
+        {
+          "text": "고위험✓ 현재 선택됨성향 추천\n        혼합형 70% · TDF 3",
+          "h": 130.7890625,
+          "w": 288
+        },
+        {
+          "text": "지정 안 함으로 선택",
+          "h": 44,
+          "w": 288
+        },
+        {
+          "text": "고위험 확인 · 게임 시작",
+          "h": 56,
+          "w": 288
+        },
+        {
+          "text": "성향 확인으로 돌아가기",
+          "h": 52.796875,
+          "w": 288
+        }
+      ],
+      "title": "이 성향으로 옵션을 골라요"
+    },
+    {
+      "name": "preparation-option",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "원리금보장형\n        예금 100%\n        가상 6등급 · ",
+          "h": 132.7890625,
+          "w": 335
+        },
+        {
+          "text": "저위험\n        예금 70% · TDF 30%\n        가상 ",
+          "h": 132.7890625,
+          "w": 335
+        },
+        {
+          "text": "중위험\n        예금 30% · 혼합형 70%\n        가상 ",
+          "h": 132.7890625,
+          "w": 335
+        },
+        {
+          "text": "고위험✓ 현재 선택됨성향 추천\n        혼합형 70% · TDF 3",
+          "h": 130.7890625,
+          "w": 335
+        },
+        {
+          "text": "지정 안 함으로 선택",
+          "h": 44,
+          "w": 335
+        },
+        {
+          "text": "고위험 확인 · 게임 시작",
+          "h": 56,
+          "w": 335
+        },
+        {
+          "text": "성향 확인으로 돌아가기",
+          "h": 52.796875,
+          "w": 335
+        }
+      ],
+      "title": "이 성향으로 옵션을 골라요"
+    },
+    {
+      "name": "preparation-option",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "원리금보장형\n        예금 100%\n        가상 6등급 · ",
+          "h": 132.7890625,
+          "w": 375
+        },
+        {
+          "text": "저위험\n        예금 70% · TDF 30%\n        가상 ",
+          "h": 132.7890625,
+          "w": 375
+        },
+        {
+          "text": "중위험\n        예금 30% · 혼합형 70%\n        가상 ",
+          "h": 132.7890625,
+          "w": 375
+        },
+        {
+          "text": "고위험✓ 현재 선택됨성향 추천\n        혼합형 70% · TDF 3",
+          "h": 130.7890625,
+          "w": 375
+        },
+        {
+          "text": "지정 안 함으로 선택",
+          "h": 44,
+          "w": 375
+        },
+        {
+          "text": "고위험 확인 · 게임 시작",
+          "h": 56,
+          "w": 375
+        },
+        {
+          "text": "성향 확인으로 돌아가기",
+          "h": 52.796875,
+          "w": 375
+        }
+      ],
+      "title": "이 성향으로 옵션을 골라요"
+    },
+    {
+      "name": "preparation-option",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "원리금보장형\n        예금 100%\n        가상 6등급 · ",
+          "h": 132.7890625,
+          "w": 354.5
+        },
+        {
+          "text": "저위험\n        예금 70% · TDF 30%\n        가상 ",
+          "h": 132.7890625,
+          "w": 354.5
+        },
+        {
+          "text": "중위험\n        예금 30% · 혼합형 70%\n        가상 ",
+          "h": 132.7890625,
+          "w": 354.5
+        },
+        {
+          "text": "고위험✓ 현재 선택됨성향 추천\n        혼합형 70% · TDF 3",
+          "h": 130.7890625,
+          "w": 354.5
+        },
+        {
+          "text": "지정 안 함으로 선택",
+          "h": 44,
+          "w": 354.5
+        },
+        {
+          "text": "고위험 확인 · 게임 시작",
+          "h": 56,
+          "w": 354.5
+        },
+        {
+          "text": "성향 확인으로 돌아가기",
+          "h": 52.796875,
+          "w": 354.5
+        }
+      ],
+      "title": "이 성향으로 옵션을 골라요"
+    },
+    {
+      "name": "preparation-option",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "원리금보장형\n        예금 100%\n        가상 6등급 · ",
+          "h": 132.7890625,
+          "w": 500
+        },
+        {
+          "text": "저위험\n        예금 70% · TDF 30%\n        가상 ",
+          "h": 132.7890625,
+          "w": 500
+        },
+        {
+          "text": "중위험\n        예금 30% · 혼합형 70%\n        가상 ",
+          "h": 132.7890625,
+          "w": 500
+        },
+        {
+          "text": "고위험✓ 현재 선택됨성향 추천\n        혼합형 70% · TDF 3",
+          "h": 130.7890625,
+          "w": 500
+        },
+        {
+          "text": "지정 안 함으로 선택",
+          "h": 44,
+          "w": 500
+        },
+        {
+          "text": "고위험 확인 · 게임 시작",
+          "h": 56,
+          "w": 500
+        },
+        {
+          "text": "성향 확인으로 돌아가기",
+          "h": 52.796875,
+          "w": 500
+        }
+      ],
+      "title": "이 성향으로 옵션을 골라요"
+    },
+    {
+      "name": "settings-locked-final",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 51.796875,
+          "w": 118.34375
+        },
+        {
+          "text": "바꾸기",
+          "h": 44,
+          "w": 66.3359375
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 51.796875,
+          "w": 202
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 51.796875,
+          "w": 202
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 51.796875,
+          "w": 202
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "settings-locked-final",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 51.796875,
+          "w": 118.34375
+        },
+        {
+          "text": "바꾸기",
+          "h": 44,
+          "w": 66.3359375
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 51.796875,
+          "w": 272
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 51.796875,
+          "w": 272
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 51.796875,
+          "w": 272
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "settings-locked-final",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 51.796875,
+          "w": 118.34375
+        },
+        {
+          "text": "바꾸기",
+          "h": 44,
+          "w": 66.3359375
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 51.796875,
+          "w": 312
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 51.796875,
+          "w": 312
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 51.796875,
+          "w": 312
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "settings-locked-final",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 53.5,
+          "w": 123.796875
+        },
+        {
+          "text": "바꾸기",
+          "h": 44,
+          "w": 68.9296875
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 53.5,
+          "w": 543
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 53.5,
+          "w": 543
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 53.5,
+          "w": 543
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "settings-locked-final",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 53.5,
+          "w": 123.796875
+        },
+        {
+          "text": "바꾸기",
+          "h": 44,
+          "w": 68.9296875
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 53.5,
+          "w": 543
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 53.5,
+          "w": 543
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 53.5,
+          "w": 543
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "portfolio-cash-interest",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "예금 매도 검토",
+          "h": 48.796875,
+          "w": 162
+        },
+        {
+          "text": "예금 교체 검토",
+          "h": 48.796875,
+          "w": 162
+        }
+      ],
+      "title": "내 자산은 어디에 있을까요?"
+    },
+    {
+      "name": "portfolio-cash-interest",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "예금 매도 검토",
+          "h": 48.796875,
+          "w": 232
+        },
+        {
+          "text": "예금 교체 검토",
+          "h": 48.796875,
+          "w": 232
+        }
+      ],
+      "title": "내 자산은 어디에 있을까요?"
+    },
+    {
+      "name": "portfolio-cash-interest",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "예금 매도 검토",
+          "h": 48.796875,
+          "w": 272
+        },
+        {
+          "text": "예금 교체 검토",
+          "h": 48.796875,
+          "w": 272
+        }
+      ],
+      "title": "내 자산은 어디에 있을까요?"
+    },
+    {
+      "name": "portfolio-cash-interest",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "예금 매도 검토",
+          "h": 48.796875,
+          "w": 305.8046875
+        },
+        {
+          "text": "예금 교체 검토",
+          "h": 48.796875,
+          "w": 305.8046875
+        }
+      ],
+      "title": "내 자산은 어디에 있을까요?"
+    },
+    {
+      "name": "portfolio-cash-interest",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "예금 매도 검토",
+          "h": 48.796875,
+          "w": 486.9296875
+        },
+        {
+          "text": "예금 교체 검토",
+          "h": 48.796875,
+          "w": 486.9296875
+        }
+      ],
+      "title": "내 자산은 어디에 있을까요?"
+    },
+    {
+      "name": "timeline",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        }
+      ],
+      "title": "12턴 타임라인"
+    },
+    {
+      "name": "timeline",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        }
+      ],
+      "title": "12턴 타임라인"
+    },
+    {
+      "name": "timeline",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        }
+      ],
+      "title": "12턴 타임라인"
+    },
+    {
+      "name": "timeline",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        }
+      ],
+      "title": "12턴 타임라인"
+    },
+    {
+      "name": "timeline",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        }
+      ],
+      "title": "12턴 타임라인"
+    },
+    {
+      "name": "explore",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "○ 안정도장 1/2 · 방문 1/6",
+          "h": 78.984375,
+          "w": 91
+        },
+        {
+          "text": "★ 성장도장 2/2 완료 · 방문 2/6",
+          "h": 78.984375,
+          "w": 91
+        },
+        {
+          "text": "★ 생활도장 2/2 완료 · 방문 2/6",
+          "h": 78.984375,
+          "w": 91
+        },
+        {
+          "text": "○ 은퇴도장 1/2 · 방문 1/6",
+          "h": 78.984375,
+          "w": 91
+        },
+        {
+          "text": "지도·지역 미션 확인",
+          "h": 44,
+          "w": 128.4921875
+        }
+      ],
+      "title": "17. 운용지시"
+    },
+    {
+      "name": "explore",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "○ 안정도장 1/2 · 방문 1/6",
+          "h": 78.984375,
+          "w": 126
+        },
+        {
+          "text": "★ 성장도장 2/2 완료 · 방문 2/6",
+          "h": 78.984375,
+          "w": 126
+        },
+        {
+          "text": "★ 생활도장 2/2 완료 · 방문 2/6",
+          "h": 78.984375,
+          "w": 126
+        },
+        {
+          "text": "○ 은퇴도장 1/2 · 방문 1/6",
+          "h": 78.984375,
+          "w": 126
+        },
+        {
+          "text": "지도·지역 미션 확인",
+          "h": 44,
+          "w": 128.4921875
+        }
+      ],
+      "title": "17. 운용지시"
+    },
+    {
+      "name": "explore",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "○ 안정도장 1/2 · 방문 1/6",
+          "h": 60.390625,
+          "w": 146
+        },
+        {
+          "text": "★ 성장도장 2/2 완료 · 방문 2/6",
+          "h": 60.390625,
+          "w": 146
+        },
+        {
+          "text": "★ 생활도장 2/2 완료 · 방문 2/6",
+          "h": 60.390625,
+          "w": 146
+        },
+        {
+          "text": "○ 은퇴도장 1/2 · 방문 1/6",
+          "h": 60.390625,
+          "w": 146
+        },
+        {
+          "text": "지도·지역 미션 확인",
+          "h": 44,
+          "w": 128.4921875
+        }
+      ],
+      "title": "17. 운용지시"
+    },
+    {
+      "name": "explore",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "○ 안정도장 1/2 · 방문 1/6",
+          "h": 60.390625,
+          "w": 267.5
+        },
+        {
+          "text": "★ 성장도장 2/2 완료 · 방문 2/6",
+          "h": 60.390625,
+          "w": 267.5
+        },
+        {
+          "text": "★ 생활도장 2/2 완료 · 방문 2/6",
+          "h": 60.390625,
+          "w": 267.5
+        },
+        {
+          "text": "○ 은퇴도장 1/2 · 방문 1/6",
+          "h": 60.390625,
+          "w": 267.5
+        },
+        {
+          "text": "지도·지역 미션 확인",
+          "h": 44,
+          "w": 128.4921875
+        }
+      ],
+      "title": "17. 운용지시"
+    },
+    {
+      "name": "explore",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "○ 안정도장 1/2 · 방문 1/6",
+          "h": 60.390625,
+          "w": 275
+        },
+        {
+          "text": "★ 성장도장 2/2 완료 · 방문 2/6",
+          "h": 60.390625,
+          "w": 275
+        },
+        {
+          "text": "★ 생활도장 2/2 완료 · 방문 2/6",
+          "h": 60.390625,
+          "w": 275
+        },
+        {
+          "text": "○ 은퇴도장 1/2 · 방문 1/6",
+          "h": 60.390625,
+          "w": 275
+        },
+        {
+          "text": "지도·지역 미션 확인",
+          "h": 44,
+          "w": 128.4921875
+        }
+      ],
+      "title": "17. 운용지시"
+    },
+    {
+      "name": "settings-unassessed-final",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 51.796875,
+          "w": 118.34375
+        },
+        {
+          "text": "바꾸기",
+          "h": 44,
+          "w": 66.3359375
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 51.796875,
+          "w": 202
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 51.796875,
+          "w": 202
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 51.796875,
+          "w": 202
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "settings-unassessed-final",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 51.796875,
+          "w": 118.34375
+        },
+        {
+          "text": "바꾸기",
+          "h": 44,
+          "w": 66.3359375
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 51.796875,
+          "w": 272
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 51.796875,
+          "w": 272
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 51.796875,
+          "w": 272
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "settings-unassessed-final",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 51.796875,
+          "w": 118.34375
+        },
+        {
+          "text": "바꾸기",
+          "h": 44,
+          "w": 66.3359375
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 51.796875,
+          "w": 312
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 51.796875,
+          "w": 312
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 51.796875,
+          "w": 312
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "settings-unassessed-final",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 53.5,
+          "w": 123.796875
+        },
+        {
+          "text": "바꾸기",
+          "h": 44,
+          "w": 68.9296875
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 53.5,
+          "w": 543
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 53.5,
+          "w": 543
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 53.5,
+          "w": 543
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "settings-unassessed-final",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [
+        {
+          "text": "×",
+          "h": 44,
+          "w": 44
+        },
+        {
+          "text": "효과음 테스트",
+          "h": 53.5,
+          "w": 123.796875
+        },
+        {
+          "text": "바꾸기",
+          "h": 44,
+          "w": 68.9296875
+        },
+        {
+          "text": "게임 방법 다시 보기",
+          "h": 53.5,
+          "w": 543
+        },
+        {
+          "text": "성향 다시 진단",
+          "h": 53.5,
+          "w": 543
+        },
+        {
+          "text": "월 연금 목표 바꾸기",
+          "h": 53.5,
+          "w": 543
+        }
+      ],
+      "title": "플레이 설정"
+    },
+    {
+      "name": "user-manual",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 v1.10.0 · 사용자 안내"
+    },
+    {
+      "name": "user-manual",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 v1.10.0 · 사용자 안내"
+    },
+    {
+      "name": "user-manual",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 v1.10.0 · 사용자 안내"
+    },
+    {
+      "name": "user-manual",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 v1.10.0 · 사용자 안내"
+    },
+    {
+      "name": "user-manual",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 v1.10.0 · 사용자 안내"
+    },
+    {
+      "name": "operator-manual",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 v1.10.0 · 운영자 안내"
+    },
+    {
+      "name": "operator-manual",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 v1.10.0 · 운영자 안내"
+    },
+    {
+      "name": "operator-manual",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 v1.10.0 · 운영자 안내"
+    },
+    {
+      "name": "operator-manual",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 v1.10.0 · 운영자 안내"
+    },
+    {
+      "name": "operator-manual",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 v1.10.0 · 운영자 안내"
+    },
+    {
+      "name": "learning-guide",
+      "w": 320,
+      "h": 780,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 학습 명세 · 25문항"
+    },
+    {
+      "name": "learning-guide",
+      "w": 390,
+      "h": 844,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 학습 명세 · 25문항"
+    },
+    {
+      "name": "learning-guide",
+      "w": 430,
+      "h": 932,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 학습 명세 · 25문항"
+    },
+    {
+      "name": "learning-guide",
+      "w": 844,
+      "h": 390,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 학습 명세 · 25문항"
+    },
+    {
+      "name": "learning-guide",
+      "w": 1440,
+      "h": 1000,
+      "documentOverflow": false,
+      "panelOverflow": false,
+      "missingReferences": [],
+      "images": [],
+      "buttons": [],
+      "title": "연금로드 학습 명세 · 25문항"
+    }
+  ]
+}

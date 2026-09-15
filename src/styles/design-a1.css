@@ -1,0 +1,232 @@
+/* D0: A-1 공통 토큰. 기존 거래·정산의 상태 색과 구조는 각 뷰에서 유지한다. */
+:root {
+  --ink:#263b2e; --muted:#607267; --paper:#fff; --cream:#f2f6f1;
+  --green:#10833f; --green-2:#176c3d; --lime:#e5f3d9;
+  --line:#d9e4dc; --shadow:0 14px 40px rgb(32 74 44 / 7%);
+  --road-mint:#eef7f0; --road-blue:#eef5fa; --road-yellow:#fff8e7;
+  --road-radius:16px; --road-gap:24px;
+}
+body { background:#fff; }
+button,input,select { touch-action:manipulation; }
+.primary { border-radius:12px; background:var(--green); box-shadow:none; font-weight:750; }
+.primary:hover { background:#076a31; }
+.secondary { border-radius:12px; font-weight:650; }
+button:disabled { opacity:1; color:#6a796e; background:#edf1ee; border-color:#dce3de; }
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible { outline:3px solid #16673b; outline-offset:4px; }
+.road-header { display:flex; align-items:center; justify-content:space-between; min-height:76px; width:100%; border-bottom:1px solid var(--line); gap:16px; }
+.road-wordmark { display:inline-flex; align-items:center; gap:9px; font-size:20px; font-weight:800; letter-spacing:-.8px; white-space:nowrap; }
+.road-wordmark svg { color:var(--green); flex-shrink:0; }
+.road-header .text-button { color:var(--muted); font-size:14px; }
+.road-art { position:relative; width:100%; aspect-ratio:1; isolation:isolate; }
+.road-art-fallback { position:absolute; inset:15%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; border:1px solid var(--line); border-radius:30px; color:var(--green); background:var(--road-mint); }
+.road-art-fallback svg { width:80px; height:80px; }
+.road-art img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#fff; }
+.road-art img[hidden] { display:none; }
+.road-split { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start; }
+.road-split>div { min-width:0; }
+.road-panel { padding:24px; border:1px solid var(--line); border-radius:var(--road-radius); background:#f7faf7; }
+.road-panel h2 { font-family:inherit; font-size:19px; line-height:1.5; margin:0 0 16px; }
+.road-section-label { font-size:15px; margin:0 0 18px; }
+
+/* D1 / A-1: 메인 한 장 소개. 시작 버튼과 동의는 바로 보이고 개인화는 펼쳐서 확인한다. */
+.title-screen.road-title { width:min(100% - 80px,1120px); display:block; padding:0 0 28px; text-align:left; min-height:100svh; }
+.road-title .road-hero { display:grid; grid-template-columns:1fr 1fr; column-gap:54px; row-gap:24px; padding:46px 0 24px; align-items:center; }
+.road-title .road-intro { grid-column:1; grid-row:1; }
+.road-title .road-hero-art { grid-column:2; grid-row:1 / 3; }
+.road-title .road-launch { grid-column:1; grid-row:2; max-width:430px; display:grid; gap:12px; }
+.road-title h1 { font-family:inherit; font-size:44px; font-weight:780; color:var(--ink); line-height:1.4; letter-spacing:-1.8px; margin:0; }
+.road-title h1 strong { color:var(--green); font-weight:inherit; }
+.road-title .eyebrow { font-size:13px; font-weight:650; letter-spacing:.2px; color:var(--muted); margin:0 0 18px; }
+.road-title .lead { color:var(--muted); font-size:16px; line-height:1.85; margin:18px 0; }
+.road-benefits { list-style:none; display:flex; flex-wrap:wrap; gap:10px 20px; padding:0; font-size:13px; color:#506d59; margin:24px 0 0; }
+.road-benefits li::before { content:'✓'; margin-right:6px; color:var(--green); }
+.road-hero-art>p { color:var(--muted); text-align:center; font-size:13px; margin:-4px 0 12px; }
+.road-title .jumbo { width:100%; min-height:56px; font-size:16px; }
+.road-title .hint { margin:0; font-size:13px; line-height:1.7; font-weight:400; }
+.road-title .disclaimer-check { padding:14px; margin:0; background:#f6f9f6; gap:10px; }
+.road-title .disclaimer-check label { font-size:13px; line-height:1.65; }
+.road-title .disclaimer-check input { width:22px; flex:0 0 22px; margin:2px 0; }
+.road-resume { color:var(--green); font-size:14px; font-weight:700; margin:0; }
+.road-personalize { width:100%; margin:8px 0 24px; border:1px solid var(--line); border-radius:14px; background:#fafcf9; }
+.road-personalize>summary { list-style:none; display:flex; justify-content:space-between; align-items:center; gap:14px; min-height:56px; padding:12px 20px; font-size:14px; cursor:pointer; }
+.road-personalize>summary::-webkit-details-marker { display:none; }
+.road-personalize>summary span { color:var(--green); font-size:13px; }
+.road-personalize-grid { display:grid; grid-template-columns:1fr 1.3fr; gap:30px; padding:12px 20px 22px; }
+.road-personalize-grid>div { min-width:0; }
+.road-personalize .title-cover { width:180px; margin:16px auto 0; }
+.road-personalize .title-cover svg { width:100%; display:block; }
+.road-title .setting-row small { display:block; }
+.road-personalize .campaign-picker { width:100%; margin:0 0 14px; }
+.road-personalize .campaign-picker select { max-width:100%; }
+.road-title-footer { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px 24px; border-top:1px solid var(--line); padding:18px 0; }
+.road-title-footer .utility-row { margin:0; gap:8px 20px; justify-content:flex-start; align-items:center; }
+.road-title-footer a,.road-title-footer .text-button { font-size:13px; font-weight:500; color:var(--muted); }
+.road-title-footer p { color:var(--muted); font-size:12px; margin:0; }
+.road-title .record,.road-title .record-rules { font-size:12px; color:var(--muted); text-align:left; }
+
+/* D1 / 01-5, 02-5: 왼쪽 선택 / 오른쪽 확인. 작은 화면은 DOM 순서대로 쌓는다. */
+.setup-screen.road-preparation,.setup-screen.road-diagnosis { display:block; justify-content:initial; width:min(100% - 80px,1040px); min-height:100svh; padding:0 0 36px; }
+.road-preparation .preparation-close { position:static; width:44px; height:44px; background:#f1f6f2; border:0; font-size:27px; }
+.road-preparation .step-header { margin:32px 0 16px; padding:0; font-size:13px; color:var(--green); }
+.road-preparation h1,.road-diagnosis h1 { font-family:inherit; font-size:32px; line-height:1.4; letter-spacing:-1.2px; margin:0 0 12px; }
+.road-preparation>.lead { font-size:15px; margin:0 0 32px; color:var(--muted); }
+.road-preparation .preparation-profile { margin:0; padding:32px; border-radius:18px; background:var(--road-mint); min-height:300px; }
+.road-preparation .preparation-profile h2 { font-size:34px; margin:20px 0 14px; letter-spacing:-1px; }
+.road-preparation .preparation-profile p { font-size:16px; line-height:1.8; }
+.road-preparation .preparation-profile small { font-size:13px; color:#536f5c; }
+.preparation-scale { display:flex; gap:7px; margin-top:32px; }
+.preparation-scale i { height:9px; flex:1; border-radius:8px; background:#cce2d1; }
+.preparation-scale i.current { background:var(--green); }
+.preparation-facts { margin:0; }
+.preparation-facts>div { display:flex; justify-content:space-between; align-items:baseline; gap:20px; font-size:14px; padding:14px 0; }
+.preparation-facts>div+div { border-top:1px solid var(--line); }
+.preparation-facts dt { color:var(--muted); flex-shrink:0; }
+.preparation-facts dd { text-align:right; margin:0; font-weight:650; line-height:1.65; }
+.road-preparation .info-note { background:#edf4ee; padding:14px; border:0; border-radius:10px; font-size:13px; line-height:1.8; }
+.road-preparation .preparation-actions { margin-top:22px; gap:12px; }
+.road-preparation .jumbo { min-height:56px; font-size:16px; }
+.road-preparation .hint { font-size:13px; line-height:1.75; margin:18px 0 0; }
+.road-preparation .preparation-footnote { margin:30px 0 0; }
+.road-preparation .default-option-grid { grid-template-columns:1fr; gap:12px; }
+.road-preparation .default-option-card { position:relative; background:#fff; padding:20px 20px 20px 48px; border-radius:14px; min-height:120px; box-shadow:none; }
+.road-preparation .default-option-card::before { content:''; position:absolute; width:18px; height:18px; border:1.5px solid #a6bdb0; border-radius:50%; left:18px; top:24px; box-sizing:border-box; }
+.road-preparation .default-option-card.picked { border:2px solid var(--green); background:#f2faf4; padding:19px 19px 19px 47px; box-shadow:none; }
+.road-preparation .default-option-card.picked::before { border:5px solid var(--green); left:17px; top:23px; }
+.road-preparation .default-option-name { font-size:17px; line-height:1.6; gap:6px; }
+.road-preparation .default-option-card strong { color:#436a50; font-size:14px; line-height:1.6; margin-top:10px; }
+.road-preparation .default-option-card small { color:var(--muted); font-size:12px; line-height:1.6; }
+.road-preparation .default-option-card .tag { font-size:11px; letter-spacing:0; }
+.road-preparation .tag.suggest { color:#735509; background:#fff1c6; border:0; }
+.road-preparation .tag.selected { background:#e1f2e5; color:#09652d; }
+.road-preparation .default-option-card.locked { opacity:1; background:#f1f3f1; border-color:#dce2dd; color:#627366; }
+.road-preparation .tag.locked { color:#6b604e; background:#e8e9e3; }
+.preparation-option-detail .eyebrow { color:var(--green); font-size:12px; letter-spacing:0; }
+.preparation-option-detail h2 { font-size:26px; margin:14px 0; }
+.option-composition { font-size:17px; color:var(--green); font-weight:700; }
+.option-description { font-size:14px; line-height:1.8; }
+.preparation-option-detail .profile-stamp { display:inline-block; font-size:12px; margin:4px 0 12px; }
+.preparation-option-detail .default-option-selection { font-size:13px; line-height:1.8; margin:8px 0; background:#eaf3ec; }
+.road-preparation .preparation-help { margin:16px 0; padding:12px 18px; font-size:14px; line-height:1.8; }
+.road-preparation .preparation-help summary { font-size:14px; font-weight:650; }
+.road-preparation .preparation-none { display:block; width:100%; margin-top:8px; color:var(--green); font-size:14px; }
+.road-preparation .preparation-none.picked { background:var(--road-mint); border-radius:10px; }
+.road-diagnosis { padding-top:40px!important; position:relative; }
+.road-diagnosis .step-header { padding-right:55px; }
+.road-diagnosis .progress { margin-bottom:36px; }
+.road-diagnosis .eyebrow { color:var(--muted); letter-spacing:0; line-height:1.8; font-size:13px; }
+.road-diagnosis .lead { font-size:15px; }
+.road-diagnosis .choice-stack button { min-height:72px; font-size:16px; line-height:1.6; box-shadow:none; background:#f6faf7; font-weight:600; }
+.road-diagnosis .choice-index { font-family:inherit; color:var(--green); background:white; }
+.road-diagnosis>.secondary { margin-top:16px; }
+
+/* D1 / 03-1: 기존 SVG의 24칸·말 좌표를 유지하면서 보드를 가장 먼저 보여 준다. */
+.road-game .game-topbar { position:relative; background:#fff; backdrop-filter:none; min-height:68px; }
+.road-game .brand-small span { font-family:inherit; color:var(--green); }
+.road-game .game-layout { display:flex; flex-direction:column; align-items:center; width:min(100% - 48px,1100px); gap:28px; margin:24px auto; }
+.road-game .board-wrap { position:static; width:min(100%,740px); background:#fff; border:0; padding:0; box-shadow:none; }
+.road-board-heading { margin:0 0 20px; }
+.road-board-heading .eyebrow { font-size:12px; color:var(--green); letter-spacing:1px; margin:0 0 8px; }
+.road-board-heading h1 { font-family:inherit; font-size:27px; line-height:1.4; letter-spacing:-1px; margin:0; }
+.road-game .board-stage { width:min(100%,580px); margin:0 auto; }
+.road-game .board-bg { fill:#f7fbf7; stroke:#dce9df; }
+.road-game .tile rect { fill:#eff7f0; stroke:#cfdfd4; stroke-width:1; }
+.road-game .tile-market rect,.road-game .tile-outlook rect { fill:#eef5fa; stroke:#cfdee9; }
+.road-game .tile-life rect { fill:#fff3e7; stroke:#ecdac6; }
+.road-game .tile-policy rect,.road-game .tile-profile rect { fill:#f4f0fa; stroke:#e1d7ef; }
+.road-game .tile-trade rect,.road-game .tile-rebalance rect { fill:#fffae7; stroke:#e7dfbd; }
+.road-game .tile-label { fill:#395845; font-size:20px; font-family:inherit; font-weight:650; }
+.road-game .tile-number { fill:#5b7b66; font-size:16px; }
+.road-game .tile-kind-icon { color:#49765b; }
+.road-game .board-center text { font-family:inherit; fill:#55715e; font-size:19px; }
+.road-game .board-center .phase { fill:#245e3a; font-size:31px; font-weight:750; }
+.road-game .board-center .rate { font-family:inherit; fill:#245e3a; font-size:26px; }
+.road-game .board-center .seed { font-size:16px; }
+.road-game .board-guide image { mix-blend-mode:multiply; }
+.road-game .board-location { margin-top:14px; padding:8px 0; font-size:13px; }
+.road-game .board-step { font-size:13px; color:var(--muted); margin:8px 0 16px; }
+.road-game .board-hud { margin:0 0 12px; border-radius:14px; background:#f4f9f5; }
+.road-game .dashboard { width:100%; display:grid; grid-template-columns:1fr 1fr; align-items:start; gap:20px; }
+.road-game .dashboard>* { min-width:0; margin:0; }
+.road-game .dashboard .market-card,.road-game .dashboard .asset-card { grid-row:2; }
+.road-game .dashboard .card-tip,.road-game .dashboard .shock-banner { grid-column:1 / -1; grid-row:auto; }
+.road-game .dashboard .turn-log { grid-column:1 / -1; }
+.road-game .game-actions { width:min(100% - 24px,620px); border:1px solid var(--line); background:rgb(255 255 255 / 96%); box-shadow:0 6px 36px rgb(37 75 48 / 12%); border-radius:18px; bottom:10px; padding:8px max(8px,env(safe-area-inset-right)) max(8px,env(safe-area-inset-bottom)); }
+.road-game .game-actions .dice-button { background:var(--green); border-radius:12px; min-height:54px; font-weight:700; }
+.road-game .game-actions .dice-button:disabled { color:#5b6e61; background:#eaf0eb; }
+.dice-overlay { background:rgb(26 63 40 / 65%); }
+.dice-face { background:linear-gradient(145deg,#fff,#eaf4ec); }
+.dice-outcome { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:14px; padding:16px 0 6px; font-size:13px; }
+.dice-outcome-label { color:var(--muted); }
+.dice-outcome-pair { display:flex; gap:9px; perspective:300px; }
+.dice-outcome .dice-slot { width:32px; height:32px; }
+.dice-outcome .dice { --dice-size:30px; --half:15px; }
+.dice-outcome .dice-face { padding:4px; border-radius:5px; box-shadow:none; }
+.dice-outcome .pip.on::after { width:4px; height:4px; background:var(--green); }
+
+@media(max-width:800px) {
+  .title-screen.road-title,.setup-screen.road-preparation,.setup-screen.road-diagnosis { width:calc(100% - 40px); }
+  .road-header { min-height:66px; }
+  .road-wordmark { font-size:18px; }
+  .road-title .road-hero { grid-template-columns:1fr; padding:32px 0 18px; row-gap:18px; }
+  .road-title .road-intro,.road-title .road-hero-art,.road-title .road-launch { grid-column:1; grid-row:auto; }
+  .road-title .road-intro { order:0; }
+  .road-title .road-hero-art { order:1; max-width:330px; width:100%; margin:auto; }
+  .road-title .road-launch { order:2; max-width:none; }
+  .road-title h1 { font-size:32px; letter-spacing:-1.2px; }
+  .road-title .lead { font-size:15px; margin:16px 0; }
+  .road-benefits { font-size:12px; gap:8px 15px; margin:16px 0 0; }
+  .road-hero-art>p { font-size:12px; margin:-14px 0 0; }
+  .road-title .road-art { aspect-ratio:1.25; }
+  .road-title .jumbo { min-height:54px; }
+  .road-personalize-grid { grid-template-columns:1fr; padding:12px 16px 20px; gap:18px; }
+  .road-personalize>summary { font-size:13px; padding:12px 16px; }
+  .road-personalize>summary span { font-size:12px; }
+  .road-title-footer .utility-row { gap:8px 16px; }
+  .road-title-footer a,.road-title-footer .text-button { font-size:12px; }
+  .road-split { grid-template-columns:1fr; gap:24px; }
+  .road-preparation .step-header { margin-top:26px; }
+  .road-preparation h1,.road-diagnosis h1 { font-size:27px; }
+  .road-preparation>.lead { margin-bottom:24px; }
+  .road-preparation .preparation-profile { min-height:0; padding:24px; }
+  .road-preparation .preparation-profile h2 { font-size:30px; margin:16px 0 12px; }
+  .road-preparation .preparation-profile p { font-size:15px; }
+  .road-panel { padding:20px; }
+  .preparation-facts>div { gap:12px; font-size:13px; }
+  .road-preparation .default-option-card { min-height:112px; }
+  .road-preparation .preparation-option-detail h2 { font-size:24px; }
+  .road-preparation .preparation-actions { margin-top:18px; }
+  .road-diagnosis .progress { margin-bottom:26px; }
+  .road-diagnosis .choice-stack button { font-size:15px; padding:12px; gap:10px; }
+  .road-game .game-layout { width:calc(100% - 32px); margin:18px auto; }
+  .road-game .game-topbar { padding:8px 16px; grid-template-columns:1fr auto; gap:8px; }
+  .road-game .board-stage { width:min(100%,max(270px,calc(100svh - 310px))); }
+  .road-game .board-wrap { padding:0; }
+  .road-board-heading { margin-bottom:16px; }
+  .road-board-heading h1 { font-size:23px; }
+  .road-game .dashboard { display:flex; flex-direction:column; gap:16px; }
+  .road-game .dashboard>* { width:100%; }
+  .road-game .game-actions { bottom:6px; width:calc(100% - 16px); }
+  .road-game .game-actions button { font-size:12px; }
+  .road-game .game-actions .dice-button { font-size:14px; }
+}
+@media(max-width:359px) {
+  .title-screen.road-title,.setup-screen.road-preparation,.setup-screen.road-diagnosis { width:calc(100% - 32px); }
+  .road-title h1 { font-size:28px; }
+  .road-title .road-hero-art { max-width:265px; }
+  .road-game .mobile-stats strong { font-size:13px; }
+  .road-game .mobile-stats small { font-size:11px; }
+  .road-game .game-topbar { padding:8px; }
+  .road-game .game-actions .dice-button { font-size:12px; }
+  .preparation-facts>div { flex-wrap:wrap; gap:6px; }
+  .preparation-facts dd { text-align:left; }
+}
+@media(prefers-reduced-motion:reduce) { .road-art,.road-header { animation:none; transition:none; } }
+
+/* FB-012/013: an unassessed profile is not a result; touch hover is not a selection. */
+.preparation-unassessed { width:min(100%,620px); margin:24px auto; }
+.preparation-unassessed .primary { margin:24px 0; }
+.road-diagnosis .choice-stack button:hover { border-color:var(--line); transform:none; }
+.road-diagnosis .choice-stack button:active { background:var(--road-mint,#eff8f1); }
+@media (hover:hover) and (pointer:fine) {
+  .road-diagnosis .choice-stack button:hover { border-color:var(--green-2); transform:translateY(-1px); }
+}

@@ -1,0 +1,113 @@
+{
+  "unassessed": {
+    "text": "성향 확인 전나에게 맞는 투자 방식을 먼저 알아볼까요?아직 진단하지 않았습니다. 다섯 가지 질문에 답하면 내 성향과 이번 판의 시작 구성을 알려드려요.5문항으로 성향 알아보기교육용 진단입니다. 최종 게임 시작 전에는 다시 진단할 수 있고, 시작 후에는 이번 판의 성향이 유지됩니다.",
+    "profile": false
+  },
+  "questions": [
+    {
+      "question": "노후자금까지 남은 투자기간은?",
+      "focus": "노후자금까지 남은 투자기간은?",
+      "buttons": [
+        {
+          "key": "question-0-0",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        },
+        {
+          "key": "question-0-1",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        },
+        {
+          "key": "question-0-2",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        }
+      ]
+    },
+    {
+      "question": "평가액이 일시적으로 하락한다면 감내 가능한 범위는?",
+      "focus": "평가액이 일시적으로 하락한다면 감내 가능한 범위는?",
+      "buttons": [
+        {
+          "key": "question-1-0",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        },
+        {
+          "key": "question-1-1",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        },
+        {
+          "key": "question-1-2",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        }
+      ]
+    },
+    {
+      "question": "비상생활자금은 어느 정도 확보되어 있나요?",
+      "focus": "비상생활자금은 어느 정도 확보되어 있나요?",
+      "buttons": [
+        {
+          "key": "question-2-0",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        },
+        {
+          "key": "question-2-1",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        },
+        {
+          "key": "question-2-2",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        }
+      ]
+    },
+    {
+      "question": "투자상품이 10% 하락하면 어떻게 할 것 같나요?",
+      "focus": "투자상품이 10% 하락하면 어떻게 할 것 같나요?",
+      "buttons": [
+        {
+          "key": "question-3-0",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        },
+        {
+          "key": "question-3-1",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        },
+        {
+          "key": "question-3-2",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        }
+      ]
+    },
+    {
+      "question": "노후자금 운용에서 더 중요한 것은?",
+      "focus": "노후자금 운용에서 더 중요한 것은?",
+      "buttons": [
+        {
+          "key": "question-4-0",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        },
+        {
+          "key": "question-4-1",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        },
+        {
+          "key": "question-4-2",
+          "border": "rgb(217, 228, 220)",
+          "outline": "none"
+        }
+      ]
+    }
+  ]
+}

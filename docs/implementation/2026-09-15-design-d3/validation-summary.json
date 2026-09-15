@@ -1,0 +1,78 @@
+{
+  "automatedTests": {
+    "files": 60,
+    "passed": 629,
+    "typecheck": "passed",
+    "lint": "passed",
+    "build": "passed",
+    "afterFinalCopyChange": {
+      "targetedTests": 28,
+      "build": "passed"
+    }
+  },
+  "responsive": {
+    "valid": 65,
+    "passed": 65,
+    "excluded": 1,
+    "states": [
+      "cap",
+      "correct",
+      "final",
+      "legacy",
+      "payout",
+      "quiz",
+      "result-cushion",
+      "result-pension",
+      "result-purchasing",
+      "settle",
+      "shock",
+      "unmet",
+      "wrong"
+    ],
+    "widths": [
+      320,
+      390,
+      430,
+      844,
+      1440
+    ],
+    "overflowCases": 0,
+    "brokenImages": 0
+  },
+  "visualReview": {
+    "status": "pending",
+    "reason": "Mac screen locked; screenshot API times out",
+    "lastCheck": "Native tool reconfirmed the Mac remains locked; no screenshot retry"
+  },
+  "productionChanged": false,
+  "play": {
+    "desktopCompleted": true,
+    "mobileCompleted": true,
+    "desktopSteps": 105,
+    "mobileSteps": 68,
+    "widths": {
+      "desktop": [
+        1440
+      ],
+      "mobile": [
+        390
+      ]
+    },
+    "differencesByTurn": {
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": [],
+      "6": [],
+      "7": [],
+      "8": [],
+      "9": [],
+      "10": [],
+      "11": [],
+      "12": []
+    },
+    "financialStatesMatch": true
+  },
+  "deploymentInteractions": "passed"
+}

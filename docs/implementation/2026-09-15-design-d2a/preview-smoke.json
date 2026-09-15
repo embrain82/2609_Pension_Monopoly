@@ -1,0 +1,21 @@
+{
+  "url": "https://2609-pension-monopoly-2lc9ewyvw-nonsleepers-projects.vercel.app/",
+  "js": "https://2609-pension-monopoly-2lc9ewyvw-nonsleepers-projects.vercel.app/assets/index-C4l7FfJ_.js",
+  "css": "https://2609-pension-monopoly-2lc9ewyvw-nonsleepers-projects.vercel.app/assets/index-Bfoj49l6.css",
+  "turn": 1,
+  "position": 10,
+  "profile": "stable",
+  "dice": "직전 주사위 4과 6, 합계 10칸 이동",
+  "boardFont": "18px",
+  "menu": true,
+  "cards": 6,
+  "storyHeadings": [
+    "01 이번 턴 시장 변화",
+    "02 왜 영향을 받나요?",
+    "03 내 보유분에 반영"
+  ],
+  "marketEffects": 2,
+  "status": 200,
+  "sourceCommit": "cf47023",
+  "readyState": "READY"
+}

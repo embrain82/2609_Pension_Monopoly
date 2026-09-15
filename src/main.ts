@@ -2,6 +2,11 @@ import './styles/main.css';
 import './styles/p1.css';
 import './styles/p2.css';
 import './styles/playtest.css';
+import './styles/design-a1.css';
+import './styles/design-d2a.css';
+import './styles/design-d2b.css';
+import './styles/design-d3.css';
+import './styles/design-d4.css';
 import { validateContent } from './data/content';
 import { PensionRoadApp } from './ui/app';
 

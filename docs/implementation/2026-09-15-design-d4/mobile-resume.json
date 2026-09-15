@@ -1,0 +1,19 @@
+{
+  "turn": 10,
+  "version": "c4",
+  "gameEqual": true,
+  "changed": [],
+  "interestBefore": {
+    "turn": 10,
+    "opening": 5021041.435098711,
+    "rate": 0.001,
+    "amount": 5021.041435098711
+  },
+  "interestAfter": {
+    "turn": 10,
+    "opening": 5021041.435098711,
+    "rate": 0.001,
+    "amount": 5021.041435098711
+  },
+  "note": "Initial JSON string comparison differed because object-key order changed during route normalization; excluded. Semantic deep equality used here."
+}

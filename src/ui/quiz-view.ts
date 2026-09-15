@@ -13,6 +13,8 @@ export interface QuizViewState {
   streak: number;
   /** 실제 이해 점수 증분. 상한에 닿은 정답도 무조건 +2로 표시하지 않는다. */
   pointsEarned?: number;
+  /** 답하기 전 실제로 얻을 수 있는 점수. 상한이면 0 */
+  pointsAvailable?: number;
 }
 
 export function quizEyebrow(progress: QuizViewState['progress']): string {
@@ -31,7 +33,7 @@ export function renderQuizModal(card: LearningCard, view: QuizViewState): string
       </button>`;
   }).join('');
   const verdict = !answered
-    ? ''
+    ? '<div class="quiz-answer-placeholder"><span aria-hidden="true">?</span><p>답을 고르면 정답과 해설이 여기에 나타나요.</p><small>부담 없이 생각해 보세요. 오답은 벌점이 없습니다.</small></div>'
     : view.picked === card.quiz.answer
       ? renderSpeech('coach', `<p><strong>정답!</strong> ${view.pointsEarned === 0 ? '추가 점수 없이 복습 완료' : `제도·운용 이해 +${view.pointsEarned ?? 2}`}${view.streak >= 3 ? ` · ${view.streak}연속` : ''}. ${card.quiz.why}</p>`, { characters: view.characters, tone: 'positive' })
       : renderSpeech('coach', `<p><strong>아쉬워요.</strong> 정답은 「${card.quiz.options[card.quiz.answer]}」. ${card.quiz.why} 오답은 벌점이 없습니다.</p>`, { characters: view.characters });
@@ -41,14 +43,19 @@ export function renderQuizModal(card: LearningCard, view: QuizViewState): string
   const next = answered
     ? `<button class="primary jumbo" data-action="quiz-next">${view.progress && view.progress.index + 1 < view.progress.total ? '다음 문제' : view.optional?'정산으로 돌아가기':'계속'}</button>`
     : '';
-  return `<div class="modal-icon quiz">?</div>
-    <p class="eyebrow">${view.optional?'선택 학습 · 정산 후 한 문제':quizEyebrow(view.progress)}</p>
+  const available = view.pointsAvailable ?? 2;
+  return `<header class="quiz-heading"><p class="eyebrow">${view.optional?'선택 학습 · 정산 후 한 문제':quizEyebrow(view.progress)}</p>
     <p class="quiz-card"><span>${card.category}</span> ${card.title}</p>
-    <h2 class="quiz-question">${card.quiz.q}</h2>
-    <div class="quiz-options">${options}</div>
-    ${verdict}
-    ${answered ? `<details><summary>학습 목표·근거</summary><p>${card.learningObjective ?? card.key}</p><p><b>실제 제도·일반 원리</b> ${card.actualPrinciple ?? card.key}</p><p><b>이 판의 가정</b> ${card.gameAssumption ?? ""}</p><a href="${card.source_url}" target="_blank" rel="noreferrer">사실 근거</a> · 검수 ${card.reviewed_at}</details>` : ""}
-    <div class="button-stack">${next}${skip}</div>`;
+    <p class="quiz-reward">${answered ? '선택을 돌아보며 한 가지 더 배워요.' : available > 0 ? `정답이면 제도·운용 이해 +${available}점 · 오답 벌점 없음` : '이번 문제는 추가 점수 없이 복습할 수 있어요 · 오답 벌점 없음'}</p></header>
+    <div class="quiz-split"><section class="quiz-choice-panel" aria-labelledby="quiz-question">
+      <div class="quiz-prompt"><span class="quiz-q" aria-hidden="true">Q</span><h2 class="quiz-question" id="quiz-question">${card.quiz.q}</h2></div>
+      <div class="quiz-options" aria-label="답안 선택">${options}</div>
+    </section><section class="quiz-explanation" aria-labelledby="quiz-explanation-title">
+      <h3 id="quiz-explanation-title">선택을 확인해요</h3>
+      <div id="quiz-answer" class="quiz-answer" tabindex="-1" role="status" aria-atomic="true">${verdict}</div>
+      ${answered ? `<details class="quiz-source"><summary>학습 목표·근거</summary><p>${card.learningObjective ?? card.key}</p><p><b>실제 제도·일반 원리</b> ${card.actualPrinciple ?? card.key}</p><p><b>이 판의 가정</b> ${card.gameAssumption ?? ""}</p><a href="${card.source_url}" target="_blank" rel="noreferrer">사실 근거</a> · 검수 ${card.reviewed_at}</details>` : ''}
+      <div class="button-stack">${next}${skip}</div>
+    </section></div>`;
 }
 
 /** 결과 「배운 것」: 푼 퀴즈 목록과 정답 수 */

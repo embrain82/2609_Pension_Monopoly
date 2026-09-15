@@ -1,3 +1,4 @@
+import { accrueWaitingCash } from './finance-rules';
 import { explainMarketStep } from './market-explanation';
 import { mapHoldingBalances } from './position-engine';
 import { balanceConfig, marketShocks, policyRules, products } from '../data/content';
@@ -194,7 +195,7 @@ export function applyMarketStep(state: GameState, market: MarketStep): GameState
     const exposed = (order.side === 'sell' && order.stage === 'received') || (order.side === 'buy' && order.stage === 'priced');
     return exposed ? { ...order, amount: order.amount * (1 + market.returns[order.productId]) * (1 - products.find(p => p.id === order.productId)!.feeRate) } : { ...order };
   });
-  let next = { ...state, prices, pendingOrders, holdings, lastMarket: market };
+  let next = accrueWaitingCash({ ...state, prices, pendingOrders, holdings, lastMarket: market });
   const value = portfolioValue(next);
   const maxIrpValue = Math.max(state.maxIrpValue, value);
   const drawdown = maxIrpValue <= 0 ? 0 : Math.max(0, (maxIrpValue - value) / maxIrpValue);

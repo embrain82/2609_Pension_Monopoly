@@ -1,0 +1,137 @@
+{
+  "desktopCompleted": true,
+  "mobileCompleted": true,
+  "desktopSteps": 105,
+  "mobileSteps": 68,
+  "widths": {
+    "desktop": [
+      1440
+    ],
+    "mobile": [
+      390
+    ]
+  },
+  "financialFields": [
+    "seed",
+    "rngState",
+    "position",
+    "cash",
+    "irpCash",
+    "holdings",
+    "pendingOrders",
+    "accountBasis",
+    "contributionTotal",
+    "taxCreditEligible",
+    "taxCreditBenefit",
+    "marketPath",
+    "maxDrawdown",
+    "irpHistory"
+  ],
+  "differencesByTurn": {
+    "1": [],
+    "2": [],
+    "3": [],
+    "4": [],
+    "5": [],
+    "6": [],
+    "7": [],
+    "8": [],
+    "9": [],
+    "10": [],
+    "11": [],
+    "12": []
+  },
+  "financialStatesMatch": true,
+  "quizRecords": {
+    "desktop": [
+      {
+        "cardId": "contribution-limit",
+        "correct": true,
+        "turn": 1
+      },
+      {
+        "cardId": "fund-order",
+        "correct": true,
+        "turn": 2
+      },
+      {
+        "cardId": "sale-vs-withdrawal",
+        "correct": false,
+        "turn": 3
+      },
+      {
+        "cardId": "rebalance",
+        "correct": true,
+        "turn": 4
+      },
+      {
+        "cardId": "inflation-value",
+        "correct": true,
+        "turn": 5
+      },
+      {
+        "cardId": "pricing-vs-settlement",
+        "correct": false,
+        "turn": 12
+      },
+      {
+        "cardId": "db-dc-irp",
+        "correct": false,
+        "turn": 12
+      },
+      {
+        "cardId": "tdf-glide",
+        "correct": true,
+        "turn": 12
+      },
+      {
+        "cardId": "etf-order",
+        "correct": false,
+        "turn": 12
+      },
+      {
+        "cardId": "signal-vs-forecast",
+        "correct": false,
+        "turn": 12
+      },
+      {
+        "cardId": "emergency-cash",
+        "correct": false,
+        "turn": 12
+      },
+      {
+        "cardId": "rate-bond",
+        "correct": false,
+        "turn": 12
+      },
+      {
+        "cardId": "duration",
+        "correct": true,
+        "turn": 12
+      },
+      {
+        "cardId": "diversification",
+        "correct": false,
+        "turn": 12
+      },
+      {
+        "cardId": "deposit-rate",
+        "correct": false,
+        "turn": 12
+      }
+    ],
+    "mobile": [
+      {
+        "cardId": "contribution-limit",
+        "correct": true,
+        "turn": 1
+      },
+      {
+        "cardId": "fund-order",
+        "correct": true,
+        "turn": 2
+      }
+    ]
+  },
+  "note": "PC는 풀이와 건너뛰기 경고 복귀, 모바일은 첫 두 문제 풀이 후 건너뛰기 확인을 검증했다. 학습 결과는 동일 답안을 강제하지 않아 금융 상태와 별도 비교. 두 판 모두 동작 줄이기/2배속이며 실제 기기 검사가 아니다."
+}

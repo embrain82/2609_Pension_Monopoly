@@ -42,7 +42,7 @@ it('사용자 스크롤 개입 후 화면을 다시 끌어당기지 않는다',a
   const pending=revealBoard(board,footer,motion,motion.begin(),false)!;window.dispatchEvent(new WheelEvent('wheel'));await vi.advanceTimersByTimeAsync(16);await expect(pending).resolves.toBe('interrupted');expect(scroll).not.toHaveBeenCalled();
 });
 it('화면 이동 중 중복 주사위 입력·탭 중단은 턴과 급여를 실행하지 않는다',async()=>{
-  vi.useFakeTimers();localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true}));
+  vi.useFakeTimers();localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true,howtoSeen:true}));
   const root=document.querySelector<HTMLElement>('#app')!;new PensionRoadApp(root);
   const click=(action:string)=>root.querySelector<HTMLButtonElement>(`[data-action="${action}"]`)!.click();
   click('begin');click('prepare-continue');click('prepare-no-option');click('confirm-default-option');

@@ -82,3 +82,8 @@ export function renderDiceMarkup(faces: [number, number], rolling: boolean, dura
     <p>${rolling ? '주사위를 굴리는 중' : `${label} 이동 · 이번 턴 시장을 확인하세요`}</p>
   </div>`;
 }
+
+/** 최근 실제 굴림을 정지된 점 눈으로 확인한다. 동작 줄이기·이어하기에서도 결과를 읽을 수 있다. */
+export function renderDiceOutcome(faces: [number, number]): string {
+  return `<div class="dice-outcome" role="img" aria-label="직전 주사위 ${faces[0]}과 ${faces[1]}, 합계 ${diceSteps(faces)}칸 이동"><span class="dice-outcome-label">직전 주사위</span><div class="dice-outcome-pair" aria-hidden="true">${cubeMarkup(faces[0], 0, false, 0)}${cubeMarkup(faces[1], 1, false, 0)}</div><strong>${diceSteps(faces)}칸 이동</strong></div>`;
+}

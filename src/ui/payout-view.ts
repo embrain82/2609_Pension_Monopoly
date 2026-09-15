@@ -4,6 +4,7 @@ import { accountPayout, SCENARIO_CLOCK } from '../engine/account-engine';
 import type { GameState, PayoutChoice, PayoutPlan } from '../types';
 import { portfolioValue } from '../engine/portfolio-engine';
 import { renderSpeech } from './speech';
+import { renderBrandArt } from './design-system';
 import { missionDisplay, pensionBasisLabel } from '../engine/progress-engine';
 import { calculateScore } from '../engine/scoring-engine';
 
@@ -13,26 +14,30 @@ export interface PayoutViewOptions {
   characters: boolean;
   /** 결과 화면에서 다시 고르는 경우 지금 선택 */
   current?: PayoutChoice | null;
+  /** 화면에서 비교 중인 선택. 확정 전에는 GameState에 반영하지 않는다. */
+  selected?: PayoutChoice | null;
+  showArt?: boolean;
 }
 
 export function payoutLabel(choice: PayoutChoice): string {
   return choice === 'lumpSum' ? '일시금' : '연금(20년)';
 }
 
-function planCard(plan: PayoutPlan, state: GameState, current: PayoutChoice | null | undefined): string {
+function planCard(plan: PayoutPlan, state: GameState, current: PayoutChoice | null | undefined, selected: PayoutChoice | null): string {
   const lump = plan.choice === 'lumpSum';
   const projected = { ...state, payoutChoice: plan.choice };
   const mission = missionDisplay(projected, calculateScore(projected));
+  const selectedHere = selected === plan.choice;
   const headline = lump ? `세후 ${formatWon(plan.net)}` : `세후 평균 월 ${formatWon(plan.monthlyNet)}`;
   const sub = lump
     ? `일시 수령액 · 평균 세금 ${pct(plan.taxRate)} (${formatWon(plan.tax)}) · ${pensionBasisLabel(plan.choice)} ${formatWon(plan.monthlyBasis)}`
     : `평균 세금 ${pct(plan.taxRate)} · ${policyRules.receivingMonths}개월 · ${pensionBasisLabel(plan.choice)} ${formatWon(plan.monthlyBasis)}`;
   const goal = `<span class="payout-goal ${mission.passed ? 'ok' : 'miss'}">${mission.name} ${mission.passed ? '달성' : '미달'}${mission.passed ? '' : ` · ${mission.remaining}`}</span>`;
-  return `<button type="button" class="payout-card ${lump ? 'lump' : 'annuity'} ${current === plan.choice ? 'current' : ''}" data-action="choose-payout" data-choice="${plan.choice}">
-      <span class="payout-name">${payoutLabel(plan.choice)}${current===plan.choice?' · ✓ 현재 선택':''}</span>
+  return `<button type="button" class="payout-card ${lump ? 'lump' : 'annuity'} ${current === plan.choice ? 'current' : ''}${selectedHere ? ' selected' : ''}" aria-pressed="${selectedHere}" data-action="choose-payout" data-choice="${plan.choice}">
+      <span class="payout-name">${payoutLabel(plan.choice)}${current===plan.choice?' · 확정된 방식':''}</span>
       <strong>${headline}</strong>
       <small>${sub}</small>
-      ${goal}
+      ${goal}<span class="payout-picked">${selectedHere ? '✓ 비교 중인 선택' : '선택해서 비교'}</span>
     </button>`;
 }
 
@@ -45,17 +50,26 @@ export function renderPayoutModal(state: GameState, options: PayoutViewOptions):
   const annuity = accountPayout(irp, 'annuity20', state.accountBasis);
   const lump = accountPayout(irp, 'lumpSum', state.accountBasis);
   const diff = lump.tax - annuity.tax;
+  const selected = options.selected === undefined ? options.current ?? null : options.selected;
+  const chosen = selected === 'lumpSum' ? lump : annuity;
+  const projected = selected ? { ...state, payoutChoice: selected } : null;
+  const projectedMission = projected ? missionDisplay(projected, calculateScore(projected)) : null;
   const mission = missionDisplay(state);
   const goalExplanation = mission.id === 'pension'
     ? `연금 미션은 목표용 월 환산액으로 판정합니다. 일시금은 세후 비교 비율을 반영하므로 같은 IRP라도 목표용 환산액이 ${Math.round((1 - (annuity.monthlyBasis > 0 ? lump.monthlyBasis / annuity.monthlyBasis : 1)) * 100)}% 낮게 잡힙니다. 실제 월 지급액은 아닙니다.`
     : `이번 ${mission.name} 미션은 ${mission.metric} 기준으로 판정합니다. 이 화면에서 수령 방식을 바꿔도 해당 미션의 판정은 달라지지 않습니다.`;
-  return `<div class="modal-icon payout">₩</div>
-    <p class="eyebrow">12턴 끝 · 마지막 결정</p>
-    <h2>어떻게 받을까요?</h2>
-    <p class="modal-lead">최종 주문 정산을 마친 IRP <b>${formatWon(irp)}</b>로 비교합니다. 두 방식 모두 선택할 수 있고 결과에서 바꿔 볼 수 있습니다.</p><details class="payout-basis"><summary>재원별 세금 계산 기준</summary><p>미공제 원금은 과세 제외, 퇴직급여는 원천징수영수증의 이연세액, 공제 원금·수익은 수령 방식과 나이에 따른 세금으로 구분합니다. 표시 비율은 전체 잔액 대비 평균 세금입니다.</p></details>
-    <div class="payout-grid">${planCard(annuity, state, options.current)}${planCard(lump, state, options.current)}</div>
+  return `<header class="payout-heading"><div><p class="eyebrow">12턴 끝 · 마지막 결정</p>
+    <h2>어떻게 받을까요?</h2><p>같은 최종 자산으로 두 수령 방식을 비교해 보세요.</p></div>
+    ${options.characters ? renderBrandArt('journey', options.showArt !== false) : ''}</header>
+    <div class="payout-total"><small>최종 주문 정산을 마친 IRP</small><strong>${formatWon(irp)}</strong><span>선택만으로 확정되지 않아요. 결과에서 다시 비교할 수 있습니다.</span></div>
+    <div class="payout-grid" role="group" aria-label="수령 방식 비교 선택">${planCard(annuity, state, options.current, selected)}${planCard(lump, state, options.current, selected)}</div>
+    <section class="payout-selection" aria-labelledby="payout-selection-title" aria-live="polite"><h3 id="payout-selection-title">${selected ? '선택한 방식으로 미리 보기' : '수령 방식을 선택해 주세요'}</h3>
+      ${selected && projectedMission ? `<strong class="payout-chosen">${payoutLabel(selected)}</strong><p>${pensionBasisLabel(selected)} <b>${formatWon(chosen.monthlyBasis)}</b></p><p class="payout-mission ${projectedMission.passed ? 'ok' : 'miss'}">${projectedMission.name} ${projectedMission.passed ? '달성' : '미달'} · ${projectedMission.valueText} / 목표 ${projectedMission.targetText}</p><p>${selected === 'lumpSum' ? '일시금의 목표용 월 환산액은 비교용이며 실제 월 지급액이 아닙니다.' : '세후 평균 월 수령액과 목표용 월 환산액은 다른 값입니다.'} 선택 자체에 벌점은 없습니다.</p>` : '<p>두 방식의 세후 금액과 목표 판정을 확인한 뒤 하나를 골라 주세요.</p>'}
+    </section>
+    <div class="payout-confirm"><button class="primary jumbo" data-action="confirm-payout" ${selected ? '' : 'disabled aria-describedby="payout-selection-title"'}>이 방식으로 결과 보기</button><small>확정 전 새로고침하면 임시 선택을 다시 골라야 합니다.</small></div>
     ${renderSpeech('coach', `<p>이 판의 가정에 따른 일시금과 연금의 세금 차이는 <b>${formatWon(diff)}</b>입니다. ${goalExplanation} 일시금은 목돈 활용, 연금은 기간에 나눈 수령을 비교하는 체험입니다. 선택 자체에 벌점은 없습니다.</p>`, { characters: options.characters, title: '내 상황에 맞춰 비교' })}
-    <p class="hint">${SCENARIO_CLOCK.description} 초기 퇴직급여 9천만원의 이연세액 180만원은 가상 영수증의 값입니다. 손실 시 재원 비례 축소·수령 중 운용수익 없음 가정이며 실제 세무 계산서는 아닙니다.</p>`;
+    <details class="payout-basis"><summary>재원별 세금 계산 기준</summary><p>미공제 원금은 과세 제외, 퇴직급여는 원천징수영수증의 이연세액, 공제 원금·수익은 수령 방식과 나이에 따른 세금으로 구분합니다. 표시 비율은 전체 잔액 대비 평균 세금입니다.</p>
+    <p>${SCENARIO_CLOCK.description} 초기 퇴직급여 9천만원의 이연세액 180만원은 가상 영수증의 값입니다. 손실 시 재원 비례 축소·수령 중 운용수익 없음 가정이며 실제 세무 계산서는 아닙니다.</p></details>`;
 }
 
 /** 결과 화면 수령 방식 한 줄 */

@@ -1,0 +1,174 @@
+/* D2a: 게임판의 글자 밀도를 낮추되 칸 좌표·주사위·말 크기는 유지한다. */
+.road-board-heading h1 { font-size:22px; font-weight:650; }
+.road-game .tile-label { font-size:16px; font-weight:550; }
+.road-game .tile-number { font-size:13px; }
+.road-game .board-center text { font-size:16px; }
+.road-game .board-center .phase { font-size:25px; font-weight:650; }
+.road-game .board-center .rate { font-size:22px; }
+.road-game .board-center .seed { font-size:14px; }
+.road-game .region-landmark text { font-size:13px; font-weight:550; }
+
+/* 04-3 / 05-1 / 06-2. 주문·포트폴리오의 D2b 레이아웃은 별도로 적용한다. */
+.modal-sheet.road-scene { width:min(100%,760px); padding:28px; border-radius:22px; color:var(--ink); }
+.road-scene h2 { font-family:inherit; font-size:27px; line-height:1.45; letter-spacing:-.8px; }
+.road-scene .eyebrow { font-size:12px; letter-spacing:.3px; color:var(--green); }
+.road-scene p { line-height:1.7; }
+.road-scene .hint,.road-scene .modal-feedback { font-size:12px; }
+.road-scene .primary.jumbo { min-height:54px; font-size:16px; }
+.road-scene .modal-feedback:empty { display:none; }
+.road-scene .region-notice { font-size:13px; margin:0 0 16px; }
+.road-scene .button-stack { gap:12px; }
+.road-scene summary { cursor:pointer; }
+.road-scene .button-stack .text-button { min-height:44px; }
+
+/* 원인에서 결과로: 금리 전후 → 원리 → 기록된 시장 손익. */
+.market-story { display:grid; gap:14px; }
+.market-story-step { padding:20px; border:1px solid var(--line); border-radius:16px; background:#f7faf7; min-width:0; }
+.market-story h3 { display:flex; align-items:center; gap:9px; font-family:inherit; font-size:15px; margin:0 0 18px; line-height:1.5; }
+.market-story h3>span { display:inline-grid; place-items:center; flex:0 0 25px; height:25px; border-radius:50%; background:#e4f0e7; color:var(--green); font-size:11px; }
+.market-story-rate { background:#f0f7f1; }
+.story-market-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:22px; }
+.story-label { display:block; color:var(--muted); font-size:12px; }
+.story-rate-values { display:flex; align-items:baseline; flex-wrap:wrap; gap:10px; margin:10px 0; font-size:22px; font-variant-numeric:tabular-nums; }
+.story-rate-values>strong { font-size:28px; color:var(--green); }
+.story-rate-values>[aria-label] { font-size:17px; color:var(--muted); }
+.story-rate-delta { display:inline-block; font-size:12px; background:#fff; padding:4px 9px; border-radius:7px; }
+.story-stock { border-left:1px solid var(--line); padding-left:22px; }
+.story-stock>strong { display:block; font-size:28px; margin:10px 0; font-variant-numeric:tabular-nums; }
+.story-stock>small { font-size:11px; color:var(--muted); }
+.market-story-reason { background:#fff; }
+.market-story-reason .speech { margin:0; gap:10px; align-items:start; }
+.market-story-reason .bubble { padding:0; border:0; border-radius:0; background:none; box-shadow:none; min-width:0; }
+.market-story-reason .bubble::before,.market-story-reason .bubble::after { display:none; }
+.market-story-reason .speech>svg { width:36px; height:36px; flex:0 0 36px; }
+.market-story-reason .news-reason { margin:0; font-size:13px; line-height:1.85; }
+.market-story-holdings { background:#f7f9fc; }
+.market-story .news-irp { display:flex; flex-wrap:wrap; justify-content:flex-start; align-items:baseline; gap:4px 9px; margin:0 0 16px; padding:0; border:0; border-radius:0; background:none; box-shadow:none; animation:none; }
+.market-story .news-irp>span { flex-basis:100%; font-size:12px; color:var(--muted); }
+.market-story .news-irp>b { font-family:inherit; font-size:28px; letter-spacing:-.7px; }
+.market-story .news-irp>small { font-size:14px; }
+.market-story .news-irp>em { flex-basis:100%; font-size:11px; font-style:normal; line-height:1.65; }
+.market-story .actual-market-impact { margin:0; padding:16px; background:#fff; border:1px solid #e2e8ec; border-radius:12px; }
+.market-story .actual-market-impact>strong { font-size:12px; color:var(--muted); }
+.market-story .actual-market-impact li>div { display:flex; justify-content:space-between; flex-wrap:wrap; gap:4px 12px; font-size:13px; }
+.market-story .actual-market-impact li b { font-size:13px; }
+.market-story .actual-market-impact li small { font-size:11px; }
+.market-story .actual-market-impact>small { display:block; margin-top:14px; font-size:11px; line-height:1.6; }
+.market-story .story-basis { font-size:11px; color:var(--muted); margin:12px 0 0; }
+.road-news { gap:18px; }
+.road-news .news-headline { font-family:inherit; font-size:27px!important; font-weight:700; line-height:1.5; animation:none; }
+.road-news .news-tape { font-size:11px; flex-wrap:wrap; margin:0; padding:12px; background:#edf5ef; color:var(--green); border-radius:9px; }
+.road-news.shock .news-tape { background:#fff1e5; color:#9a471f; }
+.road-news.positive .news-tape { background:#fff8df; color:#806116; }
+.road-news .news-badge { background:transparent; color:inherit; }
+.road-news .news-more,.story-products { padding:14px 16px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+.road-news .news-more>summary,.story-products>summary { font-size:13px; font-weight:650; color:var(--green); min-height:24px; }
+.road-news .news-arrows { margin:16px 0; }
+.road-news .news-arrows b { font-size:15px; }
+.road-news .market-alert { margin:0; padding:16px; font-size:13px; }
+.road-news .market-alert small { font-size:12px; }
+.news-arrival-card { padding:16px; border:1px solid var(--line); border-radius:14px; background:#f7faf7; }
+.road-news .news-arrival { font-size:15px; margin:0; padding:0; border:0; font-weight:650; }
+.road-news .tile-effects { margin-top:14px; }
+.road-scene.modal-tile .tile-briefing-body { padding:20px; border-radius:16px; background:var(--road-mint); font-size:15px; line-height:1.85; }
+.road-scene.modal-tile .tile-briefing-more { font-size:14px; margin:16px 0; }
+
+/* 생활 사건: 사건 하나, 필요/입금 금액, 지금·나중, 비활성 사유. */
+.life-scene h2 { margin:10px 0 14px; }
+.life-scene .modal-lead { font-size:15px; margin-bottom:22px; }
+.life-scene .event-cost { display:block; padding:22px; border:1px solid #f0e3ce; border-radius:16px; background:#fff7e9; margin:0 0 22px; }
+.life-scene.kind-bonus .event-cost,.life-scene.kind-transfer .event-cost { background:#eef7f0; border-color:#d9e8de; }
+.life-scene .event-cost>div>span { display:block; font-size:12px; color:var(--muted); }
+.life-scene .event-cost strong { display:block; font-family:inherit; font-size:30px; margin-top:8px; }
+.life-scene .event-cash { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:18px; padding-top:14px; border-top:1px solid #e5ddce; font-size:14px; }
+.life-scene .life-prompt { font-size:13px; color:var(--muted); margin:0 0 14px; }
+.life-choice-wrap { border:1px solid var(--line); border-radius:14px; background:#fff; overflow:hidden; }
+.life-choice-wrap.unavailable { background:#f3f5f3; }
+.life-scene .life-choice { grid-template-columns:34px minmax(0,1fr) 10px; gap:12px; border:0; border-radius:0; padding:18px; box-shadow:none; background:transparent; animation:none; }
+.life-scene .life-choice:not(:disabled):hover { transform:none; background:#f0f8f2; }
+.life-scene .life-choice .choice-index { display:grid; place-items:center; width:34px; height:34px; border-radius:10px; background:#eaf4ed; color:var(--green); }
+.life-scene .life-choice:disabled .choice-index { color:#7b8980; background:#e6eae7; }
+.life-choice-body strong { font-size:16px; line-height:1.55; }
+.life-scene .life-choice-body small { font-size:13px; line-height:1.7; }
+.life-scene .life-choice-body small.now { color:#42634c; }
+.life-scene .life-choice-body small.later { color:var(--muted); }
+.life-choice-arrow { color:var(--green); font-size:20px; }
+.life-scene .life-reason { margin:0; padding:0 18px 16px 64px; font-size:12px; color:#675745; line-height:1.7; }
+.life-account-note { background:#f3f7f4; padding:14px 16px; border-radius:12px; font-size:12px; color:var(--muted); margin:20px 0 0; }
+
+/* 아이콘 카드 메뉴. 확정 전까지 행동을 쓰지 않는 기존 버튼 경로를 사용한다. */
+.action-menu-heading h2 { margin-top:8px; }
+.action-menu-heading>p:last-child { font-size:13px; color:var(--muted); margin-bottom:22px; }
+.action-money { display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:18px; background:#f2f7f3; border:1px solid var(--line); border-radius:14px; }
+.action-money>div { min-width:0; }
+.action-money span { font-size:12px; color:var(--muted); display:block; line-height:1.6; }
+.action-money strong { font-size:22px; margin-top:8px; display:block; font-variant-numeric:tabular-nums; }
+.road-action-menu .decision-context { margin-top:20px; }
+.road-action-menu .decision-market { font-size:12px; margin:0 0 10px; color:var(--muted); }
+.road-action-menu .market-impact-details { margin:0; border-radius:12px; }
+.road-action-menu .market-impact-details>summary { padding:14px; gap:12px; }
+.road-action-menu .market-impact-details>summary strong { font-size:14px; }
+.road-action-menu .market-impact-details>summary small { font-size:11px; margin-top:3px; }
+.road-action-menu .market-impact-toggle { font-size:12px; flex-shrink:0; }
+.road-action-menu .market-impact-content { padding:12px; }
+.road-action-menu .action-list { grid-template-columns:1fr 1fr; gap:12px; }
+.road-action-menu .action-list .action-menu-card { display:block; min-width:0; padding:0; border-radius:14px; overflow:hidden; }
+.road-action-menu .action-list .action-menu-card.featured { border-color:var(--line); background:#fff; }
+.road-action-menu .action-menu-choice { display:grid; grid-template-columns:32px minmax(0,1fr); position:relative; align-items:start; gap:12px; width:100%; height:100%; text-align:left; padding:22px 18px; min-height:136px; background:transparent; color:var(--ink); border-radius:0; }
+.road-action-menu .action-menu-choice:not(:disabled):hover { background:#eef8f0; }
+.road-action-menu .action-menu-choice .operation-icon { color:var(--green); padding:5px; box-sizing:content-box; background:#edf5ef; border-radius:9px; }
+.action-menu-copy { display:grid; gap:9px; min-width:0; }
+.road-action-menu .action-menu-copy strong { font-size:16px; font-weight:650; line-height:1.5; }
+.road-action-menu .action-menu-copy small { font-size:12px; font-weight:400; line-height:1.75; }
+.road-action-menu .action-menu-affordance { grid-column:2; font-size:11px; color:var(--green); font-weight:600; }
+.road-action-menu .action-menu-choice:disabled { background:#f1f4f1; color:#6c7b70; height:auto; }
+.road-action-menu .action-menu-choice:disabled .operation-icon { color:#7c8980; background:#e4e9e5; }
+.road-action-menu .action-menu-choice:disabled .action-menu-affordance { color:#6c7b70; }
+.road-action-menu .action-list .availability-reason { font-size:12px; margin:0; padding:0 18px 18px; color:#675745; }
+.road-action-menu .action-list .hold-row { grid-column:1/-1; display:block; padding:18px; background:#f6f9f6; }
+.road-action-menu .hold-row>div { display:block; }
+.road-action-menu .hold-row strong { display:block; font-size:15px; margin-bottom:8px; }
+.road-action-menu .hold-row small { display:block; font-size:12px; line-height:1.75; }
+.road-action-menu .hold-row button { margin-top:16px; width:100%; min-height:48px; background:#e8f1e9!important; color:var(--green); border:1px solid #c8dfce; font-size:14px; }
+.road-action-menu .action-sofar { padding:14px 16px; border-radius:12px; margin:18px 0; background:#f4f7f3; font-size:13px; }
+.road-action-menu .action-sofar p { margin:8px 0 0; }
+.road-action-menu .spotlight-note { font-size:12px; }
+.road-action-menu .action-footer { margin-top:22px; }
+.road-action-menu .action-footer .secondary { font-size:14px; min-height:48px; }
+.road-action-menu .action-footer small { font-size:11px; }
+
+@media(max-width:800px) {
+  .road-board-heading h1 { font-size:20px; }
+  .road-game .tile-label { font-size:18px; }
+  .road-game .tile-number { font-size:14px; }
+  .modal-sheet.road-scene { padding:18px 16px; border-radius:20px; }
+  .road-scene .modal-close-bar { top:-18px; margin:-18px -16px 12px; }
+  .road-scene h2,.road-news .news-headline { font-size:24px!important; }
+  .market-story-step { padding:16px; }
+  .story-market-grid { grid-template-columns:1.5fr 1fr; gap:14px; }
+  .story-rate-values { font-size:18px; gap:7px; }
+  .story-rate-values>strong,.story-stock>strong { font-size:23px; }
+  .story-stock { padding-left:14px; }
+  .market-story .news-irp>b { font-size:25px; }
+  .road-action-menu .action-money { padding:15px; gap:10px; }
+  .action-money strong { font-size:19px; }
+  .road-action-menu .action-menu-choice { grid-template-columns:1fr; align-content:start; gap:12px; padding:16px 13px; min-height:176px; }
+  .road-action-menu .action-menu-affordance { position:absolute; grid-column:auto; right:12px; top:23px; font-size:10px; white-space:nowrap; }
+  .road-action-menu .action-menu-copy strong { font-size:15px; }
+  .road-action-menu .action-menu-copy small { font-size:12px; }
+  .road-action-menu .action-list .availability-reason { padding:0 13px 16px; font-size:11px; }
+  .road-action-menu .market-impact-details>summary { flex-wrap:wrap; }
+  .road-action-menu .market-impact-toggle { margin-left:auto; }
+  .life-scene .life-choice { padding:16px 13px; gap:10px; }
+  .life-choice-body strong { font-size:15px; }
+  .life-scene .life-choice-body small { font-size:12px; }
+  .life-scene .life-reason { padding-left:57px; padding-right:13px; font-size:12px; }
+}
+@media(max-width:359px) {
+  .road-action-menu .action-list { gap:9px; }
+  .road-action-menu .action-menu-choice { padding:14px 10px; }
+  .road-action-menu .action-menu-affordance { right:8px; }
+  .road-action-menu .action-money { grid-template-columns:1fr; }
+  .story-market-grid { grid-template-columns:1fr; }
+  .story-stock { border-left:0; border-top:1px solid var(--line); padding:14px 0 0; }
+}

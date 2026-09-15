@@ -115,7 +115,7 @@ export function renderBoardMarkup(
         ${state.route.visits.includes(item.index) ? '<circle class="visit-stamp" cx="50" cy="18" r="5"></circle>' : ''}
         <use class="tile-kind-icon" href="#board-icon-${item.kind}" x="14" y="12" width="24" height="24" aria-hidden="true"/>
         <text class="tile-number" x="84" y="24" text-anchor="end">${String(item.index + 1).padStart(2, '0')}</text>
-        <text class="tile-label" x="50" y="70" text-anchor="middle">${item.label.length > 7 ? item.label.slice(0, 7) : item.label}</text>
+        <text class="tile-label" x="50" y="70" text-anchor="middle">${item.label.replace(' 거리','').replace('은퇴 전망대','은퇴전망').replace('금리 전망길','금리전망')}</text>
         ${(view.trail ?? []).includes(item.index) ? '<circle class="move-trail" cx="50" cy="46" r="9" aria-hidden="true"/>' : ''}
         ${landed ? '<ellipse class="arrival-ring" cx="50" cy="50" rx="34" ry="20" aria-hidden="true"/>' + tileFx(item.kind) : ''}
         ${active && view.tokenInSvg !== false ? playerToken(state, view) : ''}
@@ -141,6 +141,6 @@ export function renderBoardMarkup(
       <text class="seed" x="350" y="452" text-anchor="middle">TURN ${String(state.turn).padStart(2, '0')} / 12 · ${tile.label}</text>`;
   return `<svg class="board" viewBox="0 0 700 700" role="group" aria-label="24칸 순환 보드. 현재 말은 ${token + 1}번 칸 ${tile.label}에 있습니다.">
       ${boardSymbols()}<rect class="board-bg" x="0" y="0" width="700" height="700" rx="28"></rect>${regionLandmarks()}${tiles}
-      <g class="board-center">${center}</g>
+      <g class="board-center">${view.characters ? '<g class="board-guide" aria-hidden="true"><image href="./assets/design-a1/mascot.jpg" x="253" y="199" width="194" height="108" preserveAspectRatio="xMidYMid meet"/></g>' : ''}<g transform="translate(0 ${view.characters ? 45 : 0})">${center}</g></g>
     </svg>`;
 }

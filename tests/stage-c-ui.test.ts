@@ -19,7 +19,7 @@ function mountAction(twoActions = false) {
 }
 beforeEach(() => {
   localStorage.clear(); document.body.innerHTML='<div id="app"></div>'; root=document.querySelector('#app')!;
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));
 });
 afterEach(() => { vi.useRealTimers(); });
 describe('운용 선택 탐색', () => {
@@ -71,7 +71,7 @@ it('경로 선택 없이 자동 이동하는 12턴 UI를 완주하고 결과 중
     const action = actions.find(a => (dialog ?? root).querySelector(`[data-action="${a}"]`));
     expect(action, (dialog ?? root).textContent ?? '').toBeTruthy();
     if(action === 'resolve-life') click('[data-action="resolve-life"][data-choice="cash"]');
-    else if(action === 'choose-payout') click('[data-action="choose-payout"][data-choice="annuity20"]');
+    else if(action === 'choose-payout') { click('[data-action="choose-payout"][data-choice="annuity20"]'); click('[data-action="confirm-payout"]'); }
     else click(`[data-action="${action}"]`);
   }
   expect(root.querySelector('.result-screen')).not.toBeNull();
@@ -80,7 +80,7 @@ it('경로 선택 없이 자동 이동하는 12턴 UI를 완주하고 결과 중
 });
 it('이동 도중 탭 중단·복구에서도 보드/말 노드를 유지하고 시장·급여를 한 번만 처리한다', async () => {
   vi.useFakeTimers();
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true}));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true,howtoSeen:true}));
   new PensionRoadApp(root); click('[data-action="begin"]');click('[data-action="prepare-continue"]'); click('[data-action="prepare-no-option"]');click('[data-action="confirm-default-option"]');
   const board=root.querySelector('.board'), token=root.querySelector('.token-pos');
   click('[data-action="roll-dice"]'); await vi.advanceTimersByTimeAsync(1500);
@@ -91,7 +91,7 @@ it('이동 도중 탭 중단·복구에서도 보드/말 노드를 유지하고 
   await vi.runAllTimersAsync(); expect(saved().game.turn).toBe(0);
   const faces=dicePairForTurn(checkpoint.game.seed,checkpoint.game.turn); const expected=startTurn(checkpoint.game,faces[0]+faces[1]).state;
   document.body.innerHTML='<div id="resumed"></div>'; root=document.querySelector('#resumed')!;
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));
   new PensionRoadApp(root); click('[data-action="resume-game"]'); click('[data-action="roll-dice"]');
   expect(saved().game).toEqual(expected); expect(saved().game.route).not.toHaveProperty("choices");
 });

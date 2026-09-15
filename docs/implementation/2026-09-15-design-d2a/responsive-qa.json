@@ -1,0 +1,446 @@
+[
+  {
+    "fixture": "news",
+    "requestedWidth": 320,
+    "width": 320,
+    "height": 740,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 264,
+    "contentWidth": 264,
+    "disabled": []
+  },
+  {
+    "fixture": "news",
+    "requestedWidth": 390,
+    "width": 390,
+    "height": 844,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 364,
+    "contentWidth": 364,
+    "disabled": []
+  },
+  {
+    "fixture": "news",
+    "requestedWidth": 430,
+    "width": 430,
+    "height": 932,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 404,
+    "contentWidth": 404,
+    "disabled": []
+  },
+  {
+    "fixture": "news",
+    "requestedWidth": 844,
+    "width": 844,
+    "height": 390,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 743,
+    "contentWidth": 743,
+    "disabled": []
+  },
+  {
+    "fixture": "news",
+    "requestedWidth": 1440,
+    "width": 1440,
+    "height": 1000,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 743,
+    "contentWidth": 743,
+    "disabled": []
+  },
+  {
+    "fixture": "empty",
+    "requestedWidth": 320,
+    "width": 320,
+    "height": 740,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 264,
+    "contentWidth": 264,
+    "disabled": [
+      {
+        "text": "매수\n대기자금으로 상품 매수 · 가격확정 이후 수익 반영\n이용 불가",
+        "description": "reason-buy"
+      },
+      {
+        "text": "디폴트옵션 옵트인/아웃\n상품을 직접 매수하거나 디폴트옵션 보유분을 환매\n이용 불가",
+        "description": "reason-default"
+      }
+    ]
+  },
+  {
+    "fixture": "empty",
+    "requestedWidth": 390,
+    "width": 390,
+    "height": 844,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 364,
+    "contentWidth": 364,
+    "disabled": [
+      {
+        "text": "매수\n대기자금으로 상품 매수 · 가격확정 이후 수익 반영\n이용 불가",
+        "description": "reason-buy"
+      },
+      {
+        "text": "디폴트옵션 옵트인/아웃\n상품을 직접 매수하거나 디폴트옵션 보유분을 환매\n이용 불가",
+        "description": "reason-default"
+      }
+    ]
+  },
+  {
+    "fixture": "empty",
+    "requestedWidth": 430,
+    "width": 430,
+    "height": 932,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 404,
+    "contentWidth": 404,
+    "disabled": [
+      {
+        "text": "매수\n대기자금으로 상품 매수 · 가격확정 이후 수익 반영\n이용 불가",
+        "description": "reason-buy"
+      },
+      {
+        "text": "디폴트옵션 옵트인/아웃\n상품을 직접 매수하거나 디폴트옵션 보유분을 환매\n이용 불가",
+        "description": "reason-default"
+      }
+    ]
+  },
+  {
+    "fixture": "empty",
+    "requestedWidth": 844,
+    "width": 844,
+    "height": 390,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 743,
+    "contentWidth": 743,
+    "disabled": [
+      {
+        "text": "매수\n대기자금으로 상품 매수 · 가격확정 이후 수익 반영\n이용 불가",
+        "description": "reason-buy"
+      },
+      {
+        "text": "디폴트옵션 옵트인/아웃\n상품을 직접 매수하거나 디폴트옵션 보유분을 환매\n이용 불가",
+        "description": "reason-default"
+      }
+    ]
+  },
+  {
+    "fixture": "empty",
+    "requestedWidth": 1440,
+    "width": 1440,
+    "height": 1000,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 743,
+    "contentWidth": 743,
+    "disabled": [
+      {
+        "text": "매수\n대기자금으로 상품 매수 · 가격확정 이후 수익 반영\n이용 불가",
+        "description": "reason-buy"
+      },
+      {
+        "text": "디폴트옵션 옵트인/아웃\n상품을 직접 매수하거나 디폴트옵션 보유분을 환매\n이용 불가",
+        "description": "reason-default"
+      }
+    ]
+  },
+  {
+    "fixture": "moving",
+    "requestedWidth": 320,
+    "width": 320,
+    "height": 740,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 264,
+    "contentWidth": 264,
+    "disabled": [
+      {
+        "text": "IRP 예금 현금화 후 중도인출\n나중: 허용 사유·결제 자금·재원별 세금 확인 후 인출. 중도해지는 발생 이자의 일부만 조정합니다.\n—",
+        "description": "life-choice-1 life-reason-1"
+      },
+      {
+        "text": "IRP 중도인출\n나중: 미공제 원금 → 퇴직급여 → 공제 원금·수익 순서. 의료비 세법상 특별 감면은 별도 요건이므로 이 사례에는 가정하지 않습니다.\n—",
+        "description": "life-choice-2 life-reason-2"
+      }
+    ]
+  },
+  {
+    "fixture": "moving",
+    "requestedWidth": 390,
+    "width": 390,
+    "height": 844,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 364,
+    "contentWidth": 364,
+    "disabled": [
+      {
+        "text": "IRP 예금 현금화 후 중도인출\n나중: 허용 사유·결제 자금·재원별 세금 확인 후 인출. 중도해지는 발생 이자의 일부만 조정합니다.\n—",
+        "description": "life-choice-1 life-reason-1"
+      },
+      {
+        "text": "IRP 중도인출\n나중: 미공제 원금 → 퇴직급여 → 공제 원금·수익 순서. 의료비 세법상 특별 감면은 별도 요건이므로 이 사례에는 가정하지 않습니다.\n—",
+        "description": "life-choice-2 life-reason-2"
+      }
+    ]
+  },
+  {
+    "fixture": "moving",
+    "requestedWidth": 430,
+    "width": 430,
+    "height": 932,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 404,
+    "contentWidth": 404,
+    "disabled": [
+      {
+        "text": "IRP 예금 현금화 후 중도인출\n나중: 허용 사유·결제 자금·재원별 세금 확인 후 인출. 중도해지는 발생 이자의 일부만 조정합니다.\n—",
+        "description": "life-choice-1 life-reason-1"
+      },
+      {
+        "text": "IRP 중도인출\n나중: 미공제 원금 → 퇴직급여 → 공제 원금·수익 순서. 의료비 세법상 특별 감면은 별도 요건이므로 이 사례에는 가정하지 않습니다.\n—",
+        "description": "life-choice-2 life-reason-2"
+      }
+    ]
+  },
+  {
+    "fixture": "moving",
+    "requestedWidth": 844,
+    "width": 844,
+    "height": 390,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 743,
+    "contentWidth": 743,
+    "disabled": [
+      {
+        "text": "IRP 예금 현금화 후 중도인출\n나중: 허용 사유·결제 자금·재원별 세금 확인 후 인출. 중도해지는 발생 이자의 일부만 조정합니다.\n—",
+        "description": "life-choice-1 life-reason-1"
+      },
+      {
+        "text": "IRP 중도인출\n나중: 미공제 원금 → 퇴직급여 → 공제 원금·수익 순서. 의료비 세법상 특별 감면은 별도 요건이므로 이 사례에는 가정하지 않습니다.\n—",
+        "description": "life-choice-2 life-reason-2"
+      }
+    ]
+  },
+  {
+    "fixture": "moving",
+    "requestedWidth": 1440,
+    "width": 1440,
+    "height": 1000,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 743,
+    "contentWidth": 743,
+    "disabled": [
+      {
+        "text": "IRP 예금 현금화 후 중도인출\n나중: 허용 사유·결제 자금·재원별 세금 확인 후 인출. 중도해지는 발생 이자의 일부만 조정합니다.\n—",
+        "description": "life-choice-1 life-reason-1"
+      },
+      {
+        "text": "IRP 중도인출\n나중: 미공제 원금 → 퇴직급여 → 공제 원금·수익 순서. 의료비 세법상 특별 감면은 별도 요건이므로 이 사례에는 가정하지 않습니다.\n—",
+        "description": "life-choice-2 life-reason-2"
+      }
+    ]
+  },
+  {
+    "fixture": "moving",
+    "resolveCashMatchesEngine": true,
+    "actionsLeft": 2,
+    "awaitingAction": true
+  },
+  {
+    "fixture": "medical",
+    "requestedWidth": 320,
+    "width": 320,
+    "height": 740,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 264,
+    "contentWidth": 264,
+    "disabled": []
+  },
+  {
+    "fixture": "medical",
+    "requestedWidth": 390,
+    "width": 390,
+    "height": 844,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 364,
+    "contentWidth": 364,
+    "disabled": []
+  },
+  {
+    "fixture": "medical",
+    "requestedWidth": 430,
+    "width": 430,
+    "height": 932,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 404,
+    "contentWidth": 404,
+    "disabled": []
+  },
+  {
+    "fixture": "medical",
+    "requestedWidth": 844,
+    "width": 844,
+    "height": 390,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 743,
+    "contentWidth": 743,
+    "disabled": []
+  },
+  {
+    "fixture": "medical",
+    "requestedWidth": 1440,
+    "width": 1440,
+    "height": 1000,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 743,
+    "contentWidth": 743,
+    "disabled": []
+  },
+  {
+    "fixture": "medical",
+    "resolveCashMatchesEngine": true,
+    "actionsLeft": 2,
+    "awaitingAction": true
+  },
+  {
+    "fixture": "bonus",
+    "requestedWidth": 320,
+    "width": 320,
+    "height": 740,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 264,
+    "contentWidth": 264,
+    "disabled": []
+  },
+  {
+    "fixture": "bonus",
+    "requestedWidth": 390,
+    "width": 390,
+    "height": 844,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 364,
+    "contentWidth": 364,
+    "disabled": []
+  },
+  {
+    "fixture": "bonus",
+    "requestedWidth": 430,
+    "width": 430,
+    "height": 932,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 404,
+    "contentWidth": 404,
+    "disabled": []
+  },
+  {
+    "fixture": "bonus",
+    "requestedWidth": 844,
+    "width": 844,
+    "height": 390,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 743,
+    "contentWidth": 743,
+    "disabled": []
+  },
+  {
+    "fixture": "bonus",
+    "requestedWidth": 1440,
+    "width": 1440,
+    "height": 1000,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 758,
+    "contentWidth": 758,
+    "disabled": []
+  },
+  {
+    "fixture": "bonus",
+    "resolveCashMatchesEngine": true,
+    "actionsLeft": 2,
+    "awaitingAction": true
+  },
+  {
+    "fixture": "severance",
+    "requestedWidth": 320,
+    "width": 320,
+    "height": 740,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 264,
+    "contentWidth": 264,
+    "disabled": []
+  },
+  {
+    "fixture": "severance",
+    "requestedWidth": 390,
+    "width": 390,
+    "height": 844,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 364,
+    "contentWidth": 364,
+    "disabled": []
+  },
+  {
+    "fixture": "severance",
+    "requestedWidth": 430,
+    "width": 430,
+    "height": 932,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 404,
+    "contentWidth": 404,
+    "disabled": []
+  },
+  {
+    "fixture": "severance",
+    "requestedWidth": 844,
+    "width": 844,
+    "height": 390,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 743,
+    "contentWidth": 743,
+    "disabled": []
+  },
+  {
+    "fixture": "severance",
+    "requestedWidth": 1440,
+    "width": 1440,
+    "height": 1000,
+    "pageOverflow": false,
+    "modalOverflow": false,
+    "dialogWidth": 758,
+    "contentWidth": 758,
+    "disabled": []
+  },
+  {
+    "fixture": "severance",
+    "resolveCashMatchesEngine": true,
+    "actionsLeft": 2,
+    "awaitingAction": true
+  }
+]

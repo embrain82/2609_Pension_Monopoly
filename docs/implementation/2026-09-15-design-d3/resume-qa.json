@@ -1,0 +1,8 @@
+{
+  "reason": "D3 마무리 설명 문구 편집으로 Vite가 새로고침함. 이어서 플레이로 복구",
+  "turn": 5,
+  "unchanged": false,
+  "passed": false,
+  "status": "inconclusive",
+  "note": "개발 서버의 소스 갱신과 UI 클릭이 겹친 시도. 변경 전후 객체를 저장하지 않아 통과 근거에서 제외. resume-final-qa.json에서 통제된 새로고침과 객체 전체 일치를 별도로 확인."
+}
