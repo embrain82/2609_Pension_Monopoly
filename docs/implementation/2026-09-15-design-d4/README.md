@@ -54,11 +54,15 @@ Ego TaskSpace 6의 로컬 `localhost:5193` 테스트 탭을 사용한다. 운영
 - [보조 화면 조회](support-state.json): 유효한 c4의 6턴 완료 fixture를 설정·포트폴리오·타임라인·둘러보기에서 조회한 후 게임 객체 전체가 같다. 실제 완주 경로와 별도인 fixture 검사다. 최초 선택한 fixture에는 미해결 생활사건이 있어 조회를 진행할 수 없었으며, 완료된 6턴 상태로 교체했다.
 - [구 저장 브라우저](legacy-browser.json): c3 판을 실제 새로고침·이어서 플레이로 불러와 전체 게임이 같고, 포트폴리오에 이전 무이자 규칙이 표시됨을 확인했다.
 - [반응형 85회](responsive-qa.json): 17개 화면 상태 × 5개 크기에서 가로 넘침·누락된 접근성 참조·이미지 로딩 실패 0건. 초기 설정의 작은 옵션 버튼이 44px에 못 미치는 것을 찾아 수정하고, 미진단/게임 중 설정에서 44px를 재확인했다. 초기 측정도 기록에 남겼다. 도감 방향키·Home/End·탭 패널 연결과 [PC 진단 초점](diagnosis-browser.json)을 확인했다.
-- 브라우저 자동화의 모호한 셀렉터와 스크롤 중 클릭 타임아웃은 실제 화면을 다시 관찰한 뒤 수정해 진행했다. 실패한 시도를 성공으로 집계하지 않는다. 화면 육안 확인과 실제 iOS Safari·가상 키보드·기기 오디오·200% 확대 확인은 여전히 대기다.
+- 브라우저 자동화의 모호한 셀렉터와 스크롤 중 클릭 타임아웃은 실제 화면을 다시 관찰한 뒤 수정해 진행했다. 실패한 시도를 성공으로 집계하지 않는다. 화면 육안 확인과 실제 iOS Safari·가상 키보드·기기 오디오·200% 확대 확인은 여전히 대기다. 작업 종료 전 네이티브 도구로 Mac 잠금 상태를 다시 확인했다.
 
 ## 검토용 배포
 
-[Preview v1.10.0](https://2609-pension-monopoly-99zhgviv2-nonsleepers-projects.vercel.app/) · [빌드 대조](deployment-qa.json). 구현 커밋 `455cefd`, Ready. 보호 설정을 유지한 채 로컬/배포 JS·CSS의 SHA-256 일치를 확인했다. 이후 보조 화면의 대비·비활성 표시 보완은 별도 커밋으로 검증한다. 운영 도메인에는 아직 반영하지 않았다.
+[최신 Preview v1.10.0](https://2609-pension-monopoly-f0ycldoej-nonsleepers-projects.vercel.app/) · [최종 배포 대조](deployment-final-qa.json).
+
+소스 커밋 `6533d8f`, Vercel `dpl_2s6dKwGGqcHqcVknyLYG7rZN3E2V`의 Ready와 브라우저 HTTP 200을 확인했다. JS `index-CFzMPV2g.js`, CSS `index-ujWk1hHz.css`의 SHA-256이 로컬 빌드와 일치한다. 배포본에서 다시 미진단 → 5문항 → 옵션 → 신규 c4 판을 만들고 35/20/45 배분, 잠긴 목표 버튼·사유, 44px 옵션 버튼을 확인했다. 학습 카드의 수정된 글자·배경색도 계산 스타일과 일치한다.
+
+[초기 D4 배포](deployment-qa.json)는 PC 완주를 수행한 `455cefd` 기준으로 보관한다. 최종 배포 이후 문서·검증 기록만 추가 커밋하며 게임 산출물은 같다. 테스트용 localhost와 최종 Preview의 이름이 정해진 두 저장 키만 정리했고 운영 저장은 건드리지 않았다. 보호 설정을 유지하며 운영 도메인은 변경하지 않았다.
 
 ## 출시 조건
 
