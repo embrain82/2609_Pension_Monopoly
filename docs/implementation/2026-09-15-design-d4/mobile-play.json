@@ -1,0 +1,1770 @@
+{
+  "name": "mobile",
+  "method": "Ego Chromium real page.click inputs; DOM evidence only. No screenshots or native iOS confirmation.",
+  "finished": true,
+  "rows": [
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 할까요?",
+      "dice": "직전 주사위 1과 2, 합계 3칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 1,
+      "actionsLeft": 1,
+      "gameHash": "1d419f2ba0869cfd5d9a751bbba8c9ab152881114b00e1a89388cbae134966c9",
+      "cash": 0,
+      "ledger": {
+        "turn": 1,
+        "opening": 0,
+        "rate": 0.001,
+        "amount": 0
+      },
+      "clicked": {
+        "text": "추가납입생활자금 → IRP 대기자금 · 이번 턴 추가 가능 2,000,000원선택 ›",
+        "action": "action-view",
+        "view": "contribute"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "IRP에 얼마나 넣을까요?",
+      "dice": "직전 주사위 1과 2, 합계 3칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "IRP에 얼마나 넣을까요?",
+      "finished": false,
+      "turn": 1,
+      "actionsLeft": 1,
+      "gameHash": "1d419f2ba0869cfd5d9a751bbba8c9ab152881114b00e1a89388cbae134966c9",
+      "cash": 0,
+      "ledger": {
+        "turn": 1,
+        "opening": 0,
+        "rate": 0.001,
+        "amount": 0
+      },
+      "clicked": {
+        "text": "100만원 납입",
+        "action": "do-contribute"
+      }
+    },
+    {
+      "dialog": "턴 정산 요약",
+      "title": "무엇이 바뀌었나요?",
+      "dice": "직전 주사위 1과 2, 합계 3칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 1,
+      "actionsLeft": 0,
+      "gameHash": "ed8263b683e693d987c3a3f394d955e8abc47f4cf809f79893fdae7ed9140746",
+      "cash": 1000000,
+      "ledger": {
+        "turn": 1,
+        "opening": 0,
+        "rate": 0.001,
+        "amount": 0
+      },
+      "clicked": {
+        "text": "다음 턴 준비",
+        "action": "dismiss-settle"
+      }
+    },
+    {
+      "dialog": "퀴즈 건너뛰기 확인",
+      "title": "아직 풀 수 있는 퀴즈가 있어요",
+      "dice": "직전 주사위 1과 2, 합계 3칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "notice-quiz",
+      "finished": false,
+      "turn": 1,
+      "actionsLeft": 0,
+      "gameHash": "ed8263b683e693d987c3a3f394d955e8abc47f4cf809f79893fdae7ed9140746",
+      "cash": 1000000,
+      "ledger": {
+        "turn": 1,
+        "opening": 0,
+        "rate": 0.001,
+        "amount": 0
+      },
+      "clicked": {
+        "text": "그냥 넘어가기",
+        "action": "notice-continue"
+      }
+    },
+    {
+      "title": "한 칸씩, 내 은퇴를 향해",
+      "dice": "직전 주사위 1과 2, 합계 3칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "\n    본문으로 건너뛰기\n    \n      \n        연금로드금리의 두 얼굴\n        \n          턴1/12\n          연금 목표45만원\n       ",
+      "finished": false,
+      "turn": 1,
+      "actionsLeft": 0,
+      "gameHash": "ed8263b683e693d987c3a3f394d955e8abc47f4cf809f79893fdae7ed9140746",
+      "cash": 1000000,
+      "ledger": {
+        "turn": 1,
+        "opening": 0,
+        "rate": 0.001,
+        "amount": 0
+      },
+      "clicked": {
+        "text": "⚄주사위 굴리기",
+        "action": "roll-dice"
+      }
+    },
+    {
+      "dialog": "생활사건",
+      "title": "부모 부양비",
+      "dice": "직전 주사위 3과 6, 합계 9칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "resolve-life",
+      "finished": false,
+      "turn": 2,
+      "actionsLeft": 1,
+      "gameHash": "ba69b4ea3012ac5ed50174472d2b4e0676f600f566b19074fa2575308d17c6d8",
+      "cash": 1001000,
+      "ledger": {
+        "turn": 2,
+        "opening": 1000000,
+        "rate": 0.001,
+        "amount": 1000
+      },
+      "clicked": {
+        "text": "생활자금으로 해결\n        지금: 생활자금 −2,829,247원\n        나중: IRP는 그대로. 미지급 생활비가 있으면 안정성 평가에 반영됩니다.\n      \n      ›",
+        "action": "resolve-life",
+        "choice": "cash"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 할까요?",
+      "dice": "직전 주사위 3과 6, 합계 9칸 이동",
+      "interest": "대기자금 이자 +1,000원턴 시작 1,000,000원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 2,
+      "actionsLeft": 1,
+      "gameHash": "11fa6e2edc95ba87a0ce57efe36606d5bea0e818d90d5430c855212a6e0c31b3",
+      "cash": 1001000,
+      "ledger": {
+        "turn": 2,
+        "opening": 1000000,
+        "rate": 0.001,
+        "amount": 1000
+      },
+      "clicked": {
+        "text": "디폴트옵션 옵트인/아웃상품을 직접 매수하거나 디폴트옵션 보유분을 환매선택 ›",
+        "action": "action-view",
+        "view": "default"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "디폴트옵션 직접 거래",
+      "dice": "직전 주사위 3과 6, 합계 9칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "디폴트옵션 직접 거래",
+      "finished": false,
+      "turn": 2,
+      "actionsLeft": 1,
+      "gameHash": "11fa6e2edc95ba87a0ce57efe36606d5bea0e818d90d5430c855212a6e0c31b3",
+      "cash": 1001000,
+      "ledger": {
+        "turn": 2,
+        "opening": 1000000,
+        "rate": 0.001,
+        "amount": 1000
+      },
+      "clicked": {
+        "text": "500,500원 매수 지시",
+        "action": "submit-default-trade"
+      }
+    },
+    {
+      "dialog": "턴 정산 요약",
+      "title": "무엇이 바뀌었나요?",
+      "dice": "직전 주사위 3과 6, 합계 9칸 이동",
+      "interest": "대기자금 이자 +1,000원턴 시작 1,000,000원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 2,
+      "actionsLeft": 0,
+      "gameHash": "91d6c541ab377f6d06518fbf2583256b5b068957c5b4ee81358e219ff72e55a5",
+      "cash": 500500,
+      "ledger": {
+        "turn": 2,
+        "opening": 1000000,
+        "rate": 0.001,
+        "amount": 1000
+      },
+      "clicked": {
+        "text": "다음 턴 준비",
+        "action": "dismiss-settle"
+      }
+    },
+    {
+      "dialog": "퀴즈 건너뛰기 확인",
+      "title": "아직 풀 수 있는 퀴즈가 있어요",
+      "dice": "직전 주사위 3과 6, 합계 9칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "notice-quiz",
+      "finished": false,
+      "turn": 2,
+      "actionsLeft": 0,
+      "gameHash": "91d6c541ab377f6d06518fbf2583256b5b068957c5b4ee81358e219ff72e55a5",
+      "cash": 500500,
+      "ledger": {
+        "turn": 2,
+        "opening": 1000000,
+        "rate": 0.001,
+        "amount": 1000
+      },
+      "clicked": {
+        "text": "그냥 넘어가기",
+        "action": "notice-continue"
+      }
+    },
+    {
+      "title": "한 칸씩, 내 은퇴를 향해",
+      "dice": "직전 주사위 3과 6, 합계 9칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "\n    본문으로 건너뛰기\n    \n      \n        연금로드금리의 두 얼굴\n        \n          턴2/12\n          연금 목표45만원\n       ",
+      "finished": false,
+      "turn": 2,
+      "actionsLeft": 0,
+      "gameHash": "91d6c541ab377f6d06518fbf2583256b5b068957c5b4ee81358e219ff72e55a5",
+      "cash": 500500,
+      "ledger": {
+        "turn": 2,
+        "opening": 1000000,
+        "rate": 0.001,
+        "amount": 1000
+      },
+      "clicked": {
+        "text": "⚄주사위 굴리기",
+        "action": "roll-dice"
+      }
+    },
+    {
+      "dialog": "생활사건",
+      "title": "이직 · 퇴직금 정산",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "resolve-life",
+      "finished": false,
+      "turn": 3,
+      "actionsLeft": 1,
+      "gameHash": "03aa0031184a40c1cd5fa4791e9b86b920709adf077a2704bda4b7f61cf1babe",
+      "cash": 501000.5,
+      "ledger": {
+        "turn": 3,
+        "opening": 500500,
+        "rate": 0.001,
+        "amount": 500.5
+      },
+      "clicked": {
+        "text": "지금 받기(일시 수령)\n        지금: 가상 원천징수영수증의 퇴직소득세 60,000원 차감 → 생활자금 +5,940,000원\n        나중: 연금 재원이 늘지 않습니다. 생활자금이 넉넉해지지만 세금은 돌아오지 않습니다.\n      \n      ›",
+        "action": "resolve-life",
+        "choice": "cash"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 할까요?",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "interest": "대기자금 이자 +501원턴 시작 500,500원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 3,
+      "actionsLeft": 1,
+      "gameHash": "f849b791c12794703e69b65d356ee86aea93aff1dbacca5920c3abf91dd34e26",
+      "cash": 501000.5,
+      "ledger": {
+        "turn": 3,
+        "opening": 500500,
+        "rate": 0.001,
+        "amount": 500.5
+      },
+      "clicked": {
+        "text": "매수대기자금으로 상품 매수 · 가격확정 이후 수익 반영선택 ›",
+        "action": "action-view",
+        "view": "buy"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 살까요?",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "interest": "대기자금 이자 +501원턴 시작 500,500원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "무엇을 살까요?",
+      "finished": false,
+      "turn": 3,
+      "actionsLeft": 1,
+      "gameHash": "f849b791c12794703e69b65d356ee86aea93aff1dbacca5920c3abf91dd34e26",
+      "cash": 501000.5,
+      "ledger": {
+        "turn": 3,
+        "opening": 500500,
+        "rate": 0.001,
+        "amount": 500.5
+      },
+      "clicked": {
+        "text": "매수 실행",
+        "action": "do-buy"
+      }
+    },
+    {
+      "dialog": "턴 정산 요약",
+      "title": "무엇이 바뀌었나요?",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "interest": "대기자금 이자 +501원턴 시작 500,500원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 3,
+      "actionsLeft": 0,
+      "gameHash": "f9d574d1f723d5cc180f76a70bfbd730d10c58b0d156c5b356215036fae2b384",
+      "cash": 0.5,
+      "ledger": {
+        "turn": 3,
+        "opening": 500500,
+        "rate": 0.001,
+        "amount": 500.5
+      },
+      "clicked": {
+        "text": "다음 턴 준비",
+        "action": "dismiss-settle"
+      }
+    },
+    {
+      "dialog": "퀴즈 건너뛰기 확인",
+      "title": "아직 풀 수 있는 퀴즈가 있어요",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "notice-quiz",
+      "finished": false,
+      "turn": 3,
+      "actionsLeft": 0,
+      "gameHash": "f9d574d1f723d5cc180f76a70bfbd730d10c58b0d156c5b356215036fae2b384",
+      "cash": 0.5,
+      "ledger": {
+        "turn": 3,
+        "opening": 500500,
+        "rate": 0.001,
+        "amount": 500.5
+      },
+      "clicked": {
+        "text": "그냥 넘어가기",
+        "action": "notice-continue"
+      }
+    },
+    {
+      "title": "한 칸씩, 내 은퇴를 향해",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "\n    본문으로 건너뛰기\n    \n      \n        연금로드금리의 두 얼굴\n        \n          턴3/12\n          연금 목표46만원\n       ",
+      "finished": false,
+      "turn": 3,
+      "actionsLeft": 0,
+      "gameHash": "f9d574d1f723d5cc180f76a70bfbd730d10c58b0d156c5b356215036fae2b384",
+      "cash": 0.5,
+      "ledger": {
+        "turn": 3,
+        "opening": 500500,
+        "rate": 0.001,
+        "amount": 500.5
+      },
+      "clicked": {
+        "text": "⚄주사위 굴리기",
+        "action": "roll-dice"
+      }
+    },
+    {
+      "dialog": "시장 속보",
+      "title": "가상 금리 동결 · 주가 하락",
+      "dice": "직전 주사위 1과 3, 합계 4칸 이동",
+      "interest": "대기자금 이자 +0원턴 시작 1원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 4,
+      "actionsLeft": 1,
+      "gameHash": "4cdeefda18386b58965490da5901d526e4b97f2a3da92a24b5366f3054d4c04c",
+      "cash": 0.5005,
+      "ledger": {
+        "turn": 4,
+        "opening": 0.5,
+        "rate": 0.001,
+        "amount": 0.0005
+      },
+      "clicked": {
+        "text": "확인 · 이번 턴 운용",
+        "action": "dismiss-news"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 할까요?",
+      "dice": "직전 주사위 1과 3, 합계 4칸 이동",
+      "interest": "대기자금 이자 +0원턴 시작 1원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 4,
+      "actionsLeft": 1,
+      "gameHash": "4cdeefda18386b58965490da5901d526e4b97f2a3da92a24b5366f3054d4c04c",
+      "cash": 0.5005,
+      "ledger": {
+        "turn": 4,
+        "opening": 0.5,
+        "rate": 0.001,
+        "amount": 0.0005
+      },
+      "clicked": {
+        "text": "매도일반 보유 상품을 IRP 안에서 현금화선택 ›",
+        "action": "action-view",
+        "view": "sell"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 줄일까요?",
+      "dice": "직전 주사위 1과 3, 합계 4칸 이동",
+      "interest": "대기자금 이자 +0원턴 시작 1원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "무엇을 줄일까요?",
+      "finished": false,
+      "turn": 4,
+      "actionsLeft": 1,
+      "gameHash": "4cdeefda18386b58965490da5901d526e4b97f2a3da92a24b5366f3054d4c04c",
+      "cash": 0.5005,
+      "ledger": {
+        "turn": 4,
+        "opening": 0.5,
+        "rate": 0.001,
+        "amount": 0.0005
+      },
+      "clicked": {
+        "text": "매도 실행",
+        "action": "do-sell"
+      }
+    },
+    {
+      "dialog": "턴 정산 요약",
+      "title": "무엇이 바뀌었나요?",
+      "dice": "직전 주사위 1과 3, 합계 4칸 이동",
+      "interest": "대기자금 이자 +0원턴 시작 1원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 4,
+      "actionsLeft": 0,
+      "gameHash": "4912c7d427dd4d70921e281dd7669e19938d2e2ea7956826babe5d7699008e21",
+      "cash": 8000000.5005,
+      "ledger": {
+        "turn": 4,
+        "opening": 0.5,
+        "rate": 0.001,
+        "amount": 0.0005
+      },
+      "clicked": {
+        "text": "다음 턴 준비",
+        "action": "dismiss-settle"
+      }
+    },
+    {
+      "dialog": "퀴즈 건너뛰기 확인",
+      "title": "아직 풀 수 있는 퀴즈가 있어요",
+      "dice": "직전 주사위 1과 3, 합계 4칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "notice-quiz",
+      "finished": false,
+      "turn": 4,
+      "actionsLeft": 0,
+      "gameHash": "4912c7d427dd4d70921e281dd7669e19938d2e2ea7956826babe5d7699008e21",
+      "cash": 8000000.5005,
+      "ledger": {
+        "turn": 4,
+        "opening": 0.5,
+        "rate": 0.001,
+        "amount": 0.0005
+      },
+      "clicked": {
+        "text": "그냥 넘어가기",
+        "action": "notice-continue"
+      }
+    },
+    {
+      "title": "한 칸씩, 내 은퇴를 향해",
+      "dice": "직전 주사위 1과 3, 합계 4칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "\n    본문으로 건너뛰기\n    \n      \n        연금로드금리의 두 얼굴\n        \n          턴4/12\n          연금 목표42만원\n       ",
+      "finished": false,
+      "turn": 4,
+      "actionsLeft": 0,
+      "gameHash": "4912c7d427dd4d70921e281dd7669e19938d2e2ea7956826babe5d7699008e21",
+      "cash": 8000000.5005,
+      "ledger": {
+        "turn": 4,
+        "opening": 0.5,
+        "rate": 0.001,
+        "amount": 0.0005
+      },
+      "clicked": {
+        "text": "⚄주사위 굴리기",
+        "action": "roll-dice"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 할까요?",
+      "dice": "직전 주사위 6과 1, 합계 7칸 이동",
+      "interest": "대기자금 이자 +8,000원턴 시작 8,000,001원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 5,
+      "actionsLeft": 1,
+      "gameHash": "945aff62b225aa3d4db2dc44f24fcb35caef72d2df33c6d826e8538b2b28fcf0",
+      "cash": 8008000.5010005,
+      "ledger": {
+        "turn": 5,
+        "opening": 8000000.5005,
+        "rate": 0.001,
+        "amount": 8000.0005005
+      },
+      "clicked": {
+        "text": "바꾸기한 상품을 다른 상품으로선택 ›",
+        "action": "action-view",
+        "view": "switch"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 바꿀까요?",
+      "dice": "직전 주사위 6과 1, 합계 7칸 이동",
+      "interest": "대기자금 이자 +8,000원턴 시작 8,000,001원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "무엇을 바꿀까요?",
+      "finished": false,
+      "turn": 5,
+      "actionsLeft": 1,
+      "gameHash": "945aff62b225aa3d4db2dc44f24fcb35caef72d2df33c6d826e8538b2b28fcf0",
+      "cash": 8008000.5010005,
+      "ledger": {
+        "turn": 5,
+        "opening": 8000000.5005,
+        "rate": 0.001,
+        "amount": 8000.0005005
+      },
+      "clicked": {
+        "text": "교체 실행",
+        "action": "do-switch"
+      }
+    },
+    {
+      "dialog": "턴 정산 요약",
+      "title": "무엇이 바뀌었나요?",
+      "dice": "직전 주사위 6과 1, 합계 7칸 이동",
+      "interest": "대기자금 이자 +8,000원턴 시작 8,000,001원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 5,
+      "actionsLeft": 0,
+      "gameHash": "9cc5c4fef54fc2062d4e5ae0c936467645fde94987b82811f7267dfc24be35d2",
+      "cash": 8008000.5010005,
+      "ledger": {
+        "turn": 5,
+        "opening": 8000000.5005,
+        "rate": 0.001,
+        "amount": 8000.0005005
+      },
+      "clicked": {
+        "text": "다음 턴 준비",
+        "action": "dismiss-settle"
+      }
+    },
+    {
+      "dialog": "퀴즈 건너뛰기 확인",
+      "title": "아직 풀 수 있는 퀴즈가 있어요",
+      "dice": "직전 주사위 6과 1, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "notice-quiz",
+      "finished": false,
+      "turn": 5,
+      "actionsLeft": 0,
+      "gameHash": "9cc5c4fef54fc2062d4e5ae0c936467645fde94987b82811f7267dfc24be35d2",
+      "cash": 8008000.5010005,
+      "ledger": {
+        "turn": 5,
+        "opening": 8000000.5005,
+        "rate": 0.001,
+        "amount": 8000.0005005
+      },
+      "clicked": {
+        "text": "그냥 넘어가기",
+        "action": "notice-continue"
+      }
+    },
+    {
+      "title": "한 칸씩, 내 은퇴를 향해",
+      "dice": "직전 주사위 6과 1, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "\n    본문으로 건너뛰기\n    \n      \n        연금로드금리의 두 얼굴\n        \n          턴5/12\n          연금 목표42만원\n       ",
+      "finished": false,
+      "turn": 5,
+      "actionsLeft": 0,
+      "gameHash": "9cc5c4fef54fc2062d4e5ae0c936467645fde94987b82811f7267dfc24be35d2",
+      "cash": 8008000.5010005,
+      "ledger": {
+        "turn": 5,
+        "opening": 8000000.5005,
+        "rate": 0.001,
+        "amount": 8000.0005005
+      },
+      "clicked": {
+        "text": "⚄주사위 굴리기",
+        "action": "roll-dice"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 할까요?",
+      "dice": "직전 주사위 4과 6, 합계 10칸 이동",
+      "interest": "대기자금 이자 +8,008원턴 시작 8,008,001원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 6,
+      "actionsLeft": 2,
+      "gameHash": "c8f64f407ce87ec50e6ac916d655e6dd8212e4514567e1a858419bcb45e0a370",
+      "cash": 8016008.501501501,
+      "ledger": {
+        "turn": 6,
+        "opening": 8008000.5010005,
+        "rate": 0.001,
+        "amount": 8008.000501000501
+      },
+      "clicked": {
+        "text": "그대로 두고 마감",
+        "action": "do-hold"
+      }
+    },
+    {
+      "dialog": "턴 정산 요약",
+      "title": "무엇이 바뀌었나요?",
+      "dice": "직전 주사위 4과 6, 합계 10칸 이동",
+      "interest": "대기자금 이자 +8,008원턴 시작 8,008,001원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 6,
+      "actionsLeft": 0,
+      "gameHash": "ec9b09a60029f09f1e31a3587f121368bdafa220d2c19056b87bcb2d1d65131f",
+      "cash": 8016008.501501501,
+      "ledger": {
+        "turn": 6,
+        "opening": 8008000.5010005,
+        "rate": 0.001,
+        "amount": 8008.000501000501
+      },
+      "clicked": {
+        "text": "다음 턴 준비",
+        "action": "dismiss-settle"
+      }
+    },
+    {
+      "dialog": "퀴즈 건너뛰기 확인",
+      "title": "아직 풀 수 있는 퀴즈가 있어요",
+      "dice": "직전 주사위 4과 6, 합계 10칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "notice-quiz",
+      "finished": false,
+      "turn": 6,
+      "actionsLeft": 0,
+      "gameHash": "ec9b09a60029f09f1e31a3587f121368bdafa220d2c19056b87bcb2d1d65131f",
+      "cash": 8016008.501501501,
+      "ledger": {
+        "turn": 6,
+        "opening": 8008000.5010005,
+        "rate": 0.001,
+        "amount": 8008.000501000501
+      },
+      "clicked": {
+        "text": "그냥 넘어가기",
+        "action": "notice-continue"
+      }
+    },
+    {
+      "title": "한 칸씩, 내 은퇴를 향해",
+      "dice": "직전 주사위 4과 6, 합계 10칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "\n    본문으로 건너뛰기\n    \n      \n        연금로드금리의 두 얼굴\n        \n          턴6/12\n          연금 목표42만원\n       ",
+      "finished": false,
+      "turn": 6,
+      "actionsLeft": 0,
+      "gameHash": "ec9b09a60029f09f1e31a3587f121368bdafa220d2c19056b87bcb2d1d65131f",
+      "cash": 8016008.501501501,
+      "ledger": {
+        "turn": 6,
+        "opening": 8008000.5010005,
+        "rate": 0.001,
+        "amount": 8008.000501000501
+      },
+      "clicked": {
+        "text": "⚄주사위 굴리기",
+        "action": "roll-dice"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 할까요?",
+      "dice": "직전 주사위 5과 2, 합계 7칸 이동",
+      "interest": "대기자금 이자 +8,016원턴 시작 8,016,009원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 7,
+      "actionsLeft": 1,
+      "gameHash": "92f60358e7b5596a13376edc775c8a74a0db2dfbba0723ffe4d819f1c6cc9e6a",
+      "cash": 8024025.396292729,
+      "ledger": {
+        "turn": 7,
+        "opening": 8016008.501501501,
+        "rate": 0.001,
+        "amount": 8016.008501501501
+      },
+      "clicked": {
+        "text": "디폴트옵션 옵트인/아웃상품을 직접 매수하거나 디폴트옵션 보유분을 환매선택 ›",
+        "action": "action-view",
+        "view": "default"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "디폴트옵션 직접 거래",
+      "dice": "직전 주사위 5과 2, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "디폴트옵션 직접 거래",
+      "finished": false,
+      "turn": 7,
+      "actionsLeft": 1,
+      "gameHash": "92f60358e7b5596a13376edc775c8a74a0db2dfbba0723ffe4d819f1c6cc9e6a",
+      "cash": 8024025.396292729,
+      "ledger": {
+        "turn": 7,
+        "opening": 8016008.501501501,
+        "rate": 0.001,
+        "amount": 8016.008501501501
+      },
+      "clicked": {
+        "text": "4,012,012원 매수 지시",
+        "action": "submit-default-trade"
+      }
+    },
+    {
+      "dialog": "턴 정산 요약",
+      "title": "무엇이 바뀌었나요?",
+      "dice": "직전 주사위 5과 2, 합계 7칸 이동",
+      "interest": "대기자금 이자 +8,016원턴 시작 8,016,009원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 7,
+      "actionsLeft": 0,
+      "gameHash": "70221513e96b4525effb34d7c9911e6664d431588c9b7ca8bbe10ca3a5b4483a",
+      "cash": 4012013.3962927293,
+      "ledger": {
+        "turn": 7,
+        "opening": 8016008.501501501,
+        "rate": 0.001,
+        "amount": 8016.008501501501
+      },
+      "clicked": {
+        "text": "다음 턴 준비",
+        "action": "dismiss-settle"
+      }
+    },
+    {
+      "dialog": "퀴즈 건너뛰기 확인",
+      "title": "아직 풀 수 있는 퀴즈가 있어요",
+      "dice": "직전 주사위 5과 2, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "notice-quiz",
+      "finished": false,
+      "turn": 7,
+      "actionsLeft": 0,
+      "gameHash": "70221513e96b4525effb34d7c9911e6664d431588c9b7ca8bbe10ca3a5b4483a",
+      "cash": 4012013.3962927293,
+      "ledger": {
+        "turn": 7,
+        "opening": 8016008.501501501,
+        "rate": 0.001,
+        "amount": 8016.008501501501
+      },
+      "clicked": {
+        "text": "그냥 넘어가기",
+        "action": "notice-continue"
+      }
+    },
+    {
+      "title": "한 칸씩, 내 은퇴를 향해",
+      "dice": "직전 주사위 5과 2, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "\n    본문으로 건너뛰기\n    \n      \n        연금로드금리의 두 얼굴\n        \n          턴7/12\n          연금 목표41만원\n       ",
+      "finished": false,
+      "turn": 7,
+      "actionsLeft": 0,
+      "gameHash": "70221513e96b4525effb34d7c9911e6664d431588c9b7ca8bbe10ca3a5b4483a",
+      "cash": 4012013.3962927293,
+      "ledger": {
+        "turn": 7,
+        "opening": 8016008.501501501,
+        "rate": 0.001,
+        "amount": 8016.008501501501
+      },
+      "clicked": {
+        "text": "⚄주사위 굴리기",
+        "action": "roll-dice"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 할까요?",
+      "dice": "직전 주사위 2과 1, 합계 3칸 이동",
+      "interest": "대기자금 이자 +4,012원턴 시작 4,012,013원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 8,
+      "actionsLeft": 1,
+      "gameHash": "831ff386a547bbc5cbd34ec8689d255bf4bc1384d94df20a7ed10b7c7f690460",
+      "cash": 4016025.409689022,
+      "ledger": {
+        "turn": 8,
+        "opening": 4012013.3962927293,
+        "rate": 0.001,
+        "amount": 4012.0133962927293
+      },
+      "clicked": {
+        "text": "추가납입생활자금 → IRP 대기자금 · 이번 턴 추가 가능 2,000,000원선택 ›",
+        "action": "action-view",
+        "view": "contribute"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "IRP에 얼마나 넣을까요?",
+      "dice": "직전 주사위 2과 1, 합계 3칸 이동",
+      "interest": "대기자금 이자 +4,012원턴 시작 4,012,013원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "IRP에 얼마나 넣을까요?",
+      "finished": false,
+      "turn": 8,
+      "actionsLeft": 1,
+      "gameHash": "831ff386a547bbc5cbd34ec8689d255bf4bc1384d94df20a7ed10b7c7f690460",
+      "cash": 4016025.409689022,
+      "ledger": {
+        "turn": 8,
+        "opening": 4012013.3962927293,
+        "rate": 0.001,
+        "amount": 4012.0133962927293
+      },
+      "clicked": {
+        "text": "100만원 납입",
+        "action": "do-contribute"
+      }
+    },
+    {
+      "dialog": "턴 정산 요약",
+      "title": "무엇이 바뀌었나요?",
+      "dice": "직전 주사위 2과 1, 합계 3칸 이동",
+      "interest": "대기자금 이자 +4,012원턴 시작 4,012,013원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 8,
+      "actionsLeft": 0,
+      "gameHash": "b601edb7bfadb9ad83a34ff7cefee7c48cf634ed85f8242abc41191a8835313a",
+      "cash": 5016025.409689022,
+      "ledger": {
+        "turn": 8,
+        "opening": 4012013.3962927293,
+        "rate": 0.001,
+        "amount": 4012.0133962927293
+      },
+      "clicked": {
+        "text": "다음 턴 준비",
+        "action": "dismiss-settle"
+      }
+    },
+    {
+      "dialog": "퀴즈 건너뛰기 확인",
+      "title": "아직 풀 수 있는 퀴즈가 있어요",
+      "dice": "직전 주사위 2과 1, 합계 3칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "notice-quiz",
+      "finished": false,
+      "turn": 8,
+      "actionsLeft": 0,
+      "gameHash": "b601edb7bfadb9ad83a34ff7cefee7c48cf634ed85f8242abc41191a8835313a",
+      "cash": 5016025.409689022,
+      "ledger": {
+        "turn": 8,
+        "opening": 4012013.3962927293,
+        "rate": 0.001,
+        "amount": 4012.0133962927293
+      },
+      "clicked": {
+        "text": "그냥 넘어가기",
+        "action": "notice-continue"
+      }
+    },
+    {
+      "title": "한 칸씩, 내 은퇴를 향해",
+      "dice": "직전 주사위 2과 1, 합계 3칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "\n    본문으로 건너뛰기\n    \n      \n        연금로드금리의 두 얼굴\n        \n          턴8/12\n          연금 목표42만원\n       ",
+      "finished": false,
+      "turn": 8,
+      "actionsLeft": 0,
+      "gameHash": "b601edb7bfadb9ad83a34ff7cefee7c48cf634ed85f8242abc41191a8835313a",
+      "cash": 5016025.409689022,
+      "ledger": {
+        "turn": 8,
+        "opening": 4012013.3962927293,
+        "rate": 0.001,
+        "amount": 4012.0133962927293
+      },
+      "clicked": {
+        "text": "⚄주사위 굴리기",
+        "action": "roll-dice"
+      }
+    },
+    {
+      "dialog": "시장 속보",
+      "title": "가상 금리 상승 · 주가 하락",
+      "dice": "직전 주사위 5과 3, 합계 8칸 이동",
+      "interest": "대기자금 이자 +5,016원턴 시작 5,016,025원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 9,
+      "actionsLeft": 1,
+      "gameHash": "f42b32fd1cf5e4a95b8df1dd2b3acecbef4a45739f45890b556a3ef8f170ce52",
+      "cash": 5021041.435098711,
+      "ledger": {
+        "turn": 9,
+        "opening": 5016025.409689022,
+        "rate": 0.001,
+        "amount": 5016.025409689022
+      },
+      "clicked": {
+        "text": "확인 · 생활 사건 선택",
+        "action": "dismiss-news"
+      }
+    },
+    {
+      "dialog": "생활사건",
+      "title": "연말 성과급",
+      "dice": "직전 주사위 5과 3, 합계 8칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "resolve-life",
+      "finished": false,
+      "turn": 9,
+      "actionsLeft": 1,
+      "gameHash": "f42b32fd1cf5e4a95b8df1dd2b3acecbef4a45739f45890b556a3ef8f170ce52",
+      "cash": 5021041.435098711,
+      "ledger": {
+        "turn": 9,
+        "opening": 5016025.409689022,
+        "rate": 0.001,
+        "amount": 5016.025409689022
+      },
+      "clicked": {
+        "text": "생활자금으로 두기\n        지금: 생활자금 +3,000,000원\n        나중: IRP·월 연금 변화 없음. 남은 한도 안에서 운용지시로 납입할 수 있습니다.\n      \n      ›",
+        "action": "resolve-life",
+        "choice": "cash"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 할까요?",
+      "dice": "직전 주사위 5과 3, 합계 8칸 이동",
+      "interest": "대기자금 이자 +5,016원턴 시작 5,016,025원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 9,
+      "actionsLeft": 1,
+      "gameHash": "c91c20ac8c2c2fcbac93494b049ffcd260f45f5021aaf97103cc762f8b2f54e3",
+      "cash": 5021041.435098711,
+      "ledger": {
+        "turn": 9,
+        "opening": 5016025.409689022,
+        "rate": 0.001,
+        "amount": 5016.025409689022
+      },
+      "clicked": {
+        "text": "그대로 두고 마감",
+        "action": "do-hold"
+      }
+    },
+    {
+      "dialog": "턴 정산 요약",
+      "title": "무엇이 바뀌었나요?",
+      "dice": "직전 주사위 5과 3, 합계 8칸 이동",
+      "interest": "대기자금 이자 +5,016원턴 시작 5,016,025원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 9,
+      "actionsLeft": 0,
+      "gameHash": "0ce31d8ac074dafb100047e66ca7d3bf500a887ca57e1b0cbfa8e583994ed775",
+      "cash": 5021041.435098711,
+      "ledger": {
+        "turn": 9,
+        "opening": 5016025.409689022,
+        "rate": 0.001,
+        "amount": 5016.025409689022
+      },
+      "clicked": {
+        "text": "다음 턴 준비",
+        "action": "dismiss-settle"
+      }
+    },
+    {
+      "dialog": "퀴즈 건너뛰기 확인",
+      "title": "아직 풀 수 있는 퀴즈가 있어요",
+      "dice": "직전 주사위 5과 3, 합계 8칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "notice-quiz",
+      "finished": false,
+      "turn": 9,
+      "actionsLeft": 0,
+      "gameHash": "0ce31d8ac074dafb100047e66ca7d3bf500a887ca57e1b0cbfa8e583994ed775",
+      "cash": 5021041.435098711,
+      "ledger": {
+        "turn": 9,
+        "opening": 5016025.409689022,
+        "rate": 0.001,
+        "amount": 5016.025409689022
+      },
+      "clicked": {
+        "text": "그냥 넘어가기",
+        "action": "notice-continue"
+      }
+    },
+    {
+      "title": "한 칸씩, 내 은퇴를 향해",
+      "dice": "직전 주사위 5과 3, 합계 8칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "\n    본문으로 건너뛰기\n    \n      \n        연금로드금리의 두 얼굴\n        \n          턴9/12\n          연금 목표41만원\n       ",
+      "finished": false,
+      "turn": 9,
+      "actionsLeft": 0,
+      "gameHash": "0ce31d8ac074dafb100047e66ca7d3bf500a887ca57e1b0cbfa8e583994ed775",
+      "cash": 5021041.435098711,
+      "ledger": {
+        "turn": 9,
+        "opening": 5016025.409689022,
+        "rate": 0.001,
+        "amount": 5016.025409689022
+      },
+      "clicked": {
+        "text": "⚄주사위 굴리기",
+        "action": "roll-dice"
+      }
+    },
+    {
+      "dialog": "시장 속보",
+      "title": "가상 금리 하락 · 주가 하락",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "interest": "대기자금 이자 +5,021원턴 시작 5,021,041원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 10,
+      "actionsLeft": 1,
+      "gameHash": "87aec16d5c1bc521c193d27bf51756662dc896a956ac063eceb729d79e2e98fc",
+      "cash": 5026062.47653381,
+      "ledger": {
+        "turn": 10,
+        "opening": 5021041.435098711,
+        "rate": 0.001,
+        "amount": 5021.041435098711
+      },
+      "clicked": {
+        "text": "확인 · 이번 턴 운용",
+        "action": "dismiss-news"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 할까요?",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "interest": "대기자금 이자 +5,021원턴 시작 5,021,041원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 10,
+      "actionsLeft": 1,
+      "gameHash": "87aec16d5c1bc521c193d27bf51756662dc896a956ac063eceb729d79e2e98fc",
+      "cash": 5026062.47653381,
+      "ledger": {
+        "turn": 10,
+        "opening": 5021041.435098711,
+        "rate": 0.001,
+        "amount": 5021.041435098711
+      },
+      "clicked": {
+        "text": "디폴트옵션 옵트인/아웃상품을 직접 매수하거나 디폴트옵션 보유분을 환매선택 ›",
+        "action": "action-view",
+        "view": "default"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "디폴트옵션 직접 거래",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "디폴트옵션 직접 거래",
+      "finished": false,
+      "turn": 10,
+      "actionsLeft": 1,
+      "gameHash": "87aec16d5c1bc521c193d27bf51756662dc896a956ac063eceb729d79e2e98fc",
+      "cash": 5026062.47653381,
+      "ledger": {
+        "turn": 10,
+        "opening": 5021041.435098711,
+        "rate": 0.001,
+        "amount": 5021.041435098711
+      },
+      "clicked": {
+        "text": "직접 운용 전환옵트아웃",
+        "action": "default-trade-tab",
+        "tab": "out"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "디폴트옵션 직접 거래",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 10,
+      "actionsLeft": 1,
+      "gameHash": "87aec16d5c1bc521c193d27bf51756662dc896a956ac063eceb729d79e2e98fc",
+      "cash": 5026062.47653381,
+      "ledger": {
+        "turn": 10,
+        "opening": 5021041.435098711,
+        "rate": 0.001,
+        "amount": 5021.041435098711
+      },
+      "clicked": {
+        "text": "보유분 50% 환매 지시",
+        "action": "submit-default-trade"
+      }
+    },
+    {
+      "dialog": "턴 정산 요약",
+      "title": "무엇이 바뀌었나요?",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "interest": "대기자금 이자 +5,021원턴 시작 5,021,041원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 10,
+      "actionsLeft": 0,
+      "gameHash": "6227ee8e2a5fe7dcec583d0b03f67be62f0ace54010166311490cd468babf412",
+      "cash": 5026062.47653381,
+      "ledger": {
+        "turn": 10,
+        "opening": 5021041.435098711,
+        "rate": 0.001,
+        "amount": 5021.041435098711
+      },
+      "clicked": {
+        "text": "다음 턴 준비",
+        "action": "dismiss-settle"
+      }
+    },
+    {
+      "dialog": "퀴즈 건너뛰기 확인",
+      "title": "아직 풀 수 있는 퀴즈가 있어요",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "notice-quiz",
+      "finished": false,
+      "turn": 10,
+      "actionsLeft": 0,
+      "gameHash": "6227ee8e2a5fe7dcec583d0b03f67be62f0ace54010166311490cd468babf412",
+      "cash": 5026062.47653381,
+      "ledger": {
+        "turn": 10,
+        "opening": 5021041.435098711,
+        "rate": 0.001,
+        "amount": 5021.041435098711
+      },
+      "clicked": {
+        "text": "그냥 넘어가기",
+        "action": "notice-continue"
+      }
+    },
+    {
+      "title": "한 칸씩, 내 은퇴를 향해",
+      "dice": "직전 주사위 1과 6, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "\n    본문으로 건너뛰기\n    \n      \n        연금로드금리의 두 얼굴\n        \n          턴10/12\n          연금 목표41만원\n      ",
+      "finished": false,
+      "turn": 10,
+      "actionsLeft": 0,
+      "gameHash": "6227ee8e2a5fe7dcec583d0b03f67be62f0ace54010166311490cd468babf412",
+      "cash": 5026062.47653381,
+      "ledger": {
+        "turn": 10,
+        "opening": 5021041.435098711,
+        "rate": 0.001,
+        "amount": 5021.041435098711
+      },
+      "clicked": {
+        "text": "⚄주사위 굴리기",
+        "action": "roll-dice"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 할까요?",
+      "dice": "직전 주사위 1과 3, 합계 4칸 이동",
+      "interest": "대기자금 이자 +5,026원턴 시작 5,026,062원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 11,
+      "actionsLeft": 1,
+      "gameHash": "99db81517f7be4f28a0ec241ba77c40cc7264242ee0c8b02e7473ce83fb09728",
+      "cash": 5031088.539010343,
+      "ledger": {
+        "turn": 11,
+        "opening": 5026062.47653381,
+        "rate": 0.001,
+        "amount": 5026.06247653381
+      },
+      "clicked": {
+        "text": "추가납입생활자금 → IRP 대기자금 · 이번 턴 추가 가능 2,000,000원선택 ›",
+        "action": "action-view",
+        "view": "contribute"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "IRP에 얼마나 넣을까요?",
+      "dice": "직전 주사위 1과 3, 합계 4칸 이동",
+      "interest": "대기자금 이자 +5,026원턴 시작 5,026,062원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "IRP에 얼마나 넣을까요?",
+      "finished": false,
+      "turn": 11,
+      "actionsLeft": 1,
+      "gameHash": "99db81517f7be4f28a0ec241ba77c40cc7264242ee0c8b02e7473ce83fb09728",
+      "cash": 5031088.539010343,
+      "ledger": {
+        "turn": 11,
+        "opening": 5026062.47653381,
+        "rate": 0.001,
+        "amount": 5026.06247653381
+      },
+      "clicked": {
+        "text": "100만원 납입",
+        "action": "do-contribute"
+      }
+    },
+    {
+      "dialog": "턴 정산 요약",
+      "title": "무엇이 바뀌었나요?",
+      "dice": "직전 주사위 1과 3, 합계 4칸 이동",
+      "interest": "대기자금 이자 +5,026원턴 시작 5,026,062원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 11,
+      "actionsLeft": 0,
+      "gameHash": "58d2a941a507d4a6a30d3d2482c8c8311c4e146eda3c9820cc7ee1572cd7ff3b",
+      "cash": 6031088.539010343,
+      "ledger": {
+        "turn": 11,
+        "opening": 5026062.47653381,
+        "rate": 0.001,
+        "amount": 5026.06247653381
+      },
+      "clicked": {
+        "text": "다음 턴 준비",
+        "action": "dismiss-settle"
+      }
+    },
+    {
+      "dialog": "퀴즈 건너뛰기 확인",
+      "title": "아직 풀 수 있는 퀴즈가 있어요",
+      "dice": "직전 주사위 1과 3, 합계 4칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "notice-quiz",
+      "finished": false,
+      "turn": 11,
+      "actionsLeft": 0,
+      "gameHash": "58d2a941a507d4a6a30d3d2482c8c8311c4e146eda3c9820cc7ee1572cd7ff3b",
+      "cash": 6031088.539010343,
+      "ledger": {
+        "turn": 11,
+        "opening": 5026062.47653381,
+        "rate": 0.001,
+        "amount": 5026.06247653381
+      },
+      "clicked": {
+        "text": "그냥 넘어가기",
+        "action": "notice-continue"
+      }
+    },
+    {
+      "title": "한 칸씩, 내 은퇴를 향해",
+      "dice": "직전 주사위 1과 3, 합계 4칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "\n    본문으로 건너뛰기\n    \n      \n        연금로드금리의 두 얼굴\n        \n          턴11/12\n          연금 목표42만원\n      ",
+      "finished": false,
+      "turn": 11,
+      "actionsLeft": 0,
+      "gameHash": "58d2a941a507d4a6a30d3d2482c8c8311c4e146eda3c9820cc7ee1572cd7ff3b",
+      "cash": 6031088.539010343,
+      "ledger": {
+        "turn": 11,
+        "opening": 5026062.47653381,
+        "rate": 0.001,
+        "amount": 5026.06247653381
+      },
+      "clicked": {
+        "text": "⚄주사위 굴리기",
+        "action": "roll-dice"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "무엇을 할까요?",
+      "dice": "직전 주사위 2과 5, 합계 7칸 이동",
+      "interest": "대기자금 이자 +6,031원턴 시작 6,031,089원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 12,
+      "actionsLeft": 1,
+      "gameHash": "d6bcaeb1b8c005a88fbfe86d2f811b04619ccd25407a7fa8b98d5aaf183b0340",
+      "cash": 8207737.233584581,
+      "ledger": {
+        "turn": 12,
+        "opening": 6031088.539010343,
+        "rate": 0.001,
+        "amount": 6031.088539010343
+      },
+      "clicked": {
+        "text": "리밸런싱성향 안 목표비중에 가깝게 복원선택 ›",
+        "action": "action-view",
+        "view": "rebalance"
+      }
+    },
+    {
+      "dialog": "운용 행동 선택",
+      "title": "목표비중으로 되돌릴까요?",
+      "dice": "직전 주사위 2과 5, 합계 7칸 이동",
+      "interest": "대기자금 이자 +6,031원턴 시작 6,031,089원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "목표비중으로 되돌릴까요?",
+      "finished": false,
+      "turn": 12,
+      "actionsLeft": 1,
+      "gameHash": "d6bcaeb1b8c005a88fbfe86d2f811b04619ccd25407a7fa8b98d5aaf183b0340",
+      "cash": 8207737.233584581,
+      "ledger": {
+        "turn": 12,
+        "opening": 6031088.539010343,
+        "rate": 0.001,
+        "amount": 6031.088539010343
+      },
+      "clicked": {
+        "text": "리밸런싱 실행",
+        "action": "do-rebalance"
+      }
+    },
+    {
+      "dialog": "턴 정산 요약",
+      "title": "무엇이 바뀌었나요?",
+      "dice": "직전 주사위 2과 5, 합계 7칸 이동",
+      "interest": "대기자금 이자 +6,031원턴 시작 6,031,089원 × 턴당 0.1% · 게임 가정상품 가격 손익과 구분하며 운용손익 합계에 포함합니다.",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "close-modal",
+      "finished": false,
+      "turn": 12,
+      "actionsLeft": 0,
+      "gameHash": "b418b985641d9883d70557d6fc6a459aed562d1b1d29121417acccfe27b3f479",
+      "cash": 2.185891967266798,
+      "ledger": {
+        "turn": 12,
+        "opening": 6031088.539010343,
+        "rate": 0.001,
+        "amount": 6031.088539010343
+      },
+      "clicked": {
+        "text": "수령 방식 비교로",
+        "action": "dismiss-settle"
+      }
+    },
+    {
+      "dialog": "퀴즈 건너뛰기 확인",
+      "title": "아직 풀 수 있는 퀴즈가 있어요",
+      "dice": "직전 주사위 2과 5, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "notice-quiz",
+      "finished": false,
+      "turn": 12,
+      "actionsLeft": 0,
+      "gameHash": "b418b985641d9883d70557d6fc6a459aed562d1b1d29121417acccfe27b3f479",
+      "cash": 2.185891967266798,
+      "ledger": {
+        "turn": 12,
+        "opening": 6031088.539010343,
+        "rate": 0.001,
+        "amount": 6031.088539010343
+      },
+      "clicked": {
+        "text": "그냥 넘어가기",
+        "action": "notice-continue"
+      }
+    },
+    {
+      "dialog": "수령 방식 선택",
+      "title": "어떻게 받을까요?",
+      "dice": "직전 주사위 2과 5, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "choose-payout",
+      "finished": false,
+      "turn": 12,
+      "actionsLeft": 0,
+      "gameHash": "b418b985641d9883d70557d6fc6a459aed562d1b1d29121417acccfe27b3f479",
+      "cash": 2.185891967266798,
+      "ledger": {
+        "turn": 12,
+        "opening": 6031088.539010343,
+        "rate": 0.001,
+        "amount": 6031.088539010343
+      },
+      "clicked": {
+        "text": "연금(20년)\n      세후 평균 월 421,411원\n      평균 세금 1.5% · 240개월 · 목표용 월 환산액 · 세전 427,970원\n      연금 목표 미달 · 목표까지 72,030원선택해서 비교",
+        "action": "choose-payout",
+        "choice": "annuity20"
+      }
+    },
+    {
+      "dialog": "수령 방식 선택",
+      "title": "어떻게 받을까요?",
+      "dice": "직전 주사위 2과 5, 합계 7칸 이동",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "choose-payout",
+      "finished": false,
+      "turn": 12,
+      "actionsLeft": 0,
+      "gameHash": "b418b985641d9883d70557d6fc6a459aed562d1b1d29121417acccfe27b3f479",
+      "cash": 2.185891967266798,
+      "ledger": {
+        "turn": 12,
+        "opening": 6031088.539010343,
+        "rate": 0.001,
+        "amount": 6031.088539010343
+      },
+      "clicked": {
+        "text": "이 방식으로 결과 보기",
+        "action": "confirm-payout"
+      }
+    },
+    {
+      "title": "연금 목표 미달",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "overflow": false
+      },
+      "focus": "연금 목표 미달",
+      "finished": true,
+      "gameHash": null
+    }
+  ],
+  "checkpointCount": 27
+}

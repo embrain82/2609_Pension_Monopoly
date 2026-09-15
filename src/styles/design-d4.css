@@ -29,7 +29,7 @@
 .road-support .card-library p { font-size:14px; line-height:1.7; }
 .road-support .card-library article>span { font-size:12px; color:var(--green); }
 .road-support .card-library .locked { opacity:1; color:#607567; background:#f4f7f4; border-style:dashed; }
-.road-support .card-library .locked h3 { color:#9aafa0; }
+.road-support .card-library .locked h3 { color:#607567; }
 .road-support .source-list a { overflow-wrap:anywhere; }
 .road-support .howto-steps { padding-left:24px; }
 .road-support .howto-steps li { padding:16px; margin:12px 0; border-radius:14px; background:var(--road-mint); }

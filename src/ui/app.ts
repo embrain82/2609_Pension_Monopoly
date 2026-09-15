@@ -1827,8 +1827,8 @@ export class PensionRoadApp {
       </section><section class="support-group"><h3>이번 판의 조건</h3><div class="setting-row default-option-row"><span><strong>디폴트옵션(사전지정운용)</strong><small>${this.defaultOptionSettingNote()}</small></span><button class="secondary compact" data-action="open-default-option">${(this.game ? this.game.defaultOption : this.save.defaultOption) ? '바꾸기' : '지정'}</button></div>
       <div class="button-stack compact">
         ${renderSettingsHowToButton()}
-        <button class="secondary" data-action="open-diagnosis" ${this.game?.campaign ? "disabled" : ""}>성향 다시 진단</button>${this.game?.campaign ? '<p class="hint">게임 시작 후 성향 고정 · 다음 새 판의 시작 준비에서 변경할 수 있습니다.</p>' : ""}
-        <button class="secondary" data-action="open-goal">월 연금 목표 바꾸기</button>
+        <button class="secondary" data-action="open-diagnosis" ${this.game?.campaign ? 'disabled aria-describedby="locked-start-conditions"' : ""}>성향 다시 진단</button>${this.game?.campaign ? '<p class="hint" id="locked-start-conditions">게임 시작 후 성향·목표 고정 · 다음 새 판의 시작 준비에서 변경할 수 있습니다.</p>' : ""}
+        <button class="secondary" data-action="open-goal" ${this.game?.campaign ? 'disabled aria-describedby="locked-start-conditions"' : ""}>월 연금 목표 바꾸기</button>
         <p class="manual-links"><a href="./user-manual.html" target="_blank" rel="noreferrer">사용자 매뉴얼</a> · <a href="./operator-manual.html" target="_blank" rel="noreferrer">운영자 매뉴얼</a></p>
       </div>
       </section><details class="support-sources"><summary>교육용 가정과 공식 근거</summary><div class="disclaimer-box"><strong>중요 면책</strong><p>모든 금융 수치는 교육용으로 단순화했습니다. 특정 금융회사·상품을 추천하지 않으며, 수익·원금·세제 혜택을 보장하지 않습니다. 실제 규정과 세무 결과는 개인 상황과 기준일에 따라 달라질 수 있습니다. 은행 계좌·잔고와 연동되지 않는 가상 포트폴리오입니다.</p></div>

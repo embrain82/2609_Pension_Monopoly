@@ -1,0 +1,24 @@
+{
+  "commit": "455cefd",
+  "target": "Preview",
+  "version": "1.10.0",
+  "url": "https://2609-pension-monopoly-99zhgviv2-nonsleepers-projects.vercel.app",
+  "deploymentId": "dpl_CLRbiy1A4trJroCJdnfv4JAtFuxW",
+  "status": "Ready",
+  "assets": [
+    {
+      "path": "assets/index-CFxrgKu7.js",
+      "bytes": 446904,
+      "sha256": "02edee7efdc58295f01a80555bffaca3a7bfa4fd1d5ce9b1bbb78f04022a8419",
+      "equal": true
+    },
+    {
+      "path": "assets/index-D2Njgg7a.css",
+      "bytes": 149129,
+      "sha256": "32b943e0fca913d0e2eb47f623f98baf1fe77b83317d42a70a419945a1d75599",
+      "equal": true
+    }
+  ],
+  "protection": "Existing Vercel protection retained; read via vercel curl",
+  "productionUpdated": false
+}
