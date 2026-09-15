@@ -4,7 +4,7 @@
 
 FB-001~003의 [상세 구현 플랜과 화면 시안](playtest-improvements-plan-2026-09-10.html)을 작성했습니다. v1.5.1에서 세 항목의 구현·검증을 완료했습니다. [구현·검증 기록](../implementation/2026-09-10-playtest-feedback.md)을 참고하세요.
 
-현재 사용자 제보는 **15건: 구현·검증 완료 11건, 구현 반영·통합 검증 중 4건**입니다. 2026-09-15 사용자 승인으로 FB-012~015와 후속 D4를 구현했습니다. [승인 계획](playtest-improvements-plan-2026-09-15.html) · [최신 구현·검증 상태](../implementation/2026-09-15-design-d4/README.md). 운영 배포 전 시각·실기기 검증은 대기 중입니다.
+현재 사용자 제보는 **15건: 구현·검증 완료 11건, 구현 반영·통합 검증 중 4건**입니다. 2026-09-15 사용자 승인으로 FB-012~015와 후속 D4를 구현했습니다. [승인 계획](playtest-improvements-plan-2026-09-15.html) · [최신 구현·검증 상태](../implementation/2026-09-15-design-d4/README.md). 이후 사용자의 ‘머지하고 배포해줘’ 요청에 따라 운영 반영하며, 시각·실기기 검증은 미확인 후속 항목으로 유지합니다.
 
 최종 구현·검증일: 2026-09-14. FB-001~003은 v1.5.1, FB-004~006은 v1.6.0, FB-007은 v1.7.0에 반영했습니다. FB-008~011의 [상세 구현 계획·클릭 가능한 화면 시안](playtest-improvements-plan-2026-09-14.html)에 따라 v1.9.0으로 구현·검증했습니다. [구현·검증 기록](../implementation/2026-09-14-playtest-followup.md). [FB-004~006 승인 계획](playtest-improvements-plan-2026-09-12.html) · [구현·검증 기록](../implementation/2026-09-12-playtest-pacing.md).
 
