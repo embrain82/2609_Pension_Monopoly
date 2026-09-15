@@ -1,5 +1,5 @@
 import type { GameState } from '../types';
-import { AVATAR_ANIMALS, avatarBody, type Mood } from './avatars';
+import { AVATAR_NAMES, avatarBody, type Mood } from './avatars';
 import { TOKEN_STEP_MS, boardPosition, tokenTileIndex } from './board';
 
 /** 보드 SVG viewBox 한 변. 칸 중심을 이 값으로 나눠 퍼센트 좌표를 만든다. */
@@ -11,7 +11,7 @@ export interface TokenView {
   mood: Mood;
 }
 
-/** 동물 말의 발 기준 자세. 모든 키프레임은 여기서 출발해 여기로 돌아온다. */
+/** 캐릭터 말의 발 기준 자세. 모든 키프레임은 여기서 출발해 여기로 돌아온다. */
 export const TOKEN_BASE = 'translate(-50%, -64%)';
 /** 한 칸 점프의 총 길이(ms). 이 중 HOP_AIR 비율만 공중에 있고 나머지는 칸 위에 내려앉아 있는 박자. */
 export const HOP_MS = TOKEN_STEP_MS;
@@ -109,7 +109,7 @@ export function renderTokenLayer(state: GameState, view: TokenView): string {
     ? `<svg viewBox="0 0 100 100" aria-hidden="true">${avatarBody(state.avatarId, view.mood)}</svg>`
     : '<b>나</b>';
   return `<div class="token-layer" aria-hidden="true">
-      <div class="token-pos" data-index="${index}" data-animal="${view.characters ? AVATAR_ANIMALS[state.avatarId] : ''}" style="transform:${tokenTranslate(index)}">
+      <div class="token-pos" data-index="${index}" data-character-name="${view.characters ? AVATAR_NAMES[state.avatarId] : ''}" style="transform:${tokenTranslate(index)}">
         <div class="${tokenClasses(view)}"><i class="token-shadow"></i><i class="token-rim"></i><div class="token-face">${face}</div></div>
       </div>
     </div>`;

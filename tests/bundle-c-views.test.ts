@@ -34,7 +34,7 @@ describe('업적·컬렉션·주간 시드 뷰', () => {
     expect(html).toContain('1 / 5 캐릭터 완주');
     expect(html).toContain('3판 완주');
     expect(html).toContain('★★☆');
-    expect(html).toContain('여우');
+    expect(html).toContain('단지');
     expect(html).toContain('아직 완주 없음');
     const plain = renderCollectionGallery(collection, false);
     expect(plain).not.toContain('<svg');

@@ -46,7 +46,7 @@ import { rebalanceGapLine } from '../engine/tile-effects';
 import { heldProductIds, pickHeldProduct } from './action-form';
 import { randomSeed } from '../engine/random-engine';
 import { emptyMarketStep } from '../engine/market-engine';
-import { applyProfileToGame, profileFromScore, isProfileId, PROFILE_IDS, profileLimits } from '../engine/profile-engine';
+import { applyProfileToGame, profileFromScore, isProfileId, profileLimits } from '../engine/profile-engine';
 import { pickTileBriefing } from '../engine/tile-briefing';
 import { KNOWLEDGE_CAPS, calculateScore, knowledgeBreakdown, shortfallPlan, starChecklist, starLockReason } from '../engine/scoring-engine';
 import type { AchievementId, ActionKind, DefaultOptionId, GameState, LifeChoice, PayoutChoice, ProfileId, ProductId, SaveData, TurnSummary } from '../types';
@@ -63,7 +63,8 @@ import { renderGhostVerdict } from './ghost';
 import { percent, renderProductReturns, renderMarketCard, renderMarketTimeline, renderSettingsEntry, renderTurnTrack, signedPercent } from './market-view';
 import { loadSave, saveData } from './ui-state';
 import { AUTO_SETTLE_MS, SETTLE_CTA_NEXT, canAutoSettle, renderSettlementModal } from './settlement';
-import { AVATAR_ANIMALS, avatarMood, renderAvatar } from './avatars';
+import { avatarMood, renderAvatar, showAvatarFallbacks, AVATAR_NAMES } from './avatars';
+import { renderCharacterPicker } from './character-picker';
 import { renderSpeech } from './speech';
 import { settlementSound } from './sound';
 import { SoundPlayer } from './sound-dom';
@@ -175,10 +176,15 @@ export class PensionRoadApp {
   private shareFallback = '';
 
   private readonly failedBrandArt = new Set<string>();
+  private readonly failedCharacterArt = new Set<string>();
 
   constructor(private readonly root: HTMLElement) {
     this.root.addEventListener('error', event => {
       const image = event.target;
+      if (image instanceof Element && image.hasAttribute('data-character-image')) {
+        this.failedCharacterArt.add(image.getAttribute('data-character-image')!);
+        showAvatarFallbacks(this.root, this.failedCharacterArt);
+      }
       if (image instanceof HTMLImageElement && image.hasAttribute('data-brand-art')) {
         this.failedBrandArt.add(image.dataset.brandArt!); image.hidden = true;
       }
@@ -339,11 +345,6 @@ export class PensionRoadApp {
       this.save.settings.ghost = target.checked;
       this.persist();
     }
-    if (target.id.endsWith('-avatar-pick') && target instanceof HTMLSelectElement && isProfileId(target.value)) {
-      this.save.avatarId = target.value;
-      if (this.game) this.game = { ...this.game, avatarId: target.value };
-      this.persist();
-    }
     if (target.id === 'map-tile' && target instanceof HTMLSelectElement) this.exploreIndex = Math.max(0, Math.min(23, Number(target.value)));
     if (target.id === 'sound' && target instanceof HTMLInputElement) {
       this.setSound(target.checked);
@@ -379,7 +380,12 @@ export class PensionRoadApp {
     // 정산 창 안을 누르면(자세히 펼치기 포함) 자동 진행을 멈추고 읽을 시간을 준다.
     if (this.modal === 'settle') this.clearAutoSettle();
 
-    if (action === 'notice-continue') {
+    if (action === 'pick-avatar' && isProfileId(button.dataset.avatar)) {
+      this.save.avatarId = button.dataset.avatar;
+      if (this.game) this.game = { ...this.game, avatarId: button.dataset.avatar };
+      this.persist();
+      this.announce(`${AVATAR_NAMES[button.dataset.avatar]}를 선택했습니다.`);
+    } else if (action === 'notice-continue') {
       this.continueNotice();
     } else if (action === 'notice-quiz') {
       this.returnToNoticeQuiz();
@@ -398,7 +404,7 @@ export class PensionRoadApp {
     } else if (action === 'prepare-no-option' && this.preparation) {
       this.preparation.option = null; this.preparation.optionSource='chosen';
     } else if (action === 'export-run'  && this.game) {
-      const blob=new Blob([JSON.stringify({version:'1.10.0',financeRules:this.game.financeRules??null,route:this.game.route,ruleset:this.game.rulesetVersion,contributionPacing:this.game.contributionPacing??null,defaultTrading:this.game.defaultTrading,seed:this.game.seed,profile:this.game.profileId,goal:this.game.goalMonthly,campaign:this.game.campaign,quiz:this.game.quizLog},null,2)],{type:'application/json'});
+      const blob=new Blob([JSON.stringify({version:'1.11.0',financeRules:this.game.financeRules??null,route:this.game.route,ruleset:this.game.rulesetVersion,contributionPacing:this.game.contributionPacing??null,defaultTrading:this.game.defaultTrading,seed:this.game.seed,profile:this.game.profileId,goal:this.game.goalMonthly,campaign:this.game.campaign,quiz:this.game.quizLog},null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob),link=document.createElement('a'); link.href=url; link.download='pension-road-replay.json'; link.click(); window.setTimeout(()=>URL.revokeObjectURL(url),1000);
     } else if (action === 'replay-chapter' && this.game) {
       const replay=replayChapter(this.game,Number(button.dataset.turn));
@@ -1174,7 +1180,8 @@ export class PensionRoadApp {
     const stage = this.root.querySelector('.board-stage');
     if (this.tokenHopping && this.game && stage && this.renderedModal === null && !this.root.querySelector('.dice-overlay')) {
       const markup = document.createElement('template'); markup.innerHTML = this.renderBoard(this.game, false);
-      updateView(stage, markup.content.firstElementChild!.innerHTML); return;
+      updateView(stage, markup.content.firstElementChild!.innerHTML);
+      showAvatarFallbacks(stage, this.failedCharacterArt); return;
     }
     document.documentElement.dataset.reduceMotion = String(this.save.settings.reducedMotion);
     document.documentElement.dataset.speed = String(this.save.settings.speed);
@@ -1189,6 +1196,7 @@ export class PensionRoadApp {
     const active = document.activeElement as HTMLElement | null;
     if (!previousModal && this.modal && active?.dataset.action) this.returnFocus = { action: active.dataset.action, view: active.dataset.view, tile: active.dataset.tile };
     updateView(this.root, `<main id="main" class="app-shell" data-scene="${playScene(this.game, this.screen, this.modal, this.diceRolling, this.tokenHopping)}">${screenHtml}</main>${this.renderModal()}`);
+    showAvatarFallbacks(this.root, this.failedCharacterArt);
     if (this.diceRolling) {
       if (existingOverlay) this.root.appendChild(existingOverlay);
       else this.root.insertAdjacentHTML('beforeend', renderDiceMarkup(this.diceFaces, true, scaleMs(DICE_ROLL_DURATION_MS, this.save.settings.speed)));
@@ -1279,7 +1287,7 @@ export class PensionRoadApp {
   }
 
   private renderAvatarPicker(place = 'title'): string {
-    return `<label class="setting-row" for="${place}-avatar-pick"><span><strong>내 캐릭터</strong><small>투자성향과 무관한 외형 선택</small></span><select id="${place}-avatar-pick">${PROFILE_IDS.map(id => `<option value="${id}" ${this.save.avatarId === id ? 'selected' : ''}>${AVATAR_ANIMALS[id]}</option>`).join('')}</select></label>`;
+    return renderCharacterPicker(this.save.avatarId, this.save.settings.characters, place);
   }
 
   private renderDiagnosis(): string {
@@ -1817,7 +1825,7 @@ export class PensionRoadApp {
     return `<p class="eyebrow">교육용 게임 안내</p><h2>플레이 설정</h2>
       <p class="profile-note">${profileNote}</p>
       <section class="support-group"><h3>화면과 캐릭터</h3><label class="setting-row" for="reduced-motion"><span><strong>동작 줄이기</strong><small>전환·주사위 애니메이션을 즉시 표시합니다.</small></span><input id="reduced-motion" type="checkbox" ${this.save.settings.reducedMotion ? 'checked' : ''}></label>
-      <label class="setting-row" for="characters"><span><strong>캐릭터 표시</strong><small>직접 고른 동물 말, 앵커·코치 말풍선을 보입니다. 끄면 문구만 남습니다.</small></span><input id="characters" type="checkbox" ${this.save.settings.characters ? 'checked' : ''}></label>
+      <label class="setting-row" for="characters"><span><strong>캐릭터 표시</strong><small>직접 고른 올원프렌즈 말, 앵커·코치 말풍선을 보입니다. 끄면 문구만 남습니다.</small></span><input id="characters" type="checkbox" ${this.save.settings.characters ? 'checked' : ''}></label>
       ${this.renderAvatarPicker('settings')}</section>
       <section class="support-group"><h3>소리와 턴 진행</h3><label class="setting-row" for="sound"><span><strong>효과음</strong><small>주사위·속보·정산·환급·별 소리. 기본 끔이며 게임 화면 오른쪽 위에서도 바꿀 수 있습니다.</small></span><input id="sound" type="checkbox" ${this.save.settings.sound ? 'checked' : ''}></label>
       <button class="secondary" data-action="test-sound">효과음 테스트</button><p id="sound-status" role="status">${this.soundMessage}</p>

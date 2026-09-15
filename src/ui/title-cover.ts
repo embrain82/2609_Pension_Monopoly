@@ -1,10 +1,10 @@
 import { boardPosition } from './board';
-import { AVATAR_ANIMALS, avatarBody } from './avatars';
-import type { ProfileId } from '../types';
-/** 기존 24칸 좌표와 동물 SVG를 재사용한 정적 표지. 게임 상태나 RNG를 생성하지 않는다. */
-export function renderTitleCover(avatar: ProfileId, characters: boolean): string {
+import { AVATAR_NAMES, avatarBody } from './avatars';
+import type { AvatarId } from '../types';
+/** 기존 24칸 좌표와 캐릭터 그림을 재사용한 정적 표지. 게임 상태나 RNG를 생성하지 않는다. */
+export function renderTitleCover(avatar: AvatarId, characters: boolean): string {
   const colors = ['#deead6','#dce9ef','#f7e1d8','#eee3c9'];
-  return `<div class="title-cover"><svg viewBox="0 0 360 244" role="img" aria-label="네 지역을 잇는 24칸 보드와 ${characters ? AVATAR_ANIMALS[avatar] : '나'} 말 · 12턴의 은퇴설계">
+  return `<div class="title-cover"><svg viewBox="0 0 360 244" role="img" aria-label="네 지역을 잇는 24칸 보드와 ${characters ? AVATAR_NAMES[avatar] : '나'} 말 · 12턴의 은퇴설계">
     <rect x="54" y="6" width="252" height="232" rx="24" fill="#e5eadf"/>
     <g transform="translate(68 10) scale(.32)"><rect width="700" height="700" rx="28" fill="#fffdf4" stroke="#b8cac1" stroke-width="3"/>
     ${Array.from({length:24},(_,i)=>{const p=boardPosition(i);return `<rect x="${p.x+5}" y="${p.y+5}" width="90" height="90" rx="14" fill="${colors[Math.floor(i/6)]}" stroke="#54776d" stroke-width="2"/>`;}).join('')}

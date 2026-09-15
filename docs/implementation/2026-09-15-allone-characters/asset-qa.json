@@ -1,0 +1,162 @@
+[
+  {
+    "name": "olli",
+    "path": "public/assets/characters/allone/olli.png",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "bytes": 849031,
+    "transparentPercent": 60.79,
+    "opaqueFrameBounds": [
+      [
+        134,
+        48,
+        648,
+        651
+      ],
+      [
+        132,
+        49,
+        611,
+        651
+      ],
+      [
+        32,
+        49,
+        579,
+        651
+      ]
+    ],
+    "sha256": "a0bb9dd35b2ea9ce9a9764b3c46352c234925425a9bd1b03f1f1215ff8e7c1c7"
+  },
+  {
+    "name": "woni",
+    "path": "public/assets/characters/allone/woni.png",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "bytes": 731101,
+    "transparentPercent": 66.11,
+    "opaqueFrameBounds": [
+      [
+        108,
+        100,
+        642,
+        622
+      ],
+      [
+        117,
+        102,
+        569,
+        622
+      ],
+      [
+        72,
+        101,
+        645,
+        622
+      ]
+    ],
+    "sha256": "fc65de9bbd5b9bac0993f0ccd8c8f866628a37f114fc22f28e5685a14d5dadf0"
+  },
+  {
+    "name": "danji",
+    "path": "public/assets/characters/allone/danji.png",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "bytes": 903852,
+    "transparentPercent": 56.81,
+    "opaqueFrameBounds": [
+      [
+        111,
+        43,
+        673,
+        640
+      ],
+      [
+        128,
+        43,
+        627,
+        639
+      ],
+      [
+        32,
+        41,
+        599,
+        640
+      ]
+    ],
+    "sha256": "91c1d3acebccb34f16a8a1b8e0d3706891dd5bbff9807d5251a8be09360ea5d2"
+  },
+  {
+    "name": "dalli",
+    "path": "public/assets/characters/allone/dalli.png",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "bytes": 943248,
+    "transparentPercent": 57.18,
+    "opaqueFrameBounds": [
+      [
+        161,
+        35,
+        667,
+        650
+      ],
+      [
+        106,
+        47,
+        602,
+        650
+      ],
+      [
+        20,
+        41,
+        547,
+        650
+      ]
+    ],
+    "sha256": "265a813c208df2a455f14b7b8f9d740176d8ca45b662bbf7c5b5ca113cbeff50"
+  },
+  {
+    "name": "kori",
+    "path": "public/assets/characters/allone/kori.png",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "bytes": 1111895,
+    "transparentPercent": 49.66,
+    "opaqueFrameBounds": [
+      [
+        63,
+        88,
+        693,
+        641
+      ],
+      [
+        47,
+        84,
+        681,
+        641
+      ],
+      [
+        41,
+        80,
+        679,
+        642
+      ]
+    ],
+    "sha256": "51d139669184f4647bf4f095e09d4c24892e1692252cf498d6a786c5f6c3f186"
+  }
+]

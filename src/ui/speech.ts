@@ -1,4 +1,4 @@
-import type { ProfileId } from '../types';
+import type { AvatarId } from '../types';
 import { renderAvatar, renderSpeaker, type Mood, type Speaker } from './avatars';
 
 export interface SpeechOptions {
@@ -6,7 +6,7 @@ export interface SpeechOptions {
   characters: boolean;
   title?: string;
   /** 플레이어 아바타를 화자로 쓸 때 */
-  player?: { profileId: ProfileId; mood: Mood };
+  player?: { avatarId: AvatarId; mood: Mood };
   tone?: 'default' | 'shock' | 'positive';
 }
 
@@ -16,7 +16,7 @@ export function renderSpeech(speaker: Speaker | 'player', body: string, options:
   const avatar = !options.characters
     ? ''
     : speaker === 'player'
-      ? (options.player ? renderAvatar(options.player.profileId, options.player.mood, 48) : '')
+      ? (options.player ? renderAvatar(options.player.avatarId, options.player.mood, 48) : '')
       : renderSpeaker(speaker, 48);
   const title = options.title ? `<strong class="speech-title">${options.title}</strong>` : '';
   return `<div class="${classes}">${avatar}<div class="bubble">${title}${body}</div></div>`;

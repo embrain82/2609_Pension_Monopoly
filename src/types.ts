@@ -6,7 +6,7 @@ export type TileKind = 'start' | 'product' | 'market' | 'life' | 'trade' | 'reba
 export type Trend = 'up' | 'down' | 'flat';
 export type ProfileId = 'stable' | 'stableGrowth' | 'balanced' | 'growth' | 'aggressive';
 
-// 저장 키는 기존 동물 컬렉션과 호환하되 투자성향과 별도로 선택한다.
+// 기존 컬렉션 슬롯을 유지한다. stable~aggressive는 외형 저장 키일 뿐 투자성향과 별도로 선택한다.
 export type AvatarId = ProfileId;
 
 export interface Product {

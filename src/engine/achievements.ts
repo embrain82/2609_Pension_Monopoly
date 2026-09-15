@@ -26,7 +26,7 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   { id: 'annuity-choice', title: '연금 수령 체험', detail: '연금(20년) 수령 방식을 체험했다. 어느 수령 방식이 더 적절한지는 개인 상황에 따라 다릅니다.', scope: 'game' },
   { id: 'default-option-run', title: '사전지정운용', detail: `디폴트옵션 매수 체험을 완료했다. 새 판은 1회, 이전 판은 ${DEFAULT_OPTION_RUNS}회 기준. 점수·별 추가 보상은 없다.`, scope: 'game' },
   { id: 'severance-to-irp', title: '퇴직급여는 IRP로', detail: '이직 퇴직급여를 지금 받지 않고 IRP로 이전했다(과세 이연).', scope: 'game' },
-  { id: 'all-profiles', title: '다섯 캐릭터 완주', detail: '선택 가능한 동물 5종 모두 한 번 이상 12턴을 완주했다.', scope: 'meta' }
+  { id: 'all-profiles', title: '다섯 캐릭터 완주', detail: '올리·원이·단지·달리·코리 5종 모두 한 번 이상 12턴을 완주했다.', scope: 'meta' }
 ];
 
 const BY_ID = new Map(ACHIEVEMENTS.map((item) => [item.id, item]));

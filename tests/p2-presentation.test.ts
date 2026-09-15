@@ -54,11 +54,11 @@ it('24칸에서 말과 칸 좌표가 일치하고 잔상은 최대 지정된 칸
   root.innerHTML=renderBoardMarkup(g,false,{focusIndex:i,trail:[(i+23)%24],hopping:true,landed:true,tokenInSvg:false});expect(root.querySelectorAll('.arrival-ring')).toHaveLength(1);expect(root.querySelectorAll('.move-trail')).toHaveLength(1);expect(root.querySelector('.board')!.getAttribute('aria-label')).toContain(`${i+1}번 칸`);
   root.innerHTML=renderBoardMarkup(g,false,{focusIndex:i,tokenInSvg:false});expect(root.querySelector('.move-trail')).toBeNull();expect(root.querySelector('.arrival-ring')).toBeNull();
  }
- for(const avatarId of PROFILE_IDS){expect(renderTokenLayer({...g,avatarId},{index:1,characters:true,mood:'calm'})).toContain('data-animal=');expect(renderTitleCover(avatarId,true)).toContain('24칸 보드');}
+ for(const avatarId of PROFILE_IDS){expect(renderTokenLayer({...g,avatarId},{index:1,characters:true,mood:'calm'})).toContain('data-character-name=');expect(renderTitleCover(avatarId,true)).toContain('24칸 보드');}
 });
 it('표지 캐릭터 선택이 즉시 그림에 반영되며 동의 전 시작이 잠긴다',()=>{
  new PensionRoadApp(root);expect(root.querySelector<HTMLButtonElement>('[data-action="begin"]')!.disabled).toBe(true);
- const select=root.querySelector<HTMLSelectElement>('#title-avatar-pick')!;select.value='stableGrowth';select.dispatchEvent(new Event('change',{bubbles:true}));expect(root.querySelector('.title-cover svg')!.getAttribute('aria-label')).toContain('코알라');
+ root.querySelector<HTMLButtonElement>('[data-action="pick-avatar"][data-avatar="stableGrowth"]')!.click();expect(root.querySelector('.title-cover svg')!.getAttribute('aria-label')).toContain('원이');
  const check=root.querySelector<HTMLInputElement>('#disclaimer')!;check.checked=true;check.dispatchEvent(new Event('change',{bubbles:true}));expect(root.querySelector<HTMLButtonElement>('[data-action="begin"]')!.disabled).toBe(false);
 });
 it('결과의 주 동작은 하나이며 상세 복기·공유·재도전·수령 변경을 유지한다',()=>{

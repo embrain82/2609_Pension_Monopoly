@@ -53,14 +53,14 @@ describe('24칸 보드', () => {
     expect(markup).not.toContain(created.marketPath[0].signal);
   });
 
-  it('캐릭터 표시를 켜면 말이 성향 동물 아바타가 되고, 도착 직후엔 칸 이펙트가 붙는다', () => {
+  it('캐릭터 표시를 켜면 말이 선택한 캐릭터 아바타가 되고, 도착 직후엔 칸 이펙트가 붙는다', () => {
     const started = startTurn(createGame('board-avatar'), 3).state;
     const plain = renderBoardMarkup(started, false);
     expect(plain).toContain('player-mark');
     expect(plain).not.toContain('player-avatar');
     const withAvatar = renderBoardMarkup(started, false, { characters: true, mood: 'tense', landed: true });
     expect(withAvatar).toContain('class="player-avatar"');
-    expect(withAvatar).toContain('class="sweat"');
+    expect(withAvatar).toContain('data-mood="tense"');
     expect(withAvatar).not.toContain('player-mark');
     expect(withAvatar).toContain(' landed"');
     expect(withAvatar.match(/class="tile-fx"/g)?.length).toBe(1);
