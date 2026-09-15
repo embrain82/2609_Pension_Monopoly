@@ -15,7 +15,7 @@
 .support-group .setting-row:last-child { border-bottom:0; }
 .road-support .button-stack.compact { margin:20px 0; }
 .road-support .profile-note { background:var(--road-mint); border-radius:16px; padding:18px; }
-.road-support :is(button,select) { min-height:44px; }
+.road-support :is(button,select),.road-support .secondary.compact { min-height:44px; }
 .road-support select { width:100%; max-width:100%; padding:12px; background:#fff; border:1px solid var(--line); border-radius:12px; }
 .road-support .setting-row select { width:auto; }
 .road-support :is(details,.disclaimer-box) { padding:18px; border:1px solid var(--line); border-radius:16px; background:#f7faf7; }
