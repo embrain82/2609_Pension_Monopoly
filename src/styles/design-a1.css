@@ -53,8 +53,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .road-personalize>summary span { color:var(--green); font-size:13px; }
 .road-personalize-grid { display:grid; grid-template-columns:1fr 1.3fr; gap:30px; padding:12px 20px 22px; }
 .road-personalize-grid>div { min-width:0; }
-.road-personalize .title-cover { width:180px; margin:16px auto 0; }
-.road-personalize .title-cover svg { width:100%; display:block; }
 .road-title .setting-row small { display:block; }
 .road-personalize .campaign-picker { width:100%; margin:0 0 14px; }
 .road-personalize .campaign-picker select { max-width:100%; }

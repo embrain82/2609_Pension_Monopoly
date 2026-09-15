@@ -1,0 +1,9 @@
+{
+  "mode": "builtin",
+  "finalSources": "asset-sources.json",
+  "process": "Approved review art and official reference -> three pose sheet -> transparent PNG. Source files copied unchanged; no local raster editing or compression.",
+  "whiteBackgroundStep": "Replace the checkerboard background with a solid white background. Preserve the three characters, their positions, poses and image dimensions.",
+  "alphaStep": "Remove the white background. Output a transparent background PNG with real alpha channel. Preserve the three characters unchanged. No checkerboard or white backdrop. Keep same positions, poses and image dimensions.",
+  "notes": "The color/species in the alpha instruction was tailored to each character. Earlier checkerboard outputs were rejected; the final RGBA checks are in asset-qa.json.",
+  "recordType": "Normalized prompt templates and process summary; not a complete verbatim log of failed attempts."
+}

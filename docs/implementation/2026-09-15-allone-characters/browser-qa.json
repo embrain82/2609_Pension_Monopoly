@@ -1,0 +1,243 @@
+{
+  "browser": "Ego Chromium, TaskSpace 10",
+  "origin": "http://localhost:5193",
+  "controls": "Real mouse and keyboard input; financial state was not injected or edited",
+  "imageDecode": {
+    "count": 5,
+    "dimensions": [
+      2172,
+      724
+    ],
+    "failedFrames": 0
+  },
+  "selection": {
+    "allFiveSelectable": true,
+    "financialStateUnchanged": true,
+    "keyboardSpace": "growth (달리)",
+    "keyboardFocusRetained": true
+  },
+  "responsive": {
+    "widths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "horizontalDocumentOverflow": false
+  },
+  "resume": {
+    "afterTurn": 1,
+    "avatarId": "aggressive",
+    "name": "코리",
+    "profileId": "stableGrowth"
+  },
+  "normalMotion": [
+    {
+      "scene": "rolling",
+      "index": "0",
+      "dice": 2,
+      "animations": []
+    },
+    {
+      "scene": "moving",
+      "index": "1",
+      "dice": 0,
+      "animations": [
+        "token-pos",
+        "token3d"
+      ]
+    },
+    {
+      "scene": "moving",
+      "index": "2",
+      "dice": 0,
+      "animations": [
+        "token-pos",
+        "token3d"
+      ]
+    },
+    {
+      "scene": "moving",
+      "index": "3",
+      "dice": 0,
+      "animations": [
+        "token-pos",
+        "token3d"
+      ]
+    },
+    {
+      "scene": "moving",
+      "index": "4",
+      "dice": 0,
+      "animations": [
+        "token-pos",
+        "token3d"
+      ]
+    },
+    {
+      "scene": "moving",
+      "index": "5",
+      "dice": 0,
+      "animations": [
+        "token-pos",
+        "token3d"
+      ]
+    },
+    {
+      "scene": "moving",
+      "index": "6",
+      "dice": 0,
+      "animations": [
+        "token-pos",
+        "token3d"
+      ]
+    },
+    {
+      "scene": "decision",
+      "index": "6",
+      "dice": 0,
+      "animations": []
+    }
+  ],
+  "playthrough": {
+    "completedTurns": 12,
+    "payout": "annuity20",
+    "resultCharacter": "코리",
+    "finalResultVisible": true,
+    "lastActions": [
+      {
+        "turn": 6,
+        "action": "[data-action=\"do-hold\"]"
+      },
+      {
+        "turn": 6,
+        "action": "[data-action=\"dismiss-settle\"]"
+      },
+      {
+        "turn": 6,
+        "action": "[data-action=\"notice-continue\"]"
+      },
+      {
+        "turn": 6,
+        "action": "[data-action=\"roll-dice\"]"
+      },
+      {
+        "turn": 7,
+        "action": "[data-action=\"resolve-life\"][data-choice=\"cash\"]"
+      },
+      {
+        "turn": 7,
+        "action": "[data-action=\"do-hold\"]"
+      },
+      {
+        "turn": 7,
+        "action": "[data-action=\"dismiss-settle\"]"
+      },
+      {
+        "turn": 7,
+        "action": "[data-action=\"notice-continue\"]"
+      },
+      {
+        "turn": 7,
+        "action": "[data-action=\"roll-dice\"]"
+      },
+      {
+        "turn": 8,
+        "action": "[data-action=\"resolve-life\"][data-choice=\"cash\"]"
+      },
+      {
+        "turn": 8,
+        "action": "[data-action=\"do-hold\"]"
+      },
+      {
+        "turn": 8,
+        "action": "[data-action=\"dismiss-settle\"]"
+      },
+      {
+        "turn": 8,
+        "action": "[data-action=\"notice-continue\"]"
+      },
+      {
+        "turn": 8,
+        "action": "[data-action=\"roll-dice\"]"
+      },
+      {
+        "turn": 9,
+        "action": "[data-action=\"dismiss-news\"]"
+      },
+      {
+        "turn": 9,
+        "action": "[data-action=\"do-hold\"]"
+      },
+      {
+        "turn": 9,
+        "action": "[data-action=\"dismiss-settle\"]"
+      },
+      {
+        "turn": 9,
+        "action": "[data-action=\"notice-continue\"]"
+      },
+      {
+        "turn": 9,
+        "action": "[data-action=\"roll-dice\"]"
+      },
+      {
+        "turn": 10,
+        "action": "[data-action=\"do-hold\"]"
+      },
+      {
+        "turn": 10,
+        "action": "[data-action=\"dismiss-settle\"]"
+      },
+      {
+        "turn": 10,
+        "action": "[data-action=\"notice-continue\"]"
+      },
+      {
+        "turn": 10,
+        "action": "[data-action=\"roll-dice\"]"
+      },
+      {
+        "turn": 11,
+        "action": "[data-action=\"do-hold\"]"
+      },
+      {
+        "turn": 11,
+        "action": "[data-action=\"dismiss-settle\"]"
+      },
+      {
+        "turn": 11,
+        "action": "[data-action=\"notice-continue\"]"
+      },
+      {
+        "turn": 11,
+        "action": "[data-action=\"roll-dice\"]"
+      },
+      {
+        "turn": 12,
+        "action": "[data-action=\"do-hold\"]"
+      },
+      {
+        "turn": 12,
+        "action": "[data-action=\"dismiss-settle\"]"
+      },
+      {
+        "turn": 12,
+        "action": "[data-action=\"notice-continue\"]"
+      },
+      {
+        "turn": 12,
+        "action": "[data-action=\"choose-payout\"][data-choice=\"annuity20\"]"
+      },
+      {
+        "turn": 12,
+        "action": "[data-action=\"confirm-payout\"]"
+      }
+    ]
+  },
+  "limits": [
+    "Page.captureScreenshot timed out, so no final browser composite screenshot validation.",
+    "No physical iOS Safari device validation.",
+    "Turn 1 used normal motion. Later turns used the in-game reduced-motion setting."
+  ]
+}

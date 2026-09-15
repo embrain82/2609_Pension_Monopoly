@@ -26,7 +26,7 @@ describe('2.5D 말 오버레이', () => {
     const on = renderTokenLayer(state, { index: 5, characters: true, mood: 'calm' });
     expect(on).toContain('class="token-layer" aria-hidden="true"');
     expect(on).toContain('data-index="5"');
-    expect(on).toContain('data-animal="여우"');
+    expect(on).toContain('data-character-name="단지"');
     expect(on).toContain('transform:translate(78.57%, 7.14%)');
     expect(on).toContain('<svg viewBox="0 0 100 100"');
     expect(on).not.toContain('plain');

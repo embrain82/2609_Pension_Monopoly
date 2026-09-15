@@ -16,7 +16,7 @@ export function buyNeedsContribution(irpCash: number): boolean {
 export function renderHowToModal(characters = true): string {
   return `<p class="eyebrow">처음 한 번만 보여 줍니다</p>
     <h2>한 턴은 이렇게 진행됩니다</h2>
-    ${renderSpeech('coach', '<p>저는 코치예요. 정산마다 한 줄 정리와 다음 판단을 말풍선으로 알려 드릴게요. 보드 위의 동물이 바로 당신의 말이고, 충격 턴엔 긴장한 표정이 됩니다.</p>', { characters })}
+    ${renderSpeech('coach', '<p>저는 코치예요. 정산마다 한 줄 정리와 다음 판단을 말풍선으로 알려 드릴게요. 보드 위의 캐릭터가 바로 당신의 말이고, 충격 턴엔 긴장한 표정이 됩니다.</p>', { characters })}
     <ol class="howto-steps">
       <li><b>1</b><div><strong>주사위 굴리기</strong><p>두 주사위의 합만큼 자동으로 이동합니다. 도착한 칸의 효과를 확인하세요.</p></div></li>
       <li><b>2</b><div><strong>시장이 먼저 움직입니다</strong><p>속보의 「내 보유분에 실제 반영」에서 원화 변화를 보세요. 상품별 시장 예시는 내 수익과 다릅니다. 지금 주문은 이후 시장부터 영향을 받습니다.</p></div></li>

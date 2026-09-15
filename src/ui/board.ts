@@ -1,7 +1,7 @@
 import { REGIONS, regionOf } from '../engine/route-engine';
 import { boardTiles } from '../data/content';
 import type { GameState, TileKind } from '../types';
-import { AVATAR_ANIMALS, avatarBody, type Mood } from './avatars';
+import { AVATAR_NAMES, avatarBody, type Mood } from './avatars';
 
 /** 한 칸 점프 한 번의 길이(ms). 공중 70% + 칸 위에 내려앉은 박자 30%(token3d.ts HOP_AIR). */
 export const TOKEN_STEP_MS = 260;
@@ -10,7 +10,7 @@ export interface BoardView {
   trail?: number[];
   focusIndex?: number;
   hopping?: boolean;
-  /** 설정 "캐릭터 표시". 켜면 말이 성향 동물 아바타가 된다. */
+  /** 설정 "캐릭터 표시". 켜면 말이 선택한 캐릭터 아바타가 된다. */
   characters?: boolean;
   mood?: Mood;
   /** 이번 렌더가 도착 직후면 칸 bounce·파티클을 튼다. */
@@ -57,7 +57,7 @@ function tileFx(kind: TileKind): string {
 
 function playerToken(state: GameState, view: BoardView): string {
   if (view.characters) {
-    return `<svg class="player-avatar" x="26" y="16" width="48" height="48" viewBox="0 0 100 100" aria-label="${AVATAR_ANIMALS[state.avatarId]} 말">${avatarBody(state.avatarId, view.mood ?? 'calm')}</svg>`;
+    return `<svg class="player-avatar" x="26" y="8" width="48" height="48" viewBox="0 0 100 100" aria-label="${AVATAR_NAMES[state.avatarId]} 말">${avatarBody(state.avatarId, view.mood ?? 'calm')}</svg>`;
   }
   return '<circle class="player" cx="50" cy="45" r="13"></circle><text class="player-mark" x="50" y="50" text-anchor="middle">나</text>';
 }

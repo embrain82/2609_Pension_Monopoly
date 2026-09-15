@@ -1,19 +1,19 @@
 import { describe, expect, it } from 'vitest';
 import { investorProfiles } from '../src/data/content';
 import { autoplay, createGame, startTurn } from '../src/engine/game-engine';
-import { AVATAR_ANIMALS, avatarBody, avatarMood, renderAvatar, renderSpeaker, resultMood, type Mood } from '../src/ui/avatars';
+import { AVATAR_NAMES, CHARACTERS, avatarBody, avatarMood, renderAvatar, renderSpeaker, resultMood, type Mood } from '../src/ui/avatars';
 import { renderSpeech } from '../src/ui/speech';
 
 const moods: Mood[] = ['calm', 'tense', 'happy'];
 
 describe('아바타', () => {
-  it('성향 5종 × 표정 3종이 모두 서로 다른 접근 가능한 SVG를 만든다', () => {
+  it('캐릭터 5종 × 표정 3종이 모두 서로 다른 접근 가능한 SVG를 만든다', () => {
     const seen = new Set<string>();
     for (const profile of investorProfiles) {
       for (const mood of moods) {
         const svg = renderAvatar(profile.id, mood, 40);
         expect(svg).toContain('role="img"');
-        expect(svg).toContain(`aria-label="${AVATAR_ANIMALS[profile.id]} · `);
+        expect(svg).toContain(`aria-label="${AVATAR_NAMES[profile.id]} · `);
         expect(svg).toContain(`class="avatar avatar-${profile.id} mood-${mood}"`);
         expect(svg).toContain('width="40"');
         seen.add(avatarBody(profile.id, mood));
@@ -22,10 +22,14 @@ describe('아바타', () => {
     expect(seen.size).toBe(15);
   });
 
-  it('긴장 표정에만 땀방울과 눈썹이 붙고, 기쁨 표정은 눈을 감는다', () => {
-    expect(avatarBody('balanced', 'tense')).toContain('class="sweat"');
-    expect(avatarBody('balanced', 'calm')).not.toContain('class="sweat"');
-    expect(avatarBody('balanced', 'happy')).not.toContain('<circle cx="36" cy="52"');
+  it('평온·긴장·기쁨이 같은 캐릭터 이미지의 서로 다른 칸을 표시한다', () => {
+    for (const [frame, mood] of moods.entries()) {
+      const markup = avatarBody('balanced', mood);
+      expect(markup).toContain('href="/assets/characters/allone/danji.png"');
+      expect(markup).toContain(`viewBox="${frame * 724 + CHARACTERS.balanced.centers[frame] - 362} ${CHARACTERS.balanced.feet - 656} 724 724"`);
+      expect(markup).toContain('overflow="hidden"');
+      expect(markup).toContain(`data-mood="${mood}"`);
+    }
   });
 
   it('앵커·코치는 고정 캐릭터다', () => {
@@ -68,8 +72,8 @@ describe('말풍선', () => {
     }
   });
 
-  it('플레이어 화자는 성향·표정 아바타를 쓰고 톤 클래스를 붙인다', () => {
-    const html = renderSpeech('player', '텍스트', { characters: true, player: { profileId: 'growth', mood: 'happy' }, tone: 'positive' });
+  it('플레이어 화자는 선택한 캐릭터·표정 아바타를 쓰고 톤 클래스를 붙인다', () => {
+    const html = renderSpeech('player', '텍스트', { characters: true, player: { avatarId: 'growth', mood: 'happy' }, tone: 'positive' });
     expect(html).toContain('avatar-growth mood-happy');
     expect(html).toContain('tone-positive');
     expect(renderSpeech('anchor', '속보', { characters: true, tone: 'shock' })).toContain('tone-shock');

@@ -3,8 +3,6 @@
 .title-screen h1 { font-size:clamp(3.2rem,12vw,5rem); margin:4px 0; }
 .title-screen .subtitle,.title-screen .lead { margin:0; }
 .title-screen .lead { font-size:1rem; line-height:1.55; }
-.title-cover { width:min(100%,330px); margin:0 auto; }
-.title-cover svg { display:block; width:100%; height:auto; }
 .title-screen .setting-row { width:100%; margin:0; padding:8px 12px; border:1px solid var(--line); border-radius:14px; text-align:left; }
 .title-screen .setting-row small { font-size:.75rem; }
 .title-screen .campaign-picker { margin:0; width:100%; text-align:left; }
@@ -83,7 +81,6 @@
 .route-reflections .choice-stack { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
 .route-reflections .choice-stack button { font-size:.875rem; padding:10px; }
 @media (max-width:480px) {
- .title-cover { width:260px; }
  .title-screen { gap:7px; padding-top:16px; }
  .title-screen .setting-row small { display:none; }
  .title-screen .setting-row select { max-width:50%; }
@@ -97,7 +94,6 @@
 @media (min-width:1000px) {
  .title-screen { width:min(100% - 64px,1000px); display:grid; grid-template-columns:1fr 1fr; align-content:center; column-gap:40px; text-align:left; }
  .title-screen > * { grid-column:2; width:100%; }
- .title-screen .title-cover { grid-column:1; grid-row:1/9; width:100%; max-width:none; }
  .title-screen h1 { font-size:4.5rem; }
  .title-screen .eyebrow { margin:0; }
 }
