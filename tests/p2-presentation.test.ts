@@ -69,6 +69,7 @@ it('결과의 주 동작은 하나이며 상세 복기·공유·재도전·수�
  root.querySelector<HTMLButtonElement>('[data-action="resume-finish"]')?.click();
  root.querySelector<HTMLButtonElement>('[data-action="notice-continue"]')?.click();
  root.querySelector<HTMLButtonElement>('[data-action="choose-payout"]')?.click();
+ root.querySelector<HTMLButtonElement>('[data-action="confirm-payout"]')?.click();
  const result=root.querySelector('.result-screen');expect(result).not.toBeNull();
  expect(result!.querySelectorAll('button.primary')).toHaveLength(1);expect(result!.querySelector('.result-details')!.hasAttribute('open')).toBe(false);
  for(const action of ['copy-result','same-seed','new-seed','export-run','open-payout'])expect(result!.querySelector(`[data-action="${action}"]`),action).not.toBeNull();

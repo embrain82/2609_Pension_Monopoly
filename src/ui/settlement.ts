@@ -69,15 +69,18 @@ const tone = (delta: number) => (delta < 0 ? 'neg' : delta > 0 ? 'pos' : '');
 function irpBars(summary: TurnSummary): string {
   const total = summary.irpAfter - summary.irpOpen;
   const rate = summary.irpOpen > 0 ? total / summary.irpOpen : 0;
+  return `<div class="settle-bars three"><strong>정산 요약</strong>
+    <p class="settle-balance">턴 시작 <b>${formatWon(summary.irpOpen)}</b> → 정산 후 <b>${formatWon(summary.irpAfter)}</b></p>
+    <p class="settle-delta ${tone(total)}"><small>IRP 잔액 변화 · 입출금 포함</small> ${signedWon(total)} <small>(${signedPercent(rate)})</small></p>
+    <p class="settle-note">잔액 변화에는 납입·인출과 거래 정산이 포함됩니다.</p></div>`;
+}
+
+function changeComposition(summary: TurnSummary): string {
   const rows: ChangeRow[] = [{label:'시장 손익',value:summary.marketDelta,kind:'market'}];
   if (summary.capitalFlow !== undefined && summary.tradingDelta !== undefined) {
     rows.push({label:'외부 입출금',value:summary.capitalFlow,kind:'flow'}, {label:'매매·정산',value:summary.tradingDelta,kind:'trade'});
   } else rows.push({label:'시장 이후 변화 (입출금·거래 포함)',value:summary.irpAfter-summary.irpAfterMarket,kind:'flow'});
-  return `<div class="settle-bars three"><strong>정산 요약</strong>
-    <p class="settle-balance">턴 시작 <b>${formatWon(summary.irpOpen)}</b> → 정산 후 <b>${formatWon(summary.irpAfter)}</b></p>
-    ${renderChangeChart(rows, `${summary.turn}턴 IRP 변화의 구성`, true)}
-    <p class="settle-delta ${tone(total)}"><small>IRP 잔액 변화 · 입출금 포함</small> ${signedWon(total)} <small>(${signedPercent(rate)})</small></p>
-    </div>`;
+  return `<div class="settle-composition"><h3>변화의 구성</h3>${renderChangeChart(rows, `${summary.turn}턴 IRP 변화의 구성`, true)}</div>`;
 }
 
 function returnBars(summary: TurnSummary): string {
@@ -125,10 +128,8 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
   const rate = context.rate;
   const marketStrip = rate ? `<div class="settle-rate-strip"><div><span>가상 시장금리</span><strong>${rate.before.toFixed(2)}% <span aria-label="에서">→</span> ${rate.after.toFixed(2)}%</strong><small>${Math.abs(rate.delta) < 1e-9 ? '동결 · 0.00%p' : `${rate.delta > 0 ? '+' : ''}${rate.delta.toFixed(2)}%p`}</small></div><div><span>이번 턴 주가</span><strong>${signedPercent(rate.stock)}</strong><small>시장 지수 변화</small></div></div>` : '';
   const details = `<details class="settle-more"${options.expanded ? ' open' : ''}>
-      <summary><span>자세히</span><small>상품별 수익률 · 내가 한 일${summary.tileEffects.length ? ' · 칸 효과' : ''}${options.final ? '' : ' · 다음 판단'}</small></summary>
+      <summary><span>자세히</span><small>상품별 수익률 · 비교 지수${summary.tileEffects.length ? ' · 칸 효과' : ''}${options.final ? '' : ' · 다음 판단'}</small></summary>
       <div class="preview-box settle-market"><strong>시장 예시와 내 보유분 · 상품별 이번 턴</strong><p class="settle-note">상품별 시장 예시(보수 전)입니다. 오른쪽은 정산 후 비중이며 위의 실제 영향과 기준이 다릅니다.</p>${returnBars(summary)}</div>
-      ${actionBlock(summary)}
-      <p class="hint">시장 반영 잔액 ${formatWon(summary.irpAfterMarket)} · 납입은 운용 수익이 아닙니다.</p>
       <p class="hint">주문 접수만 된 금액은 확정 수익으로 표시하지 않습니다. 주요 보유분 손익은 시장 구간 기준이고, 외부 입출금·매매·정산은 장부 기준입니다.</p>
       ${renderTileEffects(summary.tileEffects, { heading: '칸 효과' })}
       ${renderBenchmarkSettleLine(summary)}
@@ -142,17 +143,23 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
     <p class="settle-headline">${context.headline}</p>
     ${milestones}
     <section class="settle-overview" aria-label="이번 턴 시장과 내 자산 요약">
-      ${marketStrip}
       ${irpBars(summary)}
-      ${renderMarketImpacts(summary.marketEffects, summary.turn, false, true)}
-      <p class="settle-cause">${context.explanation}</p>
+      <div class="settle-split"><section class="settle-market-panel" aria-labelledby="settle-market-title">
+        <h3 id="settle-market-title">금리와 보유 영향</h3>${marketStrip}
+        <p class="settle-cause">${context.explanation}</p>
+        ${renderMarketImpacts(summary.marketEffects, summary.turn, false, true)}
+        <p class="settle-note">시장 반영 잔액 ${formatWon(summary.irpAfterMarket)} · 매매·납입 전 기준</p>
+        ${alert}
+      </section><section class="settle-action-panel" aria-label="내 행동과 다음 순서">
+        ${changeComposition(summary)}${actionBlock(summary)}
+        <p class="settle-note">납입은 운용 수익이 아닙니다. 주문 접수만 된 금액은 확정 수익이 아닙니다.</p>
+        ${renderLifeSettleBlock(summary.lifeEvent)}
+        ${options.importantHtml ?? ''}
+        ${options.final ? hintsBlock : ''}
+        ${options.learningHtml ?? ''}
+        <div class="settle-cta${auto ? ' auto' : ''}"><button class="primary jumbo" data-action="dismiss-settle">${cta}</button>${autoBar}</div>
+      </section></div>
     </section>
-    ${renderLifeSettleBlock(summary.lifeEvent)}
-    ${options.importantHtml ?? ''}
-    ${alert}
-    ${options.final ? hintsBlock : ''}
-    ${options.learningHtml ?? ''}
-    <div class="settle-cta${auto ? ' auto' : ''}"><button class="primary jumbo" data-action="dismiss-settle">${cta}</button>${autoBar}</div>
     ${details}
   </div>`;
 }

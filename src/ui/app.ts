@@ -152,6 +152,9 @@ export class PensionRoadApp {
   /** 지금 화면에 뜬 퀴즈 카드와 고른 답. 마무리 퀴즈는 큐를 차례로 소비한다. */
   private quizCardId: string | null = null;
   private quizPicked: number | null = null;
+  private focusQuizAnswer = false;
+  /** 수령 방식 비교용 임시 선택. 확정된 payoutChoice와 분리한다. */
+  private payoutPick: PayoutChoice | null = null;
   private finalQuizQueue: string[] = [];
   private finalQuizTotal = 0;
   /** 디폴트옵션 모달에서 눌러 둔 값(확정 전) */
@@ -490,7 +493,9 @@ export class PensionRoadApp {
     } else if (action === 'quiz-next') {
       this.nextQuiz();
     } else if (action === 'choose-payout') {
-      this.pickPayout(button.dataset.choice === 'lumpSum' ? 'lumpSum' : 'annuity20');
+      if (this.modal === 'payout' && this.game?.status === 'finished' && ['lumpSum','annuity20'].includes(button.dataset.choice ?? '')) this.payoutPick = button.dataset.choice as PayoutChoice;
+    } else if (action === 'confirm-payout') {
+      if (this.modal === 'payout' && this.payoutPick) this.pickPayout(this.payoutPick);
     } else if (action === 'open-payout') {
       if (this.game?.status === 'finished') this.modal = 'payout';
     } else if (action === 'resume-finish') {
@@ -681,6 +686,7 @@ export class PensionRoadApp {
   private static readonly STICKY_MODALS: Modal[] = ['life', 'quiz', 'payout', 'default-option'];
 
   private modalIsSticky(): boolean {
+    if(this.modal==='payout' && this.screen==='result')return false;
     if(this.modal==='quiz' && this.game?.learningFlow)return false;
     return this.modal === 'default-option' ? this.defaultOptionMode === 'start' : PensionRoadApp.STICKY_MODALS.includes(this.modal);
   }
@@ -777,6 +783,7 @@ export class PensionRoadApp {
     if (!result.ok) return;
     if (result.correct) this.announce(`정답! 제도·운용 이해 +${knowledgeScoreOf(this.game) - beforePoints}${this.game.quizStreak >= 3 ? ` · ${this.game.quizStreak}연속 정답` : ''}`);
     this.quizPicked = option;
+    this.focusQuizAnswer = true;
     this.sound.play(result.correct ? 'up' : 'down');
     this.persist(true);
   }
@@ -1144,6 +1151,7 @@ export class PensionRoadApp {
   }
 
   private render(): void {
+    if (this.modal === 'payout' && this.renderedModal !== 'payout') this.payoutPick = this.game?.payoutChoice ?? null;
     const marketContext = this.game ? JSON.stringify([this.game.seed, this.game.turn]) : null;
     if (this.marketDetailsContext !== marketContext) {
       this.marketDetailsContext = marketContext; this.marketDetailsOpen = false;
@@ -1205,6 +1213,9 @@ export class PensionRoadApp {
     }
     if(dialog && this.modal==='action' && previousModal==='action' && this.renderedActionView!==this.actionView) {
       dialog.scrollTop=0;const heading=dialog.querySelector<HTMLElement>('h2');heading?.setAttribute('tabindex','-1');heading?.focus({preventScroll:true});
+    }
+    if (this.focusQuizAnswer && this.modal === 'quiz') {
+      dialog?.querySelector<HTMLElement>('#quiz-answer')?.focus(); this.focusQuizAnswer = false;
     }
     if (dialog && this.restorePromptPosition) {
       const restore = this.restorePromptPosition;
@@ -1437,15 +1448,15 @@ export class PensionRoadApp {
     const shortfallBlock = shortfall
       ? renderSpeech('coach', `<p>${shortfall.line}</p>`, { characters, title: shortfall.withinLimit ? '처방 · 납입만으로 닿았습니다' : '처방 · 납입 + 운용이 필요했습니다' })
       : '';
-    return `<section class="result-screen">
-      ${renderResultHero(this.game,characters)}
+    return `<section class="result-screen road-result">
+      ${renderResultHero(this.game,characters,!this.failedBrandArt.has('journey'))}
       ${renderResultOverview(this.game)}
+      <section class="result-payout" aria-label="선택한 수령 방식"><p class="payout-line ${payout}"><span>${renderPayoutLine(plan)}</span><button class="secondary" data-action="open-payout">수령 방식 다시 비교</button></p><small>실제 지급액이 아닌 재원별 게임 가정의 비교입니다.</small></section>
       ${renderRetrySuggestion(this.game) || '<article class="retry-suggestion"><p class="eyebrow">다음 도전</p><h3>다른 시장에서도 내 설계를 점검해 보세요</h3><button class="primary" data-action="new-seed">새 시드로 도전</button></article>'}
       ${renderResultCollection(this.game,this.newAchievements,characters)}
       <details data-preserve-open class="result-details"><summary>자산·별 조건·12턴 선택 자세히 보기</summary>
       ${renderCampaignStatus(this.game)}
       <p>IRP 잔액 증가율 · 입출금 포함 <strong>${signedPercent(score.returnRate)}</strong> · 납입 제외 운용수익률 ${signedPercent(score.investmentReturnRate)} · 낙폭 ${percent(score.maxDrawdown)}</p>
-      <p class="payout-line ${payout}"><span>${renderPayoutLine(plan)}</span><button class="text-button" data-action="open-payout">수령 방식 바꾸기</button></p>
       <p class="score-title">보조 점수 <strong>${score.totalScore}점</strong> · 별 ${score.stars}개 · ${score.starTitle}</p>
       ${lockLine}
       ${shortfallBlock}
@@ -1517,11 +1528,12 @@ export class PensionRoadApp {
           characters,
           optional:!!this.game.learningFlow,
           streak: this.game.quizStreak,
+          pointsAvailable: quizOpportunity(this.game, [card.id]).nextPoints,
           pointsEarned: this.quizPicked === null ? undefined : knowledgeScoreOf(this.game) - knowledgeScoreOf({ ...this.game, quizLog: this.game.quizLog.filter(q => q.cardId !== this.quizCardId) })
         });
       }
     }
-    if (this.modal === 'payout' && this.game) content = renderPayoutModal(this.game, { characters, current: this.game.payoutChoice });
+    if (this.modal === 'payout' && this.game) content = renderPayoutModal(this.game, { characters, current: this.game.payoutChoice, selected: this.payoutPick, showArt: !this.failedBrandArt.has('journey') });
     if (this.modal === 'default-option') {
       const profileId = this.game?.profileId ?? this.profileId;
       content = renderDefaultOptionModal({ profileId, current: this.defaultOptionPick, notice: this.defaultOptionNotice, characters, mode: this.defaultOptionMode, modern: !this.game || !!this.game.defaultTrading });
@@ -1551,7 +1563,7 @@ export class PensionRoadApp {
       action: '운용 행동 선택', life: '생활사건', howto: '게임 방법', tile: '도착 칸 설명', news: '시장 속보', settle: '턴 정산 요약',
       explore: '지도·지역 미션', quiz: '퀴즈', payout: '수령 방식 선택', 'default-option': '디폴트옵션 지정', portfolio: '포트폴리오', market: '시장 타임라인', cards: '도감', settings: '설정'
     };
-    return `<div class="modal-backdrop"><section class="modal-sheet modal-${this.modal}${['news','life','tile'].includes(this.modal)||this.modal==='action'&&this.actionView==='menu'?' road-scene':''}${this.modal==='action'&&this.actionView==='menu'?' road-action-menu':''}${this.modal==='action'&&this.actionView!=='menu'?' road-order':''}${this.modal==='portfolio'?' road-portfolio':''}" role="dialog" aria-modal="true" aria-label="${labels[this.modal]}"${this.pendingPrompt ? ' aria-labelledby="turn-notice-title" aria-describedby="turn-notice-description"' : ''}>${close ? `<div class="modal-close-bar">${close}</div>` : close}${content}<p class="modal-feedback" aria-live="polite">${this.pendingPrompt ? '' : this.feedback}</p>${this.modal === 'action' ? '<footer class="action-footer"><button class="secondary" data-action="action-portfolio">포트폴리오 확인</button><small>확인만으로 행동 횟수가 줄지 않아요.</small></footer>' : ''}</section></div>`;
+    return `<div class="modal-backdrop"><section class="modal-sheet modal-${this.modal}${['news','life','tile'].includes(this.modal)||this.modal==='action'&&this.actionView==='menu'?' road-scene':''}${this.modal==='action'&&this.actionView==='menu'?' road-action-menu':''}${this.modal==='action'&&this.actionView!=='menu'?' road-order':''}${this.modal==='portfolio'?' road-portfolio':''}${['quiz','settle','payout'].includes(this.modal)?' road-learning road-'+this.modal:''}" role="dialog" aria-modal="true" aria-label="${labels[this.modal]}"${this.pendingPrompt ? ' aria-labelledby="turn-notice-title" aria-describedby="turn-notice-description"' : ''}>${close ? `<div class="modal-close-bar">${close}</div>` : close}${content}<p class="modal-feedback" aria-live="polite">${this.pendingPrompt ? '' : this.feedback}</p>${this.modal === 'action' ? '<footer class="action-footer"><button class="secondary" data-action="action-portfolio">포트폴리오 확인</button><small>확인만으로 행동 횟수가 줄지 않아요.</small></footer>' : ''}</section></div>`;
   }
 
   private renderSettlementNotices(): string {

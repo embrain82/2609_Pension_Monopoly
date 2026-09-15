@@ -1,0 +1,158 @@
+/* D3 · 10-5 선택/해설, 11-5 시장/행동, 12-4 함께한 여정. */
+.modal-sheet.road-learning { width:min(100%,1120px); padding:28px; border-radius:22px; color:var(--ink); }
+.road-learning h2 { font-family:inherit; font-size:27px; line-height:1.5; letter-spacing:-.7px; }
+.road-learning h3 { font-family:inherit; font-size:17px; line-height:1.5; margin:0 0 16px; }
+.road-learning p { font-size:14px; line-height:1.8; }
+.road-learning small { font-size:13px; line-height:1.65; }
+.road-learning .eyebrow { font-size:12px; color:var(--green); letter-spacing:.3px; }
+.road-learning .jumbo { min-height:54px; font-size:16px; }
+.road-learning .hint,.road-learning .settle-note { color:var(--muted); text-align:left; font-size:13px; line-height:1.75; }
+.road-learning .speech { font-size:14px; }
+.road-learning .text-button { min-height:44px; font-size:14px; }
+.road-learning details>summary,.road-result details>summary { min-height:48px; align-content:center; font-size:14px; line-height:1.7; cursor:pointer; }
+.road-learning .preview-box { border-radius:14px; padding:18px; background:#f4f8f3; }
+.quiz-split,.settle-split { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:28px; align-items:start; }
+.quiz-split>section,.settle-split>section { min-width:0; }
+.road-quiz .quiz-heading { margin:0 0 24px; }
+.road-quiz .quiz-card { font-size:23px; color:var(--ink); font-weight:750; line-height:1.5; margin:8px 0; }
+.road-quiz .quiz-card>span { font-size:12px; background:var(--road-mint); border-radius:7px; padding:4px 8px; display:inline-block; vertical-align:middle; }
+.road-quiz .quiz-reward { color:var(--muted); font-size:13px; }
+.quiz-prompt { background:var(--road-mint); padding:24px; border-radius:16px; margin-bottom:18px; }
+.quiz-q { display:block; color:#6ea17c; font-weight:750; font-size:30px; line-height:1; }
+.road-quiz .quiz-question { font-size:22px; line-height:1.7; letter-spacing:-.5px; margin:12px 0 0; }
+.road-quiz .quiz-option { min-height:68px; padding:16px; grid-template-columns:30px minmax(0,1fr) auto; font-size:15px; line-height:1.65; border-radius:12px; font-weight:600; animation:none; }
+.road-quiz .choice-index { width:30px; height:30px; font-family:inherit; font-size:13px; background:var(--road-mint); color:#427e51; border:0; }
+.road-quiz .quiz-option.correct { border:2px solid #208947; padding:15px; background:#eef8f0; color:#1d6533; }
+.road-quiz .quiz-option.wrong { border:2px solid #ba7150; padding:15px; background:#fff5ed; color:#8c4625; }
+.road-quiz .quiz-option.dim { opacity:1; color:#708078; background:#f4f6f4; }
+.quiz-explanation { background:#fafcf9; border:1px solid var(--line); border-radius:16px; padding:24px; }
+.quiz-answer-placeholder { padding:28px 8px; color:var(--muted); text-align:center; }
+.quiz-answer-placeholder>span { font-size:40px; font-weight:700; color:#91b89c; }
+.quiz-answer-placeholder small { display:block; }
+.quiz-answer .speech-row { margin:0; }
+.quiz-source { margin:20px 0; border-top:1px solid var(--line); }
+.quiz-explanation .button-stack { margin-top:20px; }
+.quiz-answer:focus-visible { outline:3px solid #16673b; outline-offset:6px; border-radius:10px; }
+/* Summary stays first; market causality and personal action use the same turn. */
+.road-settle .settle-headline { color:var(--muted); font-size:15px; margin:0 0 22px; }
+.road-settle .settle-overview { padding:0; background:none; border:0; }
+.road-settle .settle-bars { background:#eff7f0; border:1px solid #d6e7da; border-radius:16px; padding:22px; margin:0 0 24px; }
+.road-settle .settle-bars>strong { font-size:15px; color:#52735b; }
+.road-settle .settle-balance { font-size:16px; display:flex; flex-wrap:wrap; align-items:baseline; gap:6px; margin:12px 0; }
+.road-settle .settle-balance b { font-variant-numeric:tabular-nums; font-size:20px; }
+.road-settle .settle-delta { font-family:inherit; font-size:26px; gap:6px 12px; text-align:left; margin:14px 0 0; }
+.road-settle .settle-delta small { font-size:13px; }
+.settle-market-panel,.settle-composition { padding:22px; border:1px solid var(--line); border-radius:16px; background:#fafcf9; }
+.road-settle .settle-rate-strip { display:grid; grid-template-columns:1fr; gap:14px; background:var(--road-mint); border-radius:12px; padding:16px; }
+.road-settle .settle-rate-strip>div { border:0; padding:0; }
+.road-settle .settle-rate-strip strong { font-size:22px; }
+.road-settle .settle-cause { margin:16px 0; padding:0; font-size:13px; line-height:1.8; }
+.road-settle .actual-market-impact { background:#fff; border:1px solid var(--line); border-radius:12px; margin:18px 0 0; padding:16px; }
+.road-settle .actual-market-impact li>div { flex-wrap:wrap; gap:5px 12px; }
+.road-settle .actual-market-impact li strong,.road-settle .actual-market-impact li b { font-size:14px; }
+.road-settle .actual-market-impact li small { font-size:12px; }
+.road-settle .settle-mine { background:#fff; border:1px solid var(--line); margin:18px 0 12px; padding:20px; }
+.road-settle .settle-mine>strong { font-size:17px; }
+.road-settle .settle-moves { margin-bottom:0; font-size:14px; }
+.road-settle .change-chart { margin:0; background:transparent; border:0; padding:0; }
+.road-settle .change-chart text { font-family:inherit; }
+.road-settle .optional-learning { margin:18px 0; border:1px solid #dce7d5; border-radius:14px; padding:18px; background:#f3f8ed; }
+.road-settle .optional-learning>strong { font-size:15px; }
+.road-settle .optional-learning .secondary { width:100%; min-height:48px; font-size:14px; }
+.road-settle .settle-cta { margin:18px 0 0; }
+.road-settle .settle-more { margin-top:24px; border-top:1px solid var(--line); }
+.road-settle .settle-more>summary { font-size:16px; padding:16px 4px; display:flex; flex-wrap:wrap; gap:8px 16px; }
+.road-settle .settle-more>summary small { font-size:13px; }
+.road-settle .settle-return { font-size:14px; }
+.road-settle .milestone-banner { padding:18px; margin:16px 0; border-width:1px; }
+.road-settle .milestone-banner strong { font-family:inherit; font-size:19px; }
+.road-settle .milestone-banner p { font-size:13px; }
+.road-settle .settle-alert { margin:20px 0 0; }
+/* Comparison is a draft until the explicit confirmation; the two tax bases remain separate. */
+.payout-heading { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-bottom:22px; }
+.payout-heading>div:first-child { flex:1; min-width:0; }
+.payout-heading>.road-art { width:260px; aspect-ratio:3 / 2; flex-shrink:0; }
+.payout-heading>div>p:last-child { color:var(--muted); }
+.payout-total { padding:20px 24px; border:1px solid var(--line); border-radius:16px; display:flex; flex-direction:column; gap:7px; background:#f4f9f4; }
+.payout-total>strong { font-size:28px; font-variant-numeric:tabular-nums; color:var(--ink); }
+.payout-total>span { color:var(--muted); font-size:13px; }
+.road-payout .payout-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin:22px 0; }
+.road-payout .payout-card { min-width:0; text-align:left; padding:24px; border:1px solid var(--line); border-radius:16px; background:white; display:flex; flex-direction:column; gap:12px; color:var(--ink); box-shadow:none; }
+.road-payout .payout-card.current { border-color:var(--line); box-shadow:none; }
+.road-payout .payout-card.selected { border:2px solid #168a42; padding:23px; background:#f2faf4; }
+.road-payout .payout-name { font-size:18px; font-weight:750; }
+.road-payout .payout-card>strong { font-family:inherit; font-size:25px; letter-spacing:-.6px; line-height:1.5; }
+.road-payout .payout-card>small { font-size:13px; line-height:1.8; color:var(--muted); }
+.road-payout .payout-goal { font-size:13px; padding:0; background:none; line-height:1.6; }
+.payout-picked { display:block; margin-top:auto; font-size:13px; color:var(--green); font-weight:700; }
+.payout-selection { padding:22px; border-radius:16px; background:var(--road-mint); border:1px solid #c4dfcd; }
+.payout-selection .payout-chosen { font-size:21px; color:var(--green); }
+.payout-selection p:last-child { color:var(--muted); font-size:13px; }
+.payout-confirm { display:grid; gap:10px; margin:22px 0; }
+.payout-confirm>small { color:var(--muted); text-align:center; }
+.road-payout .payout-basis { border-top:1px solid var(--line); margin-top:22px; }
+.road-payout .payout-basis p { color:var(--muted); font-size:13px; }
+/* Finishing a journey is celebrated; mission success and stars still use the score engine. */
+.result-screen.road-result { width:min(100% - 64px,1120px); margin:36px auto; padding:0 0 36px; }
+.road-result .result-cover { display:flex; gap:30px; align-items:center; padding:30px; border:1px solid #d6e7d9; border-radius:20px; background:#f8fbf7; }
+.road-result .result-cover.unmet { border-color:#e8dcc8; background:#fcfaf4; }
+.result-cover-copy { flex:1; min-width:0; }
+.result-cover>.road-art { width:330px; flex-shrink:0; aspect-ratio:3 / 2; border-radius:18px; overflow:hidden; }
+.road-result .result-complete { font-size:15px; color:var(--muted); margin:0 0 12px; }
+.road-result .result-headline h1 { font-family:inherit; font-size:30px; line-height:1.5; letter-spacing:-1px; }
+.road-result .result-headline svg { width:48px; height:48px; }
+.road-result .result-hero strong { font-size:34px; }
+.road-result .result-overview { gap:16px; margin:20px 0; }
+.road-result .result-overview article { background:#f6f9f5; border:1px solid var(--line); border-radius:14px; padding:20px; }
+.road-result .result-overview strong { font-size:23px; }
+.road-result .result-overview span { font-size:13px; }
+.result-payout { border:1px solid var(--line); border-radius:14px; padding:18px 22px; margin-bottom:24px; }
+.result-payout .payout-line { background:none; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:0; margin:0; font-size:14px; line-height:1.8; }
+.result-payout .payout-line>span { flex:1; min-width:0; }
+.result-payout button { min-height:48px; font-size:14px; flex-shrink:0; }
+.result-payout>small { display:block; margin-top:10px; font-size:12px; color:var(--muted); }
+.road-result .retry-suggestion { border-radius:16px; background:var(--road-mint); padding:24px; }
+.road-result .result-collection { background:white; border:1px solid var(--line); border-radius:16px; padding:24px; margin:22px 0; }
+.road-result h2 { font-family:inherit; font-size:21px; }
+.road-result .result-details { border:1px solid var(--line); border-radius:14px; background:#fafcf9; padding:8px 20px; }
+.road-result .result-actions { gap:12px; }
+.road-result .result-actions button { min-height:48px; font-size:14px; }
+.road-learning,.road-result { overflow-wrap:anywhere; }
+@media(max-width:800px) {
+ .modal-sheet.road-learning { padding:20px; }
+ .quiz-split,.settle-split { grid-template-columns:minmax(0,1fr); gap:20px; }
+ .road-learning h2 { font-size:24px; }
+ .quiz-prompt,.quiz-explanation,.settle-market-panel,.settle-composition { padding:20px; }
+ .road-quiz .quiz-question { font-size:21px; }
+ .road-quiz .quiz-card { font-size:22px; }
+ .quiz-answer-placeholder { padding:8px; }
+ .quiz-answer-placeholder>span { display:none; }
+ .payout-heading { display:block; }
+ .payout-heading>.road-art { width:190px; margin:12px auto; }
+ .road-payout .payout-grid { grid-template-columns:minmax(0,1fr); }
+ .road-payout .payout-card { padding:20px; }
+ .road-payout .payout-card.selected { padding:19px; }
+ .road-payout .payout-card>strong { font-size:24px; }
+ .result-screen.road-result { width:calc(100% - 32px); margin:20px auto; }
+ .road-result .result-cover { flex-direction:column; align-items:stretch; gap:12px; padding:22px; }
+ .result-cover>.road-art { width:240px; max-width:100%; margin:auto; }
+ .road-result .result-headline h1 { font-size:26px; }
+ .road-result .result-hero strong { font-size:30px; }
+ .result-payout .payout-line { flex-direction:column; align-items:stretch; gap:12px; }
+ .road-result .result-overview { grid-template-columns:1fr; gap:10px; }
+ .road-result .result-overview article { padding:16px 20px; }
+}
+@media(max-width:359px) {
+ .modal-sheet.road-learning { padding:16px; }
+ .quiz-prompt,.quiz-explanation,.settle-market-panel,.settle-composition,.road-settle .settle-bars { padding:16px; }
+ .road-quiz .quiz-option { padding:12px; gap:8px; }
+ .road-quiz .quiz-option.correct,.road-quiz .quiz-option.wrong { padding:11px; }
+ .road-settle .settle-delta { font-size:23px; }
+ .road-settle .settle-balance b { font-size:18px; }
+ .payout-total { padding:18px; }
+ .payout-total>strong { font-size:25px; }
+}
+@media print {
+ .quiz-split,.settle-split { display:block; }
+ .road-result .result-cover { break-inside:avoid; }
+}

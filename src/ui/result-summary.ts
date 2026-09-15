@@ -3,18 +3,19 @@ import { calculateScore, starChecklist } from '../engine/scoring-engine';
 import { missionDisplay } from '../engine/progress-engine';
 import { AVATAR_ANIMALS, renderAvatar } from './avatars';
 import { formatShortWon, signedPercent } from './format';
+import { renderBrandArt } from './design-system';
 import { REGIONS } from '../engine/route-engine';
 import { renderNewAchievements } from './achievements-view';
 import { renderRouteReflections } from './route-view';
-export function renderResultHero(state: GameState, characters: boolean): string {
+export function renderResultHero(state: GameState, characters: boolean, showArt = true): string {
   const score = calculateScore(state), mission = missionDisplay(state,score);
   const first = starChecklist(state,score).find(c=>!c.passed);
   const cause = mission.passed ? first ? `미션은 달성했습니다. 다음 별의 조건: ${first.label}` : '미션과 생활자금·안정성 조건을 모두 충족했습니다.' : `${mission.remaining}. 이번 판의 자금 배분과 시장 영향을 복기해 보세요.`;
-  return `<header class="result-cover ${mission.passed?'met':'unmet'}"><p class="eyebrow">${state.campaign?.practice?'분기 연습 · 최고 기록 제외':'12턴 완주 · 이번 판 결과'}</p>
-    <div class="result-headline">${characters?renderAvatar(state.avatarId,'happy',56):''}<h1>${mission.name} ${mission.passed?'달성':'미달'}</h1></div>
+  return `<header class="result-cover ${mission.passed?'met':'unmet'}"><div class="result-cover-copy"><p class="eyebrow">${state.campaign?.practice?'분기 연습 · 최고 기록 제외':'12턴 완주 · 이번 판 결과'}</p>
+    <p class="result-complete">한 칸씩 걸어온, 12턴의 여정</p><div class="result-headline">${characters?renderAvatar(state.avatarId,'happy',56):''}<h1>${mission.name} ${mission.passed?'달성':'미달'}</h1></div>
     <div class="stars" role="img" aria-label="3개 중 ${score.stars}개 별">${[1,2,3].map(n=>`<span aria-hidden="true" class="${n<=score.stars?'earned':''}" style="--i:${n}">★</span>`).join('')}</div>
     <div class="result-hero"><small>${mission.metric}</small><strong>${mission.valueText}</strong><span>목표 ${mission.targetText} · 진행률 ${Math.floor(mission.ratio*1000)/10}%</span></div>
-    <p class="result-cause">${cause}</p><small class="hint">${mission.basis}</small></header>`;
+    <p class="result-cause">${cause}</p><small class="hint">${mission.basis}</small></div>${characters ? renderBrandArt('journey',showArt) : ''}</header>`;
 }
 export function renderResultOverview(state: GameState):string {
  const score=calculateScore(state);

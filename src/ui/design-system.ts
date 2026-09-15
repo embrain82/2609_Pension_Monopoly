@@ -20,6 +20,6 @@ export function operationIcon(kind: string): string {
   };
   return `<svg class="operation-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[kind]??paths.default}</svg>`;
 }
-export function renderBrandArt(kind: 'board' | 'mascot', characters = true): string {
-  return `<div class="road-art road-art-${kind}"><div class="road-art-fallback" aria-hidden="true">${brandIcon()}<span>12턴의 은퇴설계</span></div>${characters ? `<img data-brand-art="${kind}" src="./assets/design-a1/${kind}.jpg" width="1536" height="1024" alt="올리·원이와 함께하는 ${kind === 'board' ? '24칸 보드 여행' : '연금로드'}" decoding="async">` : ''}</div>`;
+export function renderBrandArt(kind: 'board' | 'mascot' | 'journey', characters = true): string {
+  return `<div class="road-art road-art-${kind}"><div class="road-art-fallback" aria-hidden="true">${brandIcon()}<span>12턴의 은퇴설계</span></div>${characters ? `<img data-brand-art="${kind}" src="./assets/design-a1/${kind}.jpg" width="1536" height="1024" alt="올리·원이와 함께하는 ${kind === 'board' ? '24칸 보드 여행' : kind === 'journey' ? '12턴의 여정' : '연금로드'}" decoding="async">` : ''}</div>`;
 }

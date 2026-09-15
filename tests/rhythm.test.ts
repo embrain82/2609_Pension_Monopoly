@@ -98,7 +98,7 @@ describe('턴 트랙 남은 예정 사건', () => {
 describe('정산 창 접기와 자동 진행', () => {
   const { summary } = playTurns('settle-fold', 2);
 
-  it('기본은 상품별·내가 한 일·다음 판단이 <details>에 접히고 버튼이 그 앞에 있다', () => {
+  it('기본은 상품별·다음 판단을 접고 내가 한 일은 시장과 나란히 보인다', () => {
     const html = renderSettlementModal(summary, { characters: false });
     expect(html).toContain('<details class="settle-more"');
     expect(html).not.toMatch(/<details class="settle-more"[^>]*open/);
@@ -106,10 +106,11 @@ describe('정산 창 접기와 자동 진행', () => {
     const details = html.indexOf('<details class="settle-more"');
     expect(cta).toBeGreaterThan(0);
     expect(cta).toBeLessThan(details);
-    // 접힌 부분에 상품별 막대와 내가 한 일이 들어간다
+    // 상품별 막대는 접고, 내가 한 일은 기본 화면에서 바로 비교한다
     const folded = html.slice(details);
     expect(folded).toContain('settle-returns');
-    expect(folded).toContain('settle-mine');
+    expect(folded).not.toContain('settle-mine');
+    expect(html.slice(0, details)).toContain('settle-mine');
     expect(folded).toContain('settle-hints');
     // 첫 화면에는 막대 3개와 한 줄 정리가 남는다
     const head = html.slice(0, details);
