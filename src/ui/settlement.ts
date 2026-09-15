@@ -23,7 +23,7 @@ export interface SettlementOptions {
   reducedMotion?: boolean;
   /** 12턴째 정산. 다음 턴이 없으니 버튼이 마무리(퀴즈·수령 방식)로 이어진다 */
   final?: boolean;
-  /** 「자세히」(상품별·내가 한 일·칸 효과·다음 판단) 펼침 상태. 저장이 기억한다 */
+  /** 「자세히」(상품별·비교 지수·칸 효과·다음 판단) 펼침 상태. 저장이 기억한다 */
   expanded?: boolean;
   /** 자동 진행이 예약됐으면 그 길이(ms). 버튼 문구와 진행 막대에 쓴다 */
   autoSettleMs?: number | null;
@@ -62,10 +62,7 @@ const RETURN_BAR_CAP = 0.15;
 
 const tone = (delta: number) => (delta < 0 ? 'neg' : delta > 0 ? 'pos' : '');
 
-/**
- * 막대 3개: 턴 시작 → 시장 반영 → 내 행동 후. 시장 예시와 내 보유분과 내가 한 일을 금액으로 나눠 보인다.
- * 생활사건이 IRP를 건드렸으면(중도인출·매도 충당) 그 줄도 덧붙인다.
- */
+/** 턴 시작과 정산 후 잔액을 먼저 비교한다. 원인별 변화는 changeComposition에서 구분한다. */
 function irpBars(summary: TurnSummary): string {
   const total = summary.irpAfter - summary.irpOpen;
   const rate = summary.irpOpen > 0 ? total / summary.irpOpen : 0;
@@ -121,7 +118,7 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
   const cta = options.final ? (options.optionalLearning ? '수령 방식 비교로' : SETTLE_CTA_FINAL) : auto ? SETTLE_CTA_AUTO : SETTLE_CTA_NEXT;
   const autoBar = auto && !options.reducedMotion ? `<i class="auto-bar" style="--ms:${auto}ms" aria-hidden="true"></i>` : '';
   const hints = options.final
-    ? [options.optionalLearning ? '12턴이 끝났습니다. 이 화면의 관련 문제는 선택 학습입니다. 수령 방식 비교로 넘어가 연금 또는 일시금을 고르면 결과가 열립니다.' : '12턴이 끝났습니다. 배운 카드에서 마무리 퀴즈(최대 3문항)를 풀고, 연금과 일시금 중 수령 방식을 정하면 결과 리포트가 열립니다.']
+    ? [options.optionalLearning ? '12턴이 끝났습니다. 이 화면의 관련 문제는 선택 학습입니다. 연금과 일시금을 비교한 뒤 「이 방식으로 결과 보기」를 눌러 마무리하세요.' : '12턴이 끝났습니다. 배운 카드에서 마무리 퀴즈(최대 3문항)를 풀고, 연금과 일시금을 비교한 뒤 「이 방식으로 결과 보기」를 눌러 마무리하세요.']
     : summary.nextHints;
   const hintsBlock = renderSpeech('coach', `<ul class="settle-hints">${hints.map((hint) => `<li>${hint}</li>`).join('')}</ul>`, { characters: options.characters, title: options.final ? '남은 일' : '다음 판단' });
   const context = settlementMarketContext(summary, options.market);
