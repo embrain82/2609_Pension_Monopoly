@@ -1,6 +1,7 @@
 /* D2a: 게임판의 글자 밀도를 낮추되 칸 좌표·주사위·말 크기는 유지한다. */
 .road-board-heading h1 { font-size:22px; font-weight:650; }
-.road-game .tile-label { font-size:16px; font-weight:550; }
+/* 승인된 04안: 말 아래의 종류 아이콘과 이름을 모든 공개 칸에 같은 위치로 배치. */
+.road-game .tile-label { font-size:14px; font-weight:650; letter-spacing:-.3px; }
 .road-game .tile-number { font-size:13px; }
 .road-game .board-center text { font-size:16px; }
 .road-game .board-center .phase { font-size:25px; font-weight:650; }
@@ -139,7 +140,6 @@
 
 @media(max-width:800px) {
   .road-board-heading h1 { font-size:20px; }
-  .road-game .tile-label { font-size:18px; }
   .road-game .tile-number { font-size:14px; }
   .modal-sheet.road-scene { padding:18px 16px; border-radius:20px; }
   .road-scene .modal-close-bar { top:-18px; margin:-18px -16px 12px; }

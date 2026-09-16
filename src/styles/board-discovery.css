@@ -9,7 +9,6 @@
   inset:auto 25% 25%; height:8%; border:1px solid #fff;
   background:#1d6548; box-shadow:0 1px 2px #18363540;
 }
-.road-game .tile.active .tile-kind-icon { visibility:hidden; }
 
 /* B5: 미지의 칸에는 카테고리별 색이나 그림을 노출하지 않는다. */
 .road-game .tile-hidden>rect { fill:#f4f2e9; stroke:#d5d9ca; }

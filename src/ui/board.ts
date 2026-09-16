@@ -130,8 +130,8 @@ export function renderBoardMarkup(
     return `<g data-key="tile-${item.index}" data-action="open-explore" data-tile="${item.index}" role="button" tabindex="${active ? 0 : -1}" aria-label="${item.index+1}. ${name} · ${visible ? `${REGIONS[regionOf(item.index)]} 지역 · 칸 정보` : '최종 도착하면 공개'}" class="tile ${visible ? `tile-${item.kind} region-${regionOf(item.index)}` : 'tile-hidden'}${revealing ? ' tile-revealing' : ''}${active ? ' active' : ''}${active && view.hopping && !landed ? ' moving' : ''}${landed ? ' landed' : ''}" transform="translate(${x} ${y})">
         <rect x="3" y="3" width="94" height="94" rx="15"></rect>
         ${state.route.visits.includes(item.index) ? '<circle class="visit-stamp" cx="50" cy="18" r="5"></circle>' : ''}
-        ${visible ? `<use class="tile-kind-icon" href="#board-icon-${item.kind}" x="14" y="12" width="24" height="24" aria-hidden="true"/>` : ''}
-        <text class="tile-label" x="50" y="70" text-anchor="middle">${visible ? item.label.replace(' 거리','').replace('은퇴 전망대','은퇴전망').replace('금리 전망길','금리전망') : ''}</text>
+        ${visible ? `<use class="tile-kind-icon" href="#board-icon-${item.kind}" x="11" y="76" width="12" height="12" aria-hidden="true"/>` : ''}
+        <text class="tile-label" x="57" y="86" text-anchor="middle">${visible ? item.label.replace(' 거리','').replace('은퇴 전망대','은퇴전망').replace('금리 전망길','금리전망') : ''}</text>
         ${!visible || revealing ? mapSticker(revealing) : ''}
         <text class="tile-number" x="84" y="24" text-anchor="end">${String(item.index + 1).padStart(2, '0')}</text>
         ${(view.trail ?? []).includes(item.index) ? '<circle class="move-trail" cx="50" cy="46" r="9" aria-hidden="true"/>' : ''}
