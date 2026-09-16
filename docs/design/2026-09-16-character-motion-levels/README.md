@@ -36,3 +36,9 @@
 - 320/390/768/1440px에서 페이지 가로 넘침 없음. 모바일 비교 카드 영역에만 가로 스크롤.
 - JS 구문 검사 및 5개 base64 이미지 디코딩 확인. 자세한 결과: `qa-results.json`.
 - 샘플만 제작했으며 운영 게임 코드는 변경하지 않았다.
+
+## 미리보기 배포
+
+https://2609-pension-monopoly-9xpq957oq-nonsleepers-projects.vercel.app/
+
+Preview READY. 배포에서 5개 단계 동시 재생을 확인했다. 배포 HTML은 원본과 같은 내용을 유지하고 마지막에 Vercel 피드백 도구 script가 자동 추가되어 있다. 원본 단일 HTML에는 외부 리소스 참조가 없다. 운영 승격은 하지 않았다.

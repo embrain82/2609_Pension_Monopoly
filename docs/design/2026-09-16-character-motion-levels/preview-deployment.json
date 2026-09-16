@@ -12,5 +12,8 @@
     "base64": true
   },
   "hashMatches": false,
-  "productionPromoted": false
+  "productionPromoted": false,
+  "sourcePrefixMatches": true,
+  "appendedHostingMarkup": "<script async data-explicit-opt-in=\"true\" data-deployment-id=\"dpl_CZZSDU4ovxpqJqXazW6k8vXwMhyN\" src=\"https://vercel.live/_next-live/feedback/feedback.js\"></script>",
+  "verificationNote": "Vercel appends its feedback toolbar script after the unchanged source HTML; raw full-response hash differs."
 }
