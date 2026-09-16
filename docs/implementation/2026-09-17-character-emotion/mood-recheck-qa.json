@@ -1,0 +1,179 @@
+[
+  {
+    "expected": "calm",
+    "actual": "calm",
+    "log": [
+      {
+        "mood": "calm",
+        "level": "1",
+        "frames": [
+          {
+            "transform": "scale(1,1)"
+          },
+          {
+            "transform": "scale(1.01,1.025)"
+          },
+          {
+            "transform": "scale(1,1)"
+          }
+        ],
+        "options": {
+          "duration": 1600,
+          "easing": "ease-in-out",
+          "iterations": 1
+        },
+        "time": 1181.9000000059605
+      },
+      {
+        "mood": "calm",
+        "level": "1",
+        "frames": [
+          {
+            "transform": "scale(1,1)"
+          },
+          {
+            "transform": "scale(1.01,1.025)"
+          },
+          {
+            "transform": "scale(1,1)"
+          }
+        ],
+        "options": {
+          "duration": 1600,
+          "easing": "ease-in-out",
+          "iterations": 1
+        },
+        "time": 6740.9000000059605
+      }
+    ],
+    "financialStateUnchanged": true
+  },
+  {
+    "expected": "tense",
+    "actual": "tense",
+    "log": [
+      {
+        "mood": "tense",
+        "level": "3",
+        "frames": [
+          {
+            "transform": "translateX(0px) rotate(0deg)"
+          },
+          {
+            "transform": "translateX(-4.969889064976228px) rotate(-2.5deg)"
+          },
+          {
+            "transform": "translateX(4.969889064976228px) rotate(2.5deg)"
+          },
+          {
+            "transform": "translateX(-4.969889064976228px) rotate(-2.5deg)"
+          },
+          {
+            "transform": "translateX(4.969889064976228px) rotate(2.5deg)"
+          },
+          {
+            "transform": "translateX(0px) rotate(0deg)"
+          }
+        ],
+        "options": {
+          "duration": 700,
+          "easing": "ease-in-out",
+          "iterations": 1
+        },
+        "time": 196
+      },
+      {
+        "mood": "tense",
+        "level": "3",
+        "frames": [
+          {
+            "transform": "translateX(0px) rotate(0deg)"
+          },
+          {
+            "transform": "translateX(-4.969889064976228px) rotate(-2.5deg)"
+          },
+          {
+            "transform": "translateX(4.969889064976228px) rotate(2.5deg)"
+          },
+          {
+            "transform": "translateX(-4.969889064976228px) rotate(-2.5deg)"
+          },
+          {
+            "transform": "translateX(4.969889064976228px) rotate(2.5deg)"
+          },
+          {
+            "transform": "translateX(0px) rotate(0deg)"
+          }
+        ],
+        "options": {
+          "duration": 700,
+          "easing": "ease-in-out",
+          "iterations": 1
+        },
+        "time": 3908.7000000029802
+      }
+    ],
+    "financialStateUnchanged": true
+  },
+  {
+    "expected": "happy",
+    "actual": "happy",
+    "log": [
+      {
+        "mood": "happy",
+        "level": "3",
+        "frames": [
+          {
+            "transform": "translateY(0) rotate(0deg) scale(1,1)"
+          },
+          {
+            "transform": "translateY(-14.909667194928684px) rotate(-5deg) scale(1,1)"
+          },
+          {
+            "transform": "translateY(0) rotate(0deg) scale(1.06,0.94)"
+          },
+          {
+            "transform": "translateY(-8.945800316957211px) rotate(5deg) scale(1,1)"
+          },
+          {
+            "transform": "translateY(0) rotate(0deg) scale(1,1)"
+          }
+        ],
+        "options": {
+          "duration": 1000,
+          "easing": "ease-in-out",
+          "iterations": 1
+        },
+        "time": 181.19999998807907
+      },
+      {
+        "mood": "happy",
+        "level": "3",
+        "frames": [
+          {
+            "transform": "translateY(0) rotate(0deg) scale(1,1)"
+          },
+          {
+            "transform": "translateY(-14.909667194928684px) rotate(-5deg) scale(1,1)"
+          },
+          {
+            "transform": "translateY(0) rotate(0deg) scale(1.06,0.94)"
+          },
+          {
+            "transform": "translateY(-8.945800316957211px) rotate(5deg) scale(1,1)"
+          },
+          {
+            "transform": "translateY(0) rotate(0deg) scale(1,1)"
+          }
+        ],
+        "options": {
+          "duration": 1000,
+          "easing": "ease-in-out",
+          "iterations": 1
+        },
+        "time": 3209.199999988079
+      }
+    ],
+    "financialStateUnchanged": true
+  }
+]

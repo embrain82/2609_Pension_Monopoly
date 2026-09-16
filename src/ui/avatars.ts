@@ -20,13 +20,18 @@ const INK = '#183635';
 const CREAM = '#fbfcf6';
 const STROKE = `stroke="${INK}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"`;
 
-/** 충격 턴이거나 이번 턴 IRP가 5% 이상 줄면 긴장, 목표를 넘기면 기쁨. */
+/** 목표 달성은 기쁨. 충격 또는 이번 턴 운용 손실이 시작 IRP의 5% 이상이면 긴장. */
 export function avatarMood(state: GameState, goalMet: boolean): Mood {
   if (goalMet) return 'happy';
   if (state.turn > 0 && state.lastMarket.shock) return 'tense';
-  const last = state.irpHistory.at(-1);
-  const prev = state.irpHistory.at(-2);
-  if (last !== undefined && prev !== undefined && prev > 0 && last / prev - 1 <= -0.05) return 'tense';
+  // History is appended at settlement and includes cash flows. Use the current
+  // market ledger so deposits/withdrawals cannot hide or manufacture a reaction.
+  const { open, afterMarket, marketEffects, cashInterest } = state.ledger;
+  const interest = cashInterest?.turn === state.turn ? cashInterest.amount : 0;
+  const change = marketEffects
+    ? marketEffects.reduce((total, effect) => total + effect.delta, 0) + interest
+    : afterMarket - open; // Older saves have only the current aggregate ledger.
+  if (state.turn > 0 && open > 0 && change / open <= -0.05) return 'tense';
   return 'calm';
 }
 
