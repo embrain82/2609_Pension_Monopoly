@@ -1,3 +1,5 @@
+import { MATURITY_RULESET } from '../engine/maturity-cash';
+import { validDefaultLifecycle } from './maturity-checkpoint';
 import { boardVisibilityOf, validBoardVisibility } from './board-discovery';
 import { FINANCE_RULESET, validFinanceRules, validCashInterest } from '../engine/finance-rules';
 import { validRoute } from '../engine/route-engine';
@@ -16,7 +18,7 @@ import { validContributionPacing } from '../engine/contribution-engine';
 import { normalizeUiProgress, type UiProgress } from './turn-notices';
 export const CHECKPOINT_KEY = 'pension-road-play-c1';
 export interface PlayCheckpoint {
-  version: 'c2' | 'c3' | 'c4';
+  version: 'c2' | 'c3' | 'c4' | 'c5';
   uiProgress?: UiProgress;
   actionContext?: { view: 'menu' | 'default'; draft: DefaultTradeDraft | null; portfolioReturn: boolean };
   game: GameState;
@@ -29,7 +31,7 @@ export interface PlayCheckpoint {
   finishing: boolean;
   defaultOptionAsk: boolean;
 }
-export function checkpointVersion(game: GameState): PlayCheckpoint['version'] { return game.rulesetVersion === FINANCE_RULESET ? 'c4' : game.defaultTrading ? 'c3' : 'c2'; }
+export function checkpointVersion(game: GameState): PlayCheckpoint['version'] { return game.rulesetVersion === MATURITY_RULESET ? 'c5' : game.rulesetVersion === FINANCE_RULESET ? 'c4' : game.defaultTrading ? 'c3' : 'c2'; }
 // 설정 저장과 분리한다. 기존 저장 키를 유지하고 새 거래 장부는 c3으로 구분한다.
 function shape(template: unknown, value: unknown): boolean {
   if (template === null) return value === null || typeof value === 'object' || typeof value === 'string' || typeof value === 'number';
@@ -37,7 +39,7 @@ function shape(template: unknown, value: unknown): boolean {
   if (typeof template === 'object') return value !== null && typeof value === 'object' && Object.entries(template as object).every(([k,v]) => shape(v, (value as Record<string, unknown>)[k]));
   return typeof value === typeof template && (typeof value !== 'number' || Number.isFinite(value));
 }
-function validCampaign(d: Campaign, depth = 0, pacing?: GameState['contributionPacing'], routeVersion?: GameState['route']['version'], ruleset?: GameState['rulesetVersion'], boardVisibility?: GameState['boardVisibility']): boolean {
+function validCampaign(d: Campaign, depth = 0, pacing?: GameState['contributionPacing'], routeVersion?: GameState['route']['version'], ruleset?: GameState['rulesetVersion'], boardVisibility?: GameState['boardVisibility'], learningVersion?: GameState['learningContentVersion']): boolean {
   if (!d || !Object.hasOwn(SCENARIOS,d.scenario) || !Object.hasOwn(MISSIONS,d.mission) || typeof d.weekly !== 'boolean') return false;
   if (![d.priceIndex,d.index,d.peak,d.drawdown,d.open,d.afterMarket,d.flowStart,d.benchmark,d.benchmarkOpen,d.startingGoal].every(Number.isFinite) || d.priceIndex <= 0 || d.index < 0 || d.peak <= 0) return false;
   if (!['stable','stableGrowth','balanced','growth','aggressive'].includes(d.startingProfile)) return false;
@@ -48,8 +50,8 @@ function validCampaign(d: Campaign, depth = 0, pacing?: GameState['contributionP
     (r.defaultOrders === undefined || (Array.isArray(r.defaultOrders) && r.defaultOrders.every(o => typeof o.id === 'string' && ['buy','sell'].includes(o.side) && ['received','priced'].includes(o.stage) && Number.isFinite(o.amount) && o.amount >= 0)))
   )) return false;
   if (!Array.isArray(d.branches) || d.branches.length>3 || (depth>0 && d.branches.length)) return false;
-  return d.branches.every(b=>[3,6,9].includes(b.turn) && b.state.turn===b.turn && b.state.status==='playing' && shape(createGame('validate','balanced',500000,{ghost:false}),b.state) && validBoardVisibility(b.state.boardVisibility) && boardVisibilityOf(b.state) === (boardVisibility ?? 'open-v1') && validMarketEffects(b.state.ledger.marketEffects) && validFinanceRules(b.state) && b.state.rulesetVersion === ruleset && validDefaultLedger(b.state) && validContributionPacing(b.state) && validLearningFlow(b.state) && validRoute(b.state.route) && b.state.route.version === routeVersion &&
-    b.state.contributionPacing?.version === pacing?.version && b.state.contributionPacing?.perTurnLimit === pacing?.perTurnLimit && validCampaign({...b.progress,branches:[]},depth+1,pacing,routeVersion,ruleset,boardVisibility));
+  return d.branches.every(b=>[3,6,9].includes(b.turn) && b.state.turn===b.turn && b.state.status==='playing' && shape(createGame('validate','balanced',500000,{ghost:false}),b.state) && validBoardVisibility(b.state.boardVisibility) && boardVisibilityOf(b.state) === (boardVisibility ?? 'open-v1') && validMarketEffects(b.state.ledger.marketEffects) && validFinanceRules(b.state) && validDefaultLifecycle(b.state) && b.state.learningContentVersion === learningVersion && b.state.rulesetVersion === ruleset && validDefaultLedger(b.state) && validContributionPacing(b.state) && validLearningFlow(b.state) && validRoute(b.state.route) && b.state.route.version === routeVersion &&
+    b.state.contributionPacing?.version === pacing?.version && b.state.contributionPacing?.perTurnLimit === pacing?.perTurnLimit && validCampaign({...b.progress,branches:[]},depth+1,pacing,routeVersion,ruleset,boardVisibility,learningVersion));
 }
 /** 새 표시 내역만 검증한다. 없는 구 저장에는 보유 영향을 추정하지 않는다. */
 function validMarketEffects(value: unknown): boolean {
@@ -65,21 +67,21 @@ export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
   try {
     if (!raw || raw.length > 1000000) return null;
     const legacy = JSON.parse(raw);
-    if (!['c1', 'c2', 'c3', 'c4'].includes(legacy.version) || !legacy.game?.route) return null;
+    if (!['c1', 'c2', 'c3', 'c4', 'c5'].includes(legacy.version) || !legacy.game?.route) return null;
     if (legacy.version === 'c1' && (legacy.routePending || legacy.modal === 'route')) legacy.modal = null;
     const { visits, badges, reflections, version } = legacy.game.route;
-    const data: PlayCheckpoint = { ...legacy, version: legacy.version==='c4'?'c4':legacy.version==='c3'?'c3':'c2', game: { ...legacy.game, route: { visits, badges, reflections, ...(version === undefined ? {} : { version }) } } };
+    const data: PlayCheckpoint = { ...legacy, version: legacy.version==='c5'?'c5':legacy.version==='c4'?'c4':legacy.version==='c3'?'c3':'c2', game: { ...legacy.game, route: { visits, badges, reflections, ...(version === undefined ? {} : { version }) } } };
     delete (data as PlayCheckpoint & { routePending?: boolean }).routePending;
     if (!shape(createGame('validate', 'balanced', 500000, { ghost: false }), data.game)) return null;
     const g = data.game;
     if (!validBoardVisibility(g.boardVisibility)) return null;
     if (!validMarketEffects(g.ledger.marketEffects) || !validMarketEffects(data.lastSummary?.marketEffects)) return null;
-    if(!validLearningFlow(g) || !validContributionPacing(g) || (g.campaign && !validCampaign(g.campaign,0,g.contributionPacing,g.route.version,g.rulesetVersion,g.boardVisibility))) return null;
+    if(!validLearningFlow(g) || !validContributionPacing(g) || (g.campaign && !validCampaign(g.campaign,0,g.contributionPacing,g.route.version,g.rulesetVersion,g.boardVisibility,g.learningContentVersion))) return null;
     const finite = (n: unknown): n is number => typeof n === 'number' && Number.isFinite(n);
-    if (g.rulesetVersion !== (data.version==='c4' ? FINANCE_RULESET : data.version==='c3' ? '2026-09-10-e' : g.campaign ? '2026-09-10-d' : '2026-09-10-c')) return null;
-    if(!validDefaultLedger(g) || !validFinanceRules(g)) return null;
-    if (data.lastSummary?.cashInterest !== undefined && (data.version !== 'c4' || !validCashInterest(data.lastSummary.cashInterest) || data.lastSummary.cashInterest.turn !== data.lastSummary.turn)) return null;
-    if (data.version === 'c4' && data.lastSummary && !validCashInterest(data.lastSummary.cashInterest)) return null;
+    if (g.rulesetVersion !== (data.version==='c5' ? MATURITY_RULESET : data.version==='c4' ? FINANCE_RULESET : data.version==='c3' ? '2026-09-10-e' : g.campaign ? '2026-09-10-d' : '2026-09-10-c')) return null;
+    if(!validDefaultLedger(g) || !validFinanceRules(g) || !validDefaultLifecycle(g)) return null;
+    if (data.lastSummary?.cashInterest !== undefined && (!['c4','c5'].includes(data.version) || !validCashInterest(data.lastSummary.cashInterest) || data.lastSummary.cashInterest.turn !== data.lastSummary.turn)) return null;
+    if (['c4','c5'].includes(data.version) && data.lastSummary && !validCashInterest(data.lastSummary.cashInterest)) return null;
     if(data.actionContext) {
       const c=data.actionContext,d=c.draft;
       if(!g.defaultTrading||!['menu','default'].includes(c.view)||typeof c.portfolioReturn!=='boolean') return null;

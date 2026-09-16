@@ -1,3 +1,7 @@
+import { presentMaturityNotices } from '../engine/default-lifecycle';
+import { renderMaturitySummary } from './maturity-view';
+import { activeCycle } from '../engine/maturity-cash';
+import { GENERAL_KNOWLEDGE_VERSION } from '../data/learning-rules';
 import { boardVisibilityOf, isTileRevealed, visibleTileLabel, renderDiscoveryProgress, TILE_REVEAL_MS } from './board-discovery';
 import { cashInterestRule } from './cash-interest-view';
 import { brandWordmark, operationIcon, renderBrandArt } from './design-system';
@@ -29,7 +33,7 @@ import { updateView } from './dom-view';
 import { AnimationController } from './animation-controller';
 import { checkpointVersion, readCheckpoint, writeCheckpoint, clearCheckpoint, type PlayCheckpoint } from './play-checkpoint';
 import { accountPayout } from '../engine/account-engine';
-import { balanceConfig, boardTiles, investorProfiles, learningCards, policyRules, products } from '../data/content';
+import { balanceConfig, boardTiles, investorProfiles, learningCards, learningCardsFor, policyRules, products } from '../data/content';
 import { applyGoalToGame, choosePayout, clampGoalMonthly, createGame, performAction, resolveActionAmount, resolveLifeEvent, setDefaultOption, startTurn, submitQuiz, type AmountPreset, type GameAction } from '../engine/game-engine';
 import { getLifeEvent, getLearningCard } from '../engine/content-engine';
 import { isDefaultOptionId, suggestDefaultOption } from '../engine/default-option';
@@ -84,7 +88,7 @@ interface PendingPrompt {
   focusAction?: string;
 }
 /** 「그대로」는 확인 화면 없이 목록에서 바로 실행되므로 보기가 없다 */
-type ActionView = 'menu' | 'default' | Exclude<ActionKind, 'hold' | 'default-opt-in' | 'default-opt-out'>;
+type ActionView = 'menu' | 'default' | Exclude<ActionKind, 'hold' | 'default-opt-in' | 'default-opt-out' | 'maturity-cash'>;
 type CardsTab = 'cards' | 'achievements' | 'collection';
 
 const questions = [
@@ -287,6 +291,9 @@ export class PensionRoadApp {
   private scheduleAutoSettle(summary: TurnSummary): void {
     this.clearAutoSettle();
     if (!this.save.settings.autoSettle || !this.game) return;
+    // 만기·통지·자동주문 안내가 있는 턴은 읽고 직접 진행한다.
+    if (this.game.defaultLifecycle?.cycles.some(c => activeCycle(c) || c.orderedTurn === this.game!.turn) ||
+        this.game.defaultLifecycle?.renewals.some(r => r.turn === this.game!.turn)) return;
     if (!canAutoSettle(summary, this.game.status === 'finished') || quizOpportunity(this.game).maxPoints > 0) return;
     this.autoSettleTimer = window.setTimeout(() => {
       this.autoSettleTimer = 0;
@@ -547,6 +554,8 @@ export class PensionRoadApp {
       this.actionScrollTop = this.portfolioReturn ? this.root.querySelector<HTMLElement>('.modal-sheet')?.scrollTop ?? 0 : null;
       this.buyLimitConfirm = null;
       this.modal = 'portfolio';
+    } else if (action === 'keep-maturity-cash') {
+      this.runAction({kind:'maturity-cash',cycleId:button.dataset.cycle});
     } else if (action === 'review-deposit' && this.game) {
       const view = button.dataset.view;
       if(view==='default' && defaultTabAvailability(this.game).out.enabled) { this.initializeDefaultTrade(); if(this.defaultTradeDraft)this.defaultTradeDraft.tab='out'; this.actionView='default'; }
@@ -750,7 +759,7 @@ export class PensionRoadApp {
     this.defaultOptionPick = applied;
     this.persist(true);
     const name = defaultOptionName(applied);
-    this.announce(this.game?.defaultTrading ? (applied ? `사전지정 ${name} 저장. 자산은 바뀌지 않습니다. 디폴트옵션 메뉴에서 직접 매수하세요.` : '사전지정을 해제했습니다. 보유 자산은 유지됩니다.') : applied
+    this.announce(this.game?.defaultLifecycle ? (applied ? `사전지정 ${name} 저장. 즉시 매수하지 않고 만기자금의 새 통지·대기 후 적용합니다.` : '사전지정을 해제했습니다. 자동운용은 멈추고 보유 자산은 유지됩니다.') : this.game?.defaultTrading ? (applied ? `사전지정 ${name} 저장. 자산은 바뀌지 않습니다. 디폴트옵션 메뉴에서 직접 매수하세요.` : '사전지정을 해제했습니다. 보유 자산은 유지됩니다.') : applied
       ? `디폴트옵션 ${name}(${defaultOptionProducts(applied)}). 「이번엔 그대로」를 고르면 대기자금이 이 상품으로 자동 매수됩니다.`
       : '디폴트옵션을 지정하지 않았습니다. 대기자금은 직접 매수해야 합니다.');
     this.modal = this.defaultOptionMode === 'settings' ? 'settings' : null;
@@ -785,7 +794,7 @@ export class PensionRoadApp {
     this.quizCardId = cardId;
     this.quizPicked = null;
     this.modal = 'quiz';
-    this.announce(`퀴즈 · ${getLearningCard(cardId)?.title ?? ''} 카드에서 한 문제. 오답은 벌점이 없습니다.`);
+    this.announce(`퀴즈 · ${getLearningCard(cardId, this.game)?.title ?? ''} 카드에서 한 문제. 오답은 벌점이 없습니다.`);
   }
 
   private pickQuiz(option: number): void {
@@ -1105,7 +1114,7 @@ export class PensionRoadApp {
     // 준비 화면에서 확인한 조건으로 이 시점에만 새 판을 만든다.
     const weekly=seed.startsWith('weekly-');
     if(weekly) { this.scenarioId='classic'; this.missionId='pension'; this.profileId='balanced'; this.goalMonthly=500000; }
-    this.game = createGame(seed, this.profileId, this.goalMonthly, { boardVisibility: this.newBoardVisibility, updatedFinance:true, automaticStamps:true, settlementLearning:true, contributionPacing:true, defaultTrading:true, defaultOption: this.save.defaultOption, avatarId: this.save.avatarId,scenario:this.scenarioId,mission:this.missionId,weekly });
+    this.game = createGame(seed, this.profileId, this.goalMonthly, { boardVisibility: this.newBoardVisibility, defaultLifecycle:true, updatedFinance:true, automaticStamps:true, settlementLearning:true, contributionPacing:true, defaultTrading:true, defaultOption: this.save.defaultOption, avatarId: this.save.avatarId,scenario:this.scenarioId,mission:this.missionId,weekly });
     this.selectedBuy = 'deposit';
     this.selectedSell = 'deposit';
     this.switchFrom = 'balanced';
@@ -1274,6 +1283,7 @@ export class PensionRoadApp {
     }
     this.renderedScreenMark=screenMark;this.renderedActionView=this.actionView;
     this.renderedModal = this.modal;
+    if (this.game && this.root.querySelector('[data-default-notice]')) this.game = presentMaturityNotices(this.game);
     this.checkpoint();
     const instant = shouldSkipDiceAnimation(this.save.settings.reducedMotion, window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     runNumberAnimations(this.root, instant, scaleMs(NUMBER_TWEEN_MS, this.save.settings.speed));
@@ -1417,7 +1427,7 @@ export class PensionRoadApp {
     const mission = missionDisplay(state, score);
     this.shown = { seed: state.seed, irp: score.irpValue, pension: score.monthlyPension, returnRate: score.returnRate };
     const pending = state.pendingOrders.length;
-    const latestCard = getLearningCard(state.unlockedCards.at(-1) ?? '');
+    const latestCard = getLearningCard(state.unlockedCards.at(-1) ?? '', state);
     const waitingForDice = canRevealNextTurn(state) || this.boardFocusing || this.diceRolling || this.tokenHopping;
     const profile = investorProfiles.find((item) => item.id === state.profileId);
     const learningTip = shouldShowLearningTip(state, this.tipDismissed, waitingForDice) && latestCard
@@ -1501,6 +1511,7 @@ export class PensionRoadApp {
     return `<section class="result-screen road-result">
       ${renderResultHero(this.game,characters,!this.failedBrandArt.has('journey'))}
       ${renderResultOverview(this.game)}
+      ${renderMaturitySummary(this.game)}
       <section class="result-payout" aria-label="선택한 수령 방식"><p class="payout-line ${payout}"><span>${renderPayoutLine(plan)}</span><button class="secondary" data-action="open-payout">수령 방식 다시 비교</button></p><small>실제 지급액이 아닌 재원별 게임 가정의 비교입니다.</small></section>
       ${renderRetrySuggestion(this.game) || '<article class="retry-suggestion"><p class="eyebrow">다음 도전</p><h3>다른 시장에서도 내 설계를 점검해 보세요</h3><button class="primary" data-action="new-seed">새 시드로 도전</button></article>'}
       ${renderResultCollection(this.game,this.newAchievements,characters)}
@@ -1552,7 +1563,7 @@ export class PensionRoadApp {
     if (this.modal === 'market') content = this.renderMarketModal();
     if (this.modal === 'cards') content = this.renderCardsModal();
     if (this.modal === 'settings') content = this.renderSettingsModal();
-    if (this.modal === 'howto') content = renderHowToModal(characters);
+    if (this.modal === 'howto') content = renderHowToModal(characters, !this.game || !!this.game.defaultLifecycle);
     if (this.modal === 'settle' && this.lastSummary) {
       const summary = this.lastSummary;
       content = renderSettlementModal(summary, {
@@ -1570,7 +1581,7 @@ export class PensionRoadApp {
       });
     }
     if (this.modal === 'quiz' && this.game && this.quizCardId) {
-      const card = getLearningCard(this.quizCardId);
+      const card = getLearningCard(this.quizCardId, this.game);
       if (card) {
         content = renderQuizModal(card, {
           picked: this.quizPicked,
@@ -1586,7 +1597,7 @@ export class PensionRoadApp {
     if (this.modal === 'payout' && this.game) content = renderPayoutModal(this.game, { characters, current: this.game.payoutChoice, selected: this.payoutPick, showArt: !this.failedBrandArt.has('journey') });
     if (this.modal === 'default-option') {
       const profileId = this.game?.profileId ?? this.profileId;
-      content = renderDefaultOptionModal({ profileId, current: this.defaultOptionPick, notice: this.defaultOptionNotice, characters, mode: this.defaultOptionMode, modern: !this.game || !!this.game.defaultTrading });
+      content = renderDefaultOptionModal({ profileId, current: this.defaultOptionPick, notice: this.defaultOptionNotice, characters, mode: this.defaultOptionMode, automatic: !this.game || !!this.game.defaultLifecycle, modern: !this.game || !!this.game.defaultTrading });
     }
     if (this.modal === 'news' && this.game) {
       const prev = this.game.marketPath[this.game.turn - 2] ?? emptyMarketStep();
@@ -1608,6 +1619,7 @@ export class PensionRoadApp {
         tile.index + 1
       );
     }
+    if (this.game?.defaultLifecycle && (this.modal === 'news' || this.modal === 'action' && this.actionView === 'menu')) content = renderMaturitySummary(this.game) + content;
     const labels: Record<NonNullable<Modal>, string> = {
       'risk-notice': '위험자산 비중 확인', 'quiz-confirm': '퀴즈 건너뛰기 확인',
       action: '운용 행동 선택', life: '생활사건', howto: '게임 방법', tile: '도착 칸 설명', news: '시장 속보', settle: '턴 정산 요약',
@@ -1626,7 +1638,7 @@ export class PensionRoadApp {
     const cards = this.game.learningFlow ? optionalQuizCards(this.game) : this.game.pendingQuizCardId ? [this.game.pendingQuizCardId] : [];
     const opportunity = quizOpportunity(this.game, cards);
     if (!opportunity.cardIds.length) return '';
-    return `<aside class="optional-learning"><strong>${getLearningCard(opportunity.cardIds[0])?.title ?? '이번 판단과 연결된 한 문제'}</strong>
+    return `<aside class="optional-learning"><strong>${getLearningCard(opportunity.cardIds[0], this.game)?.title ?? '이번 판단과 연결된 한 문제'}</strong>
       <p class="hint">${quizPointsCopy(opportunity)} 오답 벌점 없이 건너뛸 수 있습니다.</p>
       <button class="secondary" data-action="action-quiz">${this.game.learningFlow ? '관련 한 문제 풀기 · 선택' : '방금 선택과 연결된 한 문제'}</button></aside>`;
   }
@@ -1803,6 +1815,7 @@ export class PensionRoadApp {
 
   /** 「그대로」는 확인 화면 없이 바로 실행되므로 무슨 일이 일어나는지 목록 한 줄이 다 말해야 한다 */
   private holdMenuNote(game: GameState): string {
+    if(game.defaultLifecycle?.cycles.some(activeCycle)) return '새 주문 없이 마감 · 만기자금 통지·대기 절차는 계속됩니다';
     if(game.defaultTrading) return '새 주문 없이 현재 구성을 유지하고 턴 마감';
     if (this.holdAutoRuns(game)) return `대기자금 ${formatShortWon(game.irpCash)}을 지정옵션(${defaultOptionName(game.defaultOption)})으로 ${defaultOptionProducts(game.defaultOption)} 균등 매수 실행(옵트인 체험) · 바로 마감`;
     if (game.defaultOption) {
@@ -1836,13 +1849,14 @@ export class PensionRoadApp {
     if (this.cardsTab === 'collection') {
       return `<p class="eyebrow">도감</p><h2>캐릭터 컬렉션</h2>${nav}<div id="gallery-panel" role="tabpanel" aria-labelledby="gallery-tab-${this.cardsTab}">${renderCollectionGallery(this.save.collection, this.save.settings.characters)}<p class="hint">설정 → 내 캐릭터에서 외형을 자유롭게 선택하세요. 투자성향·매수 가능 상품·목표는 바뀌지 않습니다.</p></div>`;
     }
-    return `<p class="eyebrow">도감</p><h2>학습 카드 ${unlocked.size} / ${learningCards.length} 발견</h2>${nav}<div id="gallery-panel" role="tabpanel" aria-labelledby="gallery-tab-${this.cardsTab}"><div class="card-library">${learningCards.map((card) => unlocked.has(card.id) ? `<article><span>${card.category}</span><h3>${card.title}</h3><p>${card.key}</p><details><summary>쉬운 설명</summary><p>${card.detail}</p><p><b>실제 제도·일반 원리</b> ${card.actualPrinciple ?? card.key}</p><p>학습 목표: ${card.learningObjective ?? card.key}</p><p><b>이 판의 가정</b> ${card.gameAssumption ?? ""}</p><a href="${card.source_url}" target="_blank" rel="noreferrer">사실 근거</a> · 검수 ${card.reviewed_at}</details></article>` : `<article class="locked"><span>미발견</span><h3>?</h3><p>관련 시장 국면과 행동에서 열립니다.</p></article>`).join('')}</div></div>`;
+    return `<p class="eyebrow">도감</p><h2>학습 카드 ${unlocked.size} / ${learningCards.length} 발견</h2>${nav}<div id="gallery-panel" role="tabpanel" aria-labelledby="gallery-tab-${this.cardsTab}"><div class="card-library">${learningCardsFor(this.game ?? {learningContentVersion:GENERAL_KNOWLEDGE_VERSION}).map((card) => unlocked.has(card.id) ? `<article><span>${card.category}</span><h3>${card.title}</h3><p>${card.key}</p><details><summary>쉬운 설명</summary><p>${card.detail}</p><p><b>실제 제도·일반 원리</b> ${card.actualPrinciple ?? card.key}</p><p>학습 목표: ${card.learningObjective ?? card.key}</p><p><b>이 판의 가정</b> ${card.gameAssumption ?? ""}</p><a href="${card.source_url}" target="_blank" rel="noreferrer">사실 근거</a> · 검수 ${card.reviewed_at}</details></article>` : `<article class="locked"><span>미발견</span><h3>?</h3><p>관련 시장 국면과 행동에서 열립니다.</p></article>`).join('')}</div></div>`;
   }
 
   private defaultOptionSettingNote(): string {
     const current = this.game ? this.game.defaultOption : this.save.defaultOption;
     if(!this.game && !this.save.profileAssessment) return '먼저 투자자성향을 확인한 뒤 옵션을 선택하세요.';
-    if(!this.game || this.game.defaultTrading) return `${defaultOptionName(current,true)} · 지정과 매매는 별개입니다. 운용지시에서 직접 매수·환매하세요.`;
+    if(!this.game || this.game.defaultLifecycle) return `${defaultOptionName(current,true)} · 만기자금은 통지·대기 후 자동운용됩니다. 일반 대기자금은 직접 매수하세요.`;
+    if(this.game.defaultTrading) return `${defaultOptionName(current,true)} · 지정과 매매는 별개입니다. 운용지시에서 직접 매수·환매하세요.`;
     if (!current) return '지정 안 함 · 「이번엔 그대로」를 골라도 대기자금은 그대로 남습니다.';
     return `${defaultOptionName(current)} · ${defaultOptionProducts(current)} · 「이번엔 그대로」를 고르면 대기자금을 이 상품으로 균등 매수${this.game ? ' · 지금 판부터 바로' : ''}`;
   }
@@ -1862,7 +1876,7 @@ export class PensionRoadApp {
       <button class="secondary" data-action="test-sound">효과음 테스트</button><p id="sound-status" role="status">${this.soundMessage}</p>
       <label class="setting-row" for="ghost"><span><strong>"그대로 둔 나" 비교</strong><small>같은 시드·같은 주사위로 아무 행동도 하지 않은 경로를 정산·결과·목표 게이지에 나란히 보입니다.</small></span><input id="ghost" type="checkbox" ${this.save.settings.ghost ? 'checked' : ''}></label>
       <label class="setting-row" for="speed"><span><strong>애니메이션 2× 빠르게</strong><small>주사위·말 이동·숫자·속보·정산 연출을 절반 길이로. 7턴부터는 충격·이정표 턴을 빼고 저절로 빨라집니다.</small></span><input id="speed" type="checkbox" ${this.save.settings.speed === 2 ? 'checked' : ''}></label>
-      <label class="setting-row" for="auto-settle"><span><strong>정산 자동 진행</strong><small>평범한 턴의 정산 창을 2.5초 뒤 저절로 넘깁니다. 점수를 얻을 수 있는 미응답 퀴즈·충격·이정표·생활사건·마지막 턴은 직접 넘기고, 창 안을 누르면 멈춥니다. 기본 끔.</small></span><input id="auto-settle" type="checkbox" ${this.save.settings.autoSettle ? 'checked' : ''}></label>
+      <label class="setting-row" for="auto-settle"><span><strong>정산 자동 진행</strong><small>평범한 턴의 정산 창을 2.5초 뒤 저절로 넘깁니다. 점수를 얻을 수 있는 미응답 퀴즈·만기자금 안내·충격·이정표·생활사건·마지막 턴은 직접 넘기고, 창 안을 누르면 멈춥니다. 기본 끔.</small></span><input id="auto-settle" type="checkbox" ${this.save.settings.autoSettle ? 'checked' : ''}></label>
       </section><section class="support-group"><h3>이번 판의 조건</h3><div class="setting-row default-option-row"><span><strong>디폴트옵션(사전지정운용)</strong><small>${this.defaultOptionSettingNote()}</small></span><button class="secondary compact" data-action="open-default-option">${(this.game ? this.game.defaultOption : this.save.defaultOption) ? '바꾸기' : '지정'}</button></div>
       <div class="button-stack compact">
         ${renderSettingsHowToButton()}

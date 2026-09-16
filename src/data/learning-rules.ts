@@ -2,6 +2,7 @@
 export const CONTENT_VERSION = '2026-09-12-p1';
 export const CONTENT_REVIEWED_AT = '2026-09-12';
 export const SOURCES = {
+  depositContract: { title:'카카오뱅크 퇴직연금 정기예금 상품설명서 · 2026.02', url:'https://og.kakaobank.io/download/bd6b0559-8c20-4282-9c3e-d0a224ffe062', scope:'만기 자동해지와 혼합 디폴트옵션 내부 예금 재예치 사례 · 모든 은행 공통 조건이 아님' },
   irp: { title: '하나은행 개인형 IRP 핵심설명서 · 2026.02', url: 'https://pension.kebhana.com/files/POR/Notice/PSNL_IRP_PRD_INVTM.pdf', scope: '한국 IRP · 금융감독원 배포 공통 설명서' },
   tax: { title: '소득세법 제59조의3 · 연금계좌세액공제', url: 'https://www.law.go.kr/LSW/lsLawLinkInfo.do?chrClsCd=010202&lsJoLnkSeq=1000819707', scope: '한국 세법 · 열람 본문 시행 2026-01-01' },
   withdrawal: { title: '퇴직급여법 시행령 제18조 · 개인형 IRP 중도인출', url: 'https://www.law.go.kr/LSW/lsLinkCommonInfo.do?chrClsCd=010202&lspttninfSeq=71031', scope: '한국 법령 · 열람 본문 시행 2026-03-24' },
@@ -37,3 +38,13 @@ export type LearningRuleId = keyof typeof LEARNING_RULES;
 export const CARD_RULES: Record<string, LearningRuleId> = {
   'signal-vs-forecast':'allocation','rate-bond':'bond',duration:'bond','deposit-rate':'deposit','fund-order':'order','etf-order':'order','risk-limit':'risk','tdf-exception':'risk','contribution-limit':'contribution','tax-credit':'credit','irp-withdrawal':'withdrawal','emergency-cash':'buffer',diversification:'allocation',rebalance:'allocation',profile:'profile','pension-assumption':'payout',liquidity:'buffer','pension-tax':'payout','payout-choice':'payout','default-option':'default','db-dc-irp':'db','sale-vs-withdrawal':'withdrawal','pricing-vs-settlement':'order','inflation-value':'glide','tdf-glide':'glide'
 };
+
+
+export const GENERAL_KNOWLEDGE_VERSION = '2026-09-16-situations' as const;
+export const MATURITY_ASSUMPTION = '새 판은 만기 T → 통지 T+1 → 통지 표시 다음 턴 자동주문으로 절차를 압축합니다. 실제 4주·통지 후 2주와 게임 턴은 다릅니다. 만기 대상액만 운용하며 일반 현금은 제외합니다. 지정과 즉시 매수·옵트아웃은 별개입니다.';
+export const DEPOSIT_ASSUMPTION = '가상 계약: 일반 예금과 예금 100% 옵션은 만기 원리금이 IRP 현금으로 돌아갑니다. 혼합 옵션 안의 예금은 새 금리로 재예치합니다. 대기자금 턴당 0.1%는 게임 가정이며 실제 금리가 아닙니다. 금융회사 부도·예금보호 지급 절차는 모사하지 않습니다.';
+export function currentLearningRules(): Record<LearningRuleId, LearningRule> {
+  return { ...LEARNING_RULES,
+    default: { ...LEARNING_RULES.default, assumption: MATURITY_ASSUMPTION, sources:['default','irp'] },
+    deposit: { ...LEARNING_RULES.deposit, assumption: DEPOSIT_ASSUMPTION, sources:['irp','depositContract'] } };
+}

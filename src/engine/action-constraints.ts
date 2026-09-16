@@ -33,7 +33,7 @@ export function rebalanceConstraint(state: GameState): Availability {
   return manualPortfolioValue(state) > 0 ? enabled : unavailable('no-assets', '리밸런싱할 직접 운용 자산과 대기자금이 없습니다.');
 }
 export function defaultTradeConstraint(state: GameState): Availability {
-  if (!state.defaultTrading || !['2026-09-10-e','2026-09-15-f'].includes(state.rulesetVersion)) return unavailable('legacy', '이전 규칙으로 진행 중인 판입니다. 새 판에서 디폴트옵션 직접매매를 이용하세요.');
+  if (!state.defaultTrading || !['2026-09-10-e','2026-09-15-f','2026-09-16-g'].includes(state.rulesetVersion)) return unavailable('legacy', '이전 규칙으로 진행 중인 판입니다. 새 판에서 디폴트옵션 직접매매를 이용하세요.');
   const timing = actionTiming(state);
   if (!timing.enabled) return timing;
   const lock = tradeLock(state);

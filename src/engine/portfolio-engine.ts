@@ -1,3 +1,4 @@
+import { consumeMaturityCash } from './maturity-cash';
 import { blockReason, tradeAmountConstraint, rebalanceConstraint } from './action-constraints';
 import { allowedPortfolios, validDefaultScope } from '../data/default-portfolios';
 import { scopedHolding, putScopedHolding, manualPortfolioValue } from './position-engine';
@@ -31,11 +32,11 @@ function addHolding(state: GameState, productId: ProductId, amount: number, scop
   const next: Holding = { ...current, amount: current.amount + amount, principal: current.principal + amount,
     units: (current.amount + amount) / state.prices[productId] };
   if (productId === 'deposit') {
-    next.lots = [...depositLots(state, current), { amount, principal: amount, openedTurn: state.turn,
+    next.lots = [...depositLots(state, current), { ...(state.defaultLifecycle ? { id: `deposit-${state.defaultLifecycle.lotSequence}` } : {}), amount, principal: amount, openedTurn: state.turn,
       maturityTurn: state.turn + balanceConfig.depositMaturityTurns,
       ratePerTurn: balanceConfig.market.depositBase + balanceConfig.market.depositPerRatePct * state.lastMarket.ratePct }];
   }
-  return { ...state, holdings: putScopedHolding(state, next, scope) };
+  return { ...state, holdings: putScopedHolding(state, next, scope), ...(productId === 'deposit' && state.defaultLifecycle ? { defaultLifecycle: { ...state.defaultLifecycle, lotSequence: state.defaultLifecycle.lotSequence + 1 } } : {}) };
 }
 
 /** 표시용 일정. 금융 처리의 턴 번호는 바꾸지 않는다. */
@@ -45,7 +46,7 @@ export function fundTiming(turn: number): string {
   return '다음 턴 기준가 확정 → 그다음 턴 결제(게임 시간)';
 }
 
-export function buyProduct(state: GameState, productId: ProductId, requestedAmount = balanceConfig.tradeAmount, internal = false, scope?: DefaultScope): ActionResult {
+export function buyProduct(state: GameState, productId: ProductId, requestedAmount = balanceConfig.tradeAmount, internal = false, scope?: DefaultScope, maturityCycleId?: string): ActionResult {
   const error = invalid(state, requestedAmount, scope ? false : internal);
   if (error) return { ok: false, message: error, state };
   const product = products.find(p => p.id === productId);
@@ -57,7 +58,7 @@ export function buyProduct(state: GameState, productId: ProductId, requestedAmou
   if (!suitability.ok) return { ok: false, message: suitability.reason, state };
   const check = scope ? {ok:true,ratio:0,reason:'승인유형 한도 예외 모사'} : canBuyRiskAsset(state, productId, amount);
   if (!check.ok) return { ok: false, message: check.reason, state, expectedRiskRatio: check.ratio };
-  let next = { ...state, irpCash: state.irpCash - amount, riskBuyCount: state.riskBuyCount + (product.regulatoryRisk ? 1 : 0) };
+  let next = { ...consumeMaturityCash(state, amount, maturityCycleId), irpCash: state.irpCash - amount, riskBuyCount: state.riskBuyCount + (product.regulatoryRisk ? 1 : 0) };
   if (product.kind === 'fund') {
     next = { ...next, pendingOrders: [...state.pendingOrders, {...orderFor(state, 'buy', productId, amount), ...(scope ? {defaultScope:scope} : {})}], orderSequence: state.orderSequence + 1 };
   } else next = addHolding(next, productId, amount, scope);

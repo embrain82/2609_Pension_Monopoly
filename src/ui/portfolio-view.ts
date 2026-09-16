@@ -1,3 +1,4 @@
+import { renderMaturitySummary, renderMaturityDetails } from './maturity-view';
 import { cashInterestRule } from './cash-interest-view';
 import { products } from '../data/content';
 import { sourceBalances } from '../engine/account-engine';
@@ -16,6 +17,7 @@ export function depositStatus(state:GameState) {
  return holding?positionsOf(holding).flatMap(p=>depositLots(state,{...p,productId:'deposit'}).map(lot=>({...lot,scope:p.scope,status:state.turn>=lot.maturityTurn?'matured' as const:'active' as const}))):[];
 }
 export function renderMaturityNotice(state:GameState):string {
+ if(state.defaultLifecycle)return renderMaturitySummary(state);
  const lots=depositStatus(state).filter(l=>l.maturityTurn===state.turn);
  if(!lots.length)return '';
  return `<aside class="maturity-notice"><strong>◷ 이번 턴 예금 약정 만료 · ${lots.length}건</strong><p>남은 평가액 ${formatWon(lots.reduce((s,l)=>s+l.amount,0))}은 예금 보유분에 있습니다. 다음 턴부터 추가 약정 이자가 붙지 않습니다. 자동으로 현금화하거나 재가입하지 않습니다.</p><button class="secondary" data-action="open-portfolio">만기 예금 확인</button></aside>`;
@@ -70,7 +72,7 @@ export function renderPortfolio(state:GameState):string {
  </section><div class="portfolio-detail" aria-label="분류별 상세"><section class="portfolio-direct"><h3>직접 운용 보유 상품</h3>${values.some(v=>v.amount>.001)?group(values.filter(v=>v.amount>.001)):'<p>직접 운용 보유 상품이 없습니다. 디폴트옵션·대기자금·미결제 주문을 확인하세요.</p>'}
  ${values.some(v=>v.amount<=.001)?`<details class="empty-holdings"><summary>직접 미보유 상품 ${values.filter(v=>v.amount<=.001).length}개 살펴보기</summary>${group(values.filter(v=>v.amount<=.001))}</details>`:''}
  <p class="hint">상품별 수익률은 시장 예시이며 실제 보유분 성과와 다를 수 있습니다. 비중 분모는 현금·미결제·옵션을 포함한 전체 IRP입니다.</p></section>
- ${renderDefaultHoldings(state)}<section class="portfolio-orders"><h3>미결제 주문 ${state.pendingOrders.length}건</h3><ul class="trade-timeline">${orders||'<li>대기 주문 없음</li>'}</ul>${state.rebalancePlan?'<p>매도 결제 후 직접 운용분 목표비중을 다시 계산해 매수합니다.</p>':''}</section>
- <section class="deposit-status"><h3>예금 약정 ${lots.length}건</h3><p class="hint">게임에서는 만기 이후 보유분을 자동 현금화하거나 재가입하지 않습니다. 실제 상품의 만기 처리 조건은 상품별로 확인해야 합니다.</p><ul class="trade-timeline">${lotRows||'<li>예금 보유 없음</li>'}</ul>${depositActions(state)}</section>
+ ${renderMaturityDetails(state)}${renderDefaultHoldings(state)}<section class="portfolio-orders"><h3>미결제 주문 ${state.pendingOrders.length}건</h3><ul class="trade-timeline">${orders||'<li>대기 주문 없음</li>'}</ul>${state.rebalancePlan?'<p>매도 결제 후 직접 운용분 목표비중을 다시 계산해 매수합니다.</p>':''}</section>
+ <section class="deposit-status"><h3>예금 약정 ${lots.length}건</h3><p class="hint">${state.defaultLifecycle ? '일반 예금과 예금 100% 옵션은 만기에 IRP 현금으로 이동합니다. 혼합 옵션 안의 예금은 새 금리로 재예치합니다. 이 게임의 가상 계약 조건이며 실제 상품별 조건은 다를 수 있습니다.' : '게임에서는 만기 이후 보유분을 자동 현금화하거나 재가입하지 않습니다. 실제 상품의 만기 처리 조건은 상품별로 확인해야 합니다.'}</p><ul class="trade-timeline">${lotRows||'<li>예금 보유 없음</li>'}</ul>${depositActions(state)}</section>
  <details class="account-sources"><summary>자금 원천과 수령 계산 기준</summary><p>퇴직급여 ${formatWon(basis.retirement)} · 미공제 원금 ${formatWon(basis.nonDeducted)} · 공제 원금 ${formatWon(basis.deducted)} · 운용수익 ${formatWon(basis.earnings)}</p><p>위 IRP 총액을 원천별로 나눈 값입니다.</p></details>${defaultScopes(state).length?'<p class="hint">사전지정 변경은 보유 옵션 매매와 별개입니다.</p>':''}</div></div>`;
 }

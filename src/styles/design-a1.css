@@ -230,3 +230,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 @media (hover:hover) and (pointer:fine) {
   .road-diagnosis .choice-stack button:hover { border-color:var(--green-2); transform:translateY(-1px); }
 }
+
+/* FB-016: scope spacing to the unassessed profile card. */
+.preparation-unassessed .profile-stamp { display:inline-flex; margin:0 0 16px; }
+.preparation-unassessed > h2 { margin-top:0; line-height:1.5; }
+
+/* Maturity stages stay compact; no extra first-level operation menu. */
+.maturity-flow,.maturity-detail { text-align:left; overflow-wrap:anywhere; }
+.maturity-flow h3,.maturity-detail h3 { margin:0 0 12px; }
+.maturity-stage + .maturity-stage { border-top:1px solid #dce6df; margin-top:16px; padding-top:16px; }
+.maturity-flow p,.maturity-detail p { margin:8px 0; }
+.maturity-risk { font-size:.875rem; line-height:1.65; color:#53675c; }
+.maturity-instruction { margin:12px 0; }
+.maturity-instruction summary { padding:12px 0; font-weight:700; cursor:pointer; }
+.maturity-instruction button { display:block; margin-top:12px; max-width:100%; white-space:normal; }

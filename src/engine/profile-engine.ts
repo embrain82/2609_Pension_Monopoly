@@ -13,11 +13,11 @@ export function profileFromScore(score: number): ProfileId {
 }
 
 export function applyProfileToGame(game: GameState, profileId: ProfileId): GameState {
-  if (game.campaign) return game;
+  if (game.campaign || game.defaultLifecycle) return game;
   if (game.profileId === profileId) return game;
   const unlocked = game.unlockedCards.includes('profile') ? game.unlockedCards : [...game.unlockedCards, 'profile'];
   return { ...game, profileId, unlockedCards: unlocked,
-    ...(game.turn === 0 && game.holdings.length ? { holdings: initialHoldings(profileId,Boolean(game.financeRules)), ...(game.financeRules?{financeRules:newFinanceRules(profileId)}:{}) } : {}),
+    ...(game.turn === 0 && game.holdings.length ? { holdings: initialHoldings(profileId,Boolean(game.financeRules)), ...(game.financeRules?{financeRules:newFinanceRules(profileId, Boolean(game.defaultLifecycle))}:{}) } : {}),
     logs: [...game.logs, { turn: game.turn, type: 'profile', message: '투자성향 변경 · 캐릭터는 유지. 진행 중 보유 상품은 자동 매도하지 않습니다.' }] };
 }
 

@@ -16,7 +16,7 @@ export function renderDefaultOrderStatus(state: GameState): string {
     const pending=state.pendingOrders.filter(o=>g.orderIds.includes(o.id));
     const status=!pending.length?'결제 완료':pending.some(o=>o.stage==='received')?'접수 · 가격확정 대기':'가격확정 · 결제 대기';
     const settlement = pending.length ? Math.max(...pending.map(o=>o.settlesTurn)) : 0;
-    return `<li>${g.turn}턴 · ${defaultPortfolio(g.scope.optionId).name} ${g.kind==='in'?'매수':'환매'} · ${status}${pending.length<g.orderIds.length&&pending.length?' · 일부 결제':''}<small>접수 당시 ${won(g.amount)}${pending.length?settlement>12?' · 12턴 종료 후 최종 정산 예정':` · ${settlement}턴까지 결제 예정`:''}</small></li>`;
+    return `<li>${g.turn}턴 · ${g.source==='automatic'?'만기 자동운용':'직접 지시'} · ${defaultPortfolio(g.scope.optionId).name} ${g.kind==='in'?'매수':'환매'} · ${status}${pending.length<g.orderIds.length&&pending.length?' · 일부 결제':''}<small>접수 당시 ${won(g.amount)}${pending.length?settlement>12?' · 12턴 종료 후 최종 정산 예정':` · ${settlement}턴까지 결제 예정`:''}</small></li>`;
   }).join('')}</ul></details>`;
 }
 export function renderDefaultHoldings(state: GameState): string {
@@ -49,5 +49,5 @@ export function renderDefaultTrade(state: GameState, draft: DefaultTradeDraft): 
     ${plan.ok?`<p class="hint">규제 위험비중 ${pct(riskAssetRatio(state))} → ${pct(riskAssetRatio(plan.state))} · 기초 주식 노출 ${pct(equityExposureRatio(state))} → ${pct(equityExposureRatio(plan.state))}</p>`:`<div class="preview-box warning" id="default-trade-error" aria-live="polite"><strong>지시 전 확인</strong><p>${plan.message}</p></div>`}
     ${renderTradePreview(state,plan,plan.scope)}<p class="hint">${isIn?'지정만으로 매수되지 않습니다. 위 구성비는 신규 매수 비중이며 시장 변동 후에는 달라집니다.':'환매대금은 결제 후 IRP 안에 남습니다. 사전지정 해제나 계좌 밖 인출이 아닙니다.'} 펀드 일정은 실제 영업일이 아닌 게임 시간입니다.${state.turn>=11?' 12턴을 넘는 주문은 추가 시장·급여 없이 종료 시점의 가격으로 최종 정산합니다.':''}</p>
     <div class="button-stack order-confirm"><button class="primary jumbo" data-action="submit-default-trade" data-command="${nextDefaultCommand(state)}" ${plan.ok?'':'disabled aria-describedby="default-trade-error"'}>${isIn?`${won(draft.amount)} 매수 지시`:`보유분 ${draft.fraction*100}% 환매 지시`}</button></div></section></div>
-    ${renderDefaultOrderStatus(state)}<details><summary>가상 상품과 제도 가정</summary><p>${DEFAULT_PORTFOLIO_REVIEW.assumption}</p><p>사전지정·통지·대기에 따른 자동운용은 이 버전에서 실행하지 않습니다.</p><a href="${DEFAULT_PORTFOLIO_REVIEW.source}" target="_blank" rel="noreferrer">제도 근거</a> · 검수 ${DEFAULT_PORTFOLIO_REVIEW.reviewedAt}</details>`;
+    ${renderDefaultOrderStatus(state)}<details><summary>가상 상품과 제도 가정</summary><p>${DEFAULT_PORTFOLIO_REVIEW.assumption}</p><p>${state.defaultLifecycle?'이 판은 만기자금에 한해 통지·대기 후 자동운용합니다. 일반 대기자금은 직접 매수하세요.':'사전지정·통지·대기에 따른 자동운용은 이 버전에서 실행하지 않습니다.'}</p><a href="${DEFAULT_PORTFOLIO_REVIEW.source}" target="_blank" rel="noreferrer">제도 근거</a> · 검수 ${DEFAULT_PORTFOLIO_REVIEW.reviewedAt}</details>`;
 }
