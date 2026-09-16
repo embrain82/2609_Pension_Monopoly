@@ -57,6 +57,7 @@ import type { AchievementId, ActionKind, DefaultOptionId, GameState, LifeChoice,
 import { renderDiceOutcome, DICE_LAND_HOLD_MS, DICE_ROLL_DURATION_MS, canRevealNextTurn, dicePairForTurn, renderDiceMarkup, shouldSkipDiceAnimation } from './dice';
 import { TOKEN_STEP_MS, boardViewFor, movePath, renderBoardMarkup } from './board';
 import { hopPlan, renderTokenLayer, slideKeyframes } from './token3d';
+import { TokenEmotionPlayer } from './token-emotion';
 import { buyNeedsContribution, renderHowToModal, renderSettingsHowToButton, shouldShowLearningTip } from './howto';
 import { renderTileBriefing } from './tile-briefing';
 import { renderNewsFlash } from './news-flash';
@@ -146,6 +147,7 @@ export class PensionRoadApp {
   private regionNotice = "";
   private diceFaces: [number, number] = [1, 1];
   private readonly motion = new AnimationController();
+  private readonly tokenEmotion = new TokenEmotionPlayer();
   private exploreIndex = 0;
   private portfolioReturn = false;
   private resumeData: PlayCheckpoint | null = readCheckpoint();
@@ -191,6 +193,7 @@ export class PensionRoadApp {
       if (image instanceof Element && image.hasAttribute('data-character-image')) {
         this.failedCharacterArt.add(image.getAttribute('data-character-image')!);
         showAvatarFallbacks(this.root, this.failedCharacterArt);
+        this.syncTokenEmotion();
       }
       if (image instanceof HTMLImageElement && image.hasAttribute('data-brand-art')) {
         this.failedBrandArt.add(image.dataset.brandArt!); image.hidden = true;
@@ -216,11 +219,15 @@ export class PensionRoadApp {
       if (!this.root.isConnected) return;
       if (document.hidden) {
         this.sound.stop();
+        this.tokenEmotion.suspend();
         if (this.boardFocusing || this.diceRolling || this.tokenHopping) {
           this.clearDiceTimer(); this.diceRolling = false; this.tokenHopping = false; this.landed = false; this.tokenTrail = [];
           this.modal = null; this.render();
         }
-      }
+      } else this.syncTokenEmotion();
+    });
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', () => {
+      if (this.root.isConnected) this.syncTokenEmotion();
     });
     this.render();
   }
@@ -958,10 +965,11 @@ export class PensionRoadApp {
     }
   }
 
-  private clearDiceTimer(): void { this.motion.cancel(); this.boardFocusing = false; this.focusBoardAfterDice = false; this.boardRevealing = false; this.revealIndex = undefined; }
+  private clearDiceTimer(): void { this.motion.cancel(); this.tokenEmotion.reset(); this.boardFocusing = false; this.focusBoardAfterDice = false; this.boardRevealing = false; this.revealIndex = undefined; }
 
   private async beginDiceRoll(): Promise<void> {
     if (!this.game || this.boardFocusing || this.diceRolling || this.tokenHopping || !canRevealNextTurn(this.game)) return;
+    this.tokenEmotion.reset();
     this.diceFaces = dicePairForTurn(this.game.seed, this.game.turn);
     this.modal = null; this.checkpoint();
     const id = this.motion.begin();
@@ -1032,6 +1040,7 @@ export class PensionRoadApp {
     this.tokenTrail = [];
     this.game = next.state; this.tokenHopping = false; this.landed = false;
     this.boardRevealing = false; this.revealIndex = undefined;
+    this.tokenEmotion.queue(`${this.game.seed}:${this.game.turn}`);
     // 일반 턴은 대시보드의 시장 요약에서 바로 운용한다. 중요한 충격만 별도 속보를 연다.
     if (this.game.lastMarket.shock) this.modal = 'news'; else this.afterMarketScene();
     this.announce(`${steps}칸 이동 · ${next.message}${this.regionNotice ? ` · ${this.regionNotice}` : ""}`); this.persist(true);
@@ -1131,6 +1140,7 @@ export class PensionRoadApp {
     this.quizPicked = null;
     this.defaultOptionAsk = false;
     this.clearAutoSettle(); this.newAchievements = []; this.shareFallback = ''; this.modal = null;
+    this.tokenEmotion.queue(`${this.game.seed}:0`);
     this.persist(true);
     this.announce('시작 조건을 확인했습니다. 주사위를 굴려 첫 시장을 만나세요.');
   }
@@ -1199,6 +1209,7 @@ export class PensionRoadApp {
   }
 
   private render(): void {
+    if (this.screen !== 'game' || this.modal || this.pendingPrompt || this.boardFocusing || this.diceRolling || this.tokenHopping || this.boardRevealing) this.tokenEmotion.suspend();
     if (this.modal === 'payout' && this.renderedModal !== 'payout') this.payoutPick = this.game?.payoutChoice ?? null;
     const marketContext = this.game ? JSON.stringify([this.game.seed, this.game.turn]) : null;
     if (this.marketDetailsContext !== marketContext) {
@@ -1288,6 +1299,7 @@ export class PensionRoadApp {
     const instant = shouldSkipDiceAnimation(this.save.settings.reducedMotion, window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     runNumberAnimations(this.root, instant, scaleMs(NUMBER_TWEEN_MS, this.save.settings.speed));
     if (!this.tokenHopping) this.tokenShown = this.game?.position ?? null;
+    this.syncTokenEmotion();
     // <details>의 toggle은 버블링하지 않아 여기서 붙인다. 펼침 상태를 기억하고, 펼치면 자동 진행을 멈춘다.
     const settleDetails = this.root.querySelector<HTMLDetailsElement>('details.settle-more');
     if (settleDetails) settleDetails.ontoggle = (event) => {
@@ -1298,6 +1310,24 @@ export class PensionRoadApp {
       }
       if (open) this.clearAutoSettle();
     };
+  }
+
+  private syncTokenEmotion(): void {
+    if (!this.game || this.screen !== 'game') { this.tokenEmotion.reset(); return; }
+    const actor = this.root.querySelector<SVGElement>('.token-emotion');
+    const art = actor?.querySelector<SVGElement>('[data-character-image]');
+    const character = art?.getAttribute('data-character-image') ?? '';
+    this.tokenEmotion.update({
+      key: `${this.game.seed}:${this.game.turn}`,
+      mood: avatarMood(this.game, calculateScore(this.game).goalMet), character, actor,
+      token: this.root.querySelector<HTMLElement>('.token3d'),
+      board: this.root.querySelector<HTMLElement>('.board-stage'),
+      footer: this.root.querySelector<HTMLElement>('.game-actions'),
+      imageSrc: art?.getAttribute('href') ?? '',
+      blocked: Boolean(this.modal || this.pendingPrompt || this.boardFocusing || this.diceRolling || this.tokenHopping || this.boardRevealing),
+      disabled: !this.save.settings.characters || this.failedCharacterArt.has(character) || shouldSkipDiceAnimation(this.save.settings.reducedMotion, window.matchMedia('(prefers-reduced-motion: reduce)').matches),
+      speed: speedScale(this.save.settings.speed)
+    });
   }
 
   private renderTitle(): string {

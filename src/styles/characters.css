@@ -14,7 +14,9 @@
 .avatar-frame { pointer-events:none; }
 .token3d:not(.plain) { width:7.8%; }
 .token3d:not(.plain) .token-face { transform:translateY(-17%); }
-.token3d:not(.plain) .token-face>svg { width:100%; height:100%; filter:drop-shadow(0 1px 1px #18363525); }
+.token3d:not(.plain) .token-face>svg { width:100%; height:100%; overflow:visible; filter:drop-shadow(0 1px 1px #18363525); }
+/* 발 정렬(원본 656/724) 기준. 이동용 .token-pos/.token3d 변환과 분리한다. */
+.token-emotion { transform-box:view-box; transform-origin:50px 90.607735px; }
 .token3d:not(.plain) .token-rim { inset:auto 17% 25%; height:9%; background:linear-gradient(#fffdf0 0 55%,#27824a 56%); border:1px solid #3e7156; }
 .token3d:not(.plain) .token-shadow { bottom:20%; }
 @media(max-width:520px) {
