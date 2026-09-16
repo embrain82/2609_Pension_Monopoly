@@ -8,6 +8,7 @@ import './styles/design-d2b.css';
 import './styles/design-d3.css';
 import './styles/design-d4.css';
 import './styles/characters.css';
+import './styles/board-discovery.css';
 import { validateContent } from './data/content';
 import { PensionRoadApp } from './ui/app';
 

@@ -1,0 +1,27 @@
+{
+  "date": "2026-09-16",
+  "status": "implementation_approved",
+  "implementationApproved": true,
+  "token": "A1",
+  "mask": "B5",
+  "previewCharacter": "woni",
+  "rules": {
+    "startTileVisible": true,
+    "revealFinalDestinationOnly": true,
+    "retainRevealedTiles": true,
+    "existingGamesRemainOpen": true,
+    "newGamesOnly": true,
+    "preserveDiceFinanceAndStamps": true
+  },
+  "additionalFeedback": "최종 도착해 칸이 공개되는 순간 해당 칸의 고유 색상도 함께 보여야 합니다. 말이 머무는 동안과 떠난 뒤에도 같은 색상을 유지합니다.",
+  "acceptance": [
+    "미공개 칸은 종류를 알 수 없는 중립 지도 스티커로 표시한다.",
+    "최종 도착 시 이름·아이콘·고유 배경색이 동시에 드러난다.",
+    "현재 위치 강조는 테두리와 말 효과로 표현하고 칸의 배경색을 덮지 않는다.",
+    "말이 떠난 뒤에도 공개된 칸의 이름·아이콘·배경색을 유지한다.",
+    "이동 중 지나간 칸은 공개하지 않는다.",
+    "동작 줄이기와 재방문에서도 같은 색상 규칙을 적용한다."
+  ],
+  "notes": "원이는 미리보기 선택이며 실제 게임의 다섯 캐릭터 선택을 유지한다. 종료 후 전체 지도 공개는 미확정이므로 제외한다. 구현 및 게임 미리보기 검증 진행. 운영 머지·배포는 별도 진행.",
+  "approval": "2026-09-16: 좋아 이대로 구현해보자"
+}

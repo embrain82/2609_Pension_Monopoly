@@ -40,6 +40,7 @@ export interface GameAction {
 export type AmountPreset = 'default' | 'half' | 'max';
 
 export interface GameOptions {
+  boardVisibility?: GameState['boardVisibility'];
   /** f1: a buffered starting allocation and 0.1% per-turn waiting cash interest. */
   updatedFinance?: boolean;
   automaticStamps?: boolean;
@@ -109,6 +110,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
   const tileEffectsEnabled = options.tileEffects !== false;
   const goal = clampGoalMonthly(goalMonthly);
   const state: GameState = {
+    ...(options.boardVisibility ? { boardVisibility: options.boardVisibility } : {}),
     ...(options.updatedFinance ? { financeRules: newFinanceRules(profileId) } : {}),
     ...(options.settlementLearning?{learningFlow:{version:'settlement-v1' as const,queue:[]}}:{}),
     ...(options.contributionPacing ? { contributionPacing: { version: 'v1' as const, perTurnLimit: balanceConfig.contributionPerTurnLimit } } : {}),

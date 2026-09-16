@@ -448,7 +448,11 @@ export interface CashFlow {
 
 export interface CashInterest { turn: number; opening: number; rate: number; amount: number; }
 
+export type BoardVisibility = 'open-v1' | 'arrival-v1';
+
 export interface GameState {
+  /** 표시 규칙만 저장한다. 생략된 기존 판은 전체 공개로 유지한다. */
+  boardVisibility?: BoardVisibility;
   /** New-game financial rules; absent on historical games. */
   financeRules?: { version: 'f1'; startingAllocation: Record<ProductId, number>; cashRatePerTurn: number; lastInterestTurn: number };
   /** 새 판에서만 정산 자율 학습. 기존 판의 진행·점수 규칙은 보존한다. */

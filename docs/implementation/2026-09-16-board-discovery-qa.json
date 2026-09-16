@@ -1,0 +1,327 @@
+{
+  "mobile": {
+    "restored": true,
+    "finished": true,
+    "motion": [
+      {
+        "t": 193862.79999999702,
+        "turn": 0,
+        "index": "0",
+        "hidden": 23,
+        "reveal": false,
+        "fill": "rgb(239, 247, 240)",
+        "dice": 0
+      },
+      {
+        "t": 195820.20000000298,
+        "turn": 0,
+        "index": "1",
+        "hidden": 23,
+        "reveal": false,
+        "fill": "rgb(244, 242, 233)",
+        "dice": 0
+      },
+      {
+        "t": 197040.79999999702,
+        "turn": 0,
+        "index": "2",
+        "hidden": 23,
+        "reveal": false,
+        "fill": "rgb(244, 242, 233)",
+        "dice": 0
+      },
+      {
+        "t": 198039.79999999702,
+        "turn": 0,
+        "index": "3",
+        "hidden": 23,
+        "reveal": false,
+        "fill": "rgb(244, 242, 233)",
+        "dice": 0
+      },
+      {
+        "t": 199046.5,
+        "turn": 0,
+        "index": "4",
+        "hidden": 23,
+        "reveal": false,
+        "fill": "rgb(244, 242, 233)",
+        "dice": 0
+      },
+      {
+        "t": 200047.79999999702,
+        "turn": 0,
+        "index": "5",
+        "hidden": 23,
+        "reveal": false,
+        "fill": "rgb(244, 242, 233)",
+        "dice": 0
+      },
+      {
+        "t": 201063.8999999985,
+        "turn": 0,
+        "index": "6",
+        "hidden": 23,
+        "reveal": false,
+        "fill": "rgb(244, 242, 233)",
+        "dice": 0
+      },
+      {
+        "t": 202072.5,
+        "turn": 0,
+        "index": "6",
+        "hidden": 22,
+        "reveal": true,
+        "fill": "rgb(239, 247, 240)",
+        "dice": 0
+      },
+      {
+        "t": 203103.6000000015,
+        "turn": 1,
+        "index": "6",
+        "hidden": 22,
+        "reveal": false,
+        "fill": "rgb(239, 247, 240)",
+        "dice": 0
+      }
+    ],
+    "colors": [
+      [
+        "0",
+        "rgb(239, 247, 240)"
+      ],
+      [
+        "6",
+        "rgb(239, 247, 240)"
+      ],
+      [
+        "8",
+        "rgb(239, 247, 240)"
+      ],
+      [
+        "12",
+        "rgb(238, 245, 250)"
+      ],
+      [
+        "19",
+        "rgb(239, 247, 240)"
+      ],
+      [
+        "20",
+        "rgb(244, 240, 250)"
+      ],
+      [
+        "23",
+        "rgb(255, 250, 231)"
+      ],
+      [
+        "3",
+        "rgb(239, 247, 240)"
+      ],
+      [
+        "11",
+        "rgb(239, 247, 240)"
+      ],
+      [
+        "16",
+        "rgb(255, 250, 231)"
+      ],
+      [
+        "4",
+        "rgb(255, 243, 231)"
+      ],
+      [
+        "14",
+        "rgb(238, 245, 250)"
+      ]
+    ],
+    "steps": 56
+  },
+  "desktop": {
+    "finished": true,
+    "steps": 55,
+    "motion": [
+      {
+        "turn": 0,
+        "index": "0",
+        "dice": 2,
+        "reveal": false,
+        "hidden": 23,
+        "fill": "rgb(239, 247, 240)"
+      },
+      {
+        "turn": 0,
+        "index": "1",
+        "dice": 0,
+        "reveal": false,
+        "hidden": 23,
+        "fill": "rgb(244, 242, 233)"
+      },
+      {
+        "turn": 0,
+        "index": "2",
+        "dice": 0,
+        "reveal": false,
+        "hidden": 23,
+        "fill": "rgb(244, 242, 233)"
+      },
+      {
+        "turn": 0,
+        "index": "3",
+        "dice": 0,
+        "reveal": false,
+        "hidden": 23,
+        "fill": "rgb(244, 242, 233)"
+      },
+      {
+        "turn": 0,
+        "index": "4",
+        "dice": 0,
+        "reveal": false,
+        "hidden": 23,
+        "fill": "rgb(244, 242, 233)"
+      },
+      {
+        "turn": 0,
+        "index": "5",
+        "dice": 0,
+        "reveal": false,
+        "hidden": 23,
+        "fill": "rgb(244, 242, 233)"
+      },
+      {
+        "turn": 0,
+        "index": "6",
+        "dice": 0,
+        "reveal": false,
+        "hidden": 23,
+        "fill": "rgb(244, 242, 233)"
+      },
+      {
+        "turn": 0,
+        "index": "7",
+        "dice": 0,
+        "reveal": false,
+        "hidden": 23,
+        "fill": "rgb(244, 242, 233)"
+      },
+      {
+        "turn": 0,
+        "index": "7",
+        "dice": 0,
+        "reveal": true,
+        "hidden": 22,
+        "fill": "rgb(244, 240, 250)",
+        "durations": [
+          170
+        ]
+      },
+      {
+        "turn": 1,
+        "index": "7",
+        "dice": 0,
+        "reveal": false,
+        "hidden": 22,
+        "fill": "rgb(244, 240, 250)"
+      }
+    ],
+    "colors": [
+      [
+        "0",
+        "rgb(239, 247, 240)"
+      ],
+      [
+        "7",
+        "rgb(244, 240, 250)"
+      ],
+      [
+        "11",
+        "rgb(239, 247, 240)"
+      ],
+      [
+        "18",
+        "rgb(244, 240, 250)"
+      ],
+      [
+        "5",
+        "rgb(255, 250, 231)"
+      ],
+      [
+        "8",
+        "rgb(239, 247, 240)"
+      ],
+      [
+        "13",
+        "rgb(239, 247, 240)"
+      ],
+      [
+        "19",
+        "rgb(239, 247, 240)"
+      ],
+      [
+        "6",
+        "rgb(239, 247, 240)"
+      ],
+      [
+        "9",
+        "rgb(238, 245, 250)"
+      ],
+      [
+        "12",
+        "rgb(238, 245, 250)"
+      ]
+    ]
+  },
+  "layout": [
+    {
+      "viewport": [
+        336,
+        776
+      ],
+      "overflow": 0,
+      "boardWidth": 288,
+      "hidden": 0,
+      "tiles": 24,
+      "tokenWidth": 33.1171875,
+      "fill": "rgb(239, 247, 240)"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "overflow": 0,
+      "boardWidth": 358,
+      "hidden": 0,
+      "tiles": 24,
+      "tokenWidth": 41.1640625,
+      "fill": "rgb(239, 247, 240)"
+    },
+    {
+      "viewport": [
+        768,
+        1024
+      ],
+      "overflow": 0,
+      "boardWidth": 714,
+      "hidden": 0,
+      "tiles": 24,
+      "tokenWidth": 74.96875,
+      "fill": "rgb(239, 247, 240)"
+    },
+    {
+      "viewport": [
+        1440,
+        1000
+      ],
+      "overflow": 0,
+      "boardWidth": 580,
+      "hidden": 0,
+      "tiles": 24,
+      "tokenWidth": 60.8984375,
+      "fill": "rgb(239, 247, 240)"
+    }
+  ],
+  "screenshot": "Page.captureScreenshot timed out; no pixel screenshot proof",
+  "deployment": "dpl_CiqVAiMb6CZz6Vcq7TSEUVo54R9n"
+}
