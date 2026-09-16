@@ -29,12 +29,13 @@
 .change-chart.compact figcaption { font-size:.8125rem; }
 .change-chart.compact .chart-axis { font-size:.75rem;margin:6px 0; }
 .change-chart.compact .chart-axis small { font-size:.75rem; }
-.change-chart.compact ul { gap:5px; }
-.change-chart.compact .change-row { display:grid;grid-template-columns:minmax(80px,1fr) minmax(30px,1fr) minmax(90px,1.15fr);align-items:center;gap:4px; }
+.change-chart.compact ul { gap:12px; }
+/* Keep labels and exact amounts above a full-width, shared zero-axis bar. */
+.change-chart.compact .change-row { display:grid;grid-template-columns:minmax(0,1fr) max-content;align-items:baseline;gap:4px 12px; }
 .change-chart.compact .change-row > div { display:contents; }
-.change-chart.compact .change-row > div > span { grid-column:1;grid-row:1;font-size:.8125rem; }
-.change-chart.compact .change-row b { grid-column:3;grid-row:1;text-align:right;font-size:.8125rem;overflow-wrap:anywhere; }
-.change-chart.compact .change-row svg { grid-column:2;grid-row:1;height:24px; }
+.change-chart.compact .change-row > div > span { grid-column:1;grid-row:1;min-width:0;text-align:left;font-size:.8125rem;word-break:keep-all; }
+.change-chart.compact .change-row b { grid-column:2;grid-row:1;text-align:right;font-size:.8125rem;white-space:nowrap;font-variant-numeric:tabular-nums; }
+.change-chart.compact .change-row svg { grid-column:1/-1;grid-row:2;height:24px; }
 .settle-overview .actual-market-impact { margin:12px 0 0;padding:12px 0 0;border:0;border-top:1px solid #cbd8d0;border-radius:0;background:transparent; }
 .settle-overview .actual-market-impact > strong { font-size:.875rem; }
 .settle-overview .actual-market-impact ul { margin:8px 0;gap:8px; }
@@ -51,7 +52,4 @@
  .settle-overview { padding:12px; }
  .settle-rate-strip { grid-template-columns:1fr;gap:8px; }
  .settle-rate-strip > div:last-child { display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px; }
- .change-chart.compact .change-row { grid-template-columns:1fr 1.25fr; }
- .change-chart.compact .change-row b { grid-column:2; }
- .change-chart.compact .change-row svg { grid-column:1/-1;grid-row:2;height:18px; }
 }

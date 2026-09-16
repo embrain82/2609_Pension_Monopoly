@@ -571,11 +571,6 @@ td small { display: block; margin: 3px 0 0 20px; color: var(--muted); font-size:
 .settle-bar.market.neg i { background: #d99a78; }
 .settle-bar.after i { animation-delay: calc(var(--t) * .24s); }
 .settle-bar.after.pos i { background: var(--green-2); }
-.settle-split { margin: -2px 0 0; text-align: right; color: var(--muted); font-size: .78rem; font-weight: 800; animation: breaking-in calc(var(--t) * .4s) ease-out calc(var(--t) * .6s) both; }
-.settle-split .pos { color: var(--green); }
-.settle-split .neg { color: var(--orange); }
-.settle-split .market::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 5px; border-radius: 2px; background: var(--blue); vertical-align: 1px; }
-.settle-split .action::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 5px; border-radius: 2px; background: var(--green-2); vertical-align: 1px; }
 .settle-note { margin: 4px 0 0 !important; font-size: .72rem !important; }
 .settle-actions { margin: 8px 0 0; padding-left: 1.3em; }
 .settle-actions li { margin: 4px 0; color: var(--muted); font-size: .84rem; line-height: 1.45; }
