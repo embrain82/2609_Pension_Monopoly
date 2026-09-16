@@ -1040,7 +1040,6 @@ export class PensionRoadApp {
     this.tokenTrail = [];
     this.game = next.state; this.tokenHopping = false; this.landed = false;
     this.boardRevealing = false; this.revealIndex = undefined;
-    this.tokenEmotion.queue(`${this.game.seed}:${this.game.turn}`);
     // 일반 턴은 대시보드의 시장 요약에서 바로 운용한다. 중요한 충격만 별도 속보를 연다.
     if (this.game.lastMarket.shock) this.modal = 'news'; else this.afterMarketScene();
     this.announce(`${steps}칸 이동 · ${next.message}${this.regionNotice ? ` · ${this.regionNotice}` : ""}`); this.persist(true);
@@ -1140,7 +1139,6 @@ export class PensionRoadApp {
     this.quizPicked = null;
     this.defaultOptionAsk = false;
     this.clearAutoSettle(); this.newAchievements = []; this.shareFallback = ''; this.modal = null;
-    this.tokenEmotion.queue(`${this.game.seed}:0`);
     this.persist(true);
     this.announce('시작 조건을 확인했습니다. 주사위를 굴려 첫 시장을 만나세요.');
   }

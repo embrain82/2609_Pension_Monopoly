@@ -2,6 +2,8 @@ import type { Mood } from './avatars';
 
 /** 승인된 시안 강도. 판정과 금융 상태는 기존 엔진/avatarMood에 맡긴다. */
 export const TOKEN_EMOTION_LEVEL = { calm: 1, tense: 3, happy: 3 } as const;
+/** 연출 사이에 정지 자세를 보여주어 반복해도 부산스럽지 않게 한다. */
+export const TOKEN_EMOTION_REPEAT_GAP_MS = 2000;
 
 /** 이동량은 한 칸=100 기준. 말 SVG 크기가 달라도 같은 칸 비율로 움직인다. */
 export function tokenEmotionPlan(mood: Mood, tileToAvatar = 1, speed = 1): { frames: Keyframe[]; options: KeyframeAnimationOptions } {
@@ -33,43 +35,41 @@ export interface TokenEmotionView {
   speed: number;
 }
 
-/** 말 이동과 독립적으로, 보일 때 한 번만 재생하는 UI 연출. 저장 상태에 포함하지 않는다. */
+/** 보이는 보드에서만 반복하는 UI 연출. 이동·금융 처리와 저장 상태에서 독립적이다. */
 export class TokenEmotionPlayer {
-  private pending: string | null = null;
   private view: TokenEmotionView | null = null;
   private animation: Animation | null = null;
+  private repeatTimer: ReturnType<typeof setTimeout> | null = null;
+  private suspended = true;
   private listening = false;
   private readonly images = new Map<string, 'loading' | 'ready' | 'failed'>();
   private readonly retry = () => this.tryPlay();
+  private readonly resize = () => { this.stopCycle(); this.tryPlay(); };
 
-  queue(key: string): void { this.reset(); this.pending = key; }
-  reset(): void { this.suspend(); this.pending = null; this.view = null; }
-  /** 안내창이나 숨겨진 탭에서는 중단. 아직 재생하지 않았다면 다음 보드 표시까지 보류한다. */
+  reset(): void { this.suspend(); this.view = null; }
+  /** 안내창·이동·숨겨진 탭에서는 예약까지 취소. 보드 복귀 후 update에서 다시 시작한다. */
   suspend(): void {
-    this.animation?.cancel(); this.animation = null;
+    this.suspended = true;
+    this.stopCycle();
     if (!this.listening) return;
     window.removeEventListener('scroll', this.retry, true);
-    window.removeEventListener('resize', this.retry);
+    window.removeEventListener('resize', this.resize);
     window.visualViewport?.removeEventListener('scroll', this.retry);
-    window.visualViewport?.removeEventListener('resize', this.retry);
+    window.visualViewport?.removeEventListener('resize', this.resize);
     this.listening = false;
   }
 
   update(next: TokenEmotionView): void {
     const previous = this.view;
+    if (previous && (previous.key !== next.key || previous.character !== next.character || previous.actor !== next.actor || previous.mood !== next.mood || previous.speed !== next.speed)) this.suspend();
     this.view = next;
-    if (this.pending && this.pending !== next.key) this.pending = null;
-    if (previous && (previous.key !== next.key || previous.character !== next.character)) {
-      this.suspend(); this.pending = null;
-    } else if (previous && (previous.actor !== next.actor || previous.mood !== next.mood)) this.suspend();
-    if (next.disabled || !next.actor || !next.token || !next.imageSrc) { this.suspend(); this.pending = null; return; }
-    if (next.blocked || document.hidden) { this.suspend(); return; }
-    if (!this.pending) return;
+    if (next.disabled || next.blocked || document.hidden || !next.actor || !next.token || !next.imageSrc) { this.suspend(); return; }
+    this.suspended = false;
     if (!this.listening) {
       window.addEventListener('scroll', this.retry, { capture: true, passive: true });
-      window.addEventListener('resize', this.retry, { passive: true });
+      window.addEventListener('resize', this.resize, { passive: true });
       window.visualViewport?.addEventListener('scroll', this.retry, { passive: true });
-      window.visualViewport?.addEventListener('resize', this.retry, { passive: true });
+      window.visualViewport?.addEventListener('resize', this.resize, { passive: true });
       this.listening = true;
     }
     this.prepareImage(next.imageSrc);
@@ -83,7 +83,7 @@ export class TokenEmotionPlayer {
     image.onload = () => { this.images.set(src, 'ready'); this.tryPlay(); };
     image.onerror = () => {
       this.images.set(src, 'failed');
-      if (this.view?.imageSrc === src) { this.suspend(); this.pending = null; }
+      if (this.view?.imageSrc === src) this.suspend();
     };
     image.src = src;
     if (image.complete && image.naturalWidth > 0) this.images.set(src, 'ready');
@@ -91,10 +91,11 @@ export class TokenEmotionPlayer {
 
   private tryPlay(): void {
     const view = this.view;
-    if (!view || this.pending !== view.key || view.blocked || view.disabled || document.hidden) return;
+    if (!view || this.suspended) return;
+    if (view.blocked || view.disabled || document.hidden) { this.suspend(); return; }
     const actor = view.actor, token = view.token;
     if (!actor?.isConnected || !token?.isConnected) { this.reset(); return; }
-    if (this.images.get(view.imageSrc) === 'failed') { this.suspend(); this.pending = null; return; }
+    if (this.images.get(view.imageSrc) === 'failed') { this.suspend(); return; }
     if (this.images.get(view.imageSrc) !== 'ready') return;
     const rect = token.getBoundingClientRect();
     const viewport = window.visualViewport;
@@ -104,17 +105,28 @@ export class TokenEmotionPlayer {
     const footer = view.footer?.getBoundingClientRect();
     if (footer && footer.height > 0 && footer.top < bottom && footer.bottom > top) bottom = Math.min(bottom, footer.top);
     const visibleArea = Math.max(0, Math.min(rect.right, right) - Math.max(rect.left, left)) * Math.max(0, Math.min(rect.bottom, bottom) - Math.max(rect.top, top));
-    if (rect.width <= 0 || rect.height <= 0 || visibleArea < rect.width * rect.height * .5) return;
+    if (rect.width <= 0 || rect.height <= 0 || visibleArea < rect.width * rect.height * .5) { this.stopCycle(); return; }
+    // 스크롤·재렌더는 현재 재생이나 다음 재생 예약을 중복 생성하지 않는다.
+    if (this.animation || this.repeatTimer !== null) return;
     const avatarWidth = actor.ownerSVGElement?.getBoundingClientRect().width ?? 0;
     const tileWidth = (view.board?.getBoundingClientRect().width ?? 0) / 7;
     const plan = tokenEmotionPlan(view.mood, avatarWidth > 0 && tileWidth > 0 ? tileWidth / avatarWidth : 1, view.speed);
-    // 다시 그리거나 중단된 뒤에도 반복하지 않는다. 이동·금융 처리를 기다리게 하지 않는다.
-    this.pending = null; this.suspend();
     if (typeof actor.animate !== 'function') return;
     try {
       const animation = actor.animate(plan.frames, plan.options);
       this.animation = animation;
-      void animation.finished.then(() => { if (this.animation === animation) this.animation = null; }, () => { if (this.animation === animation) this.animation = null; });
+      void animation.finished.then(() => {
+        if (this.animation !== animation) return;
+        this.animation = null;
+        this.repeatTimer = setTimeout(() => { this.repeatTimer = null; this.tryPlay(); }, TOKEN_EMOTION_REPEAT_GAP_MS);
+      }, () => { if (this.animation === animation) this.animation = null; });
     } catch { /* WAAPI 미지원 시 현재의 정지 표정을 유지한다. */ }
+  }
+
+  private stopCycle(): void {
+    if (this.repeatTimer !== null) clearTimeout(this.repeatTimer);
+    this.repeatTimer = null;
+    const animation = this.animation; this.animation = null;
+    animation?.cancel();
   }
 }
