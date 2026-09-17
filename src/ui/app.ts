@@ -57,7 +57,7 @@ import type { AchievementId, ActionKind, DefaultOptionId, GameState, LifeChoice,
 import { renderDiceOutcome, DICE_LAND_HOLD_MS, DICE_ROLL_DURATION_MS, canRevealNextTurn, dicePairForTurn, renderDiceMarkup, shouldSkipDiceAnimation } from './dice';
 import { TOKEN_STEP_MS, boardViewFor, movePath, renderBoardMarkup } from './board';
 import { hopPlan, renderTokenLayer, slideKeyframes } from './token3d';
-import { TokenEmotionPlayer } from './token-emotion';
+import { ARRIVAL_EMOTION_HOLD_MS, TokenEmotionPlayer } from './token-emotion';
 import { buyNeedsContribution, renderHowToModal, renderSettingsHowToButton, shouldShowLearningTip } from './howto';
 import { renderTileBriefing } from './tile-briefing';
 import { renderNewsFlash } from './news-flash';
@@ -68,7 +68,7 @@ import { renderGhostVerdict } from './ghost';
 import { percent, renderProductReturns, renderMarketCard, renderMarketTimeline, renderSettingsEntry, renderTurnTrack, signedPercent } from './market-view';
 import { loadSave, saveData } from './ui-state';
 import { AUTO_SETTLE_MS, SETTLE_CTA_NEXT, canAutoSettle, renderSettlementModal } from './settlement';
-import { avatarMood, renderAvatar, showAvatarFallbacks, AVATAR_NAMES } from './avatars';
+import { avatarEmotion, avatarMood, MOOD_LABELS, renderAvatar, showAvatarFallbacks, AVATAR_NAMES } from './avatars';
 import { renderCharacterPicker } from './character-picker';
 import { renderSpeech } from './speech';
 import { settlementSound } from './sound';
@@ -148,6 +148,8 @@ export class PensionRoadApp {
   private diceFaces: [number, number] = [1, 1];
   private readonly motion = new AnimationController();
   private readonly tokenEmotion = new TokenEmotionPlayer();
+  private arrivalPending = false;
+  private arrivalTimer: ReturnType<typeof setTimeout> | null = null;
   private exploreIndex = 0;
   private portfolioReturn = false;
   private resumeData: PlayCheckpoint | null = readCheckpoint();
@@ -220,14 +222,15 @@ export class PensionRoadApp {
       if (document.hidden) {
         this.sound.stop();
         this.tokenEmotion.suspend();
+        this.clearArrivalTimer();
         if (this.boardFocusing || this.diceRolling || this.tokenHopping) {
           this.clearDiceTimer(); this.diceRolling = false; this.tokenHopping = false; this.landed = false; this.tokenTrail = [];
           this.modal = null; this.render();
         }
-      } else this.syncTokenEmotion();
+      } else { this.syncTokenEmotion(); this.syncArrivalScene(); }
     });
     window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', () => {
-      if (this.root.isConnected) this.syncTokenEmotion();
+      if (this.root.isConnected) { this.syncTokenEmotion(); this.syncArrivalScene(); }
     });
     this.render();
   }
@@ -472,6 +475,8 @@ export class PensionRoadApp {
       this.requestProgress({ kind: 'roll-next-turn' });
       this.render();
       return;
+    } else if (action === 'continue-arrival' && this.arrivalPending) {
+      this.finishArrivalScene(); return;
     } else if (action === 'open-action' && this.game?.awaitingAction) {
       this.actionView = 'menu';
       this.amountPreset = 'default';
@@ -637,6 +642,7 @@ export class PensionRoadApp {
   }
 
   private requestActionEntry(): void {
+    this.clearArrivalTimer(); this.arrivalPending = false;
     this.requestProgress({ kind: 'enter-action' });
   }
 
@@ -928,6 +934,7 @@ export class PensionRoadApp {
 
   private runAction(action: GameAction): void {
     if (!this.game) return;
+    this.clearArrivalTimer(); this.arrivalPending = false;
     const result = performAction(this.game, action);
     this.game = result.state;
     this.announce(result.message);
@@ -965,7 +972,38 @@ export class PensionRoadApp {
     }
   }
 
-  private clearDiceTimer(): void { this.motion.cancel(); this.tokenEmotion.reset(); this.boardFocusing = false; this.focusBoardAfterDice = false; this.boardRevealing = false; this.revealIndex = undefined; }
+  private clearDiceTimer(): void { this.motion.cancel(); this.tokenEmotion.reset(); this.clearArrivalTimer(); this.arrivalPending = false; this.boardFocusing = false; this.focusBoardAfterDice = false; this.boardRevealing = false; this.revealIndex = undefined; }
+
+  private clearArrivalTimer(): void {
+    if (this.arrivalTimer !== null) clearTimeout(this.arrivalTimer);
+    this.arrivalTimer = null;
+  }
+
+  /** 조회 중인 창을 가리지 않고, 보드로 돌아오면 표정을 볼 시간을 다시 확보한다. */
+  private syncArrivalScene(): void {
+    if (!this.arrivalPending || !this.root.isConnected || this.screen !== 'game' || document.hidden || this.modal || this.pendingPrompt) {
+      this.clearArrivalTimer(); return;
+    }
+    const instant = !this.save.settings.characters || shouldSkipDiceAnimation(this.save.settings.reducedMotion, window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    if (instant) this.clearArrivalTimer();
+    if (this.arrivalTimer !== null) return;
+    this.arrivalTimer = setTimeout(() => {
+      this.arrivalTimer = null;
+      if (this.root.isConnected && this.screen === 'game' && !document.hidden && !this.modal && !this.pendingPrompt) this.finishArrivalScene();
+    }, instant ? 0 : ARRIVAL_EMOTION_HOLD_MS);
+  }
+
+  private openArrivalScene(): void {
+    if (!this.game) return;
+    // 충격 속보·기존 퀴즈·생활사건·위험 안내 순서는 그대로 유지한다.
+    if (this.game.lastMarket.shock) this.modal = 'news'; else this.afterMarketScene();
+  }
+
+  private finishArrivalScene(): void {
+    if (!this.arrivalPending) return;
+    this.clearArrivalTimer(); this.arrivalPending = false;
+    this.openArrivalScene(); this.render();
+  }
 
   private async beginDiceRoll(): Promise<void> {
     if (!this.game || this.boardFocusing || this.diceRolling || this.tokenHopping || !canRevealNextTurn(this.game)) return;
@@ -1040,8 +1078,8 @@ export class PensionRoadApp {
     this.tokenTrail = [];
     this.game = next.state; this.tokenHopping = false; this.landed = false;
     this.boardRevealing = false; this.revealIndex = undefined;
-    // 일반 턴은 대시보드의 시장 요약에서 바로 운용한다. 중요한 충격만 별도 속보를 연다.
-    if (this.game.lastMarket.shock) this.modal = 'news'; else this.afterMarketScene();
+    this.arrivalPending = !instant && this.save.settings.characters;
+    if (!this.arrivalPending) this.openArrivalScene();
     this.announce(`${steps}칸 이동 · ${next.message}${this.regionNotice ? ` · ${this.regionNotice}` : ""}`); this.persist(true);
     if (instant || this.game.lastMarket.shock) this.sound.play(this.game.lastMarket.shock ? 'shock' : 'arrive');
     this.render();
@@ -1049,7 +1087,7 @@ export class PensionRoadApp {
 
   private checkpoint(): void {
     if (!this.game || this.screen !== 'game' || this.boardFocusing || this.diceRolling || this.tokenHopping) return;
-    const data: PlayCheckpoint = { version: checkpointVersion(this.game), uiProgress: normalizeUiProgress(this.uiProgress, this.game), ...(this.game.defaultTrading?{actionContext:{view:this.actionView==='default'?'default' as const:'menu' as const,draft:this.defaultTradeDraft,portfolioReturn:this.portfolioReturn}}:{}), game: this.game, modal: this.pendingPrompt ? this.pendingPrompt.returnModal : this.modal, lastSummary: this.lastSummary,
+    const data: PlayCheckpoint = { version: checkpointVersion(this.game), ...(this.arrivalPending ? { arrivalPending: true } : {}), uiProgress: normalizeUiProgress(this.uiProgress, this.game), ...(this.game.defaultTrading?{actionContext:{view:this.actionView==='default'?'default' as const:'menu' as const,draft:this.defaultTradeDraft,portfolioReturn:this.portfolioReturn}}:{}), game: this.game, modal: this.pendingPrompt ? this.pendingPrompt.returnModal : this.modal, lastSummary: this.lastSummary,
       quizCardId: this.quizCardId, quizPicked: this.quizPicked, finalQuizQueue: this.finalQuizQueue,
       finalQuizTotal: this.finalQuizTotal, finishing: this.finishing, defaultOptionAsk: this.defaultOptionAsk };
     this.resumeData = data; this.checkpointFailed = !writeCheckpoint(data);
@@ -1063,6 +1101,7 @@ export class PensionRoadApp {
     this.scenarioId=data.game.campaign?.scenario ?? 'classic'; this.missionId=data.game.campaign?.mission ?? 'pension';
     this.game = normalizeMissionMilestones(data.game); this.save.avatarId = data.game.avatarId; this.profileId = data.game.profileId; this.goalMonthly = data.game.goalMonthly;
     this.screen = 'game'; this.modal = data.modal as Modal;
+    this.arrivalPending = data.arrivalPending ?? false;
     this.lastSummary = data.lastSummary; this.quizCardId = data.quizCardId; this.quizPicked = data.quizPicked;
     this.finalQuizQueue = data.finalQuizQueue; this.finalQuizTotal = data.finalQuizTotal;
     this.finishing = data.finishing; this.defaultOptionAsk = data.defaultOptionAsk;
@@ -1298,6 +1337,7 @@ export class PensionRoadApp {
     runNumberAnimations(this.root, instant, scaleMs(NUMBER_TWEEN_MS, this.save.settings.speed));
     if (!this.tokenHopping) this.tokenShown = this.game?.position ?? null;
     this.syncTokenEmotion();
+    this.syncArrivalScene();
     // <details>의 toggle은 버블링하지 않아 여기서 붙인다. 펼침 상태를 기억하고, 펼치면 자동 진행을 멈춘다.
     const settleDetails = this.root.querySelector<HTMLDetailsElement>('details.settle-more');
     if (settleDetails) settleDetails.ontoggle = (event) => {
@@ -1317,7 +1357,7 @@ export class PensionRoadApp {
     const character = art?.getAttribute('data-character-image') ?? '';
     this.tokenEmotion.update({
       key: `${this.game.seed}:${this.game.turn}`,
-      mood: avatarMood(this.game, calculateScore(this.game).goalMet), character, actor,
+      mood: avatarMood(this.game), character, actor,
       token: this.root.querySelector<HTMLElement>('.token3d'),
       board: this.root.querySelector<HTMLElement>('.board-stage'),
       footer: this.root.querySelector<HTMLElement>('.game-actions'),
@@ -1382,7 +1422,7 @@ export class PensionRoadApp {
   private renderBoard(state: GameState, waiting: boolean): string {
     const view = boardViewFor(state, { tokenHopping: this.tokenHopping, tokenFocus: this.tokenFocus, landed: this.landed });
     const characters = this.save.settings.characters;
-    const mood = avatarMood(state, calculateScore(state).goalMet);
+    const mood = avatarMood(state);
     return `<div class="board-stage" tabindex="-1" aria-label="게임판 · 말의 이동과 도착 칸">
       ${renderBoardMarkup(state, waiting, { ...view, revealIndex: this.revealIndex, trail: this.tokenTrail, characters, mood, tokenInSvg: false })}
       ${renderTokenLayer(state, { index: view.focusIndex ?? state.position, characters, mood })}
@@ -1429,6 +1469,10 @@ export class PensionRoadApp {
     if (this.tokenHopping) {
       return `<button class="dice-button" disabled><span>↗</span>이동 중</button>`;
     }
+    if (this.arrivalPending) {
+      const label = state.lastMarket.shock ? '시장 소식 확인' : state.currentEventId ? '생활 사건 확인' : '이번 턴 운용하기';
+      return `<button class="dice-button" data-action="continue-arrival"><span>↗</span>${label}</button>`;
+    }
     if (state.status === 'finished') {
       // 창을 잃어도 막히지 않게: 누르면 마무리(퀴즈·수령 방식)를 이어 간다.
       return `<button class="dice-button ready" data-action="resume-finish"><span>★</span>마무리 · 수령 방식 정하기</button>`;
@@ -1457,6 +1501,8 @@ export class PensionRoadApp {
     const pending = state.pendingOrders.length;
     const latestCard = getLearningCard(state.unlockedCards.at(-1) ?? '', state);
     const waitingForDice = canRevealNextTurn(state) || this.boardFocusing || this.diceRolling || this.tokenHopping;
+    const emotion = avatarEmotion(state);
+    const showEmotion = state.turn > 0 && this.save.settings.characters && !this.boardFocusing && !this.diceRolling && !this.tokenHopping;
     const profile = investorProfiles.find((item) => item.id === state.profileId);
     const learningTip = shouldShowLearningTip(state, this.tipDismissed, waitingForDice) && latestCard
       ? `<p class="card-tip"><strong>${latestCard.title}</strong>${latestCard.key}<button class="text-button" data-action="dismiss-tip">닫기</button></p>`
@@ -1479,6 +1525,7 @@ export class PensionRoadApp {
           ${this.renderBoard(state, waitingForDice)}
           ${state.turn > 0 && !this.boardFocusing && !this.diceRolling && !this.tokenHopping ? renderDiceOutcome(dicePairForTurn(state.seed,state.turn-1)) : ''}
           <div class="board-location">${this.renderBoardLocation(state)}</div>${renderDiscoveryProgress(state)}
+          ${showEmotion ? `<p class="board-emotion mood-${emotion.mood}" data-emotion="${emotion.mood}"><strong>${MOOD_LABELS[emotion.mood]}</strong><span>${emotion.reason}</span></p>` : ''}
           <p class="board-step">${this.boardFocusing?'게임판을 보여드릴게요':this.diceRolling||this.tokenHopping?'주사위와 이동을 확인하세요':state.currentEventId?'지금은 생활사건 해결 단계':state.awaitingAction?`시장 반영 완료 · 운용 행동 ${state.actionsLeft}회 남음`:state.status==='finished'?'12턴 완료 · 최종 정산과 수령 방식 확인':'다음 순서 · 주사위 굴리기'}</p>
           ${renderBoardHud(state)}${renderTurnTrack(state, waitingForDice)}
         </div>
@@ -1488,7 +1535,7 @@ export class PensionRoadApp {
           ${learningTip}
           ${!waitingForDice && state.lastMarket.shock ? '<p class="shock-banner">충격 턴 · 신호를 보고 비중을 조정하세요</p>' : ''}
           ${renderMarketCard(state, waitingForDice)}
-          <article class="asset-card"><div class="card-label-row"><div class="card-label">나의 은퇴설계</div>${this.save.settings.characters ? renderAvatar(state.avatarId, avatarMood(state, mission.passed), 44) : ''}</div>
+          <article class="asset-card"><div class="card-label-row"><div class="card-label">나의 은퇴설계</div>${this.save.settings.characters ? renderAvatar(state.avatarId, emotion.mood, 44) : ''}</div>
             <div class="big-number"><span>IRP 평가액</span><strong>${animatedNumber('shortWon', shown?.irp ?? null, score.irpValue)}</strong></div>
             <div class="metric-row"><span><abbr title="${mission.basis}">${mission.metric}</abbr><strong>${mission.valueText}</strong></span><span>IRP 잔액 증가율<strong class="${score.returnRate < 0 ? 'neg' : ''}">${animatedNumber('signedPercent', shown?.returnRate ?? null, score.returnRate)}</strong></span></div>
             ${renderGoalMeter(state, score, this.save.settings.ghost ? ghostMonthlyNow(state) : null)}

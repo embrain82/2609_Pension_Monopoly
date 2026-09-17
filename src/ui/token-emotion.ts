@@ -4,6 +4,8 @@ import type { Mood } from './avatars';
 export const TOKEN_EMOTION_LEVEL = { calm: 1, tense: 3, happy: 3 } as const;
 /** 연출 사이에 정지 자세를 보여주어 반복해도 부산스럽지 않게 한다. */
 export const TOKEN_EMOTION_REPEAT_GAP_MS = 2000;
+/** 도착 후 표정을 볼 시간. 2배속에서도 안내창에 가려지지 않도록 유지한다. */
+export const ARRIVAL_EMOTION_HOLD_MS = 1200;
 
 /** 이동량은 한 칸=100 기준. 말 SVG 크기가 달라도 같은 칸 비율로 움직인다. */
 export function tokenEmotionPlan(mood: Mood, tileToAvatar = 1, speed = 1): { frames: Keyframe[]; options: KeyframeAnimationOptions } {

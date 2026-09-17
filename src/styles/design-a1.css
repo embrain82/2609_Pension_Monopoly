@@ -144,6 +144,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .road-game .board-guide image { mix-blend-mode:multiply; }
 .road-game .board-location { margin-top:14px; padding:8px 0; font-size:13px; }
 .road-game .board-step { font-size:13px; color:var(--muted); margin:8px 0 16px; }
+.road-game .board-emotion { display:flex; flex-wrap:wrap; justify-content:center; gap:4px 8px; margin:8px 0; padding:8px 12px; border-radius:12px; font-size:13px; line-height:1.5; color:var(--muted); background:#f4f7f5; }
+.road-game .board-emotion.mood-happy { color:#24613b; background:#edf7ed; }
+.road-game .board-emotion.mood-tense { color:#8c4925; background:#fff3e8; }
 .road-game .board-hud { margin:0 0 12px; border-radius:14px; background:#f4f9f5; }
 .road-game .dashboard { width:100%; display:grid; grid-template-columns:1fr 1fr; align-items:start; gap:20px; }
 .road-game .dashboard>* { min-width:0; margin:0; }

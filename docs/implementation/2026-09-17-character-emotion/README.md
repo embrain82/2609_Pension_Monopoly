@@ -4,7 +4,7 @@
 
 ## 적용
 
-- 올리·원이·단지·달리·코리 모두 같은 승인 강도 적용. 기존 평온/긴장/기쁨 이미지와 판정 규칙 유지.
+- 올리·원이·단지·달리·코리 모두 같은 승인 강도 적용. 기존 평온/긴장/기쁨 이미지 유지. 최신 판정은 아래 도착 효과·운용 손익 승인안 참조.
 - 평온: 1.6초의 작은 호흡(가로 1%, 세로 2.5% 확대).
 - 긴장: 0.7초간 칸 너비의 ±4% 좌우 흔들림과 ±2.5° 기울기.
 - 기쁨: 1초간 칸 높이의 12%, 7.2% 두 번 점프, ±5° 기울기와 착지 탄성.
@@ -61,3 +61,9 @@ Preview READY. 운영 승격·머지는 하지 않음. 동작 종료 후 2초 �
 재점검 수정 Preview: https://2609-pension-monopoly-efbdufv8q-nonsleepers-projects.vercel.app/
 
 Vercel READY 및 홈 화면 로딩 확인. `index-DabfWZAx.js` HTTP 200, 로컬 검증 빌드와 SHA-256 일치. 운영 승격·머지는 하지 않았다.
+
+## 최신: 도착 효과·운용 손익 승인안 적용
+
+사용자 승인한 ±1% 손익, 실제 칸 보상, 생활 사건 우선순위, 도착 후 약 1.2초 노출을 적용했다. 상세 내용과 719개 테스트 및 브라우저 검증 기록은 [trigger-implementation.md](trigger-implementation.md), 승인안은 [trigger-proposal.md](trigger-proposal.md)에 있다.
+
+미리보기: https://2609-pension-monopoly-br198m872-nonsleepers-projects.vercel.app/

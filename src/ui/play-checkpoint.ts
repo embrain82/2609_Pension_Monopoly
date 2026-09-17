@@ -20,6 +20,8 @@ export const CHECKPOINT_KEY = 'pension-road-play-c1';
 export interface PlayCheckpoint {
   version: 'c2' | 'c3' | 'c4' | 'c5';
   uiProgress?: UiProgress;
+  /** 시장 적용은 끝났으며, 도착 표정 뒤 안내창으로 넘어갈 UI 단계. */
+  arrivalPending?: boolean;
   actionContext?: { view: 'menu' | 'default'; draft: DefaultTradeDraft | null; portfolioReturn: boolean };
   game: GameState;
   modal: string | null;
@@ -74,6 +76,8 @@ export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
     delete (data as PlayCheckpoint & { routePending?: boolean }).routePending;
     if (!shape(createGame('validate', 'balanced', 500000, { ghost: false }), data.game)) return null;
     const g = data.game;
+    if (data.arrivalPending !== undefined && typeof data.arrivalPending !== 'boolean') return null;
+    if (data.arrivalPending && (g.turn < 1 || g.status !== 'playing' || (!g.awaitingAction && !g.currentEventId))) return null;
     if (!validBoardVisibility(g.boardVisibility)) return null;
     if (!validMarketEffects(g.ledger.marketEffects) || !validMarketEffects(data.lastSummary?.marketEffects)) return null;
     if(!validLearningFlow(g) || !validContributionPacing(g) || (g.campaign && !validCampaign(g.campaign,0,g.contributionPacing,g.route.version,g.rulesetVersion,g.boardVisibility,g.learningContentVersion))) return null;
