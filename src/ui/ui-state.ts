@@ -54,7 +54,7 @@ function migrateAchievements(value: unknown): AchievementId[] {
 function migrateReturnRule(value: unknown): SaveData['bestReturnRule'] {
   if (!value || typeof value !== 'object') return undefined;
   const rule = value as { ruleset?: unknown; perTurnLimit?: unknown };
-  if (!['2026-09-09-p0', '2026-09-10-b', '2026-09-10-c', '2026-09-10-d', '2026-09-10-e', '2026-09-15-f'].includes(String(rule.ruleset))) return undefined;
+  if (!['2026-09-09-p0', '2026-09-10-b', '2026-09-10-c', '2026-09-10-d', '2026-09-10-e', '2026-09-15-f','2026-09-16-g'].includes(String(rule.ruleset))) return undefined;
   if (rule.perTurnLimit !== null && (!finiteNumber(rule.perTurnLimit) || rule.perTurnLimit <= 0 || rule.perTurnLimit > 18_000_000)) return undefined;
   return { ruleset: rule.ruleset as NonNullable<SaveData['bestReturnRule']>['ruleset'], perTurnLimit: rule.perTurnLimit };
 }

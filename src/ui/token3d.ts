@@ -1,6 +1,7 @@
 import type { GameState } from '../types';
 import { AVATAR_NAMES, avatarBody, type Mood } from './avatars';
 import { TOKEN_STEP_MS, boardPosition, tokenTileIndex } from './board';
+import { TOKEN_EMOTION_LEVEL } from './token-emotion';
 
 /** 보드 SVG viewBox 한 변. 칸 중심을 이 값으로 나눠 퍼센트 좌표를 만든다. */
 export const BOARD_UNITS = 700;
@@ -106,7 +107,7 @@ export function tokenClasses(view: Pick<TokenView, 'characters'>): string {
 export function renderTokenLayer(state: GameState, view: TokenView): string {
   const index = tokenTileIndex(view.index);
   const face = view.characters
-    ? `<svg viewBox="0 0 100 100" aria-hidden="true">${avatarBody(state.avatarId, view.mood)}</svg>`
+    ? `<svg viewBox="0 0 100 100" aria-hidden="true"><g class="token-emotion" data-mood="${view.mood}" data-level="${TOKEN_EMOTION_LEVEL[view.mood]}">${avatarBody(state.avatarId, view.mood)}</g></svg>`
     : '<b>나</b>';
   return `<div class="token-layer" aria-hidden="true">
       <div class="token-pos" data-index="${index}" data-character-name="${view.characters ? AVATAR_NAMES[state.avatarId] : ''}" style="transform:${tokenTranslate(index)}">

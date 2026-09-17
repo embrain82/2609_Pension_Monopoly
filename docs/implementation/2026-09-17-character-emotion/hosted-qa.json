@@ -1,0 +1,25 @@
+{
+  "log": [
+    {
+      "mood": "calm",
+      "level": "1",
+      "opts": {
+        "duration": 1600,
+        "easing": "ease-in-out",
+        "iterations": 1
+      }
+    },
+    {
+      "mood": "calm",
+      "level": "1",
+      "opts": {
+        "duration": 1600,
+        "easing": "ease-in-out",
+        "iterations": 1
+      }
+    }
+  ],
+  "turn": 1,
+  "token": "9",
+  "nestedFilter": "none"
+}

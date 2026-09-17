@@ -1,3 +1,5 @@
+import { MATURITY_RULESET } from './maturity-cash';
+import { initializeDefaultLifecycle, matureDeposits, advanceDefaultLifecycle, resetMaturityDesignation, presentMaturityNotices, keepMaturityCash } from './default-lifecycle';
 import { FINANCE_RULESET, newFinanceRules } from './finance-rules';
 import { acceptedContribution, contributionConstraint, actionTiming, blockReason } from './action-constraints';
 import { previewContribution } from './contribution-engine';
@@ -8,7 +10,7 @@ import { scenarioConfig, withGlidePath, inflatedEvent, type ScenarioId, type Mis
 import { newRouteProgress, stampVisit } from './route-engine';
 import { initialHoldings } from './profile-engine';
 import { addAccountFlow, accountPayout } from './account-engine';
-import { balanceConfig, boardTiles, defaultOptions, learningCards, lifeEvents, marketScenario, marketShocks, policyRules, investorProfiles } from '../data/content';
+import { balanceConfig, boardTiles, defaultOptions, learningCards, learningCardsFor, lifeEvents, marketScenario, marketShocks, policyRules, investorProfiles } from '../data/content';
 import type { ActionKind, ActionResult, DefaultOptionId, GameState, GhostTrack, LifeChoice, LifeEvent, PayoutChoice, PlayRecord, ProfileId, ProductId } from '../types';
 import { ALERT_CARD_ID, applyMarketStep, emptyMarketStep, generateMarketPath, marketPathOf, marketHoldingEffects } from './market-engine';
 import { pickTileBriefing } from './tile-briefing';
@@ -35,11 +37,14 @@ export interface GameAction {
   optionId?: DefaultOptionId;
   fraction?: .5 | 1;
   commandId?: string;
+  cycleId?: string;
 }
 
 export type AmountPreset = 'default' | 'half' | 'max';
 
 export interface GameOptions {
+  defaultLifecycle?: boolean;
+  boardVisibility?: GameState['boardVisibility'];
   /** f1: a buffered starting allocation and 0.1% per-turn waiting cash interest. */
   updatedFinance?: boolean;
   automaticStamps?: boolean;
@@ -101,6 +106,7 @@ export function ghostTrackFor(seed: string, profileId: ProfileId, goalMonthly: n
 }
 
 export function createGame(seed: string, profileId: ProfileId = 'balanced', goalMonthly = balanceConfig.defaultGoal, options: GameOptions = {}): GameState {
+  if(options.defaultLifecycle) options={...options,updatedFinance:true};
   if(options.updatedFinance) options={...options,defaultTrading:true};
   if(options.weekly) { profileId='balanced'; goalMonthly=500000; options={...options,scenario:'classic',mission:'pension'}; }
   const scheduled = scheduleLifeEvents(hashSeed(seed));
@@ -109,11 +115,13 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
   const tileEffectsEnabled = options.tileEffects !== false;
   const goal = clampGoalMonthly(goalMonthly);
   const state: GameState = {
-    ...(options.updatedFinance ? { financeRules: newFinanceRules(profileId) } : {}),
+    ...(options.boardVisibility ? { boardVisibility: options.boardVisibility } : {}),
+    ...(options.updatedFinance ? { financeRules: newFinanceRules(profileId, options.defaultLifecycle) } : {}),
+    ...(options.defaultLifecycle ? { learningContentVersion: '2026-09-16-situations' as const } : {}),
     ...(options.settlementLearning?{learningFlow:{version:'settlement-v1' as const,queue:[]}}:{}),
     ...(options.contributionPacing ? { contributionPacing: { version: 'v1' as const, perTurnLimit: balanceConfig.contributionPerTurnLimit } } : {}),
     route: newRouteProgress(options.automaticStamps),
-    accountType: 'IRP', rulesetVersion: options.updatedFinance ? FINANCE_RULESET : options.defaultTrading ? '2026-09-10-e' : options.scenario ? '2026-09-10-d' : '2026-09-10-c', avatarId: options.avatarId ?? 'balanced',
+    accountType: 'IRP', rulesetVersion: options.defaultLifecycle ? MATURITY_RULESET : options.updatedFinance ? FINANCE_RULESET : options.defaultTrading ? '2026-09-10-e' : options.scenario ? '2026-09-10-d' : '2026-09-10-c', avatarId: options.avatarId ?? 'balanced',
     accountBasis: { retirement: 90_000_000, retirementTax: 1_800_000, deducted: 9_000_000, nonDeducted: 9_000_000 },
     cashFlows: [], livingDebt: 0, orderSequence: 0, rebalancePlan: null,
     prices: { deposit: 1000, shortBond: 1000, longBond: 1000, balanced: 1000, equityEtf: 1000, tdf: 1000 },
@@ -184,6 +192,7 @@ export function createGame(seed: string, profileId: ProfileId = 'balanced', goal
     state.defaultTrading={version:'e1',groups:[]};
     state.holdings=initializePositions(state).holdings;
   }
+  if(options.defaultLifecycle) Object.assign(state, initializeDefaultLifecycle(state));
   // 시작 시점에 이미 넘어선 이정표(기본 목표면 90%까지)는 배너 없이 기록만 한다.
   return { ...state, milestonesHit: milestonesReached(state) };
 }
@@ -221,9 +230,10 @@ export function setDefaultOption(state: GameState, wanted: DefaultOptionId | nul
   const next = wanted ? normalizeDefaultOption(state.profileId, wanted, !!state.defaultTrading) : null;
   if (next === state.defaultOption) return state;
   const name = next ? defaultOptions.find((option) => option.id === next)?.name ?? next : null;
-  const message = state.defaultTrading ? (next ? `사전지정 ${name} 저장 · 자산은 바뀌지 않습니다. 디폴트옵션 메뉴에서 직접 매수하세요.` : '사전지정 해제 · 보유한 디폴트옵션 자산은 유지됩니다.') : next ? `디폴트옵션 ${name} 지정 · 「그대로」를 고르면 대기자금을 이 옵션으로 운용합니다.` : '디폴트옵션 해제 · 대기자금은 직접 매수해야 합니다.';
+  const message = state.defaultLifecycle ? (next ? `사전지정 ${name} 저장 · 즉시 매수하지 않습니다. 만기 대상 자금은 통지·대기를 거쳐 자동운용합니다.` : '사전지정 해제 · 보유 옵션은 유지하고 만기 자동운용은 대기합니다.') : state.defaultTrading ? (next ? `사전지정 ${name} 저장 · 자산은 바뀌지 않습니다. 디폴트옵션 메뉴에서 직접 매수하세요.` : '사전지정 해제 · 보유한 디폴트옵션 자산은 유지됩니다.') : next ? `디폴트옵션 ${name} 지정 · 「그대로」를 고르면 대기자금을 이 옵션으로 운용합니다.` : '디폴트옵션 해제 · 대기자금은 직접 매수해야 합니다.';
   const stamped: GameState = { ...state, defaultOption: next, logs: [...state.logs, { turn: state.turn, type: 'default-option', message }] };
-  return next ? unlock(stamped, 'default-option') : stamped;
+  const reset = resetMaturityDesignation(stamped);
+  return next ? unlock(reset, 'default-option') : reset;
 }
 
 /**
@@ -287,7 +297,9 @@ export function startTurn(state: GameState, steps = 0): ActionResult {
     turnMilestones: []
   }, market);
   const marketEffects = marketHoldingEffects(state, next);
+  next = matureDeposits(next);
   next = settleOrders(next);
+  next = advanceDefaultLifecycle(next);
   next = beginPerformance(state, next);
   next = {
     ...next,
@@ -383,6 +395,7 @@ export function performAction(state: GameState, action: GameAction): ActionResul
     case 'default-opt-in':
     case 'default-opt-out':
       result=executeDefaultTrade(opened,{tab:action.kind==='default-opt-in'?'in':'out',optionId:action.optionId??opened.defaultOption??'principal',amount:action.amount??0,fraction:action.fraction??1},action.commandId);break;
+    case 'maturity-cash': result = keepMaturityCash(opened, action.cycleId); break;
     case 'hold': {
       // 운용지시가 없으면 디폴트옵션이 대기자금을 운용한다(제도의 사전지정운용). 없으면 예전처럼 유지.
       const auto = opened.defaultTrading ? {state:opened,bought:[],message:''} : applyDefaultOption(opened);
@@ -491,7 +504,7 @@ export interface AutoplayOptions extends GameOptions {
 }
 
 function autoAnswer(state: GameState, cardId: string, mode: 'correct' | 'wrong'): GameState {
-  const card = learningCards.find((item) => item.id === cardId);
+  const card = learningCardsFor(state).find((item) => item.id === cardId);
   if (!card) return state;
   const option = mode === 'correct' ? card.quiz.answer : (card.quiz.answer + 1) % card.quiz.options.length;
   return answerQuiz(state, cardId, option).state;
@@ -574,7 +587,7 @@ export function autoplay(seed: string, strategy: AutoStrategy = 'balanced', prof
   };
   const quizMode = options.quiz ?? 'none';
   while (state.status === 'playing') {
-    state = startTurn(state, diceStepsForTurn(state.seed, state.turn)).state;
+    state = presentMaturityNotices(startTurn(state, diceStepsForTurn(state.seed, state.turn)).state);
     if (quizMode !== 'none' && state.pendingQuizCardId) state = autoAnswer(state, state.pendingQuizCardId, quizMode);
     if (state.currentEventId) {
       const event = inflatedEvent(state, lifeEvents.find((item) => item.id === state.currentEventId)!);

@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-09-16T12:25:05.214841+00:00",
+  "scope": "planning-document-only",
+  "deployment": "https://2609-pension-monopoly-r8ssllsyv-nonsleepers-projects.vercel.app",
+  "deploymentId": "dpl_FH5Z56Uk4BY8FWCFmFJJopgcKW34",
+  "browser": "Ego Chromium viewport emulation; physical iPhone not tested",
+  "local": {
+    "widths": [
+      390,
+      1280
+    ],
+    "horizontalOverflow": false,
+    "tagHeadingGapPx": 16,
+    "exampleQuestions": 8,
+    "oneCorrectPerQuestion": true,
+    "maturityExample": {
+      "originalEligible": 20000000,
+      "manualUse": 5000000,
+      "automaticOrder": 15000000,
+      "unrelatedCashKept": 10000000
+    },
+    "embeddedImages": 3
+  },
+  "deployed": {
+    "viewport": 390,
+    "scrollWidth": 390,
+    "inlineImagesDecoded": 3,
+    "updatedQuizCorrect": true,
+    "hostInjectedAsset": "https://vercel.live/_next-live/feedback/feedback.js"
+  },
+  "htmlExternalAssets": 0,
+  "gameSourceModified": false
+}

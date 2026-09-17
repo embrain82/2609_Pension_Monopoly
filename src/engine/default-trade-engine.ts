@@ -1,5 +1,5 @@
 import { blockReason, defaultInConstraint, defaultOutConstraint } from './action-constraints';
-import { defaultPortfolio } from '../data/default-portfolios';
+import { allowedPortfolios, defaultPortfolio } from '../data/default-portfolios';
 import { products } from '../data/content';
 import type { ActionResult, DefaultOptionId, DefaultScope, GameState, ProductId } from '../types';
 import { buyProduct, fundTiming, portfolioValue, sellProduct } from './portfolio-engine';
@@ -19,6 +19,11 @@ export function nextDefaultCommand(state: GameState): string {
 function failed(state: GameState, message: string): DefaultTradePlan {return {ok:false,message,state,amount:0,costs:0,legs:[]};}
 export function previewDefaultOptIn(state: GameState, optionId: DefaultOptionId, amount: number): DefaultTradePlan {
   const error=blockReason(defaultInConstraint(state,optionId,amount));if(error) return failed(state,error);
+  return planDefaultPurchase(state, optionId, amount);
+}
+
+/** Shared atomic order plan. Callers validate user timing or automatic eligibility. */
+function planDefaultPurchase(state: GameState, optionId: DefaultOptionId, amount: number, cycleId?: string): DefaultTradePlan {
   const option=defaultPortfolio(optionId);
   const existing=defaultScopes(state);
   const scope: DefaultScope=existing[0]??{mandateId:`mandate-${state.defaultTrading!.groups.length}`,optionId,optionVersion:'e1'};
@@ -26,10 +31,10 @@ export function previewDefaultOptIn(state: GameState, optionId: DefaultOptionId,
   const legs=option.products.map((productId,i)=>{
     const part=i===option.products.length-1?remaining:Math.floor(amount*option.weights[productId]!);
     remaining-=part;return {productId,amount:part};
-  });
+  }).filter(leg => leg.amount > 0);
   let next=state;
   for(const leg of legs) {
-    const result=buyProduct(next,leg.productId,leg.amount,false,scope);
+    const result=buyProduct(next,leg.productId,leg.amount,false,scope,cycleId);
     if(!result.ok) return failed(state,result.message);
     next=result.state;
   }
@@ -67,4 +72,33 @@ export function executeDefaultTrade(state: GameState, draft: DefaultTradeDraft, 
     pendingOrders:plan.state.pendingOrders.map(o=>orderIds.includes(o.id)?{...o,groupId:id}:o),
     defaultTrading:{version:'e1',groups:[...state.defaultTrading!.groups,{id,commandId,kind:draft.tab,scope:plan.scope,turn:state.turn,amount:plan.amount,orderIds}]},
     record:{...plan.state.record,defaultOptionRuns:plan.state.record.defaultOptionRuns+(draft.tab==='in'?1:0)}}};
+}
+
+/** Automatic execution never consumes a player's action or grants a manual-trade reward. */
+export function automaticDefaultPurchase(state: GameState, cycleId: string): ActionResult {
+  const cycle = state.defaultLifecycle?.cycles.find(c => c.id === cycleId);
+  const optionId = cycle?.optionId;
+  const amount = Math.floor(cycle?.remaining ?? 0);
+  const fail = (message: string): ActionResult => ({ ok: false, message, state });
+  if (!state.defaultTrading || !cycle || !optionId || optionId !== state.defaultOption || !cycle.presentedTurn ||
+      !cycle.eligibleTurn || state.turn < cycle.eligibleTurn || state.status !== 'playing' || state.turn > 12 ||
+      !['notified','blocked'].includes(cycle.state)) return fail('통지·대기 절차를 확인하고 있습니다.');
+  if (state.rebalancePlan || state.pendingOrders.some(o => !state.defaultTrading!.groups.some(g => g.source === 'automatic' && g.turn === state.turn && g.scope.optionId === optionId && g.orderIds.includes(o.id)))) return fail('기존 주문 결제 후 자동운용을 다시 확인합니다.');
+  if (!allowedPortfolios(state.profileId).some(p => p.id === optionId)) return fail('성향에 맞는 사전지정을 확인하세요.');
+  if (defaultScopes(state).length > 1 || defaultScopes(state).some(s => s.optionId !== optionId)) return fail('다른 옵션 보유 · 운용 선택이 필요합니다.');
+  if (amount < 1 || amount > state.irpCash) return fail('자동운용 가능한 원 단위 잔액이 부족합니다.');
+  const commandId = `auto-${cycleId}`;
+  if (state.defaultTrading.groups.some(g => g.commandId === commandId)) return fail('이미 처리한 자동주문입니다.');
+  const plan = planDefaultPurchase(state, optionId, amount, cycleId);
+  if (!plan.ok || !plan.scope) return fail(plan.message);
+  const id = `default-group-${state.defaultTrading.groups.length}`;
+  const orderIds = plan.state.pendingOrders.filter(o => !state.pendingOrders.some(old => old.id === o.id)).map(o => o.id);
+  const message = `만기자금 자동운용 · ${defaultPortfolio(optionId).name} ${amount.toLocaleString('ko-KR')}원 주문. ${timing(plan.legs,state.turn)} 행동 차감 없음.`;
+  return { ok: true, message, state: { ...plan.state, riskBuyCount: state.riskBuyCount,
+    pendingOrders: plan.state.pendingOrders.map(o => orderIds.includes(o.id) ? { ...o, groupId: id } : o),
+    defaultTrading: { ...state.defaultTrading, groups: [...state.defaultTrading.groups,
+      { id, commandId, kind: 'in', source: 'automatic', cycleId, scope: plan.scope, turn: state.turn, amount, orderIds }] },
+    defaultLifecycle: { ...plan.state.defaultLifecycle!, cycles: plan.state.defaultLifecycle!.cycles.map(c => c.id === cycleId
+      ? { ...c, remaining: 0, state: 'ordered', orderedTurn: state.turn, orderedAmount: amount, commandId, orderIds, blockedReason: undefined } : c) },
+    logs: [...plan.state.logs, { turn: state.turn, type: 'default-auto', message }] } };
 }

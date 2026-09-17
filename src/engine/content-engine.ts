@@ -1,5 +1,5 @@
-import { learningCards, lifeEvents, products } from '../data/content';
-import type { LearningCard, LifeEvent, Product, ProductId } from '../types';
+import { learningCardsFor, lifeEvents, products } from '../data/content';
+import type { GameState, LearningCard, LifeEvent, Product, ProductId } from '../types';
 
 export const getProduct = (id: ProductId): Product => {
   const product = products.find((item) => item.id === id);
@@ -7,8 +7,8 @@ export const getProduct = (id: ProductId): Product => {
   return product;
 };
 
-export const getLearningCard = (id: string): LearningCard | undefined =>
-  learningCards.find((card) => card.id === id);
+export const getLearningCard = (id: string, state?: Pick<GameState,'learningContentVersion'> | null): LearningCard | undefined =>
+  learningCardsFor(state).find((card) => card.id === id);
 
 export const getLifeEvent = (id: string): LifeEvent | undefined =>
   lifeEvents.find((event) => event.id === id);

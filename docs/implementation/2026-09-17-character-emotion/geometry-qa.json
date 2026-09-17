@@ -1,0 +1,502 @@
+[
+  {
+    "width": 320,
+    "data": [
+      {
+        "character": "stable",
+        "mood": "calm",
+        "minGap": 3.4331636558100627,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stable",
+        "mood": "tense",
+        "minGap": 2.8367406450370254,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stable",
+        "mood": "happy",
+        "minGap": 3.51092529296875,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stableGrowth",
+        "mood": "calm",
+        "minGap": 3.4331636558100627,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stableGrowth",
+        "mood": "tense",
+        "minGap": 2.8367406450370254,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stableGrowth",
+        "mood": "happy",
+        "minGap": 3.51092529296875,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "balanced",
+        "mood": "calm",
+        "minGap": 3.4331636558100627,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "balanced",
+        "mood": "tense",
+        "minGap": 2.8367406450370254,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "balanced",
+        "mood": "happy",
+        "minGap": 3.51092529296875,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "growth",
+        "mood": "calm",
+        "minGap": 3.4331636558100627,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "growth",
+        "mood": "tense",
+        "minGap": 2.8367406450370254,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "growth",
+        "mood": "happy",
+        "minGap": 3.51092529296875,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "aggressive",
+        "mood": "calm",
+        "minGap": 3.4331636558100627,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "aggressive",
+        "mood": "tense",
+        "minGap": 2.8367406450370254,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "aggressive",
+        "mood": "happy",
+        "minGap": 3.51092529296875,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "data": [
+      {
+        "character": "stable",
+        "mood": "calm",
+        "minGap": 4.044490385949587,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stable",
+        "mood": "tense",
+        "minGap": 3.3342418937622824,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stable",
+        "mood": "happy",
+        "minGap": 4.137092590332031,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stableGrowth",
+        "mood": "calm",
+        "minGap": 4.044490385949587,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stableGrowth",
+        "mood": "tense",
+        "minGap": 3.3342418937622824,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stableGrowth",
+        "mood": "happy",
+        "minGap": 4.137092590332031,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "balanced",
+        "mood": "calm",
+        "minGap": 4.044490385949587,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "balanced",
+        "mood": "tense",
+        "minGap": 3.3342418937622824,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "balanced",
+        "mood": "happy",
+        "minGap": 4.137092590332031,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "growth",
+        "mood": "calm",
+        "minGap": 4.044490385949587,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "growth",
+        "mood": "tense",
+        "minGap": 3.3342418937622824,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "growth",
+        "mood": "happy",
+        "minGap": 4.137092590332031,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "aggressive",
+        "mood": "calm",
+        "minGap": 4.044490385949587,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "aggressive",
+        "mood": "tense",
+        "minGap": 3.3342418937622824,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "aggressive",
+        "mood": "happy",
+        "minGap": 4.137092590332031,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      }
+    ]
+  },
+  {
+    "width": 768,
+    "data": [
+      {
+        "character": "stable",
+        "mood": "calm",
+        "minGap": 7.9109900264815,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stable",
+        "mood": "tense",
+        "minGap": 6.795387749430347,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stable",
+        "mood": "happy",
+        "minGap": 8.056442260742188,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stableGrowth",
+        "mood": "calm",
+        "minGap": 7.9109900264815,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stableGrowth",
+        "mood": "tense",
+        "minGap": 6.795387749430347,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stableGrowth",
+        "mood": "happy",
+        "minGap": 8.056442260742188,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "balanced",
+        "mood": "calm",
+        "minGap": 7.9109900264815,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "balanced",
+        "mood": "tense",
+        "minGap": 6.795387749430347,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "balanced",
+        "mood": "happy",
+        "minGap": 8.056442260742188,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "growth",
+        "mood": "calm",
+        "minGap": 7.9109900264815,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "growth",
+        "mood": "tense",
+        "minGap": 6.795387749430347,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "growth",
+        "mood": "happy",
+        "minGap": 8.056442260742188,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "aggressive",
+        "mood": "calm",
+        "minGap": 7.9109900264815,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "aggressive",
+        "mood": "tense",
+        "minGap": 6.795387749430347,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "aggressive",
+        "mood": "happy",
+        "minGap": 8.056442260742188,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      }
+    ]
+  },
+  {
+    "width": 1440,
+    "data": [
+      {
+        "character": "stable",
+        "mood": "calm",
+        "minGap": 7.598251176439248,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stable",
+        "mood": "tense",
+        "minGap": 6.501502563800386,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stable",
+        "mood": "happy",
+        "minGap": 7.741245269775391,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stableGrowth",
+        "mood": "calm",
+        "minGap": 7.598251176439248,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stableGrowth",
+        "mood": "tense",
+        "minGap": 6.501502563800386,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "stableGrowth",
+        "mood": "happy",
+        "minGap": 7.741245269775391,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "balanced",
+        "mood": "calm",
+        "minGap": 7.598251176439248,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "balanced",
+        "mood": "tense",
+        "minGap": 6.501502563800386,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "balanced",
+        "mood": "happy",
+        "minGap": 7.741245269775391,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "growth",
+        "mood": "calm",
+        "minGap": 7.598251176439248,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "growth",
+        "mood": "tense",
+        "minGap": 6.501502563800386,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "growth",
+        "mood": "happy",
+        "minGap": 7.741245269775391,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "aggressive",
+        "mood": "calm",
+        "minGap": 7.598251176439248,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "aggressive",
+        "mood": "tense",
+        "minGap": 6.501502563800386,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      },
+      {
+        "character": "aggressive",
+        "mood": "happy",
+        "minGap": 7.741245269775391,
+        "outerOverflow": "visible",
+        "innerOverflow": "hidden",
+        "innerFilter": "none"
+      }
+    ]
+  }
+]

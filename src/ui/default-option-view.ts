@@ -12,6 +12,7 @@ export interface DefaultOptionViewOptions {
   /** 선택 상품명을 포함한 시작 또는 저장 버튼 */
   mode: 'start' | 'settings';
   modern?: boolean;
+  automatic?: boolean;
   /** 시작 화면에서는 상세 설명을 선택 요약 패널에서 보여 준다. */
   compact?: boolean;
   notice?: string;
@@ -57,7 +58,7 @@ export function renderDefaultOptionModal(view: DefaultOptionViewOptions): string
   return `<div class="modal-icon default">⚙</div>
     <p class="eyebrow">${view.mode === 'start' ? '판 시작 · 사전지정운용' : '설정 · 사전지정운용'}</p>
     <h2>디폴트옵션을 정해 두세요</h2>
-    ${view.modern ? '<p class="modal-lead">사전지정은 선호하는 운용방법을 저장합니다. <b>지정만으로 매수되지 않습니다.</b> 운용지시의 <b>디폴트옵션 옵트인/아웃</b>에서 직접 매수·환매하세요. 이 버전은 직접 거래 체험이며 통지·대기 후 자동운용은 실행하지 않습니다. 아래 상품과 위험등급은 교육용 가정입니다.</p>' : `<p class="modal-lead">현재 게임은 지정옵션을 직접 실행하는 <b>옵트인 체험</b>입니다. 운용 메뉴에서 실행을 선택하면 IRP 대기자금이 정한 상품으로 <b>자동 균등 매수</b>됩니다. 실제 디폴트옵션 자동 적용의 사전지정·통지·대기 시간은 이 체험과 다릅니다. 위험한도를 넘는 만큼은 사지 않고 남깁니다.</p>`}
+    ${view.automatic ? '<p class="modal-lead">사전지정은 <b>만기자금을 어떻게 운용할지 미리 정하는 것</b>입니다. 지정만으로 즉시 매수하지 않습니다. 새 판은 예금 만기 → 다음 턴 통지 → 통지가 표시된 다음 턴에 남은 대상액으로 자동주문합니다. 실제 제도는 만기 후 4주 무지시 시 통지, 통지 후 2주 무지시 시 적용합니다. 한 턴은 실제 주 수와 같지 않습니다. 기다리지 않고 직접 매수하려면 운용지시의 디폴트옵션 옵트인/아웃을 이용하세요. 상품·위험등급은 교육용 가정이며 손실이 가능합니다.</p>' : view.modern ? '<p class="modal-lead">사전지정은 선호하는 운용방법을 저장합니다. <b>지정만으로 매수되지 않습니다.</b> 운용지시의 <b>디폴트옵션 옵트인/아웃</b>에서 직접 매수·환매하세요. 이 버전은 직접 거래 체험이며 통지·대기 후 자동운용은 실행하지 않습니다. 아래 상품과 위험등급은 교육용 가정입니다.</p>' : `<p class="modal-lead">현재 게임은 지정옵션을 직접 실행하는 <b>옵트인 체험</b>입니다. 운용 메뉴에서 실행을 선택하면 IRP 대기자금이 정한 상품으로 <b>자동 균등 매수</b>됩니다. 실제 디폴트옵션 자동 적용의 사전지정·통지·대기 시간은 이 체험과 다릅니다. 위험한도를 넘는 만큼은 사지 않고 남깁니다.</p>`}
     ${view.notice ? `<p class="hint" role="status">${view.notice}</p>` : ''}
     ${renderDefaultOptionCards(view)}
     <p class="default-option-selection" aria-live="polite">현재 선택: <strong>${defaultOptionName(view.current, view.modern)}</strong> · 추천 표시는 선택을 바꾸지 않습니다.</p>

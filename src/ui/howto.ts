@@ -13,7 +13,7 @@ export function buyNeedsContribution(irpCash: number): boolean {
   return irpCash < 100000;
 }
 
-export function renderHowToModal(characters = true): string {
+export function renderHowToModal(characters = true, automatic = false): string {
   return `<p class="eyebrow">처음 한 번만 보여 줍니다</p>
     <h2>한 턴은 이렇게 진행됩니다</h2>
     ${renderSpeech('coach', '<p>저는 코치예요. 정산마다 한 줄 정리와 다음 판단을 말풍선으로 알려 드릴게요. 보드 위의 캐릭터가 바로 당신의 말이고, 충격 턴엔 긴장한 표정이 됩니다.</p>', { characters })}
@@ -24,6 +24,7 @@ export function renderHowToModal(characters = true): string {
       <li><b>4</b><div><strong>정산 한 번</strong><p>거래를 실행하면 정산 요약이 열립니다. 확인만 하려면 운용 창 맨 아래 「포트폴리오 확인」, 나가려면 오른쪽 위 ×를 누르세요. 한 턴에 운용은 한 번, 운용지시 칸에 서면 두 번입니다.</p></div></li>
     </ol>
     <p>12턴 동안 선택한 미션에 도전합니다. 도착한 칸마다 작은 효과가 하나씩 있고, 같은 입출금의 기준 지수와 성과를 비교합니다. 고스트는 생활 선택·납입까지 다른 보조 경로입니다. 오른쪽 위 성향 이름을 확인하고, 성향 허용 범위보다 위험이 큰 상품은 살 수 없습니다. 이 안내는 설정에서 다시 볼 수 있습니다.</p>
+    ${automatic ? '<p>예금 만기자금은 다음 턴 통지, 통지가 표시된 다음 턴 자동주문으로 이어집니다. 기다리는 동안 직접 운용할 수 있습니다. 실제 제도의 4주·통지 후 2주 절차를 게임 단계로 압축했으며, 모든 현금이 자동운용 대상은 아닙니다.</p>' : ''}
     <button class="primary jumbo" data-action="dismiss-howto">알겠어요</button>`;
 }
 

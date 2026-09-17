@@ -1,0 +1,306 @@
+{
+  "freshPlay": {
+    "qa": {
+      "events": [
+        {
+          "mood": "calm",
+          "modal": false,
+          "pending": false,
+          "time": 111570.90000000596
+        },
+        {
+          "reason": "기쁨이번 턴 운용 +1.2%",
+          "mood": "happy",
+          "modal": false,
+          "pending": true,
+          "time": 126725.40000000596
+        },
+        {
+          "reason": "기쁨이번 턴 운용 +1.2%",
+          "mood": "happy",
+          "modal": true,
+          "pending": false,
+          "time": 127951.90000000596
+        },
+        {
+          "reason": "기쁨이번 턴 운용 +1.2%",
+          "mood": "happy",
+          "modal": false,
+          "pending": false,
+          "time": 179292.5
+        }
+      ],
+      "animations": [
+        {
+          "mood": "happy",
+          "level": "3",
+          "time": 126725.30000001192,
+          "duration": 1000
+        },
+        {
+          "mood": "happy",
+          "level": "3",
+          "time": 179292.5,
+          "duration": 1000
+        },
+        {
+          "mood": "happy",
+          "level": "3",
+          "time": 183294.30000001192,
+          "duration": 1000
+        }
+      ]
+    },
+    "overflow": false
+  },
+  "tilePlay": {
+    "qa": {
+      "events": [
+        {
+          "pending": false,
+          "modal": false,
+          "mood": "calm",
+          "time": 1205.7999999821186
+        },
+        {
+          "pending": true,
+          "modal": false,
+          "reason": "기쁨운용 기회가 2회예요",
+          "mood": "happy",
+          "time": 14340.799999982119
+        },
+        {
+          "pending": false,
+          "modal": true,
+          "reason": "기쁨운용 기회가 2회예요",
+          "mood": "happy",
+          "time": 15561.199999988079
+        },
+        {
+          "pending": false,
+          "modal": false,
+          "reason": "기쁨운용 기회가 2회예요",
+          "mood": "happy",
+          "time": 56278.79999998212
+        }
+      ],
+      "animations": [
+        {
+          "mood": "happy",
+          "level": "3",
+          "time": 14340.699999988079,
+          "duration": 1000
+        },
+        {
+          "mood": "happy",
+          "level": "3",
+          "time": 56278.69999998808,
+          "duration": 1000
+        },
+        {
+          "mood": "happy",
+          "level": "3",
+          "time": 60278.5,
+          "duration": 1000
+        }
+      ]
+    },
+    "overflow": false,
+    "financialStateMatches": true
+  },
+  "resumedEngineFixtures": [
+    {
+      "key": "happy",
+      "expected": {
+        "mood": "happy",
+        "reason": "이번 턴 운용 +2.7%"
+      },
+      "actualReason": "기쁨이번 턴 운용 +2.7%",
+      "arrivalHoldMs": 1220.5,
+      "financialStateMatches": true,
+      "overflow": false,
+      "events": [
+        {
+          "pending": true,
+          "modal": false,
+          "reason": "기쁨이번 턴 운용 +2.7%",
+          "mood": "happy",
+          "time": 153.09999999403954
+        },
+        {
+          "pending": false,
+          "modal": true,
+          "reason": "기쁨이번 턴 운용 +2.7%",
+          "mood": "happy",
+          "time": 1373.5999999940395
+        },
+        {
+          "pending": false,
+          "modal": false,
+          "reason": "기쁨이번 턴 운용 +2.7%",
+          "mood": "happy",
+          "time": 2199.0999999940395
+        }
+      ],
+      "animations": [
+        {
+          "mood": "happy",
+          "level": "3",
+          "time": 153.09999999403954,
+          "duration": 1000
+        },
+        {
+          "mood": "happy",
+          "level": "3",
+          "time": 2199,
+          "duration": 1000
+        },
+        {
+          "mood": "happy",
+          "level": "3",
+          "time": 6194.800000011921,
+          "duration": 1000
+        }
+      ]
+    },
+    {
+      "key": "tense",
+      "expected": {
+        "mood": "tense",
+        "reason": "이번 턴 운용 -1.7%"
+      },
+      "actualReason": "긴장이번 턴 운용 -1.7%",
+      "arrivalHoldMs": 1225,
+      "financialStateMatches": true,
+      "overflow": false,
+      "events": [
+        {
+          "pending": true,
+          "modal": false,
+          "reason": "긴장이번 턴 운용 -1.7%",
+          "mood": "tense",
+          "time": 163.2999999821186
+        },
+        {
+          "pending": false,
+          "modal": true,
+          "reason": "긴장이번 턴 운용 -1.7%",
+          "mood": "tense",
+          "time": 1388.2999999821186
+        },
+        {
+          "pending": false,
+          "modal": false,
+          "reason": "긴장이번 턴 운용 -1.7%",
+          "mood": "tense",
+          "time": 2203.0999999940395
+        }
+      ],
+      "animations": [
+        {
+          "mood": "tense",
+          "level": "3",
+          "time": 163.19999998807907,
+          "duration": 700
+        },
+        {
+          "mood": "tense",
+          "level": "3",
+          "time": 2203,
+          "duration": 700
+        },
+        {
+          "mood": "tense",
+          "level": "3",
+          "time": 6203.5999999940395,
+          "duration": 700
+        }
+      ]
+    },
+    {
+      "key": "calm",
+      "expected": {
+        "mood": "calm",
+        "reason": "차분하게 다음 선택을 준비해요"
+      },
+      "actualReason": "평온차분하게 다음 선택을 준비해요",
+      "arrivalHoldMs": 1222.5999999940395,
+      "financialStateMatches": true,
+      "overflow": false,
+      "events": [
+        {
+          "pending": true,
+          "modal": false,
+          "reason": "평온차분하게 다음 선택을 준비해요",
+          "mood": "calm",
+          "time": 138.59999999403954
+        },
+        {
+          "pending": false,
+          "modal": true,
+          "reason": "평온차분하게 다음 선택을 준비해요",
+          "mood": "calm",
+          "time": 1361.199999988079
+        },
+        {
+          "pending": false,
+          "modal": false,
+          "reason": "평온차분하게 다음 선택을 준비해요",
+          "mood": "calm",
+          "time": 2168.300000011921
+        }
+      ],
+      "animations": [
+        {
+          "mood": "calm",
+          "level": "1",
+          "time": 138.59999999403954,
+          "duration": 1600
+        },
+        {
+          "mood": "calm",
+          "level": "1",
+          "time": 2168.0999999940395,
+          "duration": 1600
+        },
+        {
+          "mood": "calm",
+          "level": "1",
+          "time": 7199.699999988079,
+          "duration": 1600
+        }
+      ]
+    }
+  ],
+  "layouts": [
+    {
+      "width": 320,
+      "overflow": false,
+      "reasonBelowBoard": true,
+      "reasonInsideViewport": true,
+      "reasonHeight": 35.5
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "reasonBelowBoard": true,
+      "reasonInsideViewport": true,
+      "reasonHeight": 35.5
+    },
+    {
+      "width": 768,
+      "overflow": false,
+      "reasonBelowBoard": true,
+      "reasonInsideViewport": true,
+      "reasonHeight": 35.5
+    },
+    {
+      "width": 1440,
+      "overflow": false,
+      "reasonBelowBoard": true,
+      "reasonInsideViewport": true,
+      "reasonHeight": 35.5
+    }
+  ],
+  "screenshotLimitation": "Ego Page.captureScreenshot timed out; no screenshot produced in this run."
+}

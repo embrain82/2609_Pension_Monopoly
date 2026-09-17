@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { investorProfiles } from '../src/data/content';
-import { autoplay, createGame, startTurn } from '../src/engine/game-engine';
+import { createGame } from '../src/engine/game-engine';
 import { AVATAR_NAMES, CHARACTERS, avatarBody, avatarMood, renderAvatar, renderSpeaker, resultMood, type Mood } from '../src/ui/avatars';
 import { renderSpeech } from '../src/ui/speech';
 
@@ -37,18 +37,8 @@ describe('아바타', () => {
     expect(renderSpeaker('coach')).toContain('코치 펭귄');
   });
 
-  it('표정은 충격·낙폭·목표 달성에서 바뀐다', () => {
-    const fresh = createGame('mood');
-    expect(avatarMood(fresh, false)).toBe('calm');
-    expect(avatarMood(fresh, true)).toBe('happy');
-    const shocked = { ...fresh, turn: 3, lastMarket: { ...fresh.lastMarket, shock: true } };
-    expect(avatarMood(shocked, false)).toBe('tense');
-    const dropped = { ...fresh, irpHistory: [100, 94] };
-    expect(avatarMood(dropped, false)).toBe('tense');
-    const dipped = { ...fresh, irpHistory: [100, 97] };
-    expect(avatarMood(dipped, false)).toBe('calm');
-    const played = startTurn(autoplay('mood-play')).state;
-    expect(moods).toContain(avatarMood(played, false));
+  it('새 판은 평온으로 시작한다', () => {
+    expect(avatarMood(createGame('mood'))).toBe('calm');
   });
 
   it('결과 표정은 별 수를 따른다', () => {

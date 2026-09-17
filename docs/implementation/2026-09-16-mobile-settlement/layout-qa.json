@@ -1,0 +1,86 @@
+[
+  {
+    "requestedWidth": 320,
+    "viewportWidth": 336,
+    "clientWidth": 320,
+    "pass": true,
+    "overflows": [],
+    "barWidths": [
+      244,
+      244,
+      244
+    ]
+  },
+  {
+    "requestedWidth": 375,
+    "viewportWidth": 375,
+    "clientWidth": 375,
+    "pass": true,
+    "overflows": [],
+    "barWidths": [
+      267,
+      267,
+      267
+    ]
+  },
+  {
+    "requestedWidth": 390,
+    "viewportWidth": 390,
+    "clientWidth": 390,
+    "pass": true,
+    "overflows": [],
+    "barWidths": [
+      282,
+      282,
+      282
+    ]
+  },
+  {
+    "requestedWidth": 430,
+    "viewportWidth": 430,
+    "clientWidth": 430,
+    "pass": true,
+    "overflows": [],
+    "barWidths": [
+      322,
+      322,
+      322
+    ]
+  },
+  {
+    "requestedWidth": 768,
+    "viewportWidth": 768,
+    "clientWidth": 768,
+    "pass": true,
+    "overflows": [],
+    "barWidths": [
+      660,
+      660,
+      660
+    ]
+  },
+  {
+    "requestedWidth": 1024,
+    "viewportWidth": 1024,
+    "clientWidth": 1009,
+    "pass": true,
+    "overflows": [],
+    "barWidths": [
+      396,
+      396,
+      396
+    ]
+  },
+  {
+    "requestedWidth": 1440,
+    "viewportWidth": 1440,
+    "clientWidth": 1425,
+    "pass": true,
+    "overflows": [],
+    "barWidths": [
+      463.5,
+      463.5,
+      463.5
+    ]
+  }
+]

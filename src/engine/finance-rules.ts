@@ -1,3 +1,4 @@
+import { MATURITY_RULESET, accrueMaturityCash } from './maturity-cash';
 import { investorProfiles, products } from '../data/content';
 import type { CashInterest, GameState, ProductId, ProfileId } from '../types';
 
@@ -11,16 +12,16 @@ export function startingAllocation(profileId: ProfileId, updated = false): Recor
     ? { ...original, deposit: .35, balanced: .20, equityEtf: .45 } : { ...original };
 }
 
-export function newFinanceRules(profileId: ProfileId): NonNullable<GameState['financeRules']> {
-  return { version: 'f1', startingAllocation: startingAllocation(profileId, true), cashRatePerTurn: CASH_RATE_PER_TURN, lastInterestTurn: 0 };
+export function newFinanceRules(profileId: ProfileId, maturity = false): NonNullable<GameState['financeRules']> {
+  return { version: maturity ? 'f2' : 'f1', startingAllocation: startingAllocation(profileId, true), cashRatePerTurn: CASH_RATE_PER_TURN, lastInterestTurn: 0 };
 }
 
 /** Called only in the market phase, before order settlements and this turn's cash flows. */
 export function accrueWaitingCash(state: GameState): GameState {
   const rules = state.financeRules;
-  if (state.rulesetVersion !== FINANCE_RULESET || !rules || state.turn < 1 || state.turn > 12 || rules.lastInterestTurn >= state.turn) return state;
+  if (!hasCashInterestRules(state) || !rules || state.turn < 1 || state.turn > 12 || rules.lastInterestTurn >= state.turn) return state;
   const interest: CashInterest = { turn: state.turn, opening: state.irpCash, rate: rules.cashRatePerTurn, amount: state.irpCash * rules.cashRatePerTurn };
-  return { ...state, irpCash: state.irpCash + interest.amount,
+  return { ...accrueMaturityCash(state, rules.cashRatePerTurn), irpCash: state.irpCash + interest.amount,
     financeRules: { ...rules, lastInterestTurn: state.turn },
     ledger: { ...state.ledger, cashInterest: interest } };
 }
@@ -36,11 +37,13 @@ export function validCashInterest(value: unknown): value is CashInterest {
 /** Reject inconsistent new/old rules, including embedded chapter snapshots. */
 export function validFinanceRules(game: Omit<GameState, 'campaign'>): boolean {
   const r = game.financeRules;
-  if (game.rulesetVersion !== FINANCE_RULESET) return r === undefined && game.ledger.cashInterest === undefined;
-  if (!r || r.version !== 'f1' || r.cashRatePerTurn !== CASH_RATE_PER_TURN || r.lastInterestTurn !== game.turn ||
+  if (!hasCashInterestRules(game)) return r === undefined && game.ledger.cashInterest === undefined;
+  if (!r || r.version !== (game.rulesetVersion === MATURITY_RULESET ? 'f2' : 'f1') || r.cashRatePerTurn !== CASH_RATE_PER_TURN || r.lastInterestTurn !== game.turn ||
       !r.startingAllocation || !investorProfiles.some(p => p.id === game.profileId)) return false;
   const expected = startingAllocation(game.profileId, true);
   if (!products.every(p => r.startingAllocation[p.id] === expected[p.id]) || Object.keys(r.startingAllocation).length !== products.length) return false;
   return game.turn === 0 ? game.ledger.cashInterest === undefined
     : validCashInterest(game.ledger.cashInterest) && game.ledger.cashInterest.turn === game.turn;
 }
+
+export function hasCashInterestRules(state: Pick<GameState,'rulesetVersion'>): boolean { return state.rulesetVersion === FINANCE_RULESET || state.rulesetVersion === MATURITY_RULESET; }

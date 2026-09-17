@@ -1,3 +1,5 @@
+import learningV2 from './learning-cards-v2.json';
+import { GENERAL_KNOWLEDGE_VERSION, currentLearningRules } from './learning-rules';
 import { CARD_RULES, LEARNING_RULES, SOURCES, CONTENT_REVIEWED_AT } from './learning-rules';
 import productsJson from './products.json';
 import marketJson from './market-scenarios.json';
@@ -9,7 +11,7 @@ import balanceJson from './balance-config.json';
 import tileBriefingsJson from './tile-briefings.json';
 import marketShocksJson from './market-shocks.json';
 import defaultOptionsJson from './default-options.json';
-import type { BalanceConfig, BoardTile, DefaultOption, InvestorProfile, LearningCard, LifeEvent, MarketShock, MarketStep, PolicyRules, Product, TileBriefingSet } from '../types';
+import type { GameState, BalanceConfig, BoardTile, DefaultOption, InvestorProfile, LearningCard, LifeEvent, MarketShock, MarketStep, PolicyRules, Product, TileBriefingSet } from '../types';
 
 export const products = productsJson as Product[];
 export const marketScenario = marketJson as MarketStep[];
@@ -21,6 +23,14 @@ export const learningCards: LearningCard[] = learningJson.map(card => {
   return { ...card, ruleId, actualPrinciple: rule.principle, gameAssumption: rule.assumption,
     source_url: SOURCES[rule.sources[0]].url, reviewed_at: CONTENT_REVIEWED_AT } as LearningCard;
 });
+export const generalLearningCards: LearningCard[] = learningCards.map(card => {
+  const revision = learningV2.find(c => c.id === card.id)!;
+  const rule = currentLearningRules()[card.ruleId!];
+  return { ...card, ...revision, reviewed_at: '2026-09-16', actualPrinciple: rule.principle, gameAssumption: rule.assumption } as LearningCard;
+});
+export function learningCardsFor(state?: Pick<GameState,'learningContentVersion'> | null): LearningCard[] {
+  return state?.learningContentVersion === GENERAL_KNOWLEDGE_VERSION ? generalLearningCards : learningCards;
+}
 export const investorProfiles = profilesJson as InvestorProfile[];
 export const balanceConfig = balanceJson as BalanceConfig;
 export const tileBriefings = tileBriefingsJson as TileBriefingSet[];
@@ -66,6 +76,7 @@ export function validateContent(): void {
   if (marketScenario.length + lifeEvents.length + learningCards.length < 30) {
     throw new Error('콘텐츠 항목은 최소 30개여야 합니다.');
   }
+  if (learningV2.length !== learningCards.length || new Set(learningV2.map(c => c.id)).size !== learningCards.length || learningV2.some(c => !learningCards.some(old => old.id === c.id))) throw new Error('새 퀴즈 은행의 주제가 일치하지 않습니다.');
   const cardIds = new Set(learningCards.map((card) => card.id));
   if (tileBriefings.length !== boardTiles.length || tileBriefings.some((set, index) => set.index !== index || set.pool.length !== 5)) {
     throw new Error('도착 칸 설명 풀은 24칸마다 5개여야 합니다.');
@@ -100,13 +111,13 @@ export function validateContent(): void {
   if (boardTiles.filter((tile) => tile.effect === 'spotlight').length !== products.length) {
     throw new Error('상품 거리 칸은 상품 6종마다 하나여야 합니다.');
   }
-  if (learningCards.some((card) => !card.quiz || !card.quiz.q || !card.quiz.why || card.quiz.options.length !== 3
+  if ([...learningCards,...generalLearningCards].some((card) => !card.quiz || !card.quiz.q || !card.quiz.why || card.quiz.options.length !== 3
     || card.quiz.options.some((option) => !option) || new Set(card.quiz.options).size !== 3
     || !Number.isInteger(card.quiz.answer) || card.quiz.answer < 0 || card.quiz.answer > 2)) {
     throw new Error('학습 카드마다 3지선다 퀴즈(질문·서로 다른 선택지 3개·정답 위치·해설)가 있어야 합니다.');
   }
   const QUIZ_BOARD_WORDS = /턴|속보|게임|주사위|칸|마무리 퀴즈/;
-  if (learningCards.some((card) => QUIZ_BOARD_WORDS.test(card.quiz.q) || card.quiz.options.some((option) => QUIZ_BOARD_WORDS.test(option)))) {
+  if ([...learningCards,...generalLearningCards].some((card) => QUIZ_BOARD_WORDS.test(card.quiz.q) || card.quiz.options.some((option) => QUIZ_BOARD_WORDS.test(option)))) {
     throw new Error('퀴즈 질문·선택지는 보드 규칙(턴·속보·게임 등)이 아니라 제도·상품·시장 상식이어야 합니다.');
   }
 }

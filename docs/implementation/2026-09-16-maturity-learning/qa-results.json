@@ -1,0 +1,168 @@
+{
+  "version": "1.13.0",
+  "date": "2026-09-16",
+  "tests": {
+    "files": 67,
+    "passed": 688,
+    "new_rules_games": 480,
+    "typecheck": "passed",
+    "lint": "passed",
+    "build": "passed"
+  },
+  "mobile_play": {
+    "browser": "Ego Chromium mobile emulation",
+    "seed": "lpfh5a-pp0hul",
+    "turn": 12,
+    "status": "finished",
+    "cycle": {
+      "id": "maturity-deposit-0",
+      "depositLotId": "deposit-0",
+      "maturityTurn": 3,
+      "originalAmount": 38423700,
+      "remaining": 0,
+      "state": "ordered",
+      "optionId": "midRisk",
+      "notifiedTurn": 4,
+      "presentedTurn": 4,
+      "eligibleTurn": 5,
+      "orderedTurn": 5,
+      "orderedAmount": 38500585,
+      "commandId": "auto-maturity-deposit-0",
+      "orderIds": [
+        "order-0"
+      ]
+    },
+    "renewals": [
+      {
+        "lotId": "deposit-1",
+        "turn": 8,
+        "amount": 11818716.568749998,
+        "optionId": "midRisk",
+        "rate": 0.0064,
+        "maturityTurn": 11
+      },
+      {
+        "lotId": "deposit-2",
+        "turn": 11,
+        "amount": 12045635.92687,
+        "optionId": "midRisk",
+        "rate": 0.0064,
+        "maturityTurn": 14
+      }
+    ],
+    "pendingOrdersAtFinish": [],
+    "actionsLeftAfterAutomaticOrder": 1,
+    "finalResultHeading": "연금 목표 달성",
+    "checkpointClearedAfterPayout": true,
+    "resultViewportAfterReset": {
+      "width": 390,
+      "clientWidth": 390,
+      "scrollWidth": 390
+    }
+  },
+  "preview": {
+    "url": "https://2609-pension-monopoly-glez1vu76-nonsleepers-projects.vercel.app",
+    "deploymentId": "dpl_EzBGQE5EQxehQqypbhZwxDBR2raB",
+    "readyState": "READY",
+    "productionPromoted": false,
+    "loadedAssetVerified": "assets/index-BaM0JLcM.js",
+    "preparationTagGapPx": 16
+  },
+  "limitations": [
+    "실제 iPhone/Safari 기기 테스트는 수행하지 않았습니다.",
+    "모바일 결과 화면 캡처는 브라우저 CDP 타임아웃으로 저장하지 못했습니다. 결과 DOM과 저장 종료 상태는 확인했습니다."
+  ],
+  "desktop_play": {
+    "browser": "Ego Chromium desktop emulation",
+    "origin": "Vercel preview",
+    "seed": "ecaxry-1i8aqi0",
+    "profileId": "stable",
+    "turn": 12,
+    "status": "finished",
+    "cycles": [
+      {
+        "id": "maturity-deposit-0",
+        "depositLotId": "deposit-0",
+        "maturityTurn": 3,
+        "originalAmount": 87825600,
+        "remaining": 0,
+        "state": "ordered",
+        "optionId": "principal",
+        "notifiedTurn": 4,
+        "presentedTurn": 4,
+        "eligibleTurn": 5,
+        "orderedTurn": 5,
+        "orderedAmount": 88001339,
+        "commandId": "auto-maturity-deposit-0",
+        "orderIds": []
+      },
+      {
+        "id": "maturity-deposit-1",
+        "depositLotId": "deposit-1",
+        "maturityTurn": 8,
+        "originalAmount": 88859352.05525,
+        "remaining": 0,
+        "state": "ordered",
+        "optionId": "principal",
+        "notifiedTurn": 9,
+        "presentedTurn": 9,
+        "eligibleTurn": 10,
+        "orderedTurn": 10,
+        "orderedAmount": 89037159,
+        "commandId": "auto-maturity-deposit-1",
+        "orderIds": []
+      }
+    ],
+    "pendingOrdersAtFinish": [],
+    "result": {
+      "headings": [
+        "연금 목표 미달",
+        "이번 여행의 수집",
+        "운용과 자금 흐름 복기"
+      ],
+      "checkpointCleared": true,
+      "width": 1440,
+      "overflow": false,
+      "images": []
+    },
+    "interaction": "UI controls through pointer and DOM button activation; no engine state injection"
+  },
+  "layout_checks": [
+    {
+      "width": 320,
+      "documentFits": true,
+      "modalFits": true,
+      "summaryFits": true
+    },
+    {
+      "width": 375,
+      "documentFits": true,
+      "modalFits": true,
+      "summaryFits": true
+    },
+    {
+      "width": 390,
+      "documentFits": true,
+      "modalFits": true,
+      "summaryFits": true
+    },
+    {
+      "width": 430,
+      "documentFits": true,
+      "modalFits": true,
+      "summaryFits": true
+    },
+    {
+      "width": 768,
+      "documentFits": true,
+      "modalFits": true,
+      "summaryFits": true
+    },
+    {
+      "width": 1440,
+      "documentFits": true,
+      "modalFits": true,
+      "summaryFits": true
+    }
+  ]
+}

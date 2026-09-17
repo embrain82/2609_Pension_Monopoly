@@ -1,5 +1,5 @@
 import type { GameState, LearningCard } from '../types';
-import { learningCards } from '../data/content';
+import { learningCardsFor } from '../data/content';
 import { renderSpeech } from './speech';
 
 export interface QuizViewState {
@@ -66,7 +66,7 @@ export function renderLearnedBlock(state: GameState): string {
     return `<article class="learned-card"><div class="card-label">배운 것</div><p class="learned-empty">이번 판에는 퀴즈를 풀지 않았습니다. ${state.learningFlow?'정산 화면에서 관련 문제를 선택해 풀 수 있습니다.':'제도 안내·시장 뉴스 칸에 서면 배운 카드에서 한 문제가 나옵니다.'}</p></article>`;
   }
   const rows = state.quizLog.map((record) => {
-    const card = learningCards.find((item) => item.id === record.cardId);
+    const card = learningCardsFor(state).find((item) => item.id === record.cardId);
     return `<li class="${record.correct ? 'ok' : 'miss'}"><span>${record.correct ? '✓' : '✕'}</span><b>${card?.title ?? record.cardId}</b><small>${card?.key ?? ''}</small></li>`;
   }).join('');
   return `<article class="learned-card"><div class="card-label">배운 것 · 퀴즈 ${correct}/${total} 정답</div><ul class="learned-list">${rows}</ul></article>`;

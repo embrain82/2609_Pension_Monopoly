@@ -1,3 +1,4 @@
+import { isTileRevealed, visibleTileLabel } from './board-discovery';
 import { REGIONS, regionOf } from '../engine/route-engine';
 import { boardTiles } from '../data/content';
 import type { GameState, TileKind } from '../types';
@@ -7,6 +8,8 @@ import { AVATAR_NAMES, avatarBody, type Mood } from './avatars';
 export const TOKEN_STEP_MS = 260;
 
 export interface BoardView {
+  /** 마지막 착지 완료 후, 금융 상태를 확정하기 전 잠깐 공개하는 칸. 저장하지 않는다. */
+  revealIndex?: number;
   trail?: number[];
   focusIndex?: number;
   hopping?: boolean;
@@ -99,23 +102,38 @@ export function movePath(from: number, steps: number): number[] {
   return Array.from({ length: Math.max(0, steps) }, (_, index) => tokenTileIndex(from + index + 1));
 }
 
+/** 종류별 색·이름·아이콘을 담지 않는 공통 지도 스티커. */
+function mapSticker(revealing: boolean): string {
+  return `<g class="map-sticker${revealing ? ' discovery-cover' : ''}" aria-hidden="true">
+    <path class="map-paper" d="M18 4H82L96 18V82Q96 96 82 96H18Q4 96 4 82V18Q4 4 18 4Z"/>
+    <path class="map-route" d="M18 69q14-22 27-5t35-17"/>
+    <path class="map-fold" d="M80 4v14h16Z"/>
+    <text class="map-question" x="50" y="49" text-anchor="middle">?</text>
+    <text class="map-caption" x="50" y="84" text-anchor="middle">미지의 칸</text>
+  </g>`;
+}
+
 export function renderBoardMarkup(
   state: GameState,
   waiting: boolean,
   view: BoardView = {}
 ): string {
   const token = tokenTileIndex(view.focusIndex ?? state.position);
-  const tile = boardTiles[token];
+  const label = visibleTileLabel(state, token, view.revealIndex);
   const tiles = boardTiles.map((item) => {
     const { x, y } = boardPosition(item.index);
     const active = item.index === token;
-    const landed = active && Boolean(view.landed);
-    return `<g data-key="tile-${item.index}" data-action="open-explore" data-tile="${item.index}" role="button" tabindex="${active ? 0 : -1}" aria-label="${item.index+1}. ${item.label} · ${REGIONS[regionOf(item.index)]} 지역 · 칸 정보" class="tile tile-${item.kind} region-${regionOf(item.index)}${active ? ' active' : ''}${active && view.hopping && !landed ? ' moving' : ''}${landed ? ' landed' : ''}" transform="translate(${x} ${y})">
+    const visible = isTileRevealed(state, item.index, view.revealIndex);
+    const revealing = item.index === view.revealIndex;
+    const landed = active && Boolean(view.landed) && visible;
+    const name = visibleTileLabel(state, item.index, view.revealIndex);
+    return `<g data-key="tile-${item.index}" data-action="open-explore" data-tile="${item.index}" role="button" tabindex="${active ? 0 : -1}" aria-label="${item.index+1}. ${name} · ${visible ? `${REGIONS[regionOf(item.index)]} 지역 · 칸 정보` : '최종 도착하면 공개'}" class="tile ${visible ? `tile-${item.kind} region-${regionOf(item.index)}` : 'tile-hidden'}${revealing ? ' tile-revealing' : ''}${active ? ' active' : ''}${active && view.hopping && !landed ? ' moving' : ''}${landed ? ' landed' : ''}" transform="translate(${x} ${y})">
         <rect x="3" y="3" width="94" height="94" rx="15"></rect>
         ${state.route.visits.includes(item.index) ? '<circle class="visit-stamp" cx="50" cy="18" r="5"></circle>' : ''}
-        <use class="tile-kind-icon" href="#board-icon-${item.kind}" x="14" y="12" width="24" height="24" aria-hidden="true"/>
+        ${visible ? `<use class="tile-kind-icon" href="#board-icon-${item.kind}" x="11" y="76" width="12" height="12" aria-hidden="true"/>` : ''}
+        <text class="tile-label" x="57" y="86" text-anchor="middle">${visible ? item.label.replace(' 거리','').replace('은퇴 전망대','은퇴전망').replace('금리 전망길','금리전망') : ''}</text>
+        ${!visible || revealing ? mapSticker(revealing) : ''}
         <text class="tile-number" x="84" y="24" text-anchor="end">${String(item.index + 1).padStart(2, '0')}</text>
-        <text class="tile-label" x="50" y="70" text-anchor="middle">${item.label.replace(' 거리','').replace('은퇴 전망대','은퇴전망').replace('금리 전망길','금리전망')}</text>
         ${(view.trail ?? []).includes(item.index) ? '<circle class="move-trail" cx="50" cy="46" r="9" aria-hidden="true"/>' : ''}
         ${landed ? '<ellipse class="arrival-ring" cx="50" cy="50" rx="34" ry="20" aria-hidden="true"/>' + tileFx(item.kind) : ''}
         ${active && view.tokenInSvg !== false ? playerToken(state, view) : ''}
@@ -125,8 +143,8 @@ export function renderBoardMarkup(
     ? `<text x="350" y="286" text-anchor="middle">TURN ${String(Math.min(state.turn + 1, 12)).padStart(2, '0')} / 12</text>
       <text class="phase" x="350" y="338" text-anchor="middle">${token + 1}번</text>
       <path d="M260 368H440"></path>
-      <text x="350" y="410" text-anchor="middle">이동 중</text>
-      <text x="350" y="438" text-anchor="middle">${tile.label}</text>`
+      <text x="350" y="410" text-anchor="middle">${view.revealIndex !== undefined ? '새로운 칸 발견' : '이동 중'}</text>
+      <text x="350" y="438" text-anchor="middle">${label}</text>`
     : waiting
       ? `<text x="350" y="286" text-anchor="middle">TURN ${String(Math.min(state.turn + 1, 12)).padStart(2, '0')} / 12</text>
       <text class="phase" x="350" y="338" text-anchor="middle">대기</text>
@@ -138,9 +156,9 @@ export function renderBoardMarkup(
       <path d="M260 356H440"></path>
       <text class="rate" x="350" y="392" text-anchor="middle">금리 ${state.lastMarket.ratePct.toFixed(2)}%</text>
       <text x="350" y="420" text-anchor="middle">${state.lastMarket.signal}</text>
-      <text class="seed" x="350" y="452" text-anchor="middle">TURN ${String(state.turn).padStart(2, '0')} / 12 · ${tile.label}</text>`;
-  return `<svg class="board" viewBox="0 0 700 700" role="group" aria-label="24칸 순환 보드. 현재 말은 ${token + 1}번 칸 ${tile.label}에 있습니다.">
+      <text class="seed" x="350" y="452" text-anchor="middle">TURN ${String(state.turn).padStart(2, '0')} / 12 · ${label}</text>`;
+  return `<svg class="board" viewBox="0 0 700 700" role="group" aria-label="24칸 순환 보드. 현재 말은 ${token + 1}번 칸 ${label}에 있습니다.">
       ${boardSymbols()}<rect class="board-bg" x="0" y="0" width="700" height="700" rx="28"></rect>${regionLandmarks()}${tiles}
-      <g class="board-center">${view.characters ? '<g class="board-guide" aria-hidden="true"><image href="./assets/design-a1/mascot.jpg" x="253" y="199" width="194" height="108" preserveAspectRatio="xMidYMid meet"/></g>' : ''}<g transform="translate(0 ${view.characters ? 45 : 0})">${center}</g></g>
+      <g class="board-center">${view.characters ? '<g class="board-guide" aria-hidden="true"><image href="./assets/design-a1/mascot.jpg" x="274" y="209" width="152" height="88" preserveAspectRatio="xMidYMid meet"/></g>' : ''}<g transform="translate(0 ${view.characters ? 45 : 0})">${center}</g></g>
     </svg>`;
 }

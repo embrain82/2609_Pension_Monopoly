@@ -1,4 +1,5 @@
 import type { AvatarId, GameState } from '../types';
+import { missionDisplay } from '../engine/progress-engine';
 
 export type Mood = 'calm' | 'tense' | 'happy';
 export type Speaker = 'anchor' | 'coach';
@@ -20,14 +21,35 @@ const INK = '#183635';
 const CREAM = '#fbfcf6';
 const STROKE = `stroke="${INK}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"`;
 
-/** 충격 턴이거나 이번 턴 IRP가 5% 이상 줄면 긴장, 목표를 넘기면 기쁨. */
-export function avatarMood(state: GameState, goalMet: boolean): Mood {
-  if (goalMet) return 'happy';
-  if (state.turn > 0 && state.lastMarket.shock) return 'tense';
-  const last = state.irpHistory.at(-1);
-  const prev = state.irpHistory.at(-2);
-  if (last !== undefined && prev !== undefined && prev > 0 && last / prev - 1 <= -0.05) return 'tense';
-  return 'calm';
+export const EMOTION_RETURN_THRESHOLD = .01;
+export interface AvatarEmotion { mood: Mood; reason: string; }
+
+/** 도착 효과와 현재 운용 장부만 읽는다. 연출 때문에 금융 상태나 달성 기록을 쓰지 않는다. */
+export function avatarEmotion(state: GameState): AvatarEmotion {
+  const calm: AvatarEmotion = { mood: 'calm', reason: '차분하게 다음 선택을 준비해요' };
+  if (state.turn === 0) return calm;
+  if (state.currentEventId) return { mood: 'tense', reason: '생활 사건이 생겼어요' };
+  const { open, marketEffects, cashInterest } = state.ledger;
+  const interest = cashInterest?.turn === state.turn ? cashInterest.amount : 0;
+  // 구 저장의 합산 잔액에는 결제/입출금이 섞일 수 있어 운용수익률을 추정하지 않는다.
+  const rate = marketEffects && open > 0 ? (marketEffects.reduce((sum, e) => sum + e.delta, 0) + interest) / open : null;
+  if (rate !== null && Number.isFinite(rate) && Math.abs(rate) >= EMOTION_RETURN_THRESHOLD) {
+    return { mood: rate < 0 ? 'tense' : 'happy', reason: `이번 턴 운용 ${rate > 0 ? '+' : ''}${(rate * 100).toFixed(1)}%` };
+  }
+  for (const effect of state.tileEffects.filter(e => e.tileIndex === state.position)) {
+    if (effect.kind === 'tax-refund' && (effect.amount ?? 0) > 0) return { mood: 'happy', reason: '세액공제 환급을 받았어요' };
+    if (effect.kind === 'double-action') return { mood: 'happy', reason: '운용 기회가 2회예요' };
+    if (['policy-brief', 'profile-check', 'diversify-check'].includes(effect.kind) && (effect.understanding ?? 0) > 0) {
+      return { mood: 'happy', reason: `제도·운용 이해 +${effect.understanding}점을 얻었어요` };
+    }
+  }
+  const justReached = state.turnMilestones.some(m => m.id === 'goal-100' && m.turn === state.turn)
+    || (!state.milestonesHit.includes('goal-100') && missionDisplay(state).passed);
+  return justReached ? { mood: 'happy', reason: '이번 판 목표에 처음 도달했어요' } : calm;
+}
+
+export function avatarMood(state: GameState): Mood {
+  return avatarEmotion(state).mood;
 }
 
 export function resultMood(stars: number): Mood {

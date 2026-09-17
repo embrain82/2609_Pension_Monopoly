@@ -1,0 +1,39 @@
+{
+  "date": "2026-09-16",
+  "tests": {
+    "files": 67,
+    "passed": 688,
+    "typecheck": "passed",
+    "lint": "passed",
+    "build": "passed"
+  },
+  "layout": "qa-layout.json",
+  "review": {
+    "characters": 5,
+    "posesPerCharacter": 3,
+    "imagesDecoded": 15,
+    "animationsPerReplay": 3,
+    "reducedMotionAnimations": 0,
+    "externalImages": 0,
+    "viewports": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "overflow": false
+  },
+  "directPlay": {
+    "viewport": "390x844",
+    "profileDiagnosis": true,
+    "defaultSelection": true,
+    "animatedDice": true,
+    "landedTile": 12,
+    "turn": 1,
+    "discoveryVisibleTiles": 2,
+    "activeIconVisible": true,
+    "labelFont": "14px",
+    "resumeStateDeepEqual": true
+  },
+  "scope": "review motions are not in the game"
+}

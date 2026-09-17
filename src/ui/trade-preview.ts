@@ -1,3 +1,4 @@
+import { activeCycle } from '../engine/maturity-cash';
 import { products } from '../data/content';
 import { defaultPortfolio } from '../data/default-portfolios';
 import { portfolioValue } from '../engine/portfolio-engine';
@@ -23,6 +24,8 @@ export function tradePreviewData(before:GameState,result:ActionResult,scope?:Def
 export function renderTradePreview(before:GameState,result:ActionResult,scope?:DefaultScope):string {
  if(!result.ok)return '';
  const data=tradePreviewData(before,result,scope);
+ const maturityBefore=before.defaultLifecycle?.cycles.filter(activeCycle).reduce((s,c)=>s+c.remaining,0)??0;
+ const maturityAfter=result.state.defaultLifecycle?.cycles.filter(activeCycle).reduce((s,c)=>s+c.remaining,0)??0;
  const legs=data.legs.map(l=>{
   const product=products.find(p=>p.id===l.productId)!;
   const schedule=l.order?orderSchedule(l.order):`접수·가격확정·결제 ${turnLabel(before.turn)} · ${product.kind==='deposit'?(l.side==='buy'?'새 약정 가입':'가입 건별 만기·중도해지 조건 반영'):'표시가격 체결'}`;
@@ -37,5 +40,5 @@ export function renderTradePreview(before:GameState,result:ActionResult,scope?:D
  const due=selling.length?Math.max(...selling.map(o=>o.settlesTurn)):before.turn;
  const rebalance=result.state.rebalancePlan?`<li><b>이어서 목표비중 매수 · 결제 시 금액 재계산</b><small>직접 운용분 · 매도 결제 ${turnLabel(due)} 후 부족한 상품만 매수</small><small>예금·ETF: ${turnLabel(due)} 체결 · 펀드: 기준가 ${turnLabel(due+1)} → 결제 ${turnLabel(due+2)}</small><small>목표와 실제 비중은 시장 변동·위험한도·최소 주문금액 때문에 다를 수 있습니다.</small></li>`:'';
  const closing=data.orders.some(o=>o.settlesTurn>12||o.targetProductId&&o.settlesTurn+(products.find(p=>p.id===o.targetProductId)?.kind==='fund'?2:0)>12)||!!rebalance&&due+2>12;
- return `<section class="trade-preview" aria-label="공통 거래 미리보기"><h3>거래 미리보기</h3><p class="preview-disclaimer">지금은 조회 · 행동 0회 / 성공적으로 확정하면 행동 1회</p><ol class="trade-timeline">${legs}${linked}${rebalance}</ol><dl><dt>접수 직후 주문 가능 자금</dt><dd>${formatWon(data.cash)} (${signedWon(data.cashChange)})</dd><dt>예금 중도해지 이자 조정</dt><dd>${formatWon(data.cost)}</dd><dt>게임 내 별도 매매수수료</dt><dd>0원 · 실제 비용과 다를 수 있음</dd></dl><p class="preview-disclaimer">상품 운용보수는 시장 반영 때 차감하며 위 매매수수료와 구분합니다. 펀드는 실제 영업일을 줄인 게임 시간입니다. 아직 가격이 확정되지 않은 환매 금액은 달라집니다. 대금은 IRP 안에 남습니다.${closing?' 12턴을 넘는 단계는 추가 시장·급여 없이 종료 가격으로 최종 정산합니다.':''}</p></section>`;
+ return `<section class="trade-preview" aria-label="공통 거래 미리보기"><h3>거래 미리보기</h3><p class="preview-disclaimer">지금은 조회 · 행동 0회 / 성공적으로 확정하면 행동 1회</p>${maturityBefore>maturityAfter+.001?`<p class="maturity-source">만기자금 ${formatWon(maturityBefore-maturityAfter)}을 먼저 사용합니다. 남은 자동운용 대상 ${formatWon(maturityAfter)}(원 단위 반올림). 오래된 만기 순서로 배분하는 게임 규칙입니다.</p>`:''}<ol class="trade-timeline">${legs}${linked}${rebalance}</ol><dl><dt>접수 직후 주문 가능 자금</dt><dd>${formatWon(data.cash)} (${signedWon(data.cashChange)})</dd><dt>예금 중도해지 이자 조정</dt><dd>${formatWon(data.cost)}</dd><dt>게임 내 별도 매매수수료</dt><dd>0원 · 실제 비용과 다를 수 있음</dd></dl><p class="preview-disclaimer">상품 운용보수는 시장 반영 때 차감하며 위 매매수수료와 구분합니다. 펀드는 실제 영업일을 줄인 게임 시간입니다. 아직 가격이 확정되지 않은 환매 금액은 달라집니다. 대금은 IRP 안에 남습니다.${closing?' 12턴을 넘는 단계는 추가 시장·급여 없이 종료 가격으로 최종 정산합니다.':''}</p></section>`;
 }

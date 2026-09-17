@@ -27,3 +27,6 @@ export function allowedPortfolios(profileId: ProfileId): DefaultPortfolio[] {
 export function validDefaultScope(scope: DefaultScope | undefined, productId: ProductId): boolean {
   return !!scope && scope.optionVersion==='e1' && !!scope.mandateId && !!DEFAULT_PORTFOLIOS.find(p=>p.id===scope.optionId)?.products.includes(productId);
 }
+
+/** g1 educational deposit contracts; never applied to older saved games. */
+export const DEPOSIT_MATURITY_POLICY = { principal:'redeem', lowRisk:'renew', midRisk:'renew', highRisk:'none' } as const;

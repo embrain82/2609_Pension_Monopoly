@@ -1,0 +1,107 @@
+[
+  {
+    "time": 37035.30000001192,
+    "mood": "calm",
+    "level": "1",
+    "turn": 0,
+    "active": 1
+  },
+  {
+    "time": 38007.5,
+    "mood": "calm",
+    "level": "1",
+    "turn": 0,
+    "active": 1
+  },
+  {
+    "time": 63991,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  },
+  {
+    "time": 68589,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  },
+  {
+    "time": 72271.70000000298,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  },
+  {
+    "time": 72440.60000000894,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  },
+  {
+    "time": 76701.5,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  },
+  {
+    "time": 81304.60000000894,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  },
+  {
+    "time": 85005.20000000298,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  },
+  {
+    "time": 88655.40000000596,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  },
+  {
+    "time": 92322.10000000894,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  },
+  {
+    "time": 96004.20000000298,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  },
+  {
+    "time": 99655.20000000298,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  },
+  {
+    "time": 103305.40000000596,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  },
+  {
+    "time": 112535.80000001192,
+    "mood": "calm",
+    "level": "1",
+    "turn": 1,
+    "active": 1
+  }
+]

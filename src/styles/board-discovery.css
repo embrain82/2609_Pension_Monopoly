@@ -1,0 +1,32 @@
+/* A1: 캐릭터 실루엣을 따라 흰 테두리. 기존 이동·착지 변환은 그대로 둔다. */
+.token3d:not(.plain) { width:10.5%; }
+.token3d:not(.plain) .token-face>svg {
+  filter:drop-shadow(1.5px 0 0 #fff) drop-shadow(-1.5px 0 0 #fff)
+    drop-shadow(0 1.5px 0 #fff) drop-shadow(0 -1.5px 0 #fff)
+    drop-shadow(0 2px 2px #18363535);
+}
+.token3d:not(.plain) .token-rim {
+  inset:auto 25% 25%; height:8%; border:1px solid #fff;
+  background:#1d6548; box-shadow:0 1px 2px #18363540;
+}
+
+/* B5: 미지의 칸에는 카테고리별 색이나 그림을 노출하지 않는다. */
+.road-game .tile-hidden>rect { fill:#f4f2e9; stroke:#d5d9ca; }
+.road-game .map-paper { fill:#f4f2e9; stroke:none; }
+.road-game .map-route { fill:none; stroke:#b7c5b6; stroke-width:2; stroke-dasharray:3 5; }
+.road-game .map-fold { fill:#dce5d8; stroke:none; }
+.road-game .map-question { fill:#6d8873; font-size:28px; font-weight:700; }
+.road-game .map-caption { fill:#69806e; font-size:11px; font-weight:500; }
+.road-game .tile-hidden .tile-number { fill:#6b806e; }
+.discovery-cover { transform-box:fill-box; transform-origin:top right; pointer-events:none; }
+
+/* 위치 표시는 외곽선만 바꾼다. 공개 순간부터 고유 배경색을 계속 유지한다. */
+.road-game .tile.active>rect { stroke:#23744e; stroke-width:2.5; }
+.road-game .tile:focus-visible>rect { stroke:#285aba; stroke-width:3; }
+.road-game .tile.tile-revealing>rect { animation:none; }
+.board-discovery-progress { display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; margin:6px 0 14px; color:#687d70; font-size:.75rem; }
+.board-discovery-progress strong { padding:4px 9px; border-radius:20px; background:#edf5ee; color:#226443; white-space:nowrap; }
+@media(max-width:520px) {
+  .token3d:not(.plain) { width:11.5%; }
+  .board-discovery-progress { font-size:.7rem; }
+}

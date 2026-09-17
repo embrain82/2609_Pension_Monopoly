@@ -396,6 +396,7 @@ export interface HoldingPosition extends Omit<Holding, 'productId' | 'positions'
 export interface DefaultTradeGroup {
   id: string; commandId: string; kind: 'in' | 'out'; scope: DefaultScope;
   turn: number; amount: number; orderIds: string[];
+  source?: 'automatic'; cycleId?: string;
 }
 export interface DefaultTrading {
   version: 'e1'; groups: DefaultTradeGroup[];
@@ -416,7 +417,7 @@ export interface PendingOrder {
   defaultScope?: DefaultScope;
 }
 
-export type ActionKind = 'contribute' | 'buy' | 'sell' | 'switch' | 'rebalance' | 'hold' | 'default-opt-in' | 'default-opt-out';
+export type ActionKind = 'contribute' | 'buy' | 'sell' | 'switch' | 'rebalance' | 'hold' | 'default-opt-in' | 'default-opt-out' | 'maturity-cash';
 
 export interface GameLog {
   turn: number;
@@ -426,6 +427,8 @@ export interface GameLog {
 }
 
 export interface DepositLot {
+  /** Present only in the new maturity rules. */
+  id?: string;
   principal: number;
   amount: number;
   openedTurn: number;
@@ -446,18 +449,41 @@ export interface CashFlow {
   amount: number;
 }
 
+export interface MaturityCycle {
+  id: string; depositLotId: string; maturityTurn: number;
+  originalAmount: number; remaining: number;
+  state: 'waiting' | 'notified' | 'blocked' | 'ordered' | 'directed' | 'exhausted';
+  optionId?: DefaultOptionId;
+  notifiedTurn?: number; presentedTurn?: number; eligibleTurn?: number;
+  directedAmount?: number;
+  directedTurn?: number;
+  blockedReason?: string; orderedTurn?: number; orderedAmount?: number;
+  commandId?: string; orderIds?: string[];
+}
+export interface DefaultLifecycle {
+  version: 'g1'; lotSequence: number;
+  cycles: MaturityCycle[];
+  renewals: Array<{ lotId: string; turn: number; amount: number; optionId: DefaultOptionId; rate: number; maturityTurn: number }>;
+}
+
 export interface CashInterest { turn: number; opening: number; rate: number; amount: number; }
 
+export type BoardVisibility = 'open-v1' | 'arrival-v1';
+
 export interface GameState {
+  /** 표시 규칙만 저장한다. 생략된 기존 판은 전체 공개로 유지한다. */
+  boardVisibility?: BoardVisibility;
   /** New-game financial rules; absent on historical games. */
-  financeRules?: { version: 'f1'; startingAllocation: Record<ProductId, number>; cashRatePerTurn: number; lastInterestTurn: number };
+  financeRules?: { version: 'f1' | 'f2'; startingAllocation: Record<ProductId, number>; cashRatePerTurn: number; lastInterestTurn: number };
   /** 새 판에서만 정산 자율 학습. 기존 판의 진행·점수 규칙은 보존한다. */
   learningFlow?: { version: 'settlement-v1'; queue: string[]; dismissed?:string[] };
   campaign?: Campaign;
   route: RouteProgress;
   accountType: 'IRP';
-  rulesetVersion: '2026-09-09-p0' | '2026-09-10-b' | '2026-09-10-c' | '2026-09-10-d' | '2026-09-10-e' | '2026-09-15-f';
+  rulesetVersion: '2026-09-09-p0' | '2026-09-10-b' | '2026-09-10-c' | '2026-09-10-d' | '2026-09-10-e' | '2026-09-15-f' | '2026-09-16-g';
   defaultTrading?: DefaultTrading;
+  defaultLifecycle?: DefaultLifecycle;
+  learningContentVersion?: '2026-09-16-situations';
   /** 개인 납입 속도 규칙. 생략된 저장은 기존 한 판 합산 한도만 적용. */
   contributionPacing?: { version: 'v1'; perTurnLimit: number };
   avatarId: AvatarId;

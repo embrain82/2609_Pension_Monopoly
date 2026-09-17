@@ -1,0 +1,52 @@
+{
+  "checkedConfigs": 75,
+  "samples": 1575,
+  "baselineResults": {
+    "calm": true,
+    "tense": true,
+    "happy": true
+  },
+  "minTextGapPx": 1.2431690203309245,
+  "geometry": "clipped 80.5 x 80.5 viewport corners through actor screen matrix (not full sprite image bounds)",
+  "failures": [],
+  "stoppedAnimations": 0,
+  "embedded": true,
+  "controls": {
+    "chosen": "평온 2단계긴장 3단계기쁨 5단계",
+    "repeatAnimations": 5,
+    "allInfinite": true,
+    "reducedAnimations": 0,
+    "stopped": 0
+  },
+  "systemReducedAnimations": 0,
+  "widths": [
+    {
+      "width": 320,
+      "overflow": false,
+      "heroWidth": 269,
+      "cardCount": 5,
+      "horizontalCompare": true
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "heroWidth": 339,
+      "cardCount": 5,
+      "horizontalCompare": true
+    },
+    {
+      "width": 768,
+      "overflow": false,
+      "heroWidth": 705,
+      "cardCount": 5,
+      "horizontalCompare": true
+    },
+    {
+      "width": 1440,
+      "overflow": false,
+      "heroWidth": 1172,
+      "cardCount": 5,
+      "horizontalCompare": false
+    }
+  ]
+}

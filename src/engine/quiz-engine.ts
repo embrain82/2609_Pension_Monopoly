@@ -1,4 +1,4 @@
-import { learningCards } from '../data/content';
+import { learningCards, learningCardsFor } from '../data/content';
 import type { GameState, LearningCard, QuizRecord } from '../types';
 import { hashSeed, nextRandom } from './random-engine';
 
@@ -25,7 +25,7 @@ function answered(state: GameState, cardId: string): boolean {
 export function quizCandidates(state: GameState): LearningCard[] {
   return state.unlockedCards
     .filter((cardId) => !answered(state, cardId))
-    .map((cardId) => learningCards.find((card) => card.id === cardId))
+    .map((cardId) => learningCardsFor(state).find((card) => card.id === cardId))
     .filter((card): card is LearningCard => Boolean(card));
 }
 
@@ -66,7 +66,7 @@ export function finalQuizCards(state: GameState, max = FINAL_QUIZ_MAX): Learning
  * 대기를 비운다. 점수는 `quizLog`의 정답 수로 지식 항목에 들어가며(정답 ×2, 최대 8) 이해 포인트와는 따로 센다.
  */
 export function answerQuiz(state: GameState, cardId: string, option: number): QuizAnswer {
-  const card = learningCards.find((item) => item.id === cardId) ?? null;
+  const card = learningCardsFor(state).find((item) => item.id === cardId) ?? null;
   if (!card) return { ok: false, correct: false, card: null, message: '없는 카드입니다.', state };
   if (!state.unlockedCards.includes(cardId)) return { ok: false, correct: false, card, message: '아직 열리지 않은 카드입니다.', state };
   if (answered(state, cardId)) return { ok: false, correct: false, card, message: '이미 푼 문제입니다.', state };
@@ -94,7 +94,7 @@ export function quizCorrectCount(state: GameState): number {
   return state.quizLog.filter((record) => record.correct).length;
 }
 
-export const ACTION_LESSONS: Record<string,string> = {contribute:'contribution-limit',buy:'fund-order',sell:'sale-vs-withdrawal',switch:'fund-order',rebalance:'rebalance',hold:'inflation-value','default-opt-in':'default-option','default-opt-out':'default-option'};
+export const ACTION_LESSONS: Record<string,string> = {contribute:'contribution-limit',buy:'fund-order',sell:'sale-vs-withdrawal',switch:'fund-order',rebalance:'rebalance',hold:'inflation-value','default-opt-in':'default-option','default-opt-out':'default-option','maturity-cash':'default-option'};
 /** 성공한 행동만 연결하며 팝업은 정산에서 자율 선택한다. */
 export function actionLesson(state: GameState, kind: string): GameState {
   if(!state.campaign) return state;
@@ -110,7 +110,8 @@ export function optionalQuizCards(state:GameState):string[] {
   const candidates=[...state.learningFlow.queue,...(state.status==='finished'?finalQuizCards(state).map(c=>c.id):[])];
   return [...new Set(candidates)].filter(id=>!state.learningFlow!.dismissed?.includes(id)&&state.unlockedCards.includes(id)&&!answered(state,id)&&learningCards.some(c=>c.id===id));
 }
-export function validLearningFlow(state:Pick<GameState,'learningFlow'|'unlockedCards'>):boolean {
+export function validLearningFlow(state:Pick<GameState,'learningFlow'|'unlockedCards'|'learningContentVersion'>):boolean {
+  if (state.learningContentVersion !== undefined && state.learningContentVersion !== '2026-09-16-situations') return false;
   const f=state.learningFlow;
   return f===undefined || !!f && f.version==='settlement-v1' && Array.isArray(f.queue) && f.queue.length<=learningCards.length && new Set(f.queue).size===f.queue.length && f.queue.every(id=>state.unlockedCards.includes(id)&&learningCards.some(c=>c.id===id)) && (f.dismissed===undefined || Array.isArray(f.dismissed)&&f.dismissed.length<=learningCards.length&&new Set(f.dismissed).size===f.dismissed.length&&f.dismissed.every(id=>state.unlockedCards.includes(id)&&learningCards.some(c=>c.id===id)));
 }

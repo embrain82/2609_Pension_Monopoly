@@ -35,6 +35,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .road-title .road-hero-art { grid-column:2; grid-row:1 / 3; }
 .road-title .road-launch { grid-column:1; grid-row:2; max-width:430px; display:grid; gap:12px; }
 .road-title h1 { font-family:inherit; font-size:44px; font-weight:780; color:var(--ink); line-height:1.4; letter-spacing:-1.8px; margin:0; }
+/* The intro heading receives focus for screen readers; it is not an interactive control. */
+.road-title h1[tabindex="-1"]:focus { outline:none; }
 .road-title h1 strong { color:var(--green); font-weight:inherit; }
 .road-title .eyebrow { font-size:13px; font-weight:650; letter-spacing:.2px; color:var(--muted); margin:0 0 18px; }
 .road-title .lead { color:var(--muted); font-size:16px; line-height:1.85; margin:18px 0; }
@@ -142,6 +144,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .road-game .board-guide image { mix-blend-mode:multiply; }
 .road-game .board-location { margin-top:14px; padding:8px 0; font-size:13px; }
 .road-game .board-step { font-size:13px; color:var(--muted); margin:8px 0 16px; }
+.road-game .board-emotion { display:flex; flex-wrap:wrap; justify-content:center; gap:4px 8px; margin:8px 0; padding:8px 12px; border-radius:12px; font-size:13px; line-height:1.5; color:var(--muted); background:#f4f7f5; }
+.road-game .board-emotion.mood-happy { color:#24613b; background:#edf7ed; }
+.road-game .board-emotion.mood-tense { color:#8c4925; background:#fff3e8; }
 .road-game .board-hud { margin:0 0 12px; border-radius:14px; background:#f4f9f5; }
 .road-game .dashboard { width:100%; display:grid; grid-template-columns:1fr 1fr; align-items:start; gap:20px; }
 .road-game .dashboard>* { min-width:0; margin:0; }
@@ -228,3 +233,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 @media (hover:hover) and (pointer:fine) {
   .road-diagnosis .choice-stack button:hover { border-color:var(--green-2); transform:translateY(-1px); }
 }
+
+/* FB-016: scope spacing to the unassessed profile card. */
+.preparation-unassessed .profile-stamp { display:inline-flex; margin:0 0 16px; }
+.preparation-unassessed > h2 { margin-top:0; line-height:1.5; }
+
+/* Maturity stages stay compact; no extra first-level operation menu. */
+.maturity-flow,.maturity-detail { text-align:left; overflow-wrap:anywhere; }
+.maturity-flow h3,.maturity-detail h3 { margin:0 0 12px; }
+.maturity-stage + .maturity-stage { border-top:1px solid #dce6df; margin-top:16px; padding-top:16px; }
+.maturity-flow p,.maturity-detail p { margin:8px 0; }
+.maturity-risk { font-size:.875rem; line-height:1.65; color:#53675c; }
+.maturity-instruction { margin:12px 0; }
+.maturity-instruction summary { padding:12px 0; font-weight:700; cursor:pointer; }
+.maturity-instruction button { display:block; margin-top:12px; max-width:100%; white-space:normal; }

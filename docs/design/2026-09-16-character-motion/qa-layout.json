@@ -1,0 +1,38 @@
+[
+  {
+    "width": 320,
+    "poses": 15,
+    "labelChecks": 360,
+    "minTokenLabelGapPx": 3.456634521484375,
+    "font": "14px",
+    "overflow": false,
+    "failures": []
+  },
+  {
+    "width": 390,
+    "poses": 15,
+    "labelChecks": 360,
+    "minTokenLabelGapPx": 4.52569580078125,
+    "font": "14px",
+    "overflow": false,
+    "failures": []
+  },
+  {
+    "width": 768,
+    "poses": 15,
+    "labelChecks": 360,
+    "minTokenLabelGapPx": 8.05645751953125,
+    "font": "14px",
+    "overflow": false,
+    "failures": []
+  },
+  {
+    "width": 1440,
+    "poses": 15,
+    "labelChecks": 360,
+    "minTokenLabelGapPx": 7.74127197265625,
+    "font": "14px",
+    "overflow": false,
+    "failures": []
+  }
+]
