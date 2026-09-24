@@ -1,0 +1,19 @@
+{
+  "restoredUnchanged": true,
+  "turn": 2,
+  "cash": 11581925,
+  "irpCash": 0,
+  "pending": [
+    {
+      "id": "order-0",
+      "side": "buy",
+      "productId": "shortBond",
+      "amount": 1001000,
+      "submittedTurn": 2,
+      "priceTurn": 3,
+      "settlesTurn": 4,
+      "stage": "received"
+    }
+  ],
+  "comparison": "Parsed game objects equal; serialized key order normalized on restore"
+}

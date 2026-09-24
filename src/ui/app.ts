@@ -78,6 +78,7 @@ import { marketRiskNotice, riskRatioLabel, quizOpportunity, quizOpportunityAckno
   normalizeUiProgress, renderRiskNotice, renderQuizNotice, type UiProgress, type ProgressIntent } from './turn-notices';
 import { knowledgeScoreOf } from '../engine/scoring-engine';
 import { revealBoard } from './board-viewport';
+import { actionGuidance, renderActionHint, renderPurposeChoices, type PortfolioSection } from './action-guidance';
 
 type Screen = 'prepare' | 'title' | 'diagnosis' | 'goal' | 'game' | 'result';
 type Modal = 'risk-notice' | 'quiz-confirm' | 'life' | 'action' | 'portfolio' | 'market' | 'cards' | 'settings' | 'howto' | 'news' | 'tile' | 'settle' | 'quiz' | 'payout' | 'default-option' | 'explore' | null;
@@ -128,6 +129,9 @@ export class PensionRoadApp {
   private buyLimitConfirm: Extract<BuyLimitDecision, { kind: 'confirm' }> | null = null;
   private lastSummary: TurnSummary | null = null;
   private actionView: ActionView = 'menu';
+  private actionMenuExpanded = false;
+  private renderedActionMenuExpanded = false;
+  private portfolioSection: PortfolioSection | null = null;
   private marketDetailsOpen = false;
   private marketDetailsContext: string | null = null;
   private actionScrollTop: number | null = null;
@@ -474,6 +478,7 @@ export class PensionRoadApp {
       this.screen = this.setupReturn === 'game' && this.game ? 'game' : 'title';
       this.announce(`월 연금 목표 ${formatWon(this.goalMonthly)}이 지금 판에 반영되었습니다.`);
     } else if (action === 'roll-dice') {
+      this.actionMenuExpanded = false;
       this.requestProgress({ kind: 'roll-next-turn' });
       this.render();
       return;
@@ -483,6 +488,19 @@ export class PensionRoadApp {
       this.actionView = 'menu';
       this.amountPreset = 'default';
       this.requestActionEntry();
+    } else if (action === 'show-all-actions' || action === 'show-simple-actions') {
+      this.actionMenuExpanded = action === 'show-all-actions'; this.actionView = 'menu';
+    } else if (action === 'guidance-choice' && this.game) {
+      const choice = actionGuidance(this.game).choices.find(c => c.id === button.dataset.choice);
+      if (!choice) return;
+      if ('operation' in choice) {
+        this.actionView = choice.operation; this.amountPreset = 'default'; this.buyLimitConfirm = null;
+        if (choice.operation === 'default') this.initializeDefaultTrade();
+      } else {
+        this.portfolioReturn = true; this.portfolioSection = choice.portfolio;
+        this.actionScrollTop = this.root.querySelector<HTMLElement>('.modal-action')?.scrollTop ?? 0;
+        this.modal = 'portfolio';
+      }
     } else if (action === 'action-view') {
       const view = (button.dataset.view as ActionView) || 'menu';
       if (this.game && view !== 'menu' && !actionAvailability(this.game, view as Operation).enabled) return;
@@ -1316,8 +1334,16 @@ export class PensionRoadApp {
       returnButton?.focus({ preventScroll: this.actionScrollTop !== null });
       if (this.actionScrollTop !== null) dialog.scrollTop = this.actionScrollTop;
     }
-    if(dialog && this.modal==='action' && previousModal==='action' && this.renderedActionView!==this.actionView) {
+    if(dialog && this.modal==='action' && previousModal==='action' && (this.renderedActionView!==this.actionView || this.renderedActionMenuExpanded!==this.actionMenuExpanded)) {
       dialog.scrollTop=0;const heading=dialog.querySelector<HTMLElement>('h2');heading?.setAttribute('tabindex','-1');heading?.focus({preventScroll:true});
+    }
+    if (dialog && this.modal === 'portfolio' && this.portfolioSection) {
+      const target = dialog.querySelector<HTMLElement>(`[data-portfolio-section="${this.portfolioSection}"]`);
+      if (target) {
+        dialog.scrollTop += target.getBoundingClientRect().top - dialog.getBoundingClientRect().top - 72;
+        target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true });
+      }
+      this.portfolioSection = null;
     }
     if (this.focusQuizAnswer && this.modal === 'quiz') {
       dialog?.querySelector<HTMLElement>('#quiz-answer')?.focus(); this.focusQuizAnswer = false;
@@ -1335,6 +1361,7 @@ export class PensionRoadApp {
       const heading=this.root.querySelector<HTMLElement>('h1')??this.root.querySelector<HTMLElement>('#main');heading?.setAttribute('tabindex','-1');heading?.focus({preventScroll:true});window.scrollTo(0,0);
     }
     this.renderedScreenMark=screenMark;this.renderedActionView=this.actionView;
+    this.renderedActionMenuExpanded=this.actionMenuExpanded;
     this.renderedModal = this.modal;
     if (this.game && this.root.querySelector('[data-default-notice]')) this.game = presentMaturityNotices(this.game);
     this.checkpoint();
@@ -1699,7 +1726,7 @@ export class PensionRoadApp {
         tile.index + 1
       );
     }
-    if (this.game?.defaultLifecycle && (this.modal === 'news' || this.modal === 'action' && this.actionView === 'menu')) content = renderMaturitySummary(this.game) + content;
+    if (this.game?.defaultLifecycle && (this.modal === 'news' || this.modal === 'action' && this.actionView === 'menu' && this.actionMenuExpanded)) content = renderMaturitySummary(this.game) + content;
     const labels: Record<NonNullable<Modal>, string> = {
       'risk-notice': '위험자산 비중 확인', 'quiz-confirm': '퀴즈 건너뛰기 확인',
       action: '운용 행동 선택', life: '생활사건', howto: '게임 방법', tile: '도착 칸 설명', news: '시장 속보', settle: '턴 정산 요약',
@@ -1785,7 +1812,16 @@ export class PensionRoadApp {
       // 사건을 막 해결하고 온 길이면 두 번째 결정처럼 느껴지지 않게 한 흐름으로 잇는다.
       const resolved = game.lifeResolution && done === 0 ? renderLifeResolvedStrip(game.lifeResolution) : '';
       const autoRun = this.holdAutoRuns(game);
-      return `<header class="action-menu-heading"><p class="eyebrow">TURN ${game.turn} · ${counter}</p><h2>무엇을 할까요?</h2><p>조회와 X 취소는 행동 횟수를 쓰지 않아요.</p></header>${resolved}
+      const guide = actionGuidance(game);
+      const heading = `<header class="action-menu-heading"><p class="eyebrow">TURN ${game.turn} · ${counter}</p><h2>무엇을 할까요?</h2><p>조회와 X 취소는 행동 횟수를 쓰지 않아요.</p></header>`;
+      const hold = `<article class="hold-row"><div><strong>이번엔 그대로</strong><small>${this.holdMenuNote(game)}${game.actionsLeft > 1 ? ' · 남은 행동도 함께 마감' : ''}</small></div><button data-action="do-hold" class="${autoRun ? 'default-run' : ''}">${autoRun ? '디폴트옵션으로 운용하고 마감' : '그대로 두고 마감'}</button></article>`;
+      if (!this.actionMenuExpanded) return `<div class="beginner-action-menu">${heading}${renderActionHint(guide)}
+        <div class="action-money"><div><span>주문 가능 · IRP 안</span><strong>${formatWon(game.irpCash)}</strong></div><div><span>생활자금 · IRP 밖</span><strong>${formatWon(game.cash)}</strong></div></div>
+        ${renderPurposeChoices(guide)}${hold}<button class="secondary all-actions-toggle" data-action="show-all-actions">전체 운용 보기 <span aria-hidden="true">›</span></button>
+        <p class="purpose-help">카드는 지시 전 확인 화면만 열어요. 실제 거래는 별도로 확정해요.</p>
+        ${game.turn===12?'<p class="info-note">마지막 운용 · 남은 주문은 종료 가격으로 최종 정산합니다. 추가 시장·급여는 없습니다.</p>':''}
+        ${resolved}${soFar}${renderMaturitySummary(game)}${spotlightNote}${this.renderActionMarketContext(true)}</div>`;
+      return `<button class="text-button" data-action="show-simple-actions">← 쉬운 선택으로</button>${heading}${renderActionHint(guide)}${resolved}
         <div class="action-money"><div><span>주문 가능 · IRP 대기자금</span><strong>${formatWon(game.irpCash)}</strong><small>${cashInterestRule(game)}</small></div><div><span>생활자금 · IRP 밖</span><strong>${formatWon(game.cash)}</strong></div></div>
         ${game.turn===12?'<p class="info-note">마지막 운용입니다. 12턴 이후 주문 단계는 추가 시장·급여 없이 종료 가격으로 최종 정산합니다.</p>':''}${soFar}${spotlightNote}${this.renderActionMarketContext(true)}
         <div class="action-list">
@@ -1795,7 +1831,7 @@ export class PensionRoadApp {
           ${card('switch', '바꾸기', '한 상품을 다른 상품으로')}
           ${card('rebalance', '리밸런싱', `성향 안 목표비중에 가깝게 복원${game.rebalanceBonusTurn === game.turn ? ' · 오늘 이해 +2' : ''}`, true)}
           ${game.defaultTrading ? card('default', '디폴트옵션 옵트인/아웃', '상품을 직접 매수하거나 디폴트옵션 보유분을 환매') : ''}
-          <article class="hold-row"><div><strong>이번엔 그대로</strong><small>${this.holdMenuNote(game)}${game.actionsLeft > 1 ? ' · 남은 행동도 함께 마감' : ''}</small></div><button data-action="do-hold" class="${autoRun ? 'default-run' : ''}">${autoRun ? '디폴트옵션으로 운용하고 마감' : '그대로 두고 마감'}</button></article>
+          ${hold}
         </div>`;
     }
     if (this.actionView === 'contribute') {
@@ -1895,7 +1931,9 @@ export class PensionRoadApp {
 
   /** 「그대로」는 확인 화면 없이 바로 실행되므로 무슨 일이 일어나는지 목록 한 줄이 다 말해야 한다 */
   private holdMenuNote(game: GameState): string {
-    if(game.defaultLifecycle?.cycles.some(activeCycle)) return '새 주문 없이 마감 · 만기자금 통지·대기 절차는 계속됩니다';
+    const pending = game.pendingOrders.length || game.rebalancePlan ? ' · 접수한 주문은 예정된 턴에 계속 처리됩니다' : '';
+    if(game.defaultLifecycle?.cycles.some(activeCycle)) return `새 주문 없이 마감 · 만기자금 통지·대기·자동운용 절차는 계속됩니다${pending}`;
+    if(game.defaultTrading && pending) return `새 지시 없이 마감${pending}`;
     if(game.defaultTrading) return '새 주문 없이 현재 구성을 유지하고 턴 마감';
     if (this.holdAutoRuns(game)) return `대기자금 ${formatShortWon(game.irpCash)}을 지정옵션(${defaultOptionName(game.defaultOption)})으로 ${defaultOptionProducts(game.defaultOption)} 균등 매수 실행(옵트인 체험) · 바로 마감`;
     if (game.defaultOption) {

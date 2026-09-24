@@ -21,7 +21,7 @@ const click = (selector: string) => { const b = root.querySelector<HTMLElement>(
 function mount(g: GameState) {
  localStorage.setItem(CHECKPOINT_KEY, JSON.stringify({version:'c3', game:g, modal:'action', lastSummary:null,
  quizCardId:null, quizPicked:null, finalQuizQueue:[], finalQuizTotal:0, finishing:false, defaultOptionAsk:false}));
- new PensionRoadApp(root); click('[data-action="resume-game"]');
+ new PensionRoadApp(root); click('[data-action="resume-game"]'); root.querySelector<HTMLButtonElement>('[data-action="show-all-actions"]')?.click();
 }
 const change = (id: string, value: string) => { const e=root.querySelector<HTMLInputElement|HTMLSelectElement>(id)!;e.value=value;e.dispatchEvent(new Event('change',{bubbles:true})); };
 beforeEach(() => {

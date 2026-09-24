@@ -14,7 +14,7 @@ const change=(id:string,value:string)=>{const e=root.querySelector<HTMLInputElem
 function mount(game?:GameState) {
   const g=game??{...startTurn(createGame('trade-ui','balanced',500000,{ghost:false,scenario:'classic',defaultTrading:true,defaultOption:'highRisk'}),5).state,irpCash:2000000};
   localStorage.setItem(CHECKPOINT_KEY,JSON.stringify({version:g.defaultTrading?'c3':'c2',game:g,modal:'action',lastSummary:null,quizCardId:null,quizPicked:null,finalQuizQueue:[],finalQuizTotal:0,finishing:false,defaultOptionAsk:false}));
-  new PensionRoadApp(root);click('[data-action="resume-game"]');return g;
+  new PensionRoadApp(root);click('[data-action="resume-game"]'); root.querySelector<HTMLButtonElement>('[data-action="show-all-actions"]')?.click();return g;
 }
 beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true,quickGuideSeen:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));});
 it('기존 6개 카드와 같은 디자인의 새 카드 한 개, 상세 탭은 하위 화면에만 표시',()=>{
@@ -30,11 +30,11 @@ it('포트폴리오 왕복·재접속은 탭과 금액 초안을 보존하고 X/
   let base={...startTurn(createGame('draft-both','balanced',500000,{ghost:false,scenario:'classic',defaultTrading:true}),5).state,irpCash:2000000};
   base=settleAllOrders(performAction(base,{kind:'default-opt-in',optionId:'highRisk',amount:1000000,commandId:nextDefaultCommand(base)}).state);
   const g=mount({...base,awaitingAction:true,actionsLeft:2});click('[data-view="default"]');change('#default-trade-amount','345678');click('[data-action="default-trade-tab"][data-tab="out"]');click('[data-action="default-trade-fraction"][data-fraction="1"]');click('[data-action="action-portfolio"]');
-  document.body.innerHTML='<div id="second"></div>';root=document.querySelector('#second')!;new PensionRoadApp(root);click('[data-action="resume-game"]');click('[data-action="return-action"]');
+  document.body.innerHTML='<div id="second"></div>';root=document.querySelector('#second')!;new PensionRoadApp(root);click('[data-action="resume-game"]'); root.querySelector<HTMLButtonElement>('[data-action="show-all-actions"]')?.click();click('[data-action="return-action"]');
   expect(root.querySelector('[data-action="default-trade-tab"][data-tab="out"]')?.getAttribute('aria-pressed')).toBe('true');
   click('[data-action="default-trade-tab"][data-tab="in"]');expect(root.querySelector<HTMLInputElement>('#default-trade-amount')?.value).toBe('345678');
   expect(saved().game).toEqual(g);document.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape'}));expect(root.querySelector('[role="dialog"]')).toBeNull();expect(saved().game).toEqual(g);
-  click('[data-action="open-action"]');expect(root.querySelectorAll('.action-list>article')).toHaveLength(7);
+  click('[data-action="open-action"]'); root.querySelector<HTMLButtonElement>('[data-action="show-all-actions"]')?.click();expect(root.querySelectorAll('.action-list>article')).toHaveLength(7);
 });
 it('확정은 한 번만 접수하고 남은 행동과 결제 진행을 표시한다',()=>{
   const g=mount();click('[data-view="default"]');change('#default-trade-amount','100000');click('[data-action="submit-default-trade"]');

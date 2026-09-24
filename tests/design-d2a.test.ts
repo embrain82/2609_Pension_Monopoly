@@ -21,7 +21,7 @@ const click = (selector: string) => {
 function mount(game: GameState) {
   localStorage.setItem(CHECKPOINT_KEY, JSON.stringify({ version: 'c3', game, modal: 'action', lastSummary: null,
     quizCardId: null, quizPicked: null, finalQuizQueue: [], finalQuizTotal: 0, finishing: false, defaultOptionAsk: false }));
-  new PensionRoadApp(root); click('[data-action="resume-game"]');
+  new PensionRoadApp(root); click('[data-action="resume-game"]'); root.querySelector<HTMLButtonElement>('[data-action="show-all-actions"]')?.click();
 }
 beforeEach(() => {
   localStorage.clear(); document.body.innerHTML = '<div id="app"></div>'; root = document.querySelector('#app')!;
@@ -97,7 +97,7 @@ it('두 번 운용 메뉴는 실제 잔액·행동 수를 표시하며 펼침·�
   click('[data-action="action-portfolio"]'); click('[data-action="return-action"]');
   expect(root.querySelector<HTMLDetailsElement>('.market-impact-details')!.open).toBe(true);
   expect(root.querySelector('[role="dialog"]')!.lastElementChild!.className).toBe('action-footer');
-  click('[data-action="close-modal"]'); click('[data-action="open-action"]');
+  click('[data-action="close-modal"]'); click('[data-action="open-action"]'); root.querySelector<HTMLButtonElement>('[data-action="show-all-actions"]')?.click();
   expect(saved().game).toEqual(game);
   click('[data-view="contribute"]'); click('[data-action="do-contribute"]');
   expect(saved().game.actionsLeft).toBe(1);
