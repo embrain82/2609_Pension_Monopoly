@@ -9,7 +9,9 @@ import { equityExposureRatio, riskAssetRatio } from '../engine/policy-engine';
 import type { GameState } from '../types';
 import { renderDefaultHoldings } from './default-trade-view';
 import { formatWon, signedPercent } from './format';
-import { orderSchedule, orderScope } from './trade-preview';
+import { orderScope } from './trade-preview';
+import { renderOrderTimeline } from './order-timeline';
+import { renderLearningReference } from './learning-help';
 import { renderMoneyFlow } from './money-flow';
 const pct=(value:number)=>`${(value*100).toFixed(1)}%`;
 const ratePct=(value:number)=>`${(value*100).toFixed(2)}%`;
@@ -58,7 +60,7 @@ export function renderPortfolio(state:GameState):string {
  };
  const lots=depositStatus(state);
  const lotRows=lots.map(l=>`<li><strong>${l.status==='matured'?'◷ 만기 완료 · 재운용 대기':'● 약정 운용 중'}</strong><p>${formatWon(l.amount)} · ${orderScope(l.scope)}</p><small>가입 ${l.openedTurn}턴 · 만기 ${l.maturityTurn>12?`${l.maturityTurn}턴(판 종료 이후)`:l.maturityTurn+'턴'} · 약정 턴당 ${ratePct(l.ratePerTurn)}${l.status==='active'?` · 현재 ${l.maturityTurn-state.turn}턴 남음`:' · 추가 약정 이자 없음'}</small></li>`).join('');
- const orders=state.pendingOrders.map(o=>`<li><strong>${products.find(p=>p.id===o.productId)!.shortName} ${o.side==='buy'?'매수':'환매'} · ${o.stage==='received'?'접수 / 가격확정 대기':'가격확정 / 결제 대기'}</strong><p>${o.side==='sell'&&o.stage==='received'?'평가액 약 ':''}${formatWon(o.amount)} · ${orderScope(o.defaultScope)}</p><small>${orderSchedule(o)}${o.targetProductId?` · 결제 후 ${products.find(p=>p.id===o.targetProductId)!.shortName} 연결 매수 검토`:''}</small></li>`).join('');
+ const orders=state.pendingOrders.map(o=>`<li><strong>${products.find(p=>p.id===o.productId)!.shortName} ${o.side==='buy'?'매수':'환매'} · ${o.stage==='received'?'접수 / 가격확정 대기':'가격확정 / 결제 대기'}</strong><p>${o.side==='sell'&&o.stage==='received'?'평가액 약 ':''}${formatWon(o.amount)} · ${orderScope(o.defaultScope)}</p><small>${o.targetProductId?` · 결제 후 ${products.find(p=>p.id===o.targetProductId)!.shortName} 연결 매수 검토`:''}</small>${renderOrderTimeline(o)}</li>`).join('');
  const composition=portfolioComposition(state);
  let end=0;
  const gradient=composition.map(item=>{const start=end;end+=total>0?item.amount/total*100:0;return `${item.color} ${start}% ${end}%`;}).join(',');
@@ -73,7 +75,7 @@ export function renderPortfolio(state:GameState):string {
  </section><div class="portfolio-detail" aria-label="분류별 상세"><section class="portfolio-direct"><h3>직접 운용 보유 상품</h3>${values.some(v=>v.amount>.001)?group(values.filter(v=>v.amount>.001)):'<p>직접 운용 보유 상품이 없습니다. 디폴트옵션·대기자금·미결제 주문을 확인하세요.</p>'}
  ${values.some(v=>v.amount<=.001)?`<details class="empty-holdings"><summary>직접 미보유 상품 ${values.filter(v=>v.amount<=.001).length}개 살펴보기</summary>${group(values.filter(v=>v.amount<=.001))}</details>`:''}
  <p class="hint">상품별 수익률은 시장 예시이며 실제 보유분 성과와 다를 수 있습니다. 비중 분모는 현금·미결제·옵션을 포함한 전체 IRP입니다.</p></section>
- ${renderMaturityDetails(state)}${renderDefaultHoldings(state)}<section class="portfolio-orders"><h3 data-portfolio-section="orders">미결제 주문 ${state.pendingOrders.length}건</h3><ul class="trade-timeline">${orders||'<li>대기 주문 없음</li>'}</ul>${state.rebalancePlan?'<p>매도 결제 후 직접 운용분 목표비중을 다시 계산해 매수합니다.</p>':''}</section>
+ ${renderMaturitySummary(state, true)}${renderMaturityDetails(state)}${renderDefaultHoldings(state)}<section class="portfolio-orders"><h3 data-portfolio-section="orders">처리 중인 주문 · 미결제 ${state.pendingOrders.length}건</h3><ul class="trade-timeline">${orders||'<li>처리 중인 주문이 없어요. 결제된 상품·대금은 위 보유분과 IRP 대기자금에서 확인해요.</li>'}</ul>${state.rebalancePlan?'<p>매도 결제 후 직접 운용분 목표비중을 다시 계산해 매수합니다.</p>':''}</section>
  <section class="deposit-status"><h3>예금 약정 ${lots.length}건</h3><p class="hint">${state.defaultLifecycle ? '일반 예금과 예금 100% 옵션은 만기에 IRP 현금으로 이동합니다. 혼합 옵션 안의 예금은 새 금리로 재예치합니다. 이 게임의 가상 계약 조건이며 실제 상품별 조건은 다를 수 있습니다.' : '게임에서는 만기 이후 보유분을 자동 현금화하거나 재가입하지 않습니다. 실제 상품의 만기 처리 조건은 상품별로 확인해야 합니다.'}</p><ul class="trade-timeline">${lotRows||'<li>예금 보유 없음</li>'}</ul>${depositActions(state)}</section>
- <details class="account-sources"><summary>자금 원천과 수령 계산 기준</summary><p>퇴직급여 ${formatWon(basis.retirement)} · 미공제 원금 ${formatWon(basis.nonDeducted)} · 공제 원금 ${formatWon(basis.deducted)} · 운용수익 ${formatWon(basis.earnings)}</p><p>위 IRP 총액을 원천별로 나눈 값입니다.</p></details>${defaultScopes(state).length?'<p class="hint">사전지정 변경은 보유 옵션 매매와 별개입니다.</p>':''}</div></div>`;
+ <details class="account-sources"><summary>자금 원천과 수령 계산 기준</summary><p>퇴직급여 ${formatWon(basis.retirement)} · 미공제 원금 ${formatWon(basis.nonDeducted)} · 공제 원금 ${formatWon(basis.deducted)} · 운용수익 ${formatWon(basis.earnings)}</p><p>위 IRP 총액을 원천별로 나눈 값입니다.</p></details>${defaultScopes(state).length?'<p class="hint">사전지정 변경은 보유 옵션 매매와 별개입니다.</p>':''}${renderLearningReference()}</div></div>`;
 }

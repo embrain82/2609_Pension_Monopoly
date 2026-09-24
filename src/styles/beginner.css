@@ -101,3 +101,63 @@
   .money-flow-invest .money-flow-changed { padding:7px; }
   .money-flow-invest .money-flow-amount { font-size:14px; }
 }
+/* Beginner 04 / 07 / 08 / 02: opt-in help, ledger-based schedules, no new trade rules. */
+.term-help { border:1px solid var(--line); background:#f7faf7; border-radius:12px; margin:12px 0; text-align:left; }
+.term-help>summary { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:44px; padding:12px 14px; font-size:13px; font-weight:650; cursor:pointer; list-style:none; }
+.term-help>summary::-webkit-details-marker { display:none; }
+.term-help[open]>summary>span { transform:rotate(45deg); }
+.term-help>summary>span { font-size:18px; color:var(--green-2); }
+.term-help dl { display:block; margin:0; padding:0 14px 14px; }
+.term-help dl>div+div { border-top:1px solid var(--line); padding-top:10px; margin-top:10px; }
+.term-help dt { font-size:13px; font-weight:700; color:var(--ink); }
+.term-help dd { margin:5px 0 0; color:var(--muted); font-size:13px; line-height:1.65; }
+.learning-reference { margin-top:22px; }
+.learning-reference>h3 { font-family:inherit; font-size:17px; }
+.learning-reference>p { font-size:13px; color:var(--muted); }
+.order-tabs button small { display:block; margin-top:4px; font-size:11px; font-weight:400; }
+.order-clock { margin:12px 0 4px; padding:12px; border:1px solid #d3e3d8; border-radius:12px; background:#f6faf7; text-align:left; }
+.order-clock .order-clock-label { font-size:12px; font-weight:700; margin:0 0 10px; color:var(--green-2); }
+.order-clock ol { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); list-style:none; padding:0; margin:0; gap:6px; }
+.order-clock ol li { display:flex; flex-direction:column; align-items:flex-start; gap:5px; padding:8px 5px; margin:0; border:0; border-top:2px solid #d6e2da; border-radius:0; background:transparent; min-width:0; }
+.order-clock li.current { border-top-color:var(--green); background:#e5f3e8; border-radius:0 0 6px 6px; }
+.order-clock li.complete { border-top-color:#79a788; }
+.order-clock li>span { display:grid; place-items:center; width:20px; height:20px; border-radius:50%; background:#e1eae3; color:var(--green-2); font-size:11px; }
+.order-clock li.current>span { background:var(--green); color:#fff; }
+.order-clock li strong { font-size:12px; line-height:1.4; }
+.order-clock li small { display:block; margin:0; font-size:11px; line-height:1.5; }
+.order-clock .order-clock-money { font-size:12px; line-height:1.6; margin:10px 0 5px; }
+.order-clock .order-clock-note { display:block; color:var(--muted); font-size:11px; line-height:1.5; }
+.default-status-card.maturity-notice { padding:16px; background:#f4f8f4; border:1px solid #d1e0d5; border-left:3px solid var(--green); border-radius:14px; text-align:left; }
+.default-status-card>header { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px 14px; }
+.default-status-card>header h3 { font-family:inherit; font-size:16px; margin:0; }
+.default-status-card>header small { font-size:12px; color:var(--muted); }
+.default-status-card .default-stage-row { border-top:1px solid #d5e2d8; padding-top:12px; margin-top:12px; }
+.default-status-card .default-stage-tag { display:inline-block; padding:4px 8px; border-radius:7px; font-size:11px; background:#deede2; color:var(--green-2); margin-bottom:6px; }
+.default-status-card .default-stage-row>strong { display:block; font-size:14px; }
+.default-status-card p { font-size:12px; line-height:1.65; margin:7px 0; }
+.default-status-card .default-new-notice { padding:12px; border:1px solid #e0c783; border-radius:10px; background:#fff9e9; margin-top:10px; }
+.default-status-card .default-new-notice>b { font-size:13px; }
+.default-status-rules summary,.maturity-ledger>summary { cursor:pointer; font-size:13px; min-height:44px; padding:12px 0; font-weight:650; }
+.default-status-card>button { min-height:44px; margin-top:4px; font-size:13px; }
+.practice-invitation,.guided-practice { border:1px solid #bcd8c5; background:#edf7ef; border-radius:14px; padding:16px; margin:14px 0; text-align:left; }
+.practice-invitation>strong { font-size:15px; }
+.practice-invitation>p,.guided-practice>p { font-size:13px; line-height:1.6; margin:8px 0 12px; }
+.guided-practice>h3 { font-family:inherit; font-size:17px; margin:6px 0; line-height:1.45; }
+.guided-practice>.eyebrow { font-size:11px; margin:0; }
+.guided-practice>small { display:block; color:var(--muted); font-size:11px; line-height:1.5; margin-top:10px; }
+.practice-actions { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.practice-invitation button,.guided-practice button,.practice-replay { min-height:44px; font-size:13px; }
+@media(max-width:600px) {
+  .practice-invitation,.guided-practice { padding:13px; }
+  .default-status-card.maturity-notice { padding:13px; }
+  .order-clock { padding:10px; }
+}
+
+.guided-practice h3:focus { outline:none; }
+@media(max-width:600px) {
+  .order-tabs { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .order-tabs button { width:100%; padding:9px 5px; font-size:12px; }
+  .order-tabs .availability-reason { font-size:11px; line-height:1.5; }
+}
+.term-help dl { padding-top:8px; }
+.order-clock li strong { word-break:keep-all; }

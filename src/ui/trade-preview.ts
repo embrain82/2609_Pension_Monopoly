@@ -5,11 +5,9 @@ import { portfolioValue } from '../engine/portfolio-engine';
 import type { ActionResult, DefaultScope, GameState, PendingOrder, ProductId } from '../types';
 import { formatWon, signedWon } from './format';
 import { renderMoneyFlow } from './money-flow';
-export const turnLabel=(turn:number):string=>turn>12?'최종 정산':`${turn}턴`;
+import { turnLabel, orderSchedule, renderOrderTimeline, renderInstantTimeline } from './order-timeline';
+export { turnLabel, orderSchedule } from './order-timeline';
 export const orderScope=(scope?:DefaultScope):string=>scope?`디폴트옵션 · ${defaultPortfolio(scope.optionId).name}`:'직접 운용분';
-export function orderSchedule(order:PendingOrder):string {
- return `접수 ${turnLabel(order.submittedTurn)} → 기준가 ${turnLabel(order.priceTurn??order.settlesTurn)} → 결제 ${turnLabel(order.settlesTurn)}`;
-}
 interface PreviewLeg {productId:ProductId;side:'buy'|'sell';amount:number;scope?:DefaultScope;order?:PendingOrder;}
 /** 실제 실행 함수의 불변 결과를 읽는다. 예측을 위해 별도 매매·수수료 계산을 복제하지 않는다. */
 export function tradePreviewData(before:GameState,result:ActionResult,scope?:DefaultScope) {
@@ -30,12 +28,11 @@ export function renderTradePreview(before:GameState,result:ActionResult,scope?:D
  const legs=data.legs.map(l=>{
   const product=products.find(p=>p.id===l.productId)!;
   const schedule=l.order?orderSchedule(l.order):`접수·가격확정·결제 ${turnLabel(before.turn)} · ${product.kind==='deposit'?(l.side==='buy'?'새 약정 가입':'가입 건별 만기·중도해지 조건 반영'):'표시가격 체결'}`;
-  return `<li><b>${product.shortName} ${l.side==='buy'?'매수':'매도'} · ${l.order?.side==='sell'?'평가액 약 ':''}${formatWon(l.amount)}</b><small class="scope-label">${orderScope(l.scope)}</small><small>${schedule}</small></li>`;
+  return `<li><b>${product.shortName} ${l.side==='buy'?'매수':'매도'} · ${l.order?.side==='sell'?'평가액 약 ':''}${formatWon(l.amount)}</b><small class="scope-label">${orderScope(l.scope)}</small><small>${schedule}</small>${l.order ? renderOrderTimeline(l.order,{preview:true}) : renderInstantTimeline(before.turn,l.side)}</li>`;
  }).join('');
  const linked=data.orders.filter(o=>o.targetProductId).map(o=>{
   const product=products.find(p=>p.id===o.targetProductId)!;
-  const schedule=product.kind==='fund'?`접수 ${turnLabel(o.settlesTurn)} → 기준가 ${turnLabel(o.settlesTurn+1)} → 결제 ${turnLabel(o.settlesTurn+2)}`:`접수·가격확정·결제 ${turnLabel(o.settlesTurn)}`;
-  return `<li><b>이어서 ${product.shortName} 매수 · 결제대금 범위 내</b><small>직접 운용분 · 조건부 연결 주문</small><small>${schedule}</small><small>환매 결제 당시 가격·위험한도·최소금액을 다시 확인합니다. 매수되지 않는 금액은 IRP 대기자금에 남습니다.</small></li>`;
+  return `<li><b>이어서 ${product.shortName} 매수 · 결제대금 범위 내</b><small>직접 운용분 · 조건부 연결 주문</small>${product.kind==='fund' ? renderOrderTimeline({...o,side:'buy',submittedTurn:o.settlesTurn,priceTurn:o.settlesTurn+1,settlesTurn:o.settlesTurn+2},{preview:true,conditional:true}) : renderInstantTimeline(o.settlesTurn,'buy',true)}<small>환매 결제 당시 가격·위험한도·최소금액을 다시 확인합니다. 매수되지 않는 금액은 IRP 대기자금에 남습니다.</small></li>`;
  }).join('');
  const selling=data.orders.filter(o=>o.side==='sell');
  const due=selling.length?Math.max(...selling.map(o=>o.settlesTurn)):before.turn;

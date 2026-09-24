@@ -1,0 +1,66 @@
+{
+  "turn": 5,
+  "practice": null,
+  "irpCash": 2004002.2691999972,
+  "cycles": [
+    {
+      "id": "maturity-deposit-0",
+      "depositLotId": "deposit-0",
+      "maturityTurn": 3,
+      "originalAmount": 65869200,
+      "remaining": 0,
+      "state": "ordered",
+      "optionId": "lowRisk",
+      "notifiedTurn": 4,
+      "presentedTurn": 4,
+      "eligibleTurn": 5,
+      "orderedTurn": 5,
+      "orderedAmount": 66001004,
+      "commandId": "auto-maturity-deposit-0",
+      "orderIds": [
+        "order-1"
+      ]
+    }
+  ],
+  "orders": [
+    {
+      "id": "order-1",
+      "side": "buy",
+      "productId": "tdf",
+      "amount": 19800302,
+      "submittedTurn": 5,
+      "priceTurn": 6,
+      "settlesTurn": 7,
+      "stage": "received",
+      "defaultScope": {
+        "mandateId": "mandate-0",
+        "optionId": "lowRisk",
+        "optionVersion": "e1"
+      },
+      "groupId": "default-group-0"
+    }
+  ],
+  "groups": [
+    {
+      "id": "default-group-0",
+      "commandId": "auto-maturity-deposit-0",
+      "kind": "in",
+      "source": "automatic",
+      "cycleId": "maturity-deposit-0",
+      "scope": {
+        "mandateId": "mandate-0",
+        "optionId": "lowRisk",
+        "optionVersion": "e1"
+      },
+      "turn": 5,
+      "amount": 66001004,
+      "orderIds": [
+        "order-1"
+      ]
+    }
+  ],
+  "status": "디폴트옵션 · 지금 상태사전지정 저위험\n    자동주문 처리 중처리 중인 평가액 19,800,302원저위험 · 7턴까지 결제 예정 · 주문 시간표에서 확인\n      \n    옵션 보유 46,200,702원 · 처리 중인 옵션 주문 19,800,302원\n    \n    어떤 돈이 언제 움직이나요?대상은 만기자금 중 남은 금액이며 IRP 대기자금에 이미 포함돼 있어요. 새 납입금이나 모든 현금을 자동으로 사는 절차가 아니에요.실제 제도: 만기 후 4주 무지시 → 통지 → 2주 무지시 시 적용. 게임은 단계별 다음 턴으로 압축하며 실제 주 수와 같지 않아요. 주문 접수 후에는 상품별 결제를 기다려요.지정 변경·직접 매수·환매는 각각 다른 선택이에요. 이번엔 그대로를 선택해도 만기 자동운용 절차는 계속돼요.\n    ",
+  "width": 390,
+  "dialog": 334,
+  "scrollWidth": 334
+}

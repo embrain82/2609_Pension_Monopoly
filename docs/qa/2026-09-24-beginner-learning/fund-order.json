@@ -1,0 +1,30 @@
+{
+  "before": {
+    "turn": 2,
+    "irpCash": 1001000,
+    "actions": 1
+  },
+  "after": {
+    "turn": 2,
+    "irpCash": 0,
+    "actions": 0,
+    "orders": [
+      {
+        "id": "order-0",
+        "side": "buy",
+        "productId": "shortBond",
+        "amount": 1001000,
+        "submittedTurn": 2,
+        "priceTurn": 3,
+        "settlesTurn": 4,
+        "stage": "received"
+      }
+    ]
+  },
+  "practice": {
+    "version": "p1",
+    "mode": "active",
+    "turn": 2,
+    "step": "done"
+  }
+}
