@@ -16,7 +16,7 @@ const click = (action: string) => root.querySelector<HTMLElement>(`[data-action=
 const saved = () => parseCheckpoint(localStorage.getItem(CHECKPOINT_KEY))!;
 const fresh = () => createGame('emotion-arrival', 'growth', 500000, { updatedFinance: true, scenario: 'classic', boardVisibility: 'arrival-v1', ghost: false });
 function mount(game: GameState, pending = false, reducedMotion = false) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...defaultSave, disclaimerAccepted: true, howtoSeen: true,
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...defaultSave, disclaimerAccepted: true, quickGuideSeen: true, howtoSeen: true,
     settings: { ...defaultSave.settings, reducedMotion, characters: true } }));
   const data: PlayCheckpoint = { version: checkpointVersion(game), game, arrivalPending: pending, modal: null, lastSummary: null,
     quizCardId: null, quizPicked: null, finalQuizQueue: [], finalQuizTotal: 0, finishing: false, defaultOptionAsk: false };

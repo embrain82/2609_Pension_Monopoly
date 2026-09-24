@@ -99,7 +99,7 @@ let root:HTMLElement;
 const click=(action:string)=>root.querySelector<HTMLElement>(`[data-action="${action}"]`)!.click();
 const saved=()=>parseCheckpoint(localStorage.getItem(CHECKPOINT_KEY))!;
 function mount(g?:GameState, reducedMotion=false) {
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion}}));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true,quickGuideSeen:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion}}));
   if(g)localStorage.setItem(CHECKPOINT_KEY,JSON.stringify(checkpoint(g)));
   document.body.innerHTML='<div id="app"></div>'; root=document.querySelector('#app')!;
   new PensionRoadApp(root);

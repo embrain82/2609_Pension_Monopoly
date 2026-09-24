@@ -21,7 +21,7 @@ it('36개 주사위 결과에서 점 눈의 면 수와 합계의 접근성 문�
   }
 });
 it('동작 줄이기로 굴려도 실제 이동과 결과가 일치하고 이어하기에서 유지된다', async () => {
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true,quickGuideSeen:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));
   new PensionRoadApp(root);click('begin');click('prepare-continue');click('confirm-default-option');
   const before=parseCheckpoint(localStorage.getItem(CHECKPOINT_KEY))!.game, faces=dicePairForTurn(before.seed,before.turn);
   click('roll-dice');await Promise.resolve();await Promise.resolve();
@@ -46,11 +46,12 @@ it('브랜드 그림 로드 실패는 시작 동의·진입을 막지 않는다'
   const image=root.querySelector<HTMLImageElement>('[data-brand-art]')!;image.dispatchEvent(new Event('error'));
   expect(image.hidden).toBe(true);expect(root.querySelector('.road-art-fallback')).not.toBeNull();
   const agree=root.querySelector<HTMLInputElement>('#disclaimer')!;agree.checked=true;agree.dispatchEvent(new Event('change',{bubbles:true}));click('begin');
+  expect(root.querySelectorAll(".quick-guide-cuts li")).toHaveLength(4);click("prepare-guide-continue");
   expect(root.querySelector('[data-action="prepare-diagnosis"]')).not.toBeNull();
 });
 it('새 레이아웃에서도 추천과 직접 고른 옵션이 구분되며 확인 전 저장하지 않는다', () => {
   localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true}));new PensionRoadApp(root);
-  click('begin');click('prepare-continue');root.querySelector<HTMLButtonElement>('[data-option="principal"]')!.click();
+  click('begin');click('prepare-guide-continue');click('prepare-continue');root.querySelector<HTMLButtonElement>('[data-option="principal"]')!.click();
   expect(root.querySelector('.preparation-option-detail h2')!.textContent).toBe('원리금보장형');
   expect(root.querySelector('.default-option-card.picked')!.getAttribute('data-option')).toBe('principal');
   expect(root.querySelector('.tag.suggest')!.closest('[data-option]')!.getAttribute('data-option')).toBe('midRisk');

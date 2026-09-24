@@ -25,7 +25,7 @@ function mount(game: GameState) {
 }
 beforeEach(() => {
   localStorage.clear(); document.body.innerHTML = '<div id="app"></div>'; root = document.querySelector('#app')!;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...defaultSave, disclaimerAccepted: true, howtoSeen: true,
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...defaultSave, disclaimerAccepted: true, quickGuideSeen: true, howtoSeen: true,
     settings: { ...defaultSave.settings, reducedMotion: true } }));
 });
 

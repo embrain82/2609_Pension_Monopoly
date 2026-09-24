@@ -1,0 +1,55 @@
+{
+  "preview": {
+    "route": "이번 지시의 이동대기자금 → 처리 중",
+    "buckets": [
+      {
+        "bucket": "life",
+        "amount": 13800000
+      },
+      {
+        "bucket": "cash",
+        "amount": 0
+      },
+      {
+        "bucket": "held",
+        "amount": 110288644.20381337
+      },
+      {
+        "bucket": "pending",
+        "amount": 1001000
+      }
+    ]
+  },
+  "after": {
+    "buckets": [
+      {
+        "bucket": "life",
+        "amount": 13800000
+      },
+      {
+        "bucket": "cash",
+        "amount": 0
+      },
+      {
+        "bucket": "held",
+        "amount": 110288644.20381337
+      },
+      {
+        "bucket": "pending",
+        "amount": 1001000
+      }
+    ],
+    "pending": [
+      {
+        "id": "order-0",
+        "side": "buy",
+        "productId": "shortBond",
+        "amount": 1001000,
+        "submittedTurn": 2,
+        "priceTurn": 3,
+        "settlesTurn": 4,
+        "stage": "received"
+      }
+    ]
+  }
+}

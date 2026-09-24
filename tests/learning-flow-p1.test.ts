@@ -14,7 +14,7 @@ let root:HTMLElement;
 const saved=()=>parseCheckpoint(localStorage.getItem(CHECKPOINT_KEY))!;
 const click=(action:string)=>{const b=root.querySelector<HTMLButtonElement>(`[data-action="${action}"]`);expect(b,action).not.toBeNull();b!.click();};
 function mount(g:GameState,modal='action',summary:unknown=null){localStorage.setItem(CHECKPOINT_KEY,JSON.stringify({version:'c3',game:g,modal,lastSummary:summary,quizCardId:null,quizPicked:null,finalQuizQueue:[],finalQuizTotal:0,finishing:false,defaultOptionAsk:false}));new PensionRoadApp(root);click('resume-game');}
-beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));});
+beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,quickGuideSeen:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));});
 it('시장과 두 운용 행동의 퀴즈를 덮어쓰지 않고 정산에서 선택한다',()=>{
  let g:GameState={...startTurn(createGame('optional-p1','balanced',500000,{ghost:false,defaultTrading:true,scenario:'classic',settlementLearning:true}),5).state,currentEventId:null};
  g=queueQuiz({...g,unlockedCards:[...g.unlockedCards,'risk-limit']},'risk-limit');mount(g);expect(root.querySelector('.modal-action')).not.toBeNull();

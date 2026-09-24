@@ -1,0 +1,12 @@
+{
+  "url": "https://2609-pension-monopoly-bwg1mxpml-nonsleepers-projects.vercel.app",
+  "productionPromoted": false,
+  "authentication": "Vercel login required for preview; authenticated vercel curl verified app HTML and bundle",
+  "unauthenticatedResponse": "Redirect to Vercel login (HTTP 200 login page, not app)",
+  "bundle": {
+    "file": "index-CU1wYYer.js",
+    "matchesLocalBuild": true,
+    "sha256": "936d8bb3be4bea8fa795a732578401938bac099dc48707f27ac3a1a5c8684c96"
+  },
+  "version": "1.14.0"
+}

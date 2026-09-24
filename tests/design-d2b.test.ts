@@ -26,7 +26,7 @@ function mount(g: GameState) {
 const change = (id: string, value: string) => { const e=root.querySelector<HTMLInputElement|HTMLSelectElement>(id)!;e.value=value;e.dispatchEvent(new Event('change',{bubbles:true})); };
 beforeEach(() => {
  localStorage.clear(); document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;
- localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));
+ localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,quickGuideSeen:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));
 });
 
 it.each(['contribute','buy','sell','switch','rebalance'] as const)('%s 입력→미리보기→확정이며 실제 실행 결과는 기존 엔진과 같다', kind => {

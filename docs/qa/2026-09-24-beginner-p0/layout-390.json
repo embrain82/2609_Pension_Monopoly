@@ -1,0 +1,28 @@
+{
+  "width": 390,
+  "doc": 375,
+  "scroll": 375,
+  "flow": {
+    "x": 29,
+    "y": 218.9921875,
+    "width": 302,
+    "height": 758.8046875,
+    "top": 218.9921875,
+    "right": 331,
+    "bottom": 977.796875,
+    "left": 29
+  },
+  "overflow": [],
+  "resumedPending": [
+    {
+      "id": "order-0",
+      "side": "buy",
+      "productId": "shortBond",
+      "amount": 1001000,
+      "submittedTurn": 2,
+      "priceTurn": 3,
+      "settlesTurn": 4,
+      "stage": "received"
+    }
+  ]
+}

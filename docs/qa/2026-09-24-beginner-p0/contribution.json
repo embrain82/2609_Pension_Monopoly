@@ -1,0 +1,27 @@
+{
+  "cancelPreservesGame": true,
+  "before": {
+    "cash": 13400000,
+    "irpCash": 0,
+    "actions": 1
+  },
+  "quote": [
+    {
+      "bucket": "life",
+      "amount": 12400000
+    },
+    {
+      "bucket": "cash",
+      "amount": 1000000
+    },
+    {
+      "bucket": "held",
+      "amount": 109472370.80436698
+    }
+  ],
+  "after": {
+    "cash": 12400000,
+    "irpCash": 1000000,
+    "actions": 0
+  }
+}

@@ -30,7 +30,7 @@ function settled(): {state: GameState; summary: TurnSummary} {
   return {state:result.state,summary:result.summary!};
 }
 beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));});
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,quickGuideSeen:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));});
 afterEach(()=>vi.useRealTimers());
 
 it.each([.699,.7,.700009,.700009999])('시장 한도 경계 %s에는 초과 팝업을 만들지 않는다',ratio=>expect(marketRiskNotice(riskGame(ratio)).exceeded).toBe(false));

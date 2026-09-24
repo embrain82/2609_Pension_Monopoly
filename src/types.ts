@@ -716,6 +716,8 @@ export interface SaveData {
   bestGoalRate: number;
   playCount: number;
   howtoSeen: boolean;
+  /** The short visual guide has its own marker: old howtoSeen was set without displaying a guide. */
+  quickGuideSeen?: boolean;
   profileId: ProfileId;
   goalMonthly: number;
 }

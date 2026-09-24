@@ -7,6 +7,7 @@ import { contributionCredit } from '../engine/policy-engine';
 import { portfolioValue } from '../engine/portfolio-engine';
 import { policyRules } from '../data/content';
 import type { GameState } from '../types';
+import { renderMoneyFlow } from './money-flow';
 
 const short = (n: number) => n % 10000 === 0 ? `${n / 10000}만원` : won(n);
 
@@ -34,6 +35,7 @@ export function renderContributionView(state: GameState, preset: AmountPreset): 
     <p class="hint" id="contribution-budget-note">${paced ? '게임 진행용 한도 · 운용지시 2회와 보너스 납입이 함께 사용합니다. ' : ''}이번 판 누적 납입 잔여 ${won(q.annualRemaining)} · 최소 10만원.</p>
     <div class="amount-presets contribution-presets">${buttons}</div>`, preview: `
     <div class="preview-box contribution-preview" aria-live="polite"><strong>미리보기</strong><p>납입 ${won(q.accepted)} · 납입 후 생활자금 ${won(state.cash - q.accepted)}.<br>목표용 월 환산액 · 세전 약 ${won((portfolioValue(state) + q.accepted) / policyRules.receivingMonths)}.</p><p>${creditNote}</p></div>
+    ${!blocked ? renderMoneyFlow(state, { ...state, cash: state.cash - q.accepted, irpCash: state.irpCash + q.accepted }) : ''}
     ${blocked ? `<p class="availability-reason" id="contribution-reason">${blocked}</p>` : ''}
     `, actions: `<button class="primary jumbo" data-action="do-contribute" data-amount="${q.accepted}" ${blocked ? 'disabled aria-describedby="contribution-reason"' : ''}>${blocked ? '추가납입 이용 불가' : `${short(q.accepted)} 납입`}</button>` });
 }

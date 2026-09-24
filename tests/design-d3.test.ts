@@ -40,7 +40,7 @@ function quizCheckpoint() {
 }
 beforeEach(()=>{
  localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;
- localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true,sound:false}}));
+ localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,quickGuideSeen:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true,sound:false}}));
 });
 
 it.each([true,false])('분할 퀴즈 정오답(%s)은 한 번만 채점하고 해설·근거를 답한 뒤 공개한다',correct=>{

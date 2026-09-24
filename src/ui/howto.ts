@@ -1,5 +1,5 @@
 import type { GameState } from '../types';
-import { renderSpeech } from './speech';
+import { renderQuickGuide } from './quick-guide';
 
 export function shouldShowHowTo(howtoSeen: boolean): boolean {
   return !howtoSeen;
@@ -13,10 +13,11 @@ export function buyNeedsContribution(irpCash: number): boolean {
   return irpCash < 100000;
 }
 
-export function renderHowToModal(characters = true, automatic = false): string {
-  return `<p class="eyebrow">처음 한 번만 보여 줍니다</p>
-    <h2>한 턴은 이렇게 진행됩니다</h2>
-    ${renderSpeech('coach', '<p>저는 코치예요. 정산마다 한 줄 정리와 다음 판단을 말풍선으로 알려 드릴게요. 보드 위의 캐릭터가 바로 당신의 말이고, 충격 턴엔 긴장한 표정이 됩니다.</p>', { characters })}
+export function renderHowToModal(automatic = false): string {
+  return `<p class="eyebrow">30초 그림 안내 · 언제든 다시 보기</p>
+    <h2>한 판은 이렇게 진행돼요</h2>${renderQuickGuide()}
+    <button class="primary jumbo" data-action="dismiss-howto">알겠어요 · 돌아가기</button>
+    <details class="quick-guide-more" data-preserve-open><summary>자금·상품·만기 규칙 더 알아보기</summary>
     <ol class="howto-steps">
       <li><b>1</b><div><strong>주사위 굴리기</strong><p>두 주사위의 합만큼 자동으로 이동합니다. 도착한 칸의 효과를 확인하세요.</p></div></li>
       <li><b>2</b><div><strong>시장이 먼저 움직입니다</strong><p>속보의 「내 보유분에 실제 반영」에서 원화 변화를 보세요. 상품별 시장 예시는 내 수익과 다릅니다. 지금 주문은 이후 시장부터 영향을 받습니다.</p></div></li>
@@ -25,7 +26,7 @@ export function renderHowToModal(characters = true, automatic = false): string {
     </ol>
     <p>12턴 동안 선택한 미션에 도전합니다. 도착한 칸마다 작은 효과가 하나씩 있고, 같은 입출금의 기준 지수와 성과를 비교합니다. 고스트는 생활 선택·납입까지 다른 보조 경로입니다. 오른쪽 위 성향 이름을 확인하고, 성향 허용 범위보다 위험이 큰 상품은 살 수 없습니다. 이 안내는 설정에서 다시 볼 수 있습니다.</p>
     ${automatic ? '<p>예금 만기자금은 다음 턴 통지, 통지가 표시된 다음 턴 자동주문으로 이어집니다. 기다리는 동안 직접 운용할 수 있습니다. 실제 제도의 4주·통지 후 2주 절차를 게임 단계로 압축했으며, 모든 현금이 자동운용 대상은 아닙니다.</p>' : ''}
-    <button class="primary jumbo" data-action="dismiss-howto">알겠어요</button>`;
+    </details>`;
 }
 
 export function renderSettingsHowToButton(): string {
