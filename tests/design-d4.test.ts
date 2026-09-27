@@ -6,7 +6,7 @@ import { createGame } from '../src/engine/game-engine';
 import { CHECKPOINT_KEY, checkpointVersion, parseCheckpoint } from '../src/ui/play-checkpoint';
 let root:HTMLElement;
 const click=(action:string)=>{const b=root.querySelector<HTMLButtonElement>(`[data-action="${action}"]`);expect(b,action).not.toBeNull();b!.click();};
-beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,howtoSeen:true}));});
+beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,disclaimerAccepted:true,quickGuideSeen:true,howtoSeen:true}));});
 it('설정의 미진단 안내와 옵션 진입도 기본값을 결과로 표시하지 않는다',()=>{
  new PensionRoadApp(root);click('open-settings');const modal=root.querySelector('[role="dialog"]')!;
  expect(modal.querySelector('.profile-note')!.textContent).toContain('아직 확인한 투자자성향이 없습니다');

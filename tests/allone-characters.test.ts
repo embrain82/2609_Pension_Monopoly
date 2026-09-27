@@ -32,7 +32,7 @@ it('다섯 이름을 그림 카드로 고르고 선택 표시·새로고침 저�
 
 it('기존 컬렉션 기록을 유지하고 진행 중 캐릭터 변경은 금융 상태·점수·주사위를 바꾸지 않는다', () => {
   const collection = { ...defaultSave.collection, growth: { plays: 4, bestStars: 3 } };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...defaultSave, collection, profileId: 'stable', avatarId: 'growth', profileAssessment: {profileId:'stable', origin:'confirmed'}, disclaimerAccepted: true, howtoSeen: true }));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...defaultSave, collection, profileId: 'stable', avatarId: 'growth', profileAssessment: {profileId:'stable', origin:'confirmed'}, disclaimerAccepted: true, quickGuideSeen: true, howtoSeen: true }));
   mount(); click('begin'); click('prepare-continue'); click('confirm-default-option');
   const before = parseCheckpoint(localStorage.getItem(CHECKPOINT_KEY))!.game;
   const score = calculateScore(before);

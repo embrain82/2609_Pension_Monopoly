@@ -24,6 +24,7 @@ export const defaultSave: SaveData = {
   bestGoalRate: 0,
   playCount: 0,
   howtoSeen: false,
+  quickGuideSeen: false,
   profileId: 'balanced', avatarId: 'balanced',
   goalMonthly: 500_000
 };
@@ -73,6 +74,7 @@ function migrateSave(value: unknown): SaveData | null {
     bestGoalRate?: unknown;
     playCount?: unknown;
     howtoSeen?: unknown;
+    quickGuideSeen?: unknown;
     profileId?: unknown;
     profileAssessment?: { profileId?: unknown; origin?: unknown };
     avatarId?: unknown;
@@ -109,6 +111,7 @@ function migrateSave(value: unknown): SaveData | null {
     bestGoalRate: finiteNumber(data.bestGoalRate) ? data.bestGoalRate : 0,
     playCount: finiteNumber(data.playCount) ? data.playCount : 0,
     howtoSeen: data.howtoSeen === true,
+    quickGuideSeen: data.quickGuideSeen === true,
     avatarId: isProfileId(data.avatarId) ? data.avatarId : isProfileId(data.profileId) ? data.profileId : 'balanced',
     profileId: isProfileId(data.profileId) ? data.profileId : 'balanced',
     ...(isProfileId(data.profileId) && data.profileAssessment?.profileId === data.profileId && ['diagnosed','confirmed'].includes(String(data.profileAssessment?.origin))

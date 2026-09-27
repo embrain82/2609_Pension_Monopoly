@@ -1,0 +1,75 @@
+/* Beginner 01 + 03: static explanatory diagrams; no changes to board or trade rules. */
+.guide-preparation { max-width:940px; }
+.guide-preparation>.eyebrow { margin:22px 0 8px; }
+.guide-preparation>h1 { font-size:clamp(24px,4vw,34px); margin:0 0 14px; }
+.quick-guide { text-align:left; }
+.quick-guide-goal { color:var(--ink); line-height:1.6; margin:0 0 18px; }
+.quick-guide-cuts { list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+.quick-guide-cuts li { padding:16px; border-radius:16px; background:var(--road-mint); border:1px solid var(--line); min-width:0; }
+.quick-guide-cuts li:nth-child(2) { background:var(--road-blue); }
+.quick-guide-cuts li:nth-child(3) { background:var(--road-yellow); }
+.quick-guide-picture { display:flex; align-items:center; justify-content:space-between; color:var(--green-2); margin-bottom:12px; }
+.quick-guide-picture svg { width:40px; height:40px; }
+.quick-guide-picture b { display:grid; place-items:center; width:24px; height:24px; border-radius:50%; background:#fff; font-size:13px; }
+.quick-guide-cuts strong { display:block; font-size:16px; }
+.quick-guide-cuts p { font-size:14px; line-height:1.55; color:var(--muted); margin:8px 0 0; }
+.quick-guide-arrival { font-size:14px; line-height:1.6; padding:14px 16px; border-left:3px solid var(--green); background:#f6f9f6; margin:16px 0 10px; }
+.quick-guide-rules { padding-left:20px; font-size:13px; line-height:1.6; margin:10px 0 20px; color:var(--muted); }
+.quick-guide-rules li+li { margin-top:4px; }
+.quick-guide-more { margin:24px 0 0; }
+.quick-guide-more summary { min-height:44px; padding:10px 0; cursor:pointer; font-weight:700; }
+.preparation-guide-link { display:block; margin:-16px 0 20px; min-height:44px; }
+.money-flow { padding:16px; border:1px solid var(--line); background:#fff; border-radius:16px; margin:16px 0 24px; text-align:left; }
+.money-flow header h3 { font-family:inherit; font-size:16px; margin:0 0 5px; }
+.money-flow header>small { display:block; font-size:13px; color:var(--muted); }
+.money-flow-route { margin:12px 0 0; padding:10px 12px; background:#eaf6ed; border-left:3px solid var(--green); color:var(--green-2); line-height:1.5; }
+.money-flow-route small { display:block; font-size:12px; }
+.money-flow-route strong { font-size:14px; }
+.money-flow-map { display:grid; grid-template-columns:minmax(120px,1fr) 60px minmax(0,3fr); align-items:center; margin-top:14px; }
+.money-flow-node { min-width:0; background:#f7f9f7; border:1px solid var(--line); border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:5px; }
+.money-flow-node>strong { font-size:14px; }
+.money-flow-node>small { font-size:12px; line-height:1.5; color:var(--muted); }
+.money-flow-icon { color:var(--green-2); }
+.money-flow-amount { font-size:16px; line-height:1.5; font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.money-flow-life { background:var(--road-blue); }
+.money-flow-deposit { display:flex; flex-direction:column; align-items:center; color:var(--green-2); font-size:12px; gap:4px; }
+.money-flow-deposit>span { font-size:24px; }
+.money-flow-account { min-width:0; border:2px solid #80b996; border-radius:14px; padding:12px; background:#f3faf4; }
+.money-flow-account-title { display:flex; justify-content:space-between; flex-wrap:wrap; gap:5px 16px; font-size:14px; margin-bottom:10px; }
+.money-flow-account-title>span { color:var(--muted); font-size:12px; font-variant-numeric:tabular-nums; }
+.money-flow-invest { display:grid; grid-template-columns:minmax(0,1fr) 65px minmax(0,1fr); align-items:center; }
+.money-flow-trade { display:flex; flex-direction:column; align-items:center; font-size:11px; gap:10px; color:var(--green-2); white-space:nowrap; }
+.money-flow-pending { margin-top:10px; background:#fff8e8; }
+.money-flow-pending .money-flow-icon { display:none; }
+.money-flow-changed { border:2px solid var(--green); padding:11px; background:#eaf6ed; }
+.money-flow-node .money-flow-change { color:var(--green-2); font-size:12px; font-weight:650; }
+.money-flow-note,.money-flow-boundary { font-size:12px; line-height:1.6; color:var(--muted); margin:10px 0 0; }
+.money-flow-boundary { padding-top:12px; border-top:1px solid var(--line); }
+/* Order previews live inside a half-width column even on desktop. */
+.money-flow-preview .money-flow-map { grid-template-columns:1fr; }
+.money-flow-preview .money-flow-life { display:grid; grid-template-columns:26px 1fr; align-items:center; column-gap:9px; }
+.money-flow-preview .money-flow-life .money-flow-icon { grid-row:span 2; }
+.money-flow-preview .money-flow-life>small { grid-column:2; }
+.money-flow-preview .money-flow-deposit { flex-direction:row; justify-content:center; padding:8px; }
+.money-flow-preview .money-flow-deposit>span { transform:rotate(90deg); }
+@media(max-width:700px) {
+  .quick-guide-cuts { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .quick-guide-cuts li { padding:12px; }
+  .quick-guide-picture { margin-bottom:8px; }
+  .quick-guide-picture svg { width:30px; height:30px; }
+  .quick-guide-cuts strong { font-size:15px; }
+  .quick-guide-cuts p { font-size:13px; margin-top:6px; }
+  .guide-preparation .quick-guide-goal { font-size:14px; }
+  .money-flow { padding:12px; }
+  .money-flow-map { grid-template-columns:1fr; }
+  .money-flow-life { display:grid; grid-template-columns:26px 1fr; align-items:center; column-gap:9px; }
+  .money-flow-life .money-flow-icon { grid-row:span 2; }
+  .money-flow-life>small { grid-column:2; }
+  .money-flow-deposit { flex-direction:row; justify-content:center; padding:8px; }
+  .money-flow-deposit>span { transform:rotate(90deg); }
+  .money-flow-invest { grid-template-columns:minmax(0,1fr) 55px minmax(0,1fr); }
+  .money-flow-account { padding:10px; }
+  .money-flow-invest .money-flow-node { padding:8px; }
+  .money-flow-invest .money-flow-changed { padding:7px; }
+  .money-flow-invest .money-flow-amount { font-size:14px; }
+}

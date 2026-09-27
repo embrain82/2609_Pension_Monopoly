@@ -10,6 +10,7 @@ import type { GameState } from '../types';
 import { renderDefaultHoldings } from './default-trade-view';
 import { formatWon, signedPercent } from './format';
 import { orderSchedule, orderScope } from './trade-preview';
+import { renderMoneyFlow } from './money-flow';
 const pct=(value:number)=>`${(value*100).toFixed(1)}%`;
 const ratePct=(value:number)=>`${(value*100).toFixed(2)}%`;
 export function depositStatus(state:GameState) {
@@ -63,7 +64,7 @@ export function renderPortfolio(state:GameState):string {
  const gradient=composition.map(item=>{const start=end;end+=total>0?item.amount/total*100:0;return `${item.color} ${start}% ${end}%`;}).join(',');
  const summary=composition.map(item=>`<div class="portfolio-category" data-category="${item.id}" data-amount="${item.amount}"><span class="category-dot" style="background:${item.color}" aria-hidden="true"></span><span>${item.label}</span><strong>${formatWon(item.amount)}<small>IRP의 ${pct(total>0?item.amount/total:0)}</small></strong></div>`).join('');
  return `<header class="order-heading"><p class="eyebrow">포트폴리오 · 조회는 행동 횟수 차감 없음</p><h2>내 자산은 어디에 있을까요?</h2><p>IRP와 생활자금은 서로 다른 주머니예요.</p></header>
- <div class="portfolio-split"><section class="portfolio-overview" aria-label="계좌 합계와 분류"><div class="portfolio-total-card"><small>IRP 평가액</small><h3 class="portfolio-total">${formatWon(total)}</h3><p class="outside-cash">생활자금 ${formatWon(state.cash)} · IRP 밖 자금</p></div>
+ ${renderMoneyFlow(state)}<div class="portfolio-split"><section class="portfolio-overview" aria-label="계좌 합계와 분류"><div class="portfolio-total-card"><small>IRP 평가액</small><h3 class="portfolio-total">${formatWon(total)}</h3><p class="outside-cash">생활자금 ${formatWon(state.cash)} · IRP 밖 자금</p></div>
  <div class="portfolio-composition"><div class="portfolio-donut" style="background:${total>0?`conic-gradient(${gradient})`:'#e3ebe5'}" aria-hidden="true"><span>IRP 구성<b>${total>0?'100%':'0원'}</b></span></div><div class="portfolio-categories">${summary}</div></div>
  <p class="cash-rule">${cashInterestRule(state)}. 예약된 매수금·미결제 매도대금은 제외합니다.</p>
  <details class="portfolio-fund-breakdown" data-preserve-open><summary>합계 계산 확인</summary><section class="portfolio-funds" aria-label="IRP 합계 구성"><div><small>보유 상품</small><strong>${formatWon(held)}</strong></div><div><small>미결제 주문 · 사용 불가</small><strong>${formatWon(pending)}</strong></div><div class="available-cash"><small>주문 가능 IRP 대기자금</small><strong>${formatWon(state.irpCash)}</strong></div></section>

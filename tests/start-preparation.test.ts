@@ -6,7 +6,7 @@ import { CHECKPOINT_KEY, parseCheckpoint } from '../src/ui/play-checkpoint';
 import { createGame, startTurn } from '../src/engine/game-engine';
 import { prepareStart, reassessPreparation, canConfirmPreparation } from '../src/ui/start-preparation';
 let root:HTMLElement;
-const click=(action:string)=>{const b=root.querySelector<HTMLButtonElement>(`[data-action="${action}"]`);expect(b,action).not.toBeNull();b!.click();};
+const click=(action:string)=>{const b=root.querySelector<HTMLButtonElement>(`[data-action="${action}"]`);expect(b,action).not.toBeNull();b!.click();if(['begin','weekly-seed'].includes(action)) root.querySelector<HTMLButtonElement>('[data-action="prepare-guide-continue"]')?.click();};
 const checkpoint=()=>parseCheckpoint(localStorage.getItem(CHECKPOINT_KEY))!;
 beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;});
 it('처음에는 기본값을 결과로 부르지 않고 진단과 확인 뒤에만 새 판을 생성한다',()=>{

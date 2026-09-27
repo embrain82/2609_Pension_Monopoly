@@ -415,6 +415,8 @@ export class PensionRoadApp {
       this.beginPreparation(button.dataset.seed || randomSeed());
     } else if (action === 'cancel-preparation') {
       this.cancelPreparation();
+    } else if (action === 'prepare-guide-continue' && this.preparation?.stage === 'guide') {
+      this.preparation.guideSeen = true; this.preparation.stage = 'profile';
     } else if (action === 'prepare-diagnosis' && this.preparation && this.preparation.provenance !== 'weekly') {
       this.questionIndex = 0; this.diagnosisScore = 0; this.screen = 'diagnosis';
     } else if (action === 'prepare-continue' && this.preparation && hasPreparedProfile(this.preparation)) {
@@ -1149,7 +1151,8 @@ export class PensionRoadApp {
       this.save.profileAssessment = { profileId: d.profileId, origin: d.provenance === 'diagnosed' ? 'diagnosed' : 'confirmed' };
     }
     this.save.defaultOption = d.option;
-    this.save.disclaimerAccepted = true; this.disclaimerChecked = true; this.save.howtoSeen = true;
+    this.save.disclaimerAccepted = true; this.disclaimerChecked = true;
+    if (d.guideSeen) { this.save.quickGuideSeen = true; this.save.howtoSeen = true; }
     this.preparation = null; this.startGame(d.seed);
   }
 
@@ -1183,8 +1186,10 @@ export class PensionRoadApp {
   }
 
   private markHowToSeen(): void {
-    if (this.save.howtoSeen) return;
+    if (this.preparation) { this.preparation.guideSeen = true; return; }
+    if (this.save.howtoSeen && this.save.quickGuideSeen) return;
     this.save.howtoSeen = true;
+    this.save.quickGuideSeen = true;
     this.persist();
   }
 
@@ -1638,7 +1643,7 @@ export class PensionRoadApp {
     if (this.modal === 'market') content = this.renderMarketModal();
     if (this.modal === 'cards') content = this.renderCardsModal();
     if (this.modal === 'settings') content = this.renderSettingsModal();
-    if (this.modal === 'howto') content = renderHowToModal(characters, !this.game || !!this.game.defaultLifecycle);
+    if (this.modal === 'howto') content = renderHowToModal(!this.game || !!this.game.defaultLifecycle);
     if (this.modal === 'settle' && this.lastSummary) {
       const summary = this.lastSummary;
       content = renderSettlementModal(summary, {

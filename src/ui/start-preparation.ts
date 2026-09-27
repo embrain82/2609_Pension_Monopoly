@@ -6,17 +6,18 @@ import { allowedDefaultOptions } from '../engine/default-option';
 import { SCENARIOS,MISSIONS,type ScenarioId,type MissionId } from '../engine/scenario-engine';
 import type { DefaultOptionId,ProfileId,SaveData } from '../types';
 import { defaultOptionName,defaultOptionProducts,initialDefaultOption,renderDefaultOptionCards } from './default-option-view';
+import { renderQuickGuide } from './quick-guide';
 export interface StartPreparation {
   seed: string; profileId: ProfileId; option: DefaultOptionId|null; optionSource:'suggested'|'saved'|'chosen';
   provenance: 'new'|'legacy'|'confirmed'|'diagnosed'|'weekly';
-  stage: 'profile'|'option'; returnTo: 'title'|'result';
+  stage: 'guide'|'profile'|'option'; guideSeen: boolean; returnTo: 'title'|'result';
   scenario: ScenarioId; mission: MissionId; goal: number; notice?:string;
 }
 export function hasPreparedProfile(d:StartPreparation):boolean { return ['diagnosed','confirmed','weekly'].includes(d.provenance); }
 export function prepareStart(save:SaveData,seed:string,scenario:ScenarioId,mission:MissionId,goal:number,returnTo:StartPreparation['returnTo']):StartPreparation {
   const weekly=seed.startsWith('weekly-'),profileId=weekly?'balanced':save.profileId;
   const initial=initialDefaultOption(profileId,save.defaultOption,'start',true);
-  return {seed,profileId,option:initial.value,optionSource:save.defaultOption!==null&&!initial.notice?'saved':'suggested',notice:initial.notice,provenance:weekly?'weekly':save.profileAssessment?.profileId===profileId && ['diagnosed','confirmed'].includes(save.profileAssessment.origin)?save.profileAssessment.origin:'new',stage:'profile',returnTo,scenario:weekly?'classic':scenario,mission:weekly?'pension':mission,goal:weekly?500000:goal};
+  return {seed,profileId,option:initial.value,optionSource:save.defaultOption!==null&&!initial.notice?'saved':'suggested',notice:initial.notice,provenance:weekly?'weekly':save.profileAssessment?.profileId===profileId && ['diagnosed','confirmed'].includes(save.profileAssessment.origin)?save.profileAssessment.origin:'new',stage:save.quickGuideSeen?'profile':'guide',guideSeen:save.quickGuideSeen===true,returnTo,scenario:weekly?'classic':scenario,mission:weekly?'pension':mission,goal:weekly?500000:goal};
 }
 export function reassessPreparation(draft:StartPreparation,profileId:ProfileId):StartPreparation {
   if(draft.provenance==='weekly')return draft;
@@ -27,6 +28,7 @@ export function canConfirmPreparation(draft:StartPreparation):boolean {
   return hasPreparedProfile(draft)&&draft.stage==='option'&&(draft.option===null||allowedDefaultOptions(draft.profileId,true).some(p=>p.id===draft.option));
 }
 export function renderStartPreparation(d:StartPreparation):string {
+  if (d.stage === 'guide') return `<section class="setup-screen preparation-screen road-preparation guide-preparation" data-preparation-stage="guide"><header class="road-header">${brandWordmark()}<button class="icon-button preparation-close" data-action="cancel-preparation" aria-label="시작 준비 닫기">×</button></header><p class="eyebrow">시작 준비 · 30초 그림 안내</p><h1>한 판은 이렇게 진행돼요</h1>${renderQuickGuide()}<button class="primary jumbo" data-action="prepare-guide-continue">알겠어요 · 성향 확인으로</button><p class="hint">설정에서 게임 방법을 다시 볼 수 있어요. 최종 시작 전까지 기존 판은 그대로예요.</p></section>`;
   const p=investorProfiles.find(p=>p.id===d.profileId)!;
   const allocation=startingAllocation(d.profileId,true);
   const assessed=hasPreparedProfile(d);
@@ -38,7 +40,7 @@ export function renderStartPreparation(d:StartPreparation):string {
   const detail=`<article class="road-panel preparation-option-detail"><p class="eyebrow">내가 선택한 옵션</p><h2>${defaultOptionName(d.option,true)}</h2><p class="option-composition">${defaultOptionProducts(d.option,true)||'사전지정 없이 직접 운용을 선택합니다.'}</p>${selected?`<p class="option-description">${selected.blurb}</p><span class="profile-stamp">가상 ${selected.riskGrade}등급 · 교육용 구성</span>`:''}<p class="default-option-selection" aria-live="polite">현재 선택: <strong>${defaultOptionName(d.option,true)}</strong><br>추천 표시는 선택을 바꾸지 않습니다.</p><p class="info-note"><b>지정만으로 매수되지 않습니다.</b><br>만기자금은 통지·대기 후 자동주문합니다. 기다리지 않고 직접 매수하려면 운용지시 → 디폴트옵션 옵트인/아웃을 이용하세요.</p></article>`;
   const help=`<details class="preparation-help" data-preserve-open><summary>게임 시작 전에 알아둘 세 가지</summary><ul><li>생활자금은 생활비, IRP 대기자금은 계좌 안 매수에 씁니다.</li><li>시장이 먼저 보유분에 반영되고 내 주문은 이후 시장에 영향을 받습니다.</li><li>일반 턴은 행동 1회, 운용지시 칸은 2회. 조회·X 취소는 0회입니다.</li></ul><p>옵션은 교육용 가상 상품입니다. 만기자금은 다음 턴 통지하고, 통지가 표시된 다음 턴에 사전지정 옵션으로 자동주문합니다. 실제 제도는 만기 후 4주 무지시 → 통지 → 2주 무지시이며, 게임은 단계만 압축합니다. 펀드·TDF는 원금 손실이 가능합니다.</p></details>`;
   return `<section class="setup-screen preparation-screen road-preparation" data-preparation-stage="${d.stage}"><header class="road-header">${brandWordmark()}<button class="icon-button preparation-close" data-action="cancel-preparation" aria-label="시작 준비 닫기">×</button></header>
-    <header class="step-header"><span>시작 준비</span><strong>${d.stage==='profile'?'1 · 성향 확인':'2 · 옵션 선택'}</strong></header>
+    <header class="step-header"><span>시작 준비</span><strong>${d.stage==='profile'?'1 · 성향 확인':'2 · 옵션 선택'}</strong></header><button class="text-button preparation-guide-link" data-action="open-howto">30초 게임 방법 다시 보기</button>
     <h1>${d.stage==='profile'?'내 투자자성향부터 확인해요':'이 성향으로 옵션을 골라요'}</h1>
     <p class="lead">${d.stage==='profile'?'나에게 맞는 선택을 위한 첫 단계예요.':`확인한 성향 · ${p.name}`}</p>
     ${d.stage==='profile'&&!assessed?undiagnosed:d.stage==='profile'?`<div class="road-split preparation-profile-layout"><div>${profile}</div><div>${conditions}<div class="button-stack preparation-actions">${d.provenance==='weekly'?'<p class="info-note">주간 도전은 모두 같은 조건입니다. 다른 성향은 일반 새 판에서 선택할 수 있습니다.</p>':`<button class="secondary" data-action="prepare-diagnosis">${d.provenance==='new'?'5문항으로 성향 진단':'성향 다시 진단'}</button>`}<button class="primary jumbo" data-action="prepare-continue" ${d.provenance==='new'?'disabled':''}>이 성향 확인 · 옵션 선택으로</button>${d.provenance==='new'?'<p class="hint">기본값을 진단 결과로 사용하지 않도록 먼저 5문항을 확인하세요.</p>':''}</div></div></div>`:
