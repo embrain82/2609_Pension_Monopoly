@@ -52,7 +52,7 @@ export function renderMarketCard(state: GameState, pending: boolean): string {
             <p class="signal">주사위 눈의 합만큼 말이 이동한 뒤 브리핑이 공개됩니다.</p>
             <p>시장 국면은 이번 판 시드마다 달라지고, 말은 나온 숫자만큼 보드를 돕니다.</p>
             ${marketBars(state.lastMarket, true)}
-            ${renderMarketImpacts(state.ledger.marketEffects, state.turn)}
+            ${renderMarketImpacts(state.ledger.marketEffects, state.turn, true, false, state.lastMarket)}
             ${renderProductReturns(state)}
           </article>`;
   }
@@ -66,7 +66,7 @@ export function renderMarketCard(state: GameState, pending: boolean): string {
             <p>주사위를 굴려 다음 턴(${nextTurn}턴) 시장을 확인하세요. 시장 국면은 이번 판 시드마다 달라집니다.</p>
             ${renderMarketAlert(state.lastMarket)}
             ${marketBars(state.lastMarket)}
-            ${renderMarketImpacts(state.ledger.marketEffects, state.turn)}
+            ${renderMarketImpacts(state.ledger.marketEffects, state.turn, true, false, state.lastMarket)}
             ${renderProductReturns(state)}
           </article>`;
   }
@@ -77,7 +77,7 @@ export function renderMarketCard(state: GameState, pending: boolean): string {
             <p>${state.lastMarket.reason}</p>
             ${renderMarketAlert(state.lastMarket)}
             ${marketBars(state.lastMarket)}
-            ${renderMarketImpacts(state.ledger.marketEffects, state.turn)}
+            ${renderMarketImpacts(state.ledger.marketEffects, state.turn, true, false, state.lastMarket)}
             ${renderProductReturns(state)}
             <p class="market-note applied-note">내 보유분은 턴 시작 수량과 약정으로 계산한 실제 영향입니다. 지금 주문한 금액으로 이전 수익을 다시 계산하지 않습니다. 펀드·TDF는 원금 손실이 가능합니다.</p>
           </article>`;

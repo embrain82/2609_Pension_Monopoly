@@ -161,3 +161,35 @@
 }
 .term-help dl { padding-top:8px; }
 .order-clock li strong { word-break:keep-all; }
+
+/* Beginner completion: concise first view, optional causal explanations. */
+.money-flow-contribution .money-flow-invest{grid-template-columns:1fr 1fr;gap:16px}
+.money-flow-contribution .money-flow-held{background:#f8faf8;border-style:dashed}
+.money-flow-contribution .money-flow-held>small{font-weight:700}
+.holding-cause{font-size:14px;line-height:1.65;margin:8px 0;color:var(--ink)}
+.holding-cause-detail,.concept-example,.goal-conditions,.final-performance details{margin:12px 0;text-align:left}
+.holding-cause-detail summary,.concept-example summary,.goal-conditions summary,.final-performance summary,.settle-causes>summary,.settle-action-detail>summary{cursor:pointer;min-height:44px;padding:12px 8px;line-height:1.5;font-weight:700;color:#167344}
+.holding-cause-detail dl>div,.essential-changes>div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:6px 0}
+.holding-cause-detail dd,.essential-changes dd{margin:0;flex-shrink:0;font-variant-numeric:tabular-nums;font-weight:700}
+.holding-cause-detail p,.holding-cause-detail small{font-size:13px;line-height:1.65}
+.concept-example,.learning-progress,.settle-lesson{background:#edf6ef;border-radius:16px;padding:16px 20px;text-align:left}
+.concept-example p,.learning-progress p{margin:8px 0;line-height:1.65}
+.learning-progress{margin:12px 0;font-size:14px}
+.learning-progress small{display:block;color:#53695d;line-height:1.6}
+.settle-essential,.final-performance{border:1px solid #d7e3db;border-radius:20px;padding:20px;margin:16px 0;text-align:left;min-width:0}
+.settle-essential .settle-bars{padding:0;background:none;border:0}
+.settle-essential .settle-delta{font-size:clamp(20px,4vw,30px)}
+.essential-changes{margin:12px 0}.essential-changes dt{font-weight:500}
+.settle-lesson{font-size:14px;line-height:1.65;margin:12px 0}
+.settle-causes,.settle-action-detail{margin:16px 0;border:1px solid #d7e3db;border-radius:16px;padding:8px}
+.settle-causes>summary,.settle-action-detail>summary{background:#f0f7f2;border-radius:12px}
+.final-total{font-size:22px}.final-total strong{font-size:32px;color:#14723f}
+.performance-parts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.performance-parts article{background:#f2f7f3;border-radius:12px;padding:16px}
+.performance-parts strong,.performance-parts small{display:block;line-height:1.6}
+.result-takeaway{display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:left}
+.board-hud .goal-conditions{grid-column:1/-1;margin:0;font-size:13px}
+.board-learning{grid-column:1/-1;font-size:12px;color:#53695d;margin:0}
+@media(max-width:600px){.performance-parts,.result-takeaway{grid-template-columns:1fr}.money-flow-contribution .money-flow-invest{grid-template-columns:1fr}.settle-essential,.final-performance{padding:16px}.essential-changes{font-size:14px}.holding-cause-detail dl>div{flex-wrap:wrap}.holding-cause-detail dd{margin-left:auto}.concept-example,.learning-progress{padding:14px}.final-performance h2{font-size:22px}}
+.learning-progress summary{min-height:44px;padding:10px 0;cursor:pointer;font-weight:700;color:#167344}
+.goal-check-brief{font-size:13px;line-height:1.6;margin:8px 0;grid-column:1/-1}

@@ -21,15 +21,17 @@ it('다른 턴·없는 시장 데이터는 과거 금리와 실제 손익을 만
  const root=document.createElement('div');root.innerHTML=renderSettlementModal({...summary,marketEffects:undefined},{characters:false});
  expect(root.querySelector('.settle-rate-strip')).toBeNull();expect(root.textContent).toContain('이전 저장에는');
 });
-it('요약·실제 보유분·학습·다음 진행 순서이며 비교와 전체 상품만 상세에 둔다',()=>{
+it('핵심 요약·필수 안내·학습·다음 진행을 먼저 보이고 보유 원인과 비교는 상세에 둔다',()=>{
  const {summary,market}=fixture();const root=document.createElement('div');root.innerHTML=renderSettlementModal(summary,{characters:true,market,learningHtml:'<aside class="optional-learning">퀴즈</aside>',importantHtml:'<aside class="closing-settlement">미결 주문</aside>'});
- const overview=root.querySelector('.settle-overview')!,details=root.querySelector('.settle-more')!;
- expect(overview.querySelector('.settle-rate-strip')).not.toBeNull();expect(overview.querySelector('.settle-bars')).not.toBeNull();
- expect(overview.querySelector('.actual-market-impact')).not.toBeNull();expect(overview.querySelector('.settle-market')).toBeNull();
+ const overview=root.querySelector('.settle-essential')!,details=root.querySelector('.settle-more')!;
+ expect(root.querySelector('.settle-causes .settle-rate-strip')).not.toBeNull();expect(overview.querySelector('.settle-bars')).not.toBeNull();
+ expect(root.querySelector('.settle-causes .actual-market-impact')).not.toBeNull();expect(overview.querySelector('.settle-market')).toBeNull();
  expect(details.querySelectorAll('.settle-return')).toHaveLength(6);expect(details.textContent).toContain('보수 전');expect(details.textContent).toContain('정산 후 비중');
- for(const css of ['.optional-learning','.closing-settlement','.settle-overview'])expect(root.querySelector(css)!.compareDocumentPosition(root.querySelector('.settle-cta')!)&Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+ for(const css of ['.optional-learning','.closing-settlement','.settle-essential'])expect(root.querySelector(css)!.compareDocumentPosition(root.querySelector('.settle-cta')!)&Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
  expect(root.querySelector('.settle-cta')!.compareDocumentPosition(details)&Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
- expect(overview.querySelectorAll('.change-row')).toHaveLength(3);
+ expect(overview.querySelectorAll('.essential-changes>div')).toHaveLength(3);
+ expect(root.querySelectorAll('.settle-action-detail .change-row')).toHaveLength(3);
+ expect(root.querySelector('.closing-settlement')!.closest('details')).toBeNull();
  expect(summary.marketDelta+summary.capitalFlow!+summary.tradingDelta!).toBeCloseTo(summary.irpAfter-summary.irpOpen,4);
  expect(root.textContent).toContain('납입은 운용 수익이 아닙니다');
 });

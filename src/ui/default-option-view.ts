@@ -1,3 +1,4 @@
+import { defaultRequirement } from './profile-requirement';
 import { DEFAULT_PORTFOLIOS, defaultPortfolio } from '../data/default-portfolios';
 import { defaultOptions, products } from '../data/content';
 import { allowedDefaultOptions, suggestDefaultOption } from '../engine/default-option';
@@ -37,11 +38,11 @@ export function renderDefaultOptionCards(view: DefaultOptionViewOptions): string
   return `<div class="default-option-grid" role="radiogroup" aria-label="디폴트옵션">${(view.modern ? DEFAULT_PORTFOLIOS : defaultOptions).map((option) => {
     const ok = allowed.has(option.id);
     const grade = view.modern ? defaultPortfolio(option.id).riskGrade : Math.min(...option.products.map((productId) => products.find((product) => product.id === productId)?.riskGrade ?? 1));
-    const tags = [option.id === picked ? '<span class="tag selected">✓ 현재 선택됨</span>' : '', option.id === suggested ? '<span class="tag suggest">성향 추천</span>' : '', ok ? '' : `<span class="tag locked">성향 밖 · ${grade}등급</span>`].join('');
+    const tags = [option.id === picked ? '<span class="tag selected">✓ 현재 선택됨</span>' : '', option.id === suggested ? '<span class="tag suggest">성향 추천</span>' : '', ok ? '' : `<span class="tag locked">${defaultRequirement(option.id, view.modern)}</span>`].join('');
     return `<button type="button" role="radio" aria-checked="${picked === option.id}" tabindex="${picked === option.id || (picked === null && option.id === suggested) ? 0 : -1}" class="default-option-card ${picked === option.id ? 'picked' : ''} ${ok ? '' : 'locked'}" data-action="pick-default-option" data-option="${option.id}" ${ok ? '' : 'disabled'}>
         <span class="default-option-name">${option.name}${tags}</span>
         <strong>${defaultOptionProducts(option.id,view.modern)}</strong>
-        <small>${view.compact ? `가상 ${grade}등급 · ${ok ? '선택 가능' : '현재 성향에서 선택 불가'}` : option.blurb}</small>
+        <small>${view.compact ? `가상 ${grade}등급 · ${defaultRequirement(option.id, view.modern)}` : option.blurb}</small>
       </button>`;
   }).join('')}</div>`;
 }

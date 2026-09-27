@@ -1,3 +1,4 @@
+import { calculateScore, starChecklist, knowledgeBreakdown } from '../engine/scoring-engine';
 import { formatWon as won, formatShortWon as shortWon } from './format';
 import { missionDisplay } from '../engine/progress-engine';
 import { profileLimits } from '../engine/profile-engine';
@@ -62,6 +63,13 @@ export function renderRiskMeter(ratio: number, limit: number): string {
 /** 보드 바로 위의 핵심 정보. 생활자금과 계좌 안 주문 가능 자금을 혼동하지 않게 한다. */
 export function renderBoardHud(state:GameState):string {
   const mission=missionDisplay(state);
+  const learning=knowledgeBreakdown(state);
   const pending=state.pendingOrders.reduce((s,o)=>s+o.amount,0);
-  return `<section class="board-hud" aria-label="이번 판 목표와 자금"><div class="board-mission"><strong>${mission.name}</strong><span>${mission.progress}</span></div><div class="board-funds"><div><small>생활자금 · IRP 밖</small><strong title="${won(state.cash)}">${shortWon(state.cash)}</strong></div><div><small>주문 가능 · IRP 안</small><strong title="${won(state.irpCash)}">${shortWon(state.irpCash)}</strong></div>${pending>0?`<div class="pending-cash"><small>미결제 · 사용 대기</small><strong title="${won(pending)}">${shortWon(pending)}</strong></div>`:''}</div></section>`;
+  return `<section class="board-hud" aria-label="이번 판 목표와 자금"><div class="board-mission"><strong>${mission.name}</strong><span>${mission.progress}</span></div><div class="board-funds"><div><small>생활자금 · IRP 밖</small><strong title="${won(state.cash)}">${shortWon(state.cash)}</strong></div><div><small>주문 가능 · IRP 안</small><strong title="${won(state.irpCash)}">${shortWon(state.irpCash)}</strong></div>${pending>0?`<div class="pending-cash"><small>미결제 · 사용 대기</small><strong title="${won(pending)}">${shortWon(pending)}</strong></div>`:''}</div>${renderGoalConditions(state)}<p class="board-learning">학습 ${learning.total}/20점 · 퀴즈 ${learning.quizCorrect}개 정답 · 최종 종합점수에 포함</p></section>`;
+}
+
+/** Keeps actual mission/star conditions visible without inventing a quiz gate. */
+export function renderGoalConditions(state:GameState):string {
+ const score=calculateScore(state), checks=starChecklist(state,score);
+ return `${state.campaign ? `<p class="goal-check-brief">${checks.map((c,i)=>`${['미션','생활 안정','낙폭 예산'][i]} ${c.passed?'✓':'미충족'}`).join(' · ')}</p>` : ''}<details class="goal-conditions" data-preserve-open><summary>별 조건 ${checks.filter(c=>c.passed).length}/${checks.length} 충족 · 현재 ${score.stars}별</summary><ul>${checks.map(c=>`<li>${c.passed?'✓ 충족':'○ 확인 필요'} · ${c.label}</li>`).join('')}</ul><p>최종 결과에서 판정해요. 퀴즈는 종합점수의 학습 항목에 반영되며 별 조건과 구분해요.</p></details>`;
 }
