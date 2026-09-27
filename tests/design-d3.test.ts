@@ -79,17 +79,17 @@ it('퀴즈 스킵 안내 취소는 상태를 유지하고 확인한 스킵은 �
  expect(knowledgeScoreOf(gameOf(app))).toBe(knowledgeScoreOf(cp.game));expect(portfolioValue(gameOf(app))).toBe(portfolioValue(cp.game));
 });
 
-it('정산은 요약→금리·실제 보유분→행동 순서로 읽고 외부 입출금과 손익을 보존한다',()=>{
+it('정산은 핵심 요약부터 읽고 원인 상세에 외부 입출금과 손익을 보존한다',()=>{
  const result=settlement(),summary=result.summary!,before=structuredClone(summary);
  root.innerHTML=renderSettlementModal(summary,{characters:false,market:result.state.lastMarket,learningHtml:'<aside class="optional-learning">선택 학습</aside>'});
- const overview=root.querySelector('.settle-overview')!,market=root.querySelector('.settle-market-panel')!,action=root.querySelector('.settle-action-panel')!;
+ const overview=root.querySelector('.settle-essential')!,market=root.querySelector('.settle-market-panel')!,action=root.querySelector('.settle-action-detail')!;
  expect(overview.querySelector('.settle-bars')!.compareDocumentPosition(market)&Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
  expect(market.compareDocumentPosition(action)&Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
  expect(market.querySelector('.settle-rate-strip')).not.toBeNull();expect(market.querySelector('.actual-market-impact')).not.toBeNull();
  expect(action.querySelector('.settle-mine')?.textContent).toContain(summary.actionLines[0]);expect(root.querySelector('.settle-more .settle-mine')).toBeNull();
  expect(action.querySelectorAll('.change-row')).toHaveLength(3);
  expect(summary.marketDelta+summary.capitalFlow!+summary.tradingDelta!).toBeCloseTo(summary.irpAfter-summary.irpOpen,5);
- expect(action.textContent).toContain('납입은 운용 수익이 아닙니다');expect(summary).toEqual(before);
+ expect(overview.textContent).toContain('납입은 운용 수익이 아닙니다');expect(summary).toEqual(before);
 });
 
 it('구 정산은 없는 손익을 역산하지 않으며 마지막 정산은 수령으로 안내한다',()=>{

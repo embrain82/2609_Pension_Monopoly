@@ -1,8 +1,10 @@
+import { renderConceptExample, renderLearningProgress } from './learning-progress';
 import type { GameState, LearningCard } from '../types';
 import { learningCardsFor } from '../data/content';
 import { renderSpeech } from './speech';
 
 export interface QuizViewState {
+  game?: GameState;
   optional?:boolean;
   /** 고른 선택지. 아직이면 null */
   picked: number | null;
@@ -47,6 +49,8 @@ export function renderQuizModal(card: LearningCard, view: QuizViewState): string
   return `<header class="quiz-heading"><p class="eyebrow">${view.optional?'선택 학습 · 정산 후 한 문제':quizEyebrow(view.progress)}</p>
     <p class="quiz-card"><span>${card.category}</span> ${card.title}</p>
     <p class="quiz-reward">${answered ? '선택을 돌아보며 한 가지 더 배워요.' : available > 0 ? `정답이면 제도·운용 이해 +${available}점 · 오답 벌점 없음` : '이번 문제는 추가 점수 없이 복습할 수 있어요 · 오답 벌점 없음'}</p></header>
+    ${view.game ? renderLearningProgress(view.game) : ''}
+    ${!answered ? renderConceptExample(card) : ''}
     <div class="quiz-split"><section class="quiz-choice-panel" aria-labelledby="quiz-question">
       <div class="quiz-prompt"><span class="quiz-q" aria-hidden="true">Q</span><h2 class="quiz-question" id="quiz-question">${card.quiz.q}</h2></div>
       <div class="quiz-options" aria-label="답안 선택">${options}</div>

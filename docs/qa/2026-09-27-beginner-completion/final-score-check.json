@@ -1,0 +1,10 @@
+{
+  "basis": "observed result DOM; in-progress save cleared by normal completion",
+  "turnsCompleted": 12,
+  "totalDisplayed": 84,
+  "incomeDisplayed": 50,
+  "stabilityDisplayed": 28,
+  "learningDisplayed": 6,
+  "quizContributionDisplayed": 2,
+  "sumMatches": true
+}

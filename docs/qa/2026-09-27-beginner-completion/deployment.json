@@ -1,0 +1,21 @@
+{
+  "url": "https://2609-pension-monopoly-5yb1h7ny5-nonsleepers-projects.vercel.app",
+  "id": "dpl_C864GZLn9tF2GnP9NMLW6Y3ez83c",
+  "status": "READY",
+  "environment": "preview",
+  "protection": "Vercel login required; verified using authorized vercel curl",
+  "assets": [
+    {
+      "asset": "index-uhH9KD-m.js",
+      "sha256": "1b15af0e103fd570f1fbda81310dddfc01eae847a92750e0c761aaf252905b4f",
+      "bytes": 534136,
+      "matchingBuild": true
+    },
+    {
+      "asset": "index-BLVK_OSE.css",
+      "sha256": "9d31fe57a27d10a14f73d7049467464f1ca74837857f134524536e94d609c910",
+      "bytes": 167800,
+      "matchingBuild": true
+    }
+  ]
+}

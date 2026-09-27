@@ -32,6 +32,7 @@ export interface SettlementOptions {
   pace?: ScenePace;
   /** 앱이 생성한 선택 학습과 필수 정산 안내. 다음 진행 버튼보다 먼저 보여준다. */
   learningHtml?: string;
+  goalHtml?: string;
   importantHtml?: string;
 }
 
@@ -135,29 +136,25 @@ export function renderSettlementModal(summary: TurnSummary, options: SettlementO
       <div class="settle-reaction">${renderSpeech('coach', `<p>${options.final ? '마지막 시장과 주문 정산이 끝났습니다. 최종 자금과 수령 방식의 차이를 비교해 보세요.' : summary.marketEffects !== undefined ? summary.reaction : '이번 시장의 변화와 내 보유분 수익을 구분해 확인하세요. 다음 턴 방향은 확정되지 않았습니다.'}</p>`, { characters: options.characters, title: '한 줄 정리', tone: reactionTone })}</div>
       ${options.final ? '' : hintsBlock}
     </details>`;
+  const flow = summary.capitalFlow;
+  const trade = summary.tradingDelta;
+  const overview = `<section class="settle-essential" aria-label="이번 턴 핵심 변화">${irpBars(summary)}
+    <p class="settle-note">납입은 운용 수익이 아닙니다.</p><dl class="essential-changes"><div><dt>시장 손익${summary.cashInterest ? '·대기 이자' : ''}</dt><dd>${signedWon(summary.marketDelta)}</dd></div>
+    ${flow !== undefined && trade !== undefined ? `<div><dt>내 납입·출금</dt><dd>${signedWon(flow)}</dd></div><div><dt>매매·정산 영향</dt><dd>${signedWon(trade)}</dd></div>` : `<div><dt>시장 이후 변화</dt><dd>${signedWon(summary.irpAfter-summary.irpAfterMarket)}</dd></div>`}</dl>
+    <p class="settle-lesson"><strong>이번 턴 배운 한 가지</strong><br>${flow !== undefined && Math.abs(flow) > .005 ? '계좌에 넣거나 뺀 돈은 시장에서 번 수익과 달라요.' : summary.productDeltas.length ? '주문 접수와 보유 반영은 다를 수 있어요. 처리 중인 금액은 주문 내역에서 확인해요.' : '새 거래가 없어도 보유 상품의 이자와 가격 변화가 잔액에 반영될 수 있어요.'}</p>
+    ${options.goalHtml ?? ''}</section>`;
   return `<div class="settle-scene${options.pace === 'fast' ? ' fast' : ''}">
     <p class="eyebrow">${summary.turn}턴 정산${shock}${options.final ? '<span class="settle-final">마지막 턴</span>' : ''}</p>
-    <h2>무엇이 바뀌었나요?</h2>
-    <p class="settle-headline">${context.headline}</p>
-    ${milestones}
-    <section class="settle-overview" aria-label="이번 턴 시장과 내 자산 요약">
-      ${irpBars(summary)}
-      <div class="settle-split"><section class="settle-market-panel" aria-labelledby="settle-market-title">
-        <h3 id="settle-market-title">금리와 보유 영향</h3>${marketStrip}
-        <p class="settle-cause">${context.explanation}</p>
-        ${renderMarketImpacts(summary.marketEffects, summary.turn, false, true)}${renderCashInterest(summary.cashInterest)}
-        <p class="settle-note">시장 반영 잔액 ${formatWon(summary.irpAfterMarket)} · 매매·납입 전 기준</p>
-        ${alert}
-      </section><section class="settle-action-panel" aria-label="내 행동과 다음 순서">
-        ${changeComposition(summary)}${actionBlock(summary)}
-        <p class="settle-note">납입은 운용 수익이 아닙니다. 주문 접수만 된 금액은 확정 수익이 아닙니다.</p>
-        ${renderLifeSettleBlock(summary.lifeEvent)}
-        ${options.importantHtml ?? ''}
-        ${options.final ? hintsBlock : ''}
-        ${options.learningHtml ?? ''}
-        <div class="settle-cta${auto ? ' auto' : ''}"><button class="primary jumbo" data-action="dismiss-settle">${cta}</button>${autoBar}</div>
-      </section></div>
-    </section>
+    <h2>무엇이 바뀌었나요?</h2><p class="settle-headline">${context.headline}</p>
+    ${overview}${options.importantHtml ?? ''}${options.learningHtml ?? ''}
+    ${options.final ? hintsBlock : ''}
+    <div class="settle-cta${auto ? ' auto' : ''}"><button class="primary jumbo" data-action="dismiss-settle">${cta}</button>${autoBar}</div>
+    <details class="settle-causes" data-preserve-open><summary>금리와 보유 영향 · 왜 늘거나 줄었나요?</summary>
+      <section class="settle-market-panel" aria-labelledby="settle-market-title"><h3 id="settle-market-title">금리와 보유 영향</h3>${marketStrip}
+      <p class="settle-cause">${context.explanation}</p>${renderMarketImpacts(summary.marketEffects, summary.turn, false, true, options.market)}${renderCashInterest(summary.cashInterest)}
+      <p class="settle-note">시장 반영 잔액 ${formatWon(summary.irpAfterMarket)} · 매매·납입 전 기준</p>${alert}</section>
+    </details>
+    <details class="settle-action-detail" data-preserve-open><summary>내 행동과 변화의 구성</summary>${changeComposition(summary)}${actionBlock(summary)}${renderLifeSettleBlock(summary.lifeEvent)}${milestones}</details>
     ${details}
   </div>`;
 }

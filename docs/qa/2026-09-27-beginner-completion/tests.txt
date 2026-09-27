@@ -1,0 +1,91 @@
+
+> pension-road@1.17.0 test
+> vitest run --maxWorkers=2
+
+
+ RUN  v3.2.7 /Volumes/990P-4T/01.Workspace/2609_Pension_Monopoly
+
+ ✓ tests/balance-gate.test.ts (6 tests) 361ms
+ ✓ tests/market-regime.test.ts (9 tests) 368ms
+ ✓ tests/p2-collection.test.ts (6 tests) 264ms
+ ✓ tests/maturity-lifecycle.test.ts (19 tests) 2138ms
+   ✓ 5 성향 × 4 시장 × 4 전략 × 6 시드는 완주·회계·복기·저장 불변조건을 지킨다  2068ms
+ ✓ tests/star-distribution.test.ts (2 tests) 242ms
+ ✓ tests/stage-c.test.ts (6 tests) 221ms
+ ✓ tests/life-choices.test.ts (29 tests) 176ms
+ ✓ tests/quiz.test.ts (16 tests) 183ms
+ ✓ tests/p0-ledger.test.ts (19 tests) 140ms
+ ✓ tests/engine.test.ts (52 tests) 157ms
+ ✓ tests/ghost.test.ts (8 tests) 46ms
+ ✓ tests/finance-rules.test.ts (14 tests) 102ms
+ ✓ tests/default-option.test.ts (13 tests) 95ms
+ ✓ tests/default-trading.test.ts (18 tests) 71ms
+ ✓ tests/tile-effects.test.ts (23 tests) 51ms
+ ✓ tests/narrative.test.ts (13 tests) 51ms
+ ✓ tests/action-guidance.test.ts (7 tests) 48ms
+ ✓ tests/settlement.test.ts (14 tests) 48ms
+ ✓ tests/board.test.ts (9 tests) 43ms
+ ✓ tests/stage-d.test.ts (9 tests) 46ms
+ ✓ tests/turn-order.test.ts (8 tests) 42ms
+ ✓ tests/contribution-pacing.test.ts (19 tests) 42ms
+ ✓ tests/action-form.test.ts (8 tests) 37ms
+ ✓ tests/achievements.test.ts (19 tests) 44ms
+ ✓ tests/news-flash.test.ts (9 tests) 38ms
+ ✓ tests/market-view.test.ts (14 tests) 34ms
+ ✓ tests/hud.test.ts (8 tests) 34ms
+ ✓ tests/bundle-b-views.test.ts (17 tests) 34ms
+ ✓ tests/action-availability.test.ts (14 tests) 21ms
+ ✓ tests/payout.test.ts (8 tests) 30ms
+ ✓ tests/market-explanation.test.ts (10 tests) 34ms
+ ✓ tests/tile-briefing.test.ts (5 tests) 27ms
+ ✓ tests/scoring.test.ts (7 tests) 26ms
+ ✓ tests/token3d.test.ts (6 tests) 27ms
+ ✓ tests/progress-display.test.ts (11 tests) 28ms
+ ✓ tests/result-chart.test.ts (6 tests) 21ms
+ ✓ tests/trade-portfolio-p1.test.ts (5 tests) 20ms
+ ✓ tests/manuals.test.ts (10 tests) 27ms
+ ✓ tests/dice.test.ts (7 tests) 20ms
+ ✓ tests/bundle-c-views.test.ts (7 tests) 19ms
+ ✓ tests/character-emotion.test.ts (15 tests) 17ms
+ ✓ tests/avatars.test.ts (7 tests) 17ms
+ ✓ tests/quiz-v2.test.ts (2 tests) 16ms
+ ✓ tests/profile-character.test.ts (3 tests) 16ms
+ ✓ tests/performance-display.test.ts (6 tests) 17ms
+ ✓ tests/fx.test.ts (4 tests) 9ms
+ ✓ tests/rhythm.test.ts (16 tests) 18ms
+ ✓ tests/learning-rules.test.ts (3 tests) 5ms
+ ✓ tests/sound-player.test.ts (5 tests) 3ms
+ ✓ tests/content.test.ts (7 tests) 3ms
+ ✓ tests/sound.test.ts (3 tests) 3ms
+ ✓ tests/design-d2b.test.ts (11 tests) 1026ms
+ ✓ tests/stage-c-ui.test.ts (6 tests) 1971ms
+   ✓ 경로 선택 없이 자동 이동하는 12턴 UI를 완주하고 결과 중복 집계 없이 진행 저장을 지운다  1383ms
+ ✓ tests/default-trading-ui.test.ts (14 tests) 964ms
+ ✓ tests/board-discovery.test.ts (11 tests) 943ms
+ ✓ tests/turn-notices.test.ts (22 tests) 963ms
+ ✓ tests/playtest-pacing-ui.test.ts (10 tests) 972ms
+ ✓ tests/design-d3.test.ts (12 tests) 692ms
+ ✓ tests/character-emotion-ui.test.ts (6 tests) 593ms
+ ✓ tests/beginner-practice-ui.test.ts (6 tests) 595ms
+ ✓ tests/stage-d-ui.test.ts (2 tests) 367ms
+ ✓ tests/beginner-actions-ui.test.ts (6 tests) 524ms
+ ✓ tests/p2-presentation.test.ts (8 tests) 346ms
+ ✓ tests/learning-flow-p1.test.ts (6 tests) 305ms
+ ✓ tests/design-d1.test.ts (5 tests) 281ms
+ ✓ tests/allone-characters.test.ts (4 tests) 240ms
+ ✓ tests/start-preparation.test.ts (8 tests) 208ms
+ ✓ tests/maturity-ui.test.ts (5 tests) 263ms
+ ✓ tests/beginner-guidance.test.ts (6 tests) 185ms
+ ✓ tests/design-d2a.test.ts (8 tests) 226ms
+ ✓ tests/design-d4.test.ts (2 tests) 91ms
+ ✓ tests/board-viewport.test.ts (9 tests) 115ms
+ ✓ tests/settlement-overview.test.ts (6 tests) 51ms
+ ✓ tests/beginner-results.test.ts (9 tests) 46ms
+ ✓ tests/token-emotion.test.ts (10 tests) 14ms
+ ✓ tests/beginner-learning.test.ts (8 tests) 45ms
+
+ Test Files  76 passed (76)
+      Tests  761 passed (761)
+   Start at  12:48:53
+   Duration  17.35s (transform 834ms, setup 0ms, collect 5.97s, tests 17.61s, environment 2.35s, prepare 2.02s)
+

@@ -161,7 +161,8 @@ describe('디폴트옵션 모달(default-option-view)', () => {
     expect(html).toMatch(/data-option="highRisk"[^>]*disabled/);
     expect(html).not.toMatch(/data-option="principal"[^>]*disabled/);
     expect(html).toContain('성향 추천');
-    expect(html).toContain('성향 밖');
+    expect(html).toContain('위험중립형 이상 선택 가능');
+    expect(html).not.toContain('성향 밖');
     expect(html).not.toContain('aria-checked="true"');
   });
 

@@ -1,0 +1,19 @@
+{
+  "unchangedFields": {
+    "cash": true,
+    "irpCash": true,
+    "holdings": true,
+    "pendingOrders": true,
+    "account": true,
+    "maxDrawdown": true,
+    "ruleBreaches": true
+  },
+  "beforeQuizLog": [],
+  "afterQuizLog": [
+    {
+      "cardId": "contribution-limit",
+      "correct": true,
+      "turn": 1
+    }
+  ]
+}

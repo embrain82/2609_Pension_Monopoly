@@ -1,3 +1,6 @@
+import { renderFinalPerformance, renderLearningProgress } from './learning-progress';
+import { renderGoalConditions } from './hud';
+import { productRequirement } from './profile-requirement';
 import { presentMaturityNotices } from '../engine/default-lifecycle';
 import { beginPractice, normalizePractice, practiceAvailable, practiceChoice, practiceIsActive, renderPractice, type PracticeProgress } from './guided-practice';
 import { renderMaturitySummary } from './maturity-view';
@@ -1649,6 +1652,7 @@ export class PensionRoadApp {
     return `<section class="result-screen road-result">
       ${renderResultHero(this.game,characters,!this.failedBrandArt.has('journey'))}
       ${renderResultOverview(this.game)}
+      ${renderFinalPerformance(this.game)}
       ${renderMaturitySummary(this.game)}
       <section class="result-payout" aria-label="선택한 수령 방식"><p class="payout-line ${payout}"><span>${renderPayoutLine(plan)}</span><button class="secondary" data-action="open-payout">수령 방식 다시 비교</button></p><small>실제 지급액이 아닌 재원별 게임 가정의 비교입니다.</small></section>
       ${renderRetrySuggestion(this.game) || '<article class="retry-suggestion"><p class="eyebrow">다음 도전</p><h3>다른 시장에서도 내 설계를 점검해 보세요</h3><button class="primary" data-action="new-seed">새 시드로 도전</button></article>'}
@@ -1707,6 +1711,7 @@ export class PensionRoadApp {
       content = renderSettlementModal(summary, {
         market: this.game?.lastMarket,
         learningHtml: this.renderSettlementLearning(),
+        goalHtml: this.game ? renderGoalConditions(this.game) : '',
         importantHtml: this.renderSettlementNotices(),
         characters,
         ghost: this.save.settings.ghost,
@@ -1722,6 +1727,7 @@ export class PensionRoadApp {
       const card = getLearningCard(this.quizCardId, this.game);
       if (card) {
         content = renderQuizModal(card, {
+          game:this.game,
           picked: this.quizPicked,
           progress: this.finishing ? { index: this.finalQuizTotal - this.finalQuizQueue.length - 1, total: this.finalQuizTotal } : null,
           characters,
@@ -1778,6 +1784,7 @@ export class PensionRoadApp {
     if (!opportunity.cardIds.length) return '';
     return `<aside class="optional-learning"><strong>${getLearningCard(opportunity.cardIds[0], this.game)?.title ?? '이번 판단과 연결된 한 문제'}</strong>
       <p class="hint">${quizPointsCopy(opportunity)} 오답 벌점 없이 건너뛸 수 있습니다.</p>
+      ${renderLearningProgress(this.game)}
       <button class="secondary" data-action="action-quiz">${this.game.learningFlow ? '관련 한 문제 풀기 · 선택' : '방금 선택과 연결된 한 문제'}</button></aside>`;
   }
 
@@ -1802,7 +1809,7 @@ export class PensionRoadApp {
     return products.filter((product) => !held || held.includes(product.id))
       .map((product) => {
         const blocked = forBuy && !canBuyForProfile(this.game!.profileId, product.id).ok;
-        return `<option value="${product.id}" ${selected === product.id ? 'selected' : ''} ${blocked ? 'disabled' : ''}>${product.name} · ${product.riskGrade}등급${blocked ? ' · 성향 밖' : ''}</option>`;
+        return `<option value="${product.id}" ${selected === product.id ? 'selected' : ''} ${blocked ? 'disabled' : ''}>${product.name} · ${product.riskGrade}등급${forBuy ? ` · ${productRequirement(product.id)}` : ''}</option>`;
       }).join('');
   }
 
