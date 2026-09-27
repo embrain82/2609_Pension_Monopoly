@@ -19,7 +19,7 @@ function mount(game?:GameState) {
 beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;localStorage.setItem(STORAGE_KEY,JSON.stringify({...defaultSave,profileAssessment:{profileId:'balanced',origin:'confirmed'},disclaimerAccepted:true,quickGuideSeen:true,howtoSeen:true,settings:{...defaultSave.settings,reducedMotion:true}}));});
 it('기존 6개 카드와 같은 디자인의 새 카드 한 개, 상세 탭은 하위 화면에만 표시',()=>{
   mount();expect(root.querySelectorAll('.action-list > article')).toHaveLength(7);
-  expect([...root.querySelectorAll('.action-list strong')].map(e=>e.textContent)).toEqual(['추가납입','매수','매도','바꾸기','리밸런싱','디폴트옵션 옵트인/아웃','이번엔 그대로']);
+  expect([...root.querySelectorAll('.action-list strong')].map(e=>e.textContent)).toEqual(['돈 넣기 · 추가납입','상품 사기 · 매수','상품 팔기 · 매도','다른 상품으로 · 교체매매','구성 다시 맞추기 · 리밸런싱','디폴트옵션 사기·나오기 · 옵트인/아웃','이번엔 그대로']);
   expect(root.querySelectorAll('[data-action="default-trade-tab"]')).toHaveLength(0);
   click('[data-view="default"]');expect(root.querySelectorAll('[data-action="default-trade-tab"]')).toHaveLength(2);
   expect(root.querySelectorAll('[role="dialog"] [data-action="close-modal"]')).toHaveLength(1);

@@ -1,4 +1,5 @@
 import { presentMaturityNotices } from '../engine/default-lifecycle';
+import { beginPractice, normalizePractice, practiceAvailable, practiceChoice, practiceIsActive, renderPractice, type PracticeProgress } from './guided-practice';
 import { renderMaturitySummary } from './maturity-view';
 import { activeCycle } from '../engine/maturity-cash';
 import { GENERAL_KNOWLEDGE_VERSION } from '../data/learning-rules';
@@ -11,6 +12,7 @@ import { renderRetrySuggestion } from './retry-view';
 import { renderPortfolio, renderMaturityNotice } from './portfolio-view';
 import { renderTradePreview } from './trade-preview';
 import { renderOrderLayout } from './order-layout';
+import { operationLabels, renderProductHelp, renderTermHelp } from './learning-help';
 import { formatWon, formatShortWon } from './format';
 import { hasPreparedProfile, prepareStart, reassessPreparation, canConfirmPreparation, renderStartPreparation, type StartPreparation } from './start-preparation';
 import { marketExplanation } from '../engine/market-explanation';
@@ -128,6 +130,8 @@ export class PensionRoadApp {
   private amountPreset: AmountPreset = 'default';
   private buyLimitConfirm: Extract<BuyLimitDecision, { kind: 'confirm' }> | null = null;
   private lastSummary: TurnSummary | null = null;
+  private practice: PracticeProgress | undefined;
+  private focusPractice = false;
   private actionView: ActionView = 'menu';
   private actionMenuExpanded = false;
   private renderedActionMenuExpanded = false;
@@ -490,6 +494,24 @@ export class PensionRoadApp {
       this.requestActionEntry();
     } else if (action === 'show-all-actions' || action === 'show-simple-actions') {
       this.actionMenuExpanded = action === 'show-all-actions'; this.actionView = 'menu';
+    } else if (action.startsWith('practice-') && this.game && practiceAvailable(this.game)) {
+      this.practice = normalizePractice(this.practice, this.game);
+      if (action === 'practice-start') this.practice = beginPractice(this.game);
+      else if (action === 'practice-skip') this.practice = { ...beginPractice(this.game)!, mode:'off' };
+      else if (action === 'practice-money' && this.practice?.step === 'money') {
+        this.practice.step = 'preview'; this.portfolioReturn = true; this.portfolioSection = null; this.modal = 'portfolio';
+      } else if (action === 'practice-preview' && this.practice?.step === 'preview') {
+        const choice = practiceChoice(this.game); // Recheck funds and timing at the click, not just at render.
+        if (!choice) return;
+        this.practice.step = 'review';
+        if ('operation' in choice) {
+          this.actionView = choice.operation; this.amountPreset = 'default'; this.buyLimitConfirm = null; this.modal = 'action';
+          if (choice.operation === 'default') this.initializeDefaultTrade();
+        } else { this.portfolioReturn = true; this.portfolioSection = choice.portfolio; this.modal = 'portfolio'; }
+      } else if (action === 'practice-done' && this.practice?.mode === 'active') {
+        this.practice.step = 'done'; this.actionView = 'menu'; this.modal = 'action'; this.portfolioReturn = false;
+      }
+      this.focusPractice = this.modal === 'action' || action === 'practice-money';
     } else if (action === 'guidance-choice' && this.game) {
       const choice = actionGuidance(this.game).choices.find(c => c.id === button.dataset.choice);
       if (!choice) return;
@@ -959,6 +981,8 @@ export class PensionRoadApp {
     this.game = result.state;
     this.announce(result.message);
     if (!result.ok) return;
+    const practice = normalizePractice(this.practice,this.game);
+    if (practice?.mode === 'active') this.practice = { ...practice, step:'done' };
     this.actionView = 'menu';
     this.defaultTradeDraft = null;
     this.amountPreset = 'default';
@@ -1107,13 +1131,14 @@ export class PensionRoadApp {
 
   private checkpoint(): void {
     if (!this.game || this.screen !== 'game' || this.boardFocusing || this.diceRolling || this.tokenHopping) return;
-    const data: PlayCheckpoint = { version: checkpointVersion(this.game), ...(this.arrivalPending ? { arrivalPending: true } : {}), uiProgress: normalizeUiProgress(this.uiProgress, this.game), ...(this.game.defaultTrading?{actionContext:{view:this.actionView==='default'?'default' as const:'menu' as const,draft:this.defaultTradeDraft,portfolioReturn:this.portfolioReturn}}:{}), game: this.game, modal: this.pendingPrompt ? this.pendingPrompt.returnModal : this.modal, lastSummary: this.lastSummary,
+    const data: PlayCheckpoint = { version: checkpointVersion(this.game), ...(this.arrivalPending ? { arrivalPending: true } : {}), uiProgress: normalizeUiProgress(this.uiProgress, this.game), practice: normalizePractice(this.practice, this.game), ...(this.game.defaultTrading?{actionContext:{view:this.actionView==='default'?'default' as const:'menu' as const,draft:this.defaultTradeDraft,portfolioReturn:this.portfolioReturn}}:{}), game: this.game, modal: this.pendingPrompt ? this.pendingPrompt.returnModal : this.modal, lastSummary: this.lastSummary,
       quizCardId: this.quizCardId, quizPicked: this.quizPicked, finalQuizQueue: this.finalQuizQueue,
       finalQuizTotal: this.finalQuizTotal, finishing: this.finishing, defaultOptionAsk: this.defaultOptionAsk };
     this.resumeData = data; this.checkpointFailed = !writeCheckpoint(data);
   }
 
   private resumeGame(data: PlayCheckpoint): void {
+    this.practice = normalizePractice(data.practice, data.game);
     this.pendingPrompt = null; this.restorePromptPosition = null; this.uiProgress = normalizeUiProgress(data.uiProgress, data.game);
     this.marketDetailsContext = null; this.actionScrollTop = null;
     this.newAchievements=[]; this.regionNotice = ""; this.tokenTrail = [];
@@ -1175,7 +1200,7 @@ export class PensionRoadApp {
   }
 
   private startGame(seed: string): void {
-    this.pendingPrompt = null; this.restorePromptPosition = null; this.uiProgress = {};
+    this.pendingPrompt = null; this.restorePromptPosition = null; this.uiProgress = {}; this.practice = undefined;
     this.marketDetailsContext = null; this.actionScrollTop = null;
     this.clearDiceTimer();
     this.defaultTradeDraft = null; this.portfolioReturn = false; this.tokenShown = null; this.lastSummary = null;
@@ -1344,6 +1369,12 @@ export class PensionRoadApp {
         target.setAttribute('tabindex', '-1'); target.focus({ preventScroll: true });
       }
       this.portfolioSection = null;
+    }
+    if (dialog && this.focusPractice) {
+      dialog.scrollTop = 0;
+      const heading = dialog.querySelector<HTMLElement>('.guided-practice h3, h2');
+      heading?.setAttribute('tabindex','-1'); heading?.focus({preventScroll:true});
+      this.focusPractice = false;
     }
     if (this.focusQuizAnswer && this.modal === 'quiz') {
       dialog?.querySelector<HTMLElement>('#quiz-answer')?.focus(); this.focusQuizAnswer = false;
@@ -1664,9 +1695,9 @@ export class PensionRoadApp {
     if (this.modal === 'quiz-confirm' && this.game && this.pendingPrompt) content = renderQuizNotice(this.progressQuizOpportunity(this.pendingPrompt.intent), this.game.status === 'finished');
     if (this.modal === 'life') content = this.renderLifeModal();
     if (this.modal === 'explore' && this.game) content = renderExplore(this.game, this.exploreIndex);
-    if (this.modal === 'action') content = this.renderActionModal() + (this.actionView==='menu'||this.actionView==='default' ? '' : this.renderActionMarketContext(true));
+    if (this.modal === 'action') content = (this.actionView !== 'menu' && this.game ? renderPractice(this.game,this.practice) : '') + this.renderActionModal() + (this.actionView==='menu'||this.actionView==='default' ? '' : this.renderActionMarketContext(true));
     if (this.regionNotice && ['action', 'life', 'news', 'tile'].includes(this.modal)) content = `<p class="region-notice" data-key="region-notice-${this.game?.turn}"><span aria-hidden="true">★</span> ${this.regionNotice}</p>` + content;
-    if (this.modal === 'portfolio') content = (this.portfolioReturn ? '<button class="secondary" data-action="return-action">← 운용 선택으로 돌아가기</button>' : '') + this.renderPortfolioModal();
+    if (this.modal === 'portfolio') content = (this.game ? renderPractice(this.game,this.practice) : '') + (this.portfolioReturn ? '<button class="secondary" data-action="return-action">← 운용 선택으로 돌아가기</button>' : '') + this.renderPortfolioModal();
     if (this.modal === 'market') content = this.renderMarketModal();
     if (this.modal === 'cards') content = this.renderCardsModal();
     if (this.modal === 'settings') content = this.renderSettingsModal();
@@ -1787,7 +1818,7 @@ export class PensionRoadApp {
   private renderActionMarketContext(story = false): string {
     const game=this.game;
     if(!game) return '';
-    return `<div class="decision-context"><p class="decision-market">${marketExplanation(game.lastMarket).headline} · 도착 ${boardTiles[game.position].label}</p><details class="market-impact-details" data-turn="${game.turn}" ${this.marketDetailsOpen ? 'open' : ''}><summary><span><strong>시장·보유자산 영향 자세히</strong><small>금리 변화와 내 상품의 영향을 확인하세요</small></span><span class="market-impact-toggle"><span data-market-toggle-label>${this.marketDetailsOpen ? '접기' : '상세 보기'}</span><span class="market-impact-chevron" aria-hidden="true">⌄</span></span></summary><div class="market-impact-content">${story ? renderMarketStory(game.lastMarket,game.ledger)+`<details class="story-products" data-preserve-open><summary>전체 상품 시장 예시</summary>${renderProductReturns(game)}</details>` : renderMarketCard(game, false)}</div></details>${game.turn <= 2 ? `<p class="hint">${game.turn === 1 ? '1턴 실습 · 납입은 생활자금을 IRP 대기자금으로 옮깁니다. 기존 상품을 매도·교체하는 방법도 있습니다.' : '2턴 실습 · 납입만으로 상품이 매수되지는 않습니다. 대기자금과 결제 중인 주문을 확인한 뒤 운용하세요.'}</p>` : ''}</div>`;
+    return `<div class="decision-context"><p class="decision-market">${marketExplanation(game.lastMarket).headline} · 도착 ${boardTiles[game.position].label}</p><details class="market-impact-details" data-turn="${game.turn}" ${this.marketDetailsOpen ? 'open' : ''}><summary><span><strong>시장·보유자산 영향 자세히</strong><small>금리 변화와 내 상품의 영향을 확인하세요</small></span><span class="market-impact-toggle"><span data-market-toggle-label>${this.marketDetailsOpen ? '접기' : '상세 보기'}</span><span class="market-impact-chevron" aria-hidden="true">⌄</span></span></summary><div class="market-impact-content">${story ? renderMarketStory(game.lastMarket,game.ledger)+`<details class="story-products" data-preserve-open><summary>전체 상품 시장 예시</summary>${renderProductReturns(game)}</details>` : renderMarketCard(game, false)}</div></details></div>`;
   }
 
   private renderActionModal(): string {
@@ -1800,7 +1831,7 @@ export class PensionRoadApp {
     if (this.actionView === 'menu') {
       const card = (view: Operation, title: string, description: string, featured = false): string => {
         const availability = actionAvailability(game, view);
-        return `<article class="action-menu-card ${featured ? 'featured' : ''} ${availability.enabled ? '' : 'unavailable'}"><button class="action-menu-choice" data-action="action-view" data-view="${view}" ${availability.enabled ? '' : `disabled aria-describedby="reason-${view}"`}>${operationIcon(view)}<span class="action-menu-copy"><strong>${title}</strong><small>${description}</small></span><span class="action-menu-affordance">${availability.enabled ? '선택 ›' : '이용 불가'}</span></button>${availability.enabled ? '' : `<p class="availability-reason" id="reason-${view}">${availability.reason}</p>`}</article>`;
+        return `<article class="action-menu-card ${featured ? 'featured' : ''} ${availability.enabled ? '' : 'unavailable'}"><button class="action-menu-choice" data-action="action-view" data-view="${view}" ${availability.enabled ? '' : `disabled aria-describedby="reason-${view}"`}>${operationIcon(view)}<span class="action-menu-copy"><strong>${view === 'hold' ? title : operationLabels[view]}</strong><small>${description}</small></span><span class="action-menu-affordance">${availability.enabled ? '선택 ›' : '이용 불가'}</span></button>${availability.enabled ? '' : `<p class="availability-reason" id="reason-${view}">${availability.reason}</p>`}</article>`;
       };
       const counter = totalActions > 1 ? `행동 ${done + 1}/${totalActions} · 남은 행동 ${game.actionsLeft}회` : `남은 행동 ${game.actionsLeft}회`;
       const soFar = done
@@ -1815,13 +1846,13 @@ export class PensionRoadApp {
       const guide = actionGuidance(game);
       const heading = `<header class="action-menu-heading"><p class="eyebrow">TURN ${game.turn} · ${counter}</p><h2>무엇을 할까요?</h2><p>조회와 X 취소는 행동 횟수를 쓰지 않아요.</p></header>`;
       const hold = `<article class="hold-row"><div><strong>이번엔 그대로</strong><small>${this.holdMenuNote(game)}${game.actionsLeft > 1 ? ' · 남은 행동도 함께 마감' : ''}</small></div><button data-action="do-hold" class="${autoRun ? 'default-run' : ''}">${autoRun ? '디폴트옵션으로 운용하고 마감' : '그대로 두고 마감'}</button></article>`;
-      if (!this.actionMenuExpanded) return `<div class="beginner-action-menu">${heading}${renderActionHint(guide)}
+      if (!this.actionMenuExpanded) return `<div class="beginner-action-menu">${heading}${renderPractice(game,this.practice,true)}${practiceIsActive(game,this.practice)?'':renderActionHint(guide)}
         <div class="action-money"><div><span>주문 가능 · IRP 안</span><strong>${formatWon(game.irpCash)}</strong></div><div><span>생활자금 · IRP 밖</span><strong>${formatWon(game.cash)}</strong></div></div>
-        ${renderPurposeChoices(guide)}${hold}<button class="secondary all-actions-toggle" data-action="show-all-actions">전체 운용 보기 <span aria-hidden="true">›</span></button>
+        ${renderPurposeChoices(guide)}${renderTermHelp(['contribute','buy','sell'])}${hold}<button class="secondary all-actions-toggle" data-action="show-all-actions">전체 운용 보기 <span aria-hidden="true">›</span></button>
         <p class="purpose-help">카드는 지시 전 확인 화면만 열어요. 실제 거래는 별도로 확정해요.</p>
         ${game.turn===12?'<p class="info-note">마지막 운용 · 남은 주문은 종료 가격으로 최종 정산합니다. 추가 시장·급여는 없습니다.</p>':''}
         ${resolved}${soFar}${renderMaturitySummary(game)}${spotlightNote}${this.renderActionMarketContext(true)}</div>`;
-      return `<button class="text-button" data-action="show-simple-actions">← 쉬운 선택으로</button>${heading}${renderActionHint(guide)}${resolved}
+      return `<button class="text-button" data-action="show-simple-actions">← 쉬운 선택으로</button>${heading}${renderPractice(game,this.practice,true)}${practiceIsActive(game,this.practice)?'':renderActionHint(guide)}${resolved}
         <div class="action-money"><div><span>주문 가능 · IRP 대기자금</span><strong>${formatWon(game.irpCash)}</strong><small>${cashInterestRule(game)}</small></div><div><span>생활자금 · IRP 밖</span><strong>${formatWon(game.cash)}</strong></div></div>
         ${game.turn===12?'<p class="info-note">마지막 운용입니다. 12턴 이후 주문 단계는 추가 시장·급여 없이 종료 가격으로 최종 정산합니다.</p>':''}${soFar}${spotlightNote}${this.renderActionMarketContext(true)}
         <div class="action-list">
@@ -1871,7 +1902,7 @@ export class PensionRoadApp {
           ${contributeCta}
         </div>`;
       return renderOrderLayout(game, { kind: 'buy', title: '무엇을 살까요?', subtitle: pending,
-        inputs: `<label for="buy-product">상품</label><select id="buy-product">${this.productOptions(this.selectedBuy, false, true)}</select>
+        inputs: `<label for="buy-product">상품</label><select id="buy-product">${this.productOptions(this.selectedBuy, false, true)}</select>${renderProductHelp(this.selectedBuy)}
         <p class="order-amount"><small>매수 요청 금액</small><strong>${formatWon(amount)}</strong></p>${this.amountButtons('buy', this.selectedBuy)}`,
         preview: `<div class="preview-box ${decision?.kind === 'confirm' || decision?.kind === 'reject' ? 'warning' : ''}" aria-live="polite"><strong>지시 전 확인</strong><p>${preview}</p></div>
         ${decision?.kind==='confirm'?'<p class="hint">아래 거래 미리보기는 한도까지 조정한 금액입니다. 실행 시 다시 확인합니다.</p>':''}
@@ -1884,7 +1915,7 @@ export class PensionRoadApp {
       const sale = sellProduct(game, this.selectedSell, amount);
       const blocked = blockReason(actionTiming(game)) ?? (sale.ok ? null : sale.message);
       return renderOrderLayout(game, { kind: 'sell', title: '무엇을 줄일까요?', subtitle: '직접 운용분 대상 · 매도대금은 IRP 안에 남습니다.',
-        inputs: `<label for="sell-product">상품</label><select id="sell-product">${this.productOptions(this.selectedSell, true)}</select>
+        inputs: `<label for="sell-product">상품</label><select id="sell-product">${this.productOptions(this.selectedSell, true)}</select>${renderProductHelp(this.selectedSell)}
         <p class="order-amount"><small>매도 요청 평가액</small><strong>${formatWon(amount)}</strong></p>${this.amountButtons('sell', this.selectedSell)}`,
         preview: `${blocked?`<div class="preview-box warning" id="order-block-reason"><strong>지시 전 확인</strong><p>${blocked}</p></div>`:''}${renderTradePreview(game,sale)}`,
         actions: `<button class="primary jumbo" data-action="do-sell" ${blocked ? 'disabled aria-describedby="order-block-reason"' : ''}>매도 실행</button>` });
@@ -1897,7 +1928,7 @@ export class PensionRoadApp {
       const blocked = blockReason(actionTiming(game)) ?? (trade.ok ? null : trade.message);
       return renderOrderLayout(game, { kind: 'switch', title: '무엇을 바꿀까요?', subtitle: '직접 운용분 대상 · 매도 결제 후 새 상품을 매수합니다.',
         inputs: `<label for="switch-from">기존 상품</label><select id="switch-from">${this.productOptions(this.switchFrom, true)}</select>
-        <label for="switch-to">새 상품</label><select id="switch-to">${this.productOptions(this.switchTo, false, true)}</select>
+        <label for="switch-to">새 상품</label><select id="switch-to">${this.productOptions(this.switchTo, false, true)}</select>${renderProductHelp(this.switchFrom)}${this.switchTo!==this.switchFrom?renderProductHelp(this.switchTo):''}
         <p class="order-amount"><small>교체할 평가액</small><strong>${formatWon(amount)}</strong></p>${this.amountButtons('switch', this.switchFrom)}`,
         preview: `${blocked?`<div class="preview-box warning" id="order-block-reason"><strong>지시 전 확인</strong><p>${blocked}</p></div>`:''}${renderTradePreview(game,trade)}`,
         actions: `<button class="primary jumbo" data-action="do-switch" ${blocked ? 'disabled aria-describedby="order-block-reason"' : ''}>교체 실행</button>` });

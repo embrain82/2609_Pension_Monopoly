@@ -1,0 +1,26 @@
+[
+  {
+    "width": 390,
+    "modalWidth": 364,
+    "modalScrollWidth": 364,
+    "clockWidth": 262,
+    "clockScrollWidth": 262,
+    "clockText": "확정하면 이 순서로 진행돼요\n\n1\n주문 접수\n5턴 예정\n2\n가격 확정\n6턴 예정\n3\n결제 완료\n7턴 예정\n\n확정 후 매수금은 주문에 묶여 있어요. 결제가 끝나면 보유 상품에 들어와요.\n\n게임 시간표예요. 실제 상품의 영업일·기준가·결제일은 별도 확인해요."
+  },
+  {
+    "width": 320,
+    "modalWidth": 294,
+    "modalScrollWidth": 294,
+    "clockWidth": 192,
+    "clockScrollWidth": 192,
+    "clockText": "확정하면 이 순서로 진행돼요\n\n1\n주문 접수\n5턴 예정\n2\n가격 확정\n6턴 예정\n3\n결제 완료\n7턴 예정\n\n확정 후 매수금은 주문에 묶여 있어요. 결제가 끝나면 보유 상품에 들어와요.\n\n게임 시간표예요. 실제 상품의 영업일·기준가·결제일은 별도 확인해요."
+  },
+  {
+    "width": 1440,
+    "modalWidth": 1103,
+    "modalScrollWidth": 1103,
+    "clockWidth": 411,
+    "clockScrollWidth": 411,
+    "clockText": "확정하면 이 순서로 진행돼요\n\n1\n주문 접수\n5턴 예정\n2\n가격 확정\n6턴 예정\n3\n결제 완료\n7턴 예정\n\n확정 후 매수금은 주문에 묶여 있어요. 결제가 끝나면 보유 상품에 들어와요.\n\n게임 시간표예요. 실제 상품의 영업일·기준가·결제일은 별도 확인해요."
+  }
+]

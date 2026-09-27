@@ -1,0 +1,18 @@
+{
+  "before": {
+    "cash": 13400000,
+    "irpCash": 0,
+    "actions": 1
+  },
+  "after": {
+    "cash": 12400000,
+    "irpCash": 1000000,
+    "actions": 0
+  },
+  "practice": {
+    "version": "p1",
+    "mode": "active",
+    "turn": 1,
+    "step": "done"
+  }
+}

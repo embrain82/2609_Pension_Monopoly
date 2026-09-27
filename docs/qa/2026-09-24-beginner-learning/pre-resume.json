@@ -1,0 +1,775 @@
+{
+  "boardVisibility": "arrival-v1",
+  "financeRules": {
+    "version": "f2",
+    "startingAllocation": {
+      "deposit": 0.6,
+      "shortBond": 0.25,
+      "longBond": 0.15,
+      "balanced": 0,
+      "equityEtf": 0,
+      "tdf": 0
+    },
+    "cashRatePerTurn": 0.001,
+    "lastInterestTurn": 2
+  },
+  "learningContentVersion": "2026-09-16-situations",
+  "learningFlow": {
+    "version": "settlement-v1",
+    "queue": [
+      "fund-order",
+      "contribution-limit"
+    ]
+  },
+  "contributionPacing": {
+    "version": "v1",
+    "perTurnLimit": 2000000
+  },
+  "route": {
+    "visits": [
+      6,
+      9
+    ],
+    "badges": [
+      1
+    ],
+    "reflections": [],
+    "version": "auto-v1"
+  },
+  "accountType": "IRP",
+  "rulesetVersion": "2026-09-16-g",
+  "avatarId": "balanced",
+  "accountBasis": {
+    "retirement": 90000000,
+    "retirementTax": 1800000,
+    "deducted": 10000000,
+    "nonDeducted": 9000000
+  },
+  "cashFlows": [
+    {
+      "turn": 1,
+      "kind": "contribution",
+      "amount": 1000000
+    }
+  ],
+  "livingDebt": 0,
+  "orderSequence": 1,
+  "rebalancePlan": null,
+  "prices": {
+    "deposit": 1008.7163188655477,
+    "shortBond": 1019.2453002186363,
+    "longBond": 1034.4750910353148,
+    "balanced": 1029.7229220512202,
+    "equityEtf": 1033.0343409929944,
+    "tdf": 1025.252970284969
+  },
+  "seed": "1y0ofc3-70c39p",
+  "rngState": 4229450956,
+  "status": "playing",
+  "turn": 2,
+  "position": 9,
+  "phase": "저금리·경기회복",
+  "goalMonthly": 500000,
+  "profileId": "stableGrowth",
+  "cash": 13800000,
+  "irpCash": 0,
+  "holdings": [
+    {
+      "productId": "deposit",
+      "positions": [
+        {
+          "amount": 65512800,
+          "principal": 64800000,
+          "depositTurnsHeld": 2,
+          "lots": [
+            {
+              "principal": 64800000,
+              "amount": 65512800,
+              "openedTurn": 0,
+              "maturityTurn": 3,
+              "ratePerTurn": 0.0055,
+              "id": "deposit-0"
+            }
+          ],
+          "id": "manual-deposit",
+          "source": "manual",
+          "units": 64946.70382023654
+        }
+      ],
+      "amount": 65512800,
+      "principal": 64800000,
+      "units": 64946.70382023654,
+      "depositTurnsHeld": 2,
+      "lots": [
+        {
+          "principal": 64800000,
+          "amount": 65512800,
+          "openedTurn": 0,
+          "maturityTurn": 3,
+          "ratePerTurn": 0.0055,
+          "id": "deposit-0"
+        }
+      ]
+    },
+    {
+      "productId": "shortBond",
+      "positions": [
+        {
+          "amount": 27519623.10590318,
+          "principal": 27000000,
+          "depositTurnsHeld": 0,
+          "id": "manual-shortBond",
+          "source": "manual",
+          "units": 26999.999999999996
+        }
+      ],
+      "amount": 27519623.10590318,
+      "principal": 27000000,
+      "units": 26999.999999999996,
+      "depositTurnsHeld": 0
+    },
+    {
+      "productId": "longBond",
+      "positions": [
+        {
+          "amount": 16758496.474772098,
+          "principal": 16200000,
+          "depositTurnsHeld": 0,
+          "id": "manual-longBond",
+          "source": "manual",
+          "units": 16199.999999999998
+        }
+      ],
+      "amount": 16758496.474772098,
+      "principal": 16200000,
+      "units": 16199.999999999998,
+      "depositTurnsHeld": 0
+    }
+  ],
+  "pendingOrders": [
+    {
+      "id": "order-0",
+      "side": "buy",
+      "productId": "shortBond",
+      "amount": 1001000,
+      "submittedTurn": 2,
+      "priceTurn": 3,
+      "settlesTurn": 4,
+      "stage": "received"
+    }
+  ],
+  "contributionTotal": 1000000,
+  "taxCreditEligible": 1000000,
+  "taxCreditBenefit": 132000,
+  "maxIrpValue": 110791919.58067527,
+  "maxDrawdown": 0,
+  "irpHistory": [
+    108000000,
+    109878437.47028176,
+    110791919.58067527
+  ],
+  "cashShortages": 0,
+  "ruleBreaches": 0,
+  "marketLimitExceeded": false,
+  "understandingPoints": 1,
+  "rebalanceCount": 0,
+  "riskBuyCount": 0,
+  "safeActionCount": 0,
+  "unlockedCards": [
+    "rate-bond",
+    "db-dc-irp",
+    "pricing-vs-settlement",
+    "tdf-glide",
+    "duration",
+    "contribution-limit",
+    "fund-order"
+  ],
+  "eventHistory": [],
+  "logs": [
+    {
+      "turn": 0,
+      "type": "start",
+      "message": "안정추구형에 맞는 가상 시작 포트폴리오로 출발했습니다."
+    },
+    {
+      "turn": 1,
+      "type": "market",
+      "message": "가상 금리 하락 · 주가 하락 · 금리 2.00% (-0.50%p) · 주가 -4.2%"
+    },
+    {
+      "turn": 1,
+      "type": "action",
+      "message": "1,000,000원 추가납입. 세액공제 132,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+    },
+    {
+      "turn": 1,
+      "type": "settle",
+      "message": "1턴 마감"
+    },
+    {
+      "turn": 2,
+      "type": "market",
+      "message": "가상 금리 하락 · 주가 상승 · 금리 1.50% (-0.50%p) · 주가 +6.2%"
+    },
+    {
+      "turn": 2,
+      "type": "region",
+      "message": "성장 지역 도장 획득 · 서로 다른 두 칸 방문"
+    },
+    {
+      "turn": 2,
+      "type": "action",
+      "message": "단기채 매수 접수 → 다음 턴 기준가 확정 → 그다음 턴 결제(게임 시간)"
+    },
+    {
+      "turn": 2,
+      "type": "settle",
+      "message": "2턴 마감"
+    }
+  ],
+  "lastMarket": {
+    "turn": 2,
+    "phase": "저금리·경기회복",
+    "headline": "가상 금리 하락 · 주가 상승",
+    "signal": "금리 1.50% (-0.50%p) · 주가 +6.2%",
+    "reason": "다른 조건이 같다면 금리 하락은 기존 채권 가격에 상승 요인입니다. 만기가 긴 채권은 더 민감할 수 있지만 실제 수익은 다른 요인도 함께 반영합니다. 다음 턴 방향은 확정되지 않았습니다.",
+    "rate": 2,
+    "inflation": 2,
+    "stocks": 3,
+    "ratePct": 1.5,
+    "rateDeltaPct": -0.5,
+    "inflationPct": 1.4,
+    "stockIndex": 101.8,
+    "stockReturn": 0.06237550980132073,
+    "regime": "easing",
+    "returns": {
+      "deposit": 0.003930784999206662,
+      "shortBond": 0.010390354988677427,
+      "longBond": 0.0178484209606424,
+      "balanced": 0.04089213109979173,
+      "equityEtf": 0.06766487422492355,
+      "tdf": 0.03579414157012283
+    }
+  },
+  "marketPath": [
+    {
+      "turn": 1,
+      "phase": "저금리·경기회복",
+      "headline": "가상 금리 하락 · 주가 하락",
+      "signal": "금리 2.00% (-0.50%p) · 주가 -4.2%",
+      "reason": "다른 조건이 같다면 금리 하락은 기존 채권 가격에 상승 요인입니다. 만기가 긴 채권은 더 민감할 수 있지만 실제 수익은 다른 요인도 함께 반영합니다. 다음 턴 방향은 확정되지 않았습니다.",
+      "rate": 2,
+      "inflation": 2,
+      "stocks": 3,
+      "ratePct": 2,
+      "rateDeltaPct": -0.5,
+      "inflationPct": 1.5,
+      "stockIndex": 95.8,
+      "stockReturn": -0.04183589936513454,
+      "regime": "easing",
+      "returns": {
+        "deposit": 0.004766796613717451,
+        "shortBond": 0.009571380923409015,
+        "longBond": 0.017555814739689233,
+        "balanced": -0.009145686579681934,
+        "equityEtf": -0.031854970990912994,
+        "tdf": -0.008194278321233579
+      }
+    },
+    {
+      "turn": 2,
+      "phase": "저금리·경기회복",
+      "headline": "가상 금리 하락 · 주가 상승",
+      "signal": "금리 1.50% (-0.50%p) · 주가 +6.2%",
+      "reason": "다른 조건이 같다면 금리 하락은 기존 채권 가격에 상승 요인입니다. 만기가 긴 채권은 더 민감할 수 있지만 실제 수익은 다른 요인도 함께 반영합니다. 다음 턴 방향은 확정되지 않았습니다.",
+      "rate": 2,
+      "inflation": 2,
+      "stocks": 3,
+      "ratePct": 1.5,
+      "rateDeltaPct": -0.5,
+      "inflationPct": 1.4,
+      "stockIndex": 101.8,
+      "stockReturn": 0.06237550980132073,
+      "regime": "easing",
+      "returns": {
+        "deposit": 0.003930784999206662,
+        "shortBond": 0.010390354988677427,
+        "longBond": 0.0178484209606424,
+        "balanced": 0.04089213109979173,
+        "equityEtf": 0.06766487422492355,
+        "tdf": 0.03579414157012283
+      }
+    },
+    {
+      "turn": 3,
+      "phase": "저금리·경기회복",
+      "headline": "가상 금리 하락 · 주가 하락",
+      "signal": "금리 1.25% (-0.25%p) · 주가 -0.8%",
+      "reason": "다른 조건이 같다면 금리 하락은 기존 채권 가격에 상승 요인입니다. 만기가 긴 채권은 더 민감할 수 있지만 실제 수익은 다른 요인도 함께 반영합니다. 다음 턴 방향은 확정되지 않았습니다.",
+      "rate": 2,
+      "inflation": 2,
+      "stocks": 3,
+      "ratePct": 1.25,
+      "rateDeltaPct": -0.25,
+      "inflationPct": 1.2,
+      "stockIndex": 101,
+      "stockReturn": -0.007763907008804385,
+      "regime": "easing",
+      "returns": {
+        "deposit": 0.0033498742452356964,
+        "shortBond": 0.004423427584581077,
+        "longBond": 0.010469168397132309,
+        "balanced": 0.004105416672653518,
+        "equityEtf": 0.0007645353544503418,
+        "tdf": 0.00404776666384423
+      }
+    },
+    {
+      "turn": 4,
+      "phase": "혼조·관망",
+      "headline": "가상 금리 상승 · 주가 상승",
+      "signal": "금리 1.50% (+0.25%p) · 주가 +2.6%",
+      "reason": "다른 조건이 같다면 금리 상승은 기존 채권 가격에 하락 요인입니다. 만기가 긴 채권은 더 민감할 수 있지만 실제 수익은 다른 요인도 함께 반영합니다. 다음 턴 방향은 확정되지 않았습니다.",
+      "rate": 2,
+      "inflation": 2,
+      "stocks": 3,
+      "ratePct": 1.5,
+      "rateDeltaPct": 0.25,
+      "inflationPct": 1.3,
+      "stockIndex": 103.7,
+      "stockReturn": 0.02649138788646087,
+      "regime": "hold",
+      "returns": {
+        "deposit": 0.004322206186642871,
+        "shortBond": 0.001406336401635781,
+        "longBond": -0.006734859403409065,
+        "balanced": 0.015854566566378347,
+        "equityEtf": 0.034373394633643334,
+        "tdf": 0.013198771106054776
+      },
+      "alert": {
+        "level": 1,
+        "text": "시장 경계감이 커집니다 · 방향은 불확실",
+        "hint": "신호는 예측이 아니라 대비할 이유입니다. 분산과 생활자금을 점검하세요."
+      }
+    },
+    {
+      "turn": 5,
+      "phase": "위험자산 충격",
+      "headline": "가상 금리 동결 · 주가 하락",
+      "signal": "금리 1.50% (변화 없음) · 주가 -11.2%",
+      "reason": "이번 턴 가상 금리는 바뀌지 않았습니다. 채권·주식 수익에는 이자와 다른 시장 요인도 반영됩니다. 다음 턴 방향은 확정되지 않았습니다.",
+      "rate": 2,
+      "inflation": 2,
+      "stocks": 2,
+      "ratePct": 1.5,
+      "rateDeltaPct": 0,
+      "inflationPct": 1.4,
+      "stockIndex": 92.1,
+      "stockReturn": -0.11216160489525648,
+      "regime": "hold",
+      "returns": {
+        "deposit": 0.0036818277750164273,
+        "shortBond": 0.0014284661773592234,
+        "longBond": 0.00261461496334523,
+        "balanced": -0.04898922971482389,
+        "equityEtf": -0.1,
+        "tdf": -0.03683767356758317
+      },
+      "shock": true,
+      "shockId": "equity-crash"
+    },
+    {
+      "turn": 6,
+      "phase": "혼조·관망",
+      "headline": "가상 금리 동결 · 주가 하락",
+      "signal": "금리 1.50% (변화 없음) · 주가 -1.9%",
+      "reason": "이번 턴 가상 금리는 바뀌지 않았습니다. 채권·주식 수익에는 이자와 다른 시장 요인도 반영됩니다. 다음 턴 방향은 확정되지 않았습니다.",
+      "rate": 2,
+      "inflation": 2,
+      "stocks": 2,
+      "ratePct": 1.5,
+      "rateDeltaPct": 0,
+      "inflationPct": 1.4,
+      "stockIndex": 90.4,
+      "stockReturn": -0.018582629545591776,
+      "regime": "hold",
+      "returns": {
+        "deposit": 0.004397814164217561,
+        "shortBond": 0.0036525336083024743,
+        "longBond": 0.0044292008735239505,
+        "balanced": -0.002828603955428118,
+        "equityEtf": -0.009698075151769448,
+        "tdf": -0.0009432029312414447
+      }
+    },
+    {
+      "turn": 7,
+      "phase": "물가상승·긴축",
+      "headline": "가상 금리 상승 · 주가 상승",
+      "signal": "금리 1.75% (+0.25%p) · 주가 +1.3%",
+      "reason": "다른 조건이 같다면 금리 상승은 기존 채권 가격에 하락 요인입니다. 만기가 긴 채권은 더 민감할 수 있지만 실제 수익은 다른 요인도 함께 반영합니다. 다음 턴 방향은 확정되지 않았습니다.",
+      "rate": 2,
+      "inflation": 2,
+      "stocks": 2,
+      "ratePct": 1.75,
+      "rateDeltaPct": 0.25,
+      "inflationPct": 1.9,
+      "stockIndex": 91.6,
+      "stockReturn": 0.012721806006506086,
+      "regime": "tightening",
+      "returns": {
+        "deposit": 0.004779856805549935,
+        "shortBond": 0.001650093434471637,
+        "longBond": -0.004484546188171954,
+        "balanced": 0.012178936286992393,
+        "equityEtf": 0.025775098950834945,
+        "tdf": 0.009029649965199641
+      },
+      "alert": {
+        "level": 2,
+        "text": "다음 턴 금리 결정 · 빅스텝 인상 우려",
+        "hint": "장기채 비중을 점검하세요. 금리가 뛰면 만기 긴 채권이 가장 크게 흔들립니다."
+      }
+    },
+    {
+      "turn": 8,
+      "phase": "기준금리 빅스텝 인상",
+      "headline": "가상 금리 상승 · 주가 하락",
+      "signal": "금리 2.75% (+1.00%p) · 주가 -0.6%",
+      "reason": "다른 조건이 같다면 금리 상승은 기존 채권 가격에 하락 요인입니다. 만기가 긴 채권은 더 민감할 수 있지만 실제 수익은 다른 요인도 함께 반영합니다. 다음 턴 방향은 확정되지 않았습니다.",
+      "rate": 3,
+      "inflation": 2,
+      "stocks": 2,
+      "ratePct": 2.75,
+      "rateDeltaPct": 1,
+      "inflationPct": 2.1,
+      "stockIndex": 91,
+      "stockReturn": -0.006415317945182318,
+      "regime": "pivot",
+      "returns": {
+        "deposit": 0.012,
+        "shortBond": -0.02,
+        "longBond": -0.09,
+        "balanced": -0.027122195346979423,
+        "equityEtf": 0.0007556093060411572,
+        "tdf": -0.026364796897986285
+      },
+      "shock": true,
+      "shockId": "rate-bigstep"
+    },
+    {
+      "turn": 9,
+      "phase": "저금리·경기회복",
+      "headline": "가상 금리 하락 · 주가 상승",
+      "signal": "금리 2.25% (-0.50%p) · 주가 +1.7%",
+      "reason": "다른 조건이 같다면 금리 하락은 기존 채권 가격에 상승 요인입니다. 만기가 긴 채권은 더 민감할 수 있지만 실제 수익은 다른 요인도 함께 반영합니다. 다음 턴 방향은 확정되지 않았습니다.",
+      "rate": 2,
+      "inflation": 2,
+      "stocks": 2,
+      "ratePct": 2.25,
+      "rateDeltaPct": -0.5,
+      "inflationPct": 1.7,
+      "stockIndex": 92.5,
+      "stockReturn": 0.016828448702115563,
+      "regime": "easing",
+      "returns": {
+        "deposit": 0.005047448573587462,
+        "shortBond": 0.010671391581371427,
+        "longBond": 0.020005832497682424,
+        "balanced": 0.02197212763710413,
+        "equityEtf": 0.028605643234681337,
+        "tdf": 0.017996164064768234
+      }
+    },
+    {
+      "turn": 10,
+      "phase": "혼조·관망",
+      "headline": "가상 금리 동결 · 주가 하락",
+      "signal": "금리 2.25% (변화 없음) · 주가 -1.4%",
+      "reason": "이번 턴 가상 금리는 바뀌지 않았습니다. 채권·주식 수익에는 이자와 다른 시장 요인도 반영됩니다. 다음 턴 방향은 확정되지 않았습니다.",
+      "rate": 2,
+      "inflation": 2,
+      "stocks": 2,
+      "ratePct": 2.25,
+      "rateDeltaPct": 0,
+      "inflationPct": 1.5,
+      "stockIndex": 91.2,
+      "stockReturn": -0.014329004763159903,
+      "regime": "hold",
+      "returns": {
+        "deposit": 0.004846615867177024,
+        "shortBond": 0.004875608592946082,
+        "longBond": -0.0006286189153790478,
+        "balanced": -0.00013318493382539673,
+        "equityEtf": -0.0023898647064343106,
+        "tdf": 0.0011779551294771947
+      }
+    },
+    {
+      "turn": 11,
+      "phase": "혼조·관망",
+      "headline": "가상 금리 동결 · 주가 상승",
+      "signal": "금리 2.25% (변화 없음) · 주가 +5.4%",
+      "reason": "이번 턴 가상 금리는 바뀌지 않았습니다. 채권·주식 수익에는 이자와 다른 시장 요인도 반영됩니다. 다음 턴 방향은 확정되지 않았습니다.",
+      "rate": 2,
+      "inflation": 2,
+      "stocks": 3,
+      "ratePct": 2.25,
+      "rateDeltaPct": 0,
+      "inflationPct": 1.4,
+      "stockIndex": 96.1,
+      "stockReturn": 0.05407172956690193,
+      "regime": "hold",
+      "returns": {
+        "deposit": 0.005674562617391347,
+        "shortBond": 0.0023579722865950314,
+        "longBond": 0.007095146891847252,
+        "balanced": 0.03268660194907571,
+        "equityEtf": 0.06064664430893028,
+        "tdf": 0.020712784047364263
+      }
+    },
+    {
+      "turn": 12,
+      "phase": "혼조·관망",
+      "headline": "가상 금리 동결 · 주가 하락",
+      "signal": "금리 2.25% (변화 없음) · 주가 -3.9%",
+      "reason": "이번 턴 가상 금리는 바뀌지 않았습니다. 채권·주식 수익에는 이자와 다른 시장 요인도 반영됩니다. 다음 턴 방향은 확정되지 않았습니다.",
+      "rate": 2,
+      "inflation": 2,
+      "stocks": 2,
+      "ratePct": 2.25,
+      "rateDeltaPct": 0,
+      "inflationPct": 1.3,
+      "stockIndex": 92.4,
+      "stockReturn": -0.038801545345224446,
+      "regime": "hold",
+      "returns": {
+        "deposit": 0.004578698387090117,
+        "shortBond": 0.00321454644058831,
+        "longBond": 0.00825260140299797,
+        "balanced": -0.011886709958512804,
+        "equityEtf": -0.02950699383881875,
+        "tdf": -0.0038371421445754835
+      }
+    }
+  ],
+  "awaitingAction": false,
+  "currentEventId": null,
+  "lifeEventSchedule": [
+    {
+      "turn": 3,
+      "eventId": "yearend-bonus"
+    },
+    {
+      "turn": 9,
+      "eventId": "yearend-bonus"
+    },
+    {
+      "turn": 11,
+      "eventId": "parents"
+    }
+  ],
+  "ledger": {
+    "open": 109878437.47028176,
+    "afterMarket": 110791919.58067527,
+    "beforeAction": {
+      "irp": 110791919.58067527,
+      "risk": 0,
+      "holdings": {
+        "deposit": 65512800,
+        "shortBond": 27519623.10590318,
+        "longBond": 16758496.474772098,
+        "balanced": 0,
+        "equityEtf": 0,
+        "tdf": 0
+      }
+    },
+    "marketEffects": [
+      {
+        "productId": "deposit",
+        "opening": 65156400,
+        "delta": 356400,
+        "returnRate": 0.005469915464942815
+      },
+      {
+        "productId": "shortBond",
+        "opening": 27247523.914018072,
+        "delta": 272099.19188510627,
+        "returnRate": 0.009986198846681955
+      },
+      {
+        "productId": "longBond",
+        "opening": 16474513.556263696,
+        "delta": 283982.91850840114,
+        "returnRate": 0.01723771190806598
+      }
+    ],
+    "cashInterest": {
+      "turn": 2,
+      "opening": 1000000,
+      "rate": 0.001,
+      "amount": 1000
+    }
+  },
+  "tileEffects": [
+    {
+      "kind": "signal-preview",
+      "tileIndex": 9,
+      "title": "시장 뉴스 · 신호 미리 보기",
+      "detail": "다음 턴에는 특별한 신호가 없습니다. 조용하다는 뜻은 아니니 분산을 지키세요.",
+      "alert": null
+    }
+  ],
+  "actionsLeft": 0,
+  "turnActionLines": [
+    "단기채 매수 접수 → 다음 턴 기준가 확정 → 그다음 턴 결제(게임 시간)"
+  ],
+  "pendingTaxCredit": 132000,
+  "taxCreditRefunded": 0,
+  "spotlightProductId": null,
+  "rebalanceBonusTurn": null,
+  "extraLifeEvents": 0,
+  "tileEffectsEnabled": true,
+  "ghost": {
+    "irpHistory": [
+      108000000,
+      108878437.47028176,
+      109790919.58067527,
+      110423281.25425214,
+      110392875.09962392,
+      110521058.38212574,
+      110846426.11597344,
+      111125011.39362185,
+      108660910.03560086,
+      109844707.14087386,
+      110230131.16223168,
+      111052078.12618019,
+      111392627.29074816
+    ],
+    "finalCash": 31880848
+  },
+  "payoutChoice": null,
+  "defaultOption": "lowRisk",
+  "lifeResolution": null,
+  "quizLog": [],
+  "quizStreak": 0,
+  "pendingQuizCardId": "fund-order",
+  "milestonesHit": [
+    "goal-50",
+    "goal-75",
+    "goal-90"
+  ],
+  "turnMilestones": [],
+  "record": {
+    "rebalanceTurns": [],
+    "diversifiedTurns": 2,
+    "defaultOptionRuns": 0,
+    "lifeChoices": []
+  },
+  "campaign": {
+    "scenario": "classic",
+    "mission": "pension",
+    "weekly": false,
+    "milestonesByMission": true,
+    "startingProfile": "stableGrowth",
+    "startingGoal": 500000,
+    "priceIndex": 1.0072238464147814,
+    "index": 1.0165148704667721,
+    "peak": 1.0165148704667721,
+    "drawdown": 0,
+    "open": 109878437.47028176,
+    "afterMarket": 110791919.58067527,
+    "flowStart": 1,
+    "benchmark": 110648142.3896458,
+    "benchmarkOpen": 110648142.3896458,
+    "baselineWeights": {
+      "deposit": 0.6,
+      "shortBond": 0.25,
+      "longBond": 0.15,
+      "balanced": 0,
+      "equityEtf": 0,
+      "tdf": 0
+    },
+    "reviews": [
+      {
+        "turn": 1,
+        "tile": 6,
+        "headline": "가상 금리 하락 · 주가 하락",
+        "actions": [
+          "1,000,000원 추가납입. 세액공제 132,000원(교육용)은 연말정산 칸을 지날 때 생활자금으로 돌아옵니다."
+        ],
+        "irp": 109878437.47028176,
+        "flow": 1000000,
+        "market": 878437.4702817649,
+        "costs": 0,
+        "cash": 12400000,
+        "index": 1.0081336802803866,
+        "realIndex": 1.0043882272525881,
+        "benchmark": 109830925.89085065,
+        "chapter": false,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65156400
+          },
+          {
+            "productId": "shortBond",
+            "amount": 27247523.914018072
+          },
+          {
+            "productId": "longBond",
+            "amount": 16474513.556263696
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      },
+      {
+        "turn": 2,
+        "tile": 9,
+        "headline": "가상 금리 하락 · 주가 상승",
+        "actions": [
+          "단기채 매수 접수 → 다음 턴 기준가 확정 → 그다음 턴 결제(게임 시간)"
+        ],
+        "irp": 110791919.58067527,
+        "flow": 0,
+        "market": 913482.1103935093,
+        "costs": 0,
+        "cash": 13800000,
+        "index": 1.0165148704667721,
+        "realIndex": 1.0092243884862955,
+        "benchmark": 110648142.3896458,
+        "chapter": false,
+        "holdings": [
+          {
+            "productId": "deposit",
+            "amount": 65512800
+          },
+          {
+            "productId": "shortBond",
+            "amount": 27519623.10590318
+          },
+          {
+            "productId": "longBond",
+            "amount": 16758496.474772098
+          }
+        ],
+        "defaultHoldings": [],
+        "defaultOrders": []
+      }
+    ],
+    "branches": []
+  },
+  "defaultTrading": {
+    "version": "e1",
+    "groups": []
+  },
+  "defaultLifecycle": {
+    "version": "g1",
+    "lotSequence": 1,
+    "cycles": [],
+    "renewals": []
+  }
+}

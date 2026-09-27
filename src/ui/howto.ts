@@ -1,4 +1,5 @@
 import type { GameState } from '../types';
+import { renderLearningReference } from './learning-help';
 import { renderQuickGuide } from './quick-guide';
 
 export function shouldShowHowTo(howtoSeen: boolean): boolean {
@@ -26,7 +27,7 @@ export function renderHowToModal(automatic = false): string {
     </ol>
     <p>12턴 동안 선택한 미션에 도전합니다. 도착한 칸마다 작은 효과가 하나씩 있고, 같은 입출금의 기준 지수와 성과를 비교합니다. 고스트는 생활 선택·납입까지 다른 보조 경로입니다. 오른쪽 위 성향 이름을 확인하고, 성향 허용 범위보다 위험이 큰 상품은 살 수 없습니다. 이 안내는 설정에서 다시 볼 수 있습니다.</p>
     ${automatic ? '<p>예금 만기자금은 다음 턴 통지, 통지가 표시된 다음 턴 자동주문으로 이어집니다. 기다리는 동안 직접 운용할 수 있습니다. 실제 제도의 4주·통지 후 2주 절차를 게임 단계로 압축했으며, 모든 현금이 자동운용 대상은 아닙니다.</p>' : ''}
-    </details>`;
+    </details>${renderLearningReference()}`;
 }
 
 export function renderSettingsHowToButton(): string {

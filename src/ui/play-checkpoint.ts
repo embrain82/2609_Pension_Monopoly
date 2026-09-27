@@ -1,3 +1,4 @@
+import { normalizePractice, type PracticeProgress } from './guided-practice';
 import { MATURITY_RULESET } from '../engine/maturity-cash';
 import { validDefaultLifecycle } from './maturity-checkpoint';
 import { boardVisibilityOf, validBoardVisibility } from './board-discovery';
@@ -20,6 +21,7 @@ export const CHECKPOINT_KEY = 'pension-road-play-c1';
 export interface PlayCheckpoint {
   version: 'c2' | 'c3' | 'c4' | 'c5';
   uiProgress?: UiProgress;
+  practice?: PracticeProgress;
   /** 시장 적용은 끝났으며, 도착 표정 뒤 안내창으로 넘어갈 UI 단계. */
   arrivalPending?: boolean;
   actionContext?: { view: 'menu' | 'default'; draft: DefaultTradeDraft | null; portfolioReturn: boolean };
@@ -106,6 +108,7 @@ export function parseCheckpoint(raw: string | null): PlayCheckpoint | null {
     if (![null,'life','action','portfolio','market','cards','settings','howto','news','tile','settle','quiz','payout','default-option','explore'].includes(data.modal)) return null;
     if (data.modal === 'settle' && (!data.lastSummary || !finite(data.lastSummary.turn) || !Array.isArray(data.lastSummary.milestones) || !finite(data.lastSummary.irpAfter))) return null;
     data.uiProgress = normalizeUiProgress(data.uiProgress, g);
+    data.practice = normalizePractice(data.practice, g);
     const normalized = normalizeMissionMilestones(data.game);
     if (normalized !== data.game) return { ...data, game: normalized,
       lastSummary: data.lastSummary ? { ...data.lastSummary, milestones: (data.lastSummary.milestones ?? []).filter(m => m.id === 'drawdown-12') } : null };

@@ -1,14 +1,15 @@
 import { actionAvailability, type Operation } from '../engine/action-availability';
 import type { GameState } from '../types';
 import { formatWon } from './format';
+import { operationLabels, renderTermHelp } from './learning-help';
 
 export type GeneralOrder = 'buy' | 'sell' | 'switch' | 'rebalance' | 'contribute';
-const orderNames: Record<GeneralOrder, string> = { buy: '매수', sell: '매도', switch: '바꾸기', rebalance: '리밸런싱', contribute: '추가납입' };
+const orderNames: Record<GeneralOrder, string> = { buy: '상품 사기', sell: '상품 팔기', switch: '바꾸기', rebalance: '구성 맞추기', contribute: '돈 넣기' };
 
 export function renderOrderTabs(state: GameState, selected: GeneralOrder): string {
   return `<nav class="order-tabs" aria-label="일반 운용 종류">${(Object.keys(orderNames) as GeneralOrder[]).map(kind => {
     const availability = actionAvailability(state, kind as Operation);
-    return `<div><button data-action="action-view" data-view="${kind}" aria-pressed="${selected === kind}" ${availability.enabled ? '' : `disabled aria-describedby="order-tab-${kind}-reason"`}>${orderNames[kind]}</button>${availability.enabled ? '' : `<small class="availability-reason" id="order-tab-${kind}-reason">${availability.reason}</small>`}</div>`;
+    return `<div><button data-action="action-view" data-view="${kind}" aria-pressed="${selected === kind}" ${availability.enabled ? '' : `disabled aria-describedby="order-tab-${kind}-reason"`}>${orderNames[kind]}<small>${operationLabels[kind].split(' · ')[1]}</small></button>${availability.enabled ? '' : `<small class="availability-reason" id="order-tab-${kind}-reason">${availability.reason}</small>`}</div>`;
   }).join('')}</nav>`;
 }
 
@@ -18,7 +19,7 @@ export function renderOrderLayout(state: GameState, options: {
 }): string {
   return `<button class="text-button" data-action="action-view" data-view="menu">← 운용지시 목록</button>
     <header class="order-heading"><p class="eyebrow">TURN ${state.turn} · 남은 행동 ${state.actionsLeft}회 · 확정 시 1회</p><h2>${options.title}</h2><p>입력과 미리보기는 조회예요. 확정해야 지시가 실행됩니다.</p></header>
-    ${renderOrderTabs(state, options.kind)}
+    ${renderOrderTabs(state, options.kind)}${renderTermHelp([options.kind, 'pending', 'price', 'risk'])}
     <div class="order-split"><section class="order-input" aria-labelledby="order-input-title"><h3 id="order-input-title"><span>01</span> ${options.kind === 'rebalance' ? '목표 확인' : '지시 입력'}</h3>
     <div class="order-balances"><div><small>주문 가능 · IRP 대기자금</small><b>${formatWon(state.irpCash)}</b></div><div><small>생활자금 · IRP 밖</small><b>${formatWon(state.cash)}</b></div></div>
     ${options.subtitle ? `<p class="order-subtitle">${options.subtitle}</p>` : ''}${options.inputs}</section>
