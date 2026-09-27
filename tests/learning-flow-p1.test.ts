@@ -18,7 +18,7 @@ beforeEach(()=>{localStorage.clear();document.body.innerHTML='<div id="app"></di
 it('시장과 두 운용 행동의 퀴즈를 덮어쓰지 않고 정산에서 선택한다',()=>{
  let g:GameState={...startTurn(createGame('optional-p1','balanced',500000,{ghost:false,defaultTrading:true,scenario:'classic',settlementLearning:true}),5).state,currentEventId:null};
  g=queueQuiz({...g,unlockedCards:[...g.unlockedCards,'risk-limit']},'risk-limit');mount(g);expect(root.querySelector('.modal-action')).not.toBeNull();
- click('action-view'); // first card is contribution
+ click('show-all-actions');click('action-view'); // first card is contribution
  click('do-contribute');click('do-hold');
  expect(saved().game.learningFlow!.queue).toEqual(expect.arrayContaining(['risk-limit','contribution-limit','inflation-value']));expect(root.querySelector('.modal-settle')).not.toBeNull();
  const cash=saved().game.cash,actions=saved().game.actionsLeft;click('action-quiz');const id=saved().quizCardId!;click('quiz-skip');expect(root.querySelector('.modal-quiz-confirm')).not.toBeNull();click('notice-continue');expect(root.querySelector('.modal-settle')).not.toBeNull();

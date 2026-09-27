@@ -23,7 +23,7 @@ it('실제 통지 렌더 후에만 표시 턴을 저장하고 반복 조회·새
  document.body.innerHTML='<div id="app"></div>';root=document.querySelector('#app')!;new PensionRoadApp(root);click('resume-game');expect(current()).toEqual(seen);
 });
 it('현금 유지 지시는 상위 메뉴에 없고 상세 확인에서만 1회 소비한다',()=>{
- seed(game());expect(root.querySelector('[data-action="keep-maturity-cash"]')).toBeNull();expect(root.textContent).toContain('통지·대기 절차는 계속됩니다');
+ seed(game());expect(root.querySelector('[data-action="keep-maturity-cash"]')).toBeNull();expect(root.textContent).toContain('통지·대기·자동운용 절차는 계속됩니다');
  click('action-portfolio');const button=root.querySelector('[data-action="keep-maturity-cash"]')!;expect(button.closest('details')).not.toBeNull();
  const before=current();click('keep-maturity-cash');const after=current();expect(after.irpCash).toBe(before.irpCash);expect(after.actionsLeft).toBe(before.actionsLeft-1);expect(after.defaultLifecycle!.cycles[0].state).toBe('directed');
  expect(root.querySelector('[data-action="keep-maturity-cash"]')).toBeNull();

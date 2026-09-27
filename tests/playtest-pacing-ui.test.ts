@@ -17,7 +17,7 @@ const open = (paced = true): GameState => ({ ...startTurn(createGame('pacing-ui'
 function mount(game = open()) {
   localStorage.setItem(CHECKPOINT_KEY, JSON.stringify({ version: 'c3', game, modal: 'action', lastSummary: null,
     quizCardId: null, quizPicked: null, finalQuizQueue: [], finalQuizTotal: 0, finishing: false, defaultOptionAsk: false }));
-  new PensionRoadApp(root); click('[data-action="resume-game"]'); return game;
+  new PensionRoadApp(root); click('[data-action="resume-game"]'); root.querySelector<HTMLButtonElement>('[data-action="show-all-actions"]')?.click(); return game;
 }
 beforeEach(() => {
   localStorage.clear(); document.body.innerHTML = '<div id="app"></div>'; root = document.querySelector('#app')!;
@@ -90,7 +90,7 @@ it('펼침·금액·스크롤은 포트폴리오 왕복에서 보존하고 새�
   expect(root.querySelector<HTMLDetailsElement>('.market-impact-details')!.open).toBe(true);
   click('[data-action="do-contribute"]');
   document.body.innerHTML = '<div id="second"></div>'; root = document.querySelector('#second')!;
-  new PensionRoadApp(root); click('[data-action="resume-game"]');
+  new PensionRoadApp(root); click('[data-action="resume-game"]'); root.querySelector<HTMLButtonElement>('[data-action="show-all-actions"]')?.click();
   expect(saved().game.contributionTotal).toBe(2_000_000);
   expect(root.querySelector<HTMLButtonElement>('[data-view="contribute"]')!.disabled).toBe(true);
   expect(root.querySelector<HTMLDetailsElement>('.market-impact-details')!.open).toBe(false);

@@ -13,7 +13,7 @@ import type { GameState, ProductId, TurnSummary } from '../src/types';
 let root: HTMLElement;
 const saved = () => parseCheckpoint(localStorage.getItem(CHECKPOINT_KEY))!;
 const click = (action: string) => { const b=root.querySelector<HTMLButtonElement>(`[data-action="${action}"]`);expect(b,action).not.toBeNull();b!.click(); };
-const view = (name: string) => root.querySelector<HTMLButtonElement>(`[data-view="${name}"]`)!.click();
+const view = (name: string) => { root.querySelector<HTMLButtonElement>('[data-action="show-all-actions"]')?.click(); root.querySelector<HTMLButtonElement>(`[data-view="${name}"]`)!.click(); };
 function mount(game: GameState, modal: string|null='action', summary: TurnSummary|null=null, progress?: PlayCheckpoint['uiProgress']) {
   const data:PlayCheckpoint={version:game.defaultTrading?'c3':'c2',game,modal,lastSummary:summary,quizCardId:null,quizPicked:null,finalQuizQueue:[],finalQuizTotal:0,finishing:false,defaultOptionAsk:false,uiProgress:progress};
   localStorage.setItem(CHECKPOINT_KEY,JSON.stringify(data));expect(parseCheckpoint(JSON.stringify(data))).not.toBeNull();new PensionRoadApp(root);click('resume-game');

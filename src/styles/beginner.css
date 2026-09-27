@@ -1,4 +1,32 @@
 /* Beginner 01 + 03: static explanatory diagrams; no changes to board or trade rules. */
+/* Beginner 05 + 06: compact purposes first; original full menu remains available. */
+.road-action-menu .beginner-action-hint { padding:14px 16px; border:1px solid #cae2d2; border-left:4px solid var(--green); border-radius:14px; background:#edf7ef; margin:14px 0; text-align:left; }
+.road-action-menu .beginner-action-hint .eyebrow { font-size:11px; margin:0 0 6px; }
+.road-action-menu .beginner-action-hint h3 { font-family:inherit; font-size:17px; line-height:1.45; margin:0 0 8px; }
+.road-action-menu .beginner-action-hint p:not(.eyebrow) { font-size:13px; line-height:1.6; margin:0; }
+.beginner-action-menu .purpose-choices { display:grid; gap:10px; margin:12px 0; }
+.road-action-menu .purpose-choice { display:grid; grid-template-columns:28px minmax(0,1fr) 16px; align-items:center; gap:12px; border:1px solid var(--line); border-radius:14px; background:#fff; color:var(--ink); padding:15px; text-align:left; min-height:76px; width:100%; }
+.road-action-menu .purpose-choice:hover { background:#f0f8f2; border-color:var(--green); }
+.purpose-choice>.operation-icon { color:var(--green); }
+.purpose-choice strong { display:block; font-size:15px; line-height:1.4; }
+.purpose-choice small { display:block; font-size:12px; font-weight:400; line-height:1.5; margin-top:5px; color:var(--muted); }
+.purpose-arrow { color:var(--green); font-size:22px; }
+.road-action-menu .beginner-action-menu .action-money { margin:12px 0; padding:12px; grid-template-columns:1fr 1fr; gap:10px; }
+.beginner-action-menu .action-money span { font-size:11px; }
+.beginner-action-menu .action-money strong { font-size:17px; }
+.road-action-menu .beginner-action-menu .hold-row { display:block; padding:12px 15px; border:1px solid var(--line); border-radius:14px; background:#f6f9f6; }
+.road-action-menu .beginner-action-menu .hold-row strong { margin-bottom:4px; }
+.road-action-menu .beginner-action-menu .hold-row small { line-height:1.5; }
+.road-action-menu .beginner-action-menu .hold-row button { margin-top:9px; min-height:44px; }
+.road-action-menu .all-actions-toggle { display:flex; justify-content:space-between; align-items:center; width:100%; margin:10px 0 0; min-height:44px; font-size:14px; }
+.road-action-menu .purpose-help { font-size:12px; line-height:1.5; color:var(--muted); margin:10px 0 18px; }
+.road-portfolio [data-portfolio-section]:focus { outline:none; }
+@media(max-width:800px) {
+  .road-action-menu .beginner-action-menu .action-menu-heading { margin-bottom:12px; }
+  .road-action-menu .beginner-action-menu .action-menu-heading h2 { font-size:23px!important; }
+  .road-action-menu .beginner-action-menu .action-menu-heading>p:not(.eyebrow) { font-size:12px; margin:6px 0 0; }
+  .road-action-menu .beginner-action-menu .beginner-action-hint { padding:12px; }
+}
 .guide-preparation { max-width:940px; }
 .guide-preparation>.eyebrow { margin:22px 0 8px; }
 .guide-preparation>h1 { font-size:clamp(24px,4vw,34px); margin:0 0 14px; }

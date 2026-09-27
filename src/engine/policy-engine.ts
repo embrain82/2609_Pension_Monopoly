@@ -35,7 +35,7 @@ export function canBuyRiskAsset(state: GameState, productId: ProductId, amount: 
   const addedRisk = effectiveRiskRatio(productId);
   const ratio = expectedRiskAfterBuy(state, productId, amount);
   if (addedRisk > 0 && current > policyRules.riskAssetLimit) {
-    return { ok: false, ratio, reason: '시장 상승으로 현재 위험비중이 한도를 넘었습니다. 예금·채권 매수나 리밸런싱이 먼저 필요합니다.' };
+    return { ok: false, ratio, reason: '현재 위험비중이 한도를 넘어 위험자산 추가매수가 제한됩니다. 보유 구성과 가능한 운용지시를 확인하세요. 기존 대기자금으로 예금·채권을 사도 위험비중 자체가 낮아지지는 않습니다.' };
   }
   if (ratio > policyRules.riskAssetLimit + 0.00001) {
     if (ratio <= current + 0.00001) {

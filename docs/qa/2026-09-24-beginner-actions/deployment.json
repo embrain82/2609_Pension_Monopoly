@@ -1,0 +1,20 @@
+{
+  "version": "1.15.0",
+  "branch": "feat/beginner-context-actions",
+  "baseBranch": "feat/beginner-guide-money-flow",
+  "basePR": 18,
+  "deployment": {
+    "id": "dpl_A6DHeYUmD5WRqnADWbXDMw3GxSxZ",
+    "url": "https://2609-pension-monopoly-bwmfdw27w-nonsleepers-projects.vercel.app",
+    "inspectorUrl": "https://vercel.com/nonsleepers-projects/2609-pension-monopoly/A6DHeYUmD5WRqnADWbXDMw3GxSxZ",
+    "readyState": "READY",
+    "target": null,
+    "deploymentApiUrl": "https://api.vercel.com/v13/deployments/dpl_A6DHeYUmD5WRqnADWbXDMw3GxSxZ"
+  },
+  "verification": {
+    "hostedBundleMatchesLocal": true,
+    "js": "index-EMR3RX1_.js",
+    "sha256": "dbf02686bd64efc4a853a930aef9ab94b0e222b6dba5061593f0da3ce49a3db0",
+    "egoAppLoaded": true
+  }
+}

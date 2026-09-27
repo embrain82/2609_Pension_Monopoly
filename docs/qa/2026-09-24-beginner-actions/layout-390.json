@@ -1,0 +1,78 @@
+{
+  "width": 390,
+  "height": 844,
+  "dialog": {
+    "clientWidth": 334,
+    "scrollWidth": 334,
+    "scrollTop": 0
+  },
+  "sections": [
+    {
+      "selector": ".action-menu-heading",
+      "top": 86,
+      "bottom": 188.140625,
+      "width": 302,
+      "scrollWidth": 302,
+      "clientWidth": 302
+    },
+    {
+      "selector": ".beginner-action-hint",
+      "top": 202.140625,
+      "bottom": 327.078125,
+      "width": 302,
+      "scrollWidth": 297,
+      "clientWidth": 297
+    },
+    {
+      "selector": ".purpose-choices",
+      "top": 431.8671875,
+      "bottom": 611.8671875,
+      "width": 302,
+      "scrollWidth": 302,
+      "clientWidth": 302
+    },
+    {
+      "selector": ".hold-row",
+      "top": 623.8671875,
+      "bottom": 748.8671875,
+      "width": 302,
+      "scrollWidth": 300,
+      "clientWidth": 300
+    },
+    {
+      "selector": ".all-actions-toggle",
+      "top": 758.8671875,
+      "bottom": 809.265625,
+      "width": 302,
+      "scrollWidth": 300,
+      "clientWidth": 300
+    }
+  ],
+  "buttons": [
+    {
+      "label": "×",
+      "height": 44
+    },
+    {
+      "label": "은퇴자금 더하기추가납입 미리보기 · 납입 후 생활자금도 확인해요.›",
+      "height": 94
+    },
+    {
+      "label": "보유상품 매도 살펴보기매도 미리보기 · 대금은 IRP 안에 남아요.›",
+      "height": 76
+    },
+    {
+      "label": "그대로 두고 마감",
+      "height": 44
+    },
+    {
+      "label": "전체 운용 보기 ›",
+      "height": 50.3984375
+    },
+    {
+      "label": "포트폴리오 확인",
+      "height": 50.3984375
+    }
+  ],
+  "text": "×\n\nTURN 1 · 남은 행동 1회\n\n무엇을 할까요?\n\n조회와 X 취소는 행동 횟수를 쓰지 않아요.\n\n지금 확인할 한 가지\n\n현재 구성을 보고 선택해요\n\n대기자금이 적어 새 매수는 어려워요. 여유 생활자금과 이미 보유한 상품을 확인해보세요.\n\n주문 가능 · IRP 안\n0원\n생활자금 · IRP 밖\n13,400,000원\n은퇴자금 더하기\n추가납입 미리보기 · 납입 후 생활자금도 확인해요.\n›\n보유상품 매도 살펴보기\n매도 미리보기 · 대금은 IRP 안에 남아요.\n›\n이번엔 그대로\n새 주문 없이 현재 구성을 유지하고 턴 마감\n그대로 두고 마감\n전체 운용 보기\n›\n\n카드는 지시 전 확인 화면만 열어요. 실제 거래는 별도로 확정해요.\n\n가상 금리 하락 · 주가 상승 · 도착 생활 사건\n\n시장·보유자산 영향 자세히\n금리 변화와 내 상품의 영향을 확인하세요\n상세 보기\n⌄\n\n1턴 실습 · 납입은 생활자금을 IRP 대기자금으로 옮깁니다. 기존 상품을 매도·교체하는 방법도 있습니다.\n\n4칸 이동 · 1턴 시장이 반영되었습니다. 이제 운용을 정하세요.\n\n포트폴리오 확인\n확인만으로 행동 횟수가 줄지 않아요."
+}
